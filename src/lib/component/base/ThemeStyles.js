@@ -7,9 +7,6 @@ const styles = theme => ({
       // Background
       background: theme.palette.background.default,
 
-      // Prevent text from being selected unless explicitly overridden
-      userSelect: "none",
-
       // Ensure text is antialiased
       WebkitFontSmoothing: "antialiased",
       MozOsxFontSmoothing: "grayscale",
