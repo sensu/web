@@ -1,0 +1,74 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-node/ for more details
+
+version: 2.1
+
+executors:
+  build_env:
+    resource_class: medium
+    docker:
+      - image: circleci/node:lts
+
+commands:
+  install_deps:
+    description: "Install dependencies"
+    steps:
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+
+jobs:
+  lint:
+    executor: build_env
+    steps:
+      - checkout
+      - install_deps
+      - run:
+          name: Lint
+          command: yarn lint
+
+  spec:
+    executor: build_env
+    steps:
+      - checkout
+      - install_deps
+      - run:
+          name: Run unit tests
+          command: yarn spec
+
+  audit:
+    executor: build_env
+    steps:
+      - checkout
+      - install_deps
+      - run:
+          name: Audit dependencies
+          command: yarn audit-deps
+
+  build:
+    executor: build_env
+    steps:
+      - checkout
+      - install_deps
+      - run:
+          name: Ensure UI builds
+          command: yarn build
+
+workflows:
+  version: 2
+  quality:
+    jobs:
+      - lint
+      - spec
+      - audit
+      - build
