@@ -5,7 +5,6 @@
 version: 2.1
 
 sensu_node_build_env: &sensu_node_build_env
-  resource_class: large
   docker:
     - image: circleci/node:lts
 
