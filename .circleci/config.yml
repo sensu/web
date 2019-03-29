@@ -9,13 +9,27 @@ sensu_node_build_env: &sensu_node_build_env
   docker:
     - image: circleci/node:lts
 
+install_deps: &install_deps
+  - restore_cache:
+    name: Restore Yarn Package Cache
+    keys:
+      - yarn-packages-{{ checksum "yarn.lock" }}
+  - run:
+    name: Install Dependencies
+    command: yarn install --frozen-lockfile
+  - save_cache:
+    name: Save Yarn Package Cache
+    key: yarn-packages-{{ checksum "yarn.lock" }}
+    paths:
+      - ~/.cache/yarn
+
 jobs:
   lint:
     <<: *sensu_node_build_env
     resource_class: large
     steps:
       - checkout
-      - run: yarn install
+      - *install_deps
       - run: yarn lint
 
   spec:
