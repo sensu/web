@@ -4,9 +4,11 @@
 
 version: 2.1
 
-sensu_node_build_env: &sensu_node_build_env
-  docker:
-    - image: circleci/node:lts
+executors:
+  build_env:
+    resource_class: medium
+    docker:
+      - image: circleci/node:lts
 
 commands:
   install_deps:
@@ -27,29 +29,28 @@ commands:
 
 jobs:
   lint:
-    <<: *sensu_node_build_env
-    resource_class: large
+    executor: build_env
     steps:
       - checkout
       - install_deps
       - run: yarn lint
 
   spec:
-    <<: *sensu_node_build_env
+    executor: build_env
     steps:
       - checkout
       - install_deps
       - run: yarn spec
 
   audit:
-    <<: *sensu_node_build_env
+    executor: build_env
     steps:
       - checkout
       - install_deps
       - run: yarn audit-deps
 
   build:
-    <<: *sensu_node_build_env
+    executor: build_env
     steps:
       - checkout
       - install_deps
