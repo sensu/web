@@ -32,6 +32,13 @@ jobs:
       - run: yarn install
       - run: yarn audit-deps
 
+  build:
+    <<: *sensu_node_build_env
+    steps:
+      - checkout
+      - run: yarn install
+      - run: yarn build
+
 workflows:
   version: 2
   quality:
