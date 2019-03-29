@@ -2,26 +2,29 @@
 #
 # Check https://circleci.com/docs/2.0/language-node/ for more details
 
-version: 2
+version: 2.1
 
 sensu_node_build_env: &sensu_node_build_env
   resource_class: large
   docker:
     - image: circleci/node:lts
 
-install_deps: &install_deps
-  - restore_cache:
-    name: Restore Yarn Package Cache
-    keys:
-      - yarn-packages-{{ checksum "yarn.lock" }}
-  - run:
-    name: Install Dependencies
-    command: yarn install --frozen-lockfile
-  - save_cache:
-    name: Save Yarn Package Cache
-    key: yarn-packages-{{ checksum "yarn.lock" }}
-    paths:
-      - ~/.cache/yarn
+commands:
+  install_deps:
+    description: "Install dependencies"
+    steps:
+      - restore_cache:
+        name: Restore Yarn Package Cache
+        keys:
+          - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+        name: Install Dependencies
+        command: yarn install --frozen-lockfile
+      - save_cache:
+        name: Save Yarn Package Cache
+        key: yarn-packages-{{ checksum "yarn.lock" }}
+        paths:
+          - ~/.cache/yarn
 
 jobs:
   lint:
@@ -29,28 +32,28 @@ jobs:
     resource_class: large
     steps:
       - checkout
-      - *install_deps
+      - install_deps
       - run: yarn lint
 
   spec:
     <<: *sensu_node_build_env
     steps:
       - checkout
-      - run: yarn install
+      - install_deps
       - run: yarn spec
 
   audit:
     <<: *sensu_node_build_env
     steps:
       - checkout
-      - run: yarn install
+      - install_deps
       - run: yarn audit-deps
 
   build:
     <<: *sensu_node_build_env
     steps:
       - checkout
-      - run: yarn install
+      - install_deps
       - run: yarn build
 
 workflows:
