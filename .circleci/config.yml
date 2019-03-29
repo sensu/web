@@ -33,28 +33,36 @@ jobs:
     steps:
       - checkout
       - install_deps
-      - run: yarn lint
+      - run:
+          name: Lint
+          command: yarn lint
 
   spec:
     executor: build_env
     steps:
       - checkout
       - install_deps
-      - run: yarn spec
+      - run:
+          name: Run unit tests
+          command: yarn spec
 
   audit:
     executor: build_env
     steps:
       - checkout
       - install_deps
-      - run: yarn audit-deps
+      - run:
+          name: Audit dependencies
+          command: yarn audit-deps
 
   build:
     executor: build_env
     steps:
       - checkout
       - install_deps
-      - run: yarn build
+      - run:
+          name: Ensure UI builds
+          command: yarn build
 
 workflows:
   version: 2
