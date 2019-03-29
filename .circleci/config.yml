@@ -1,0 +1,41 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+
+version: 2
+
+sensu_node_build_env: &sensu_node_build_env
+  resource_class: large
+  docker:
+    - image: circleci/node:lts
+
+jobs:
+  lint:
+    <<: *sensu_go_build_env
+    resource_class: large
+    steps:
+      - checkout
+      - run: yarn install
+      - run: yarn lint
+
+  spec:
+    <<: *sensu_go_build_env
+    steps:
+      - checkout
+      - run: yarn install
+      - run: yarn spec
+
+  audit:
+    <<: *sensu_go_build_env
+    steps:
+      - checkout
+      - run: yarn install
+      - run: yarn audit-deps
+
+workflows:
+  version: 2
+  quality:
+    jobs:
+      - lint
+      - spec
+      - audit
