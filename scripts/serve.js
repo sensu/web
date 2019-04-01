@@ -37,13 +37,16 @@ if (process.env.NODE_ENV !== "development") {
 
 app.use(historyFallback());
 
-app.use(devMiddlware(compiler));
+const instance = devMiddlware(compiler);
+
+app.use(instance);
 
 const server = killable(http.createServer(app));
 
 ["SIGINT", "SIGTERM"].forEach(sig => {
   process.on(sig, () => {
     console.info(`Process Ended via ${sig}`);
+    instance.close();
     server.kill();
   });
 });
