@@ -1,27 +1,31 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
 
 import ThemeProvider from "/lib/component/base/ThemeProvider";
 
 class AppThemeProvider extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    theme: PropTypes.shape({
-      theme: PropTypes.string,
-      dark: PropTypes.bool,
-    }).isRequired,
+    data: PropTypes.object.isRequired,
   };
 
   render() {
-    const { theme, children } = this.props;
+    const { data, children } = this.props;
     return (
-      <ThemeProvider theme={theme.theme} dark={theme.dark}>
+      <ThemeProvider theme={data.theme.theme} dark={data.theme.dark}>
         {children}
       </ThemeProvider>
     );
   }
 }
 
-const withTheme = connect(state => ({ theme: state.theme }));
-export default withTheme(AppThemeProvider);
+export default graphql(gql`
+  query ThemeProviderQuery {
+    theme @client {
+      dark
+      theme
+    }
+  }
+`)(AppThemeProvider);

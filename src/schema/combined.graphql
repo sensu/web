@@ -957,6 +957,8 @@ type Mutation {
 
   """Flags the client as being offline or online"""
   setLocalNetworkOffline(offline: Boolean!): Boolean
+  setTheme(theme: String!): Boolean
+  toggleDark: Boolean
 }
 
 """A Mutator is a mutator specification."""
@@ -1226,6 +1228,7 @@ type Query {
 
   """The networking state of the client"""
   localNetwork: LocalNetwork
+  theme: Theme
 }
 
 type RefreshTokensPayload {
@@ -1468,6 +1471,11 @@ type System {
 
   """Architecture; eg. 386, amd64, arm, ..."""
   arch: String!
+}
+
+type Theme {
+  theme: String!
+  dark: Boolean!
 }
 
 """TimeWindowDays defines the days of a time window"""

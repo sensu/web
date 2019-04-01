@@ -12,24 +12,18 @@ import polyfill from "/lib/polyfill";
 
 import createClient from "/lib/apollo/client";
 
-import createStore from "/app/store";
-import reducer from "/app/reducer";
-
 import ErrorBoundary from "/lib/component/util/ErrorBoundary";
 
 import AppRoot from "/app/component/AppRoot";
 
 polyfill().then(() => {
-  // Configure store
-  const store = createStore(reducer, {});
-
   const client = createClient();
 
   // Renderer
   ReactDOM.render(
     <ErrorBoundary handle={handle}>
       <BrowserRouter>
-        <AppRoot reduxStore={store} apolloClient={client} />
+        <AppRoot apolloClient={client} />
       </BrowserRouter>
     </ErrorBoundary>,
     document.getElementById("root"),

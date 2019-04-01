@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { compose, withProps } from "recompose";
+import gql from "graphql-tag";
+import { withApollo, graphql } from "react-apollo";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 
 import AppBar from "@material-ui/core/AppBar";
@@ -26,16 +27,25 @@ import Typography from "@material-ui/core/Typography";
 
 const SlideUp = withProps({ direction: "up" })(Slide);
 
+const setThemeMutation = gql`
+  mutation SetThemeMudation($theme: String!) {
+    setTheme(theme: $theme) @client
+  }
+`;
+
+const toggleDarkMutation = gql`
+  mutation ToggleDarkMutation {
+    toggleDark @client
+  }
+`;
+
 class Preferences extends React.Component {
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     fullScreen: PropTypes.bool.isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    theme: PropTypes.shape({
-      theme: PropTypes.string,
-      dark: PropTypes.bool,
-    }).isRequired,
+    data: PropTypes.object.isRequired,
+    client: PropTypes.object.isRequired,
   };
 
   state = {
@@ -43,14 +53,15 @@ class Preferences extends React.Component {
   };
 
   handleToggle = () => {
-    this.props.dispatch({ type: "theme/TOGGLE_DARK_MODE" });
+    this.props.client.mutate({ mutation: toggleDarkMutation });
   };
 
   handleThemeSelect = theme => () => {
-    this.props.dispatch({
-      type: "theme/CHANGE",
-      payload: { theme },
+    this.props.client.mutate({
+      mutation: setThemeMutation,
+      variables: { theme },
     });
+
     this.setState({ anchorEl: null });
   };
 
@@ -63,7 +74,7 @@ class Preferences extends React.Component {
   };
 
   render() {
-    const { fullScreen, open, onClose, theme } = this.props;
+    const { fullScreen, open, onClose, data } = this.props;
     const { anchorEl } = this.state;
 
     return (
@@ -97,14 +108,14 @@ class Preferences extends React.Component {
               secondary="Switch to the dark theme..."
             />
             <ListItemSecondaryAction>
-              <Switch onChange={this.handleToggle} checked={theme.dark} />
+              <Switch onChange={this.handleToggle} checked={data.theme.dark} />
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem button onClick={this.handleThemeClick}>
             <ListItemIcon>
               <EyeIcon />
             </ListItemIcon>
-            <ListItemText primary="Theme" secondary={theme.theme} />
+            <ListItemText primary="Theme" secondary={data.theme.theme} />
           </ListItem>
         </List>
         <Menu
@@ -141,6 +152,14 @@ class Preferences extends React.Component {
 
 const enhancer = compose(
   withMobileDialog({ breakpoint: "xs" }),
-  connect(st => ({ theme: st.theme })),
+  graphql(gql`
+    query PreferencesQuery {
+      theme @client {
+        dark
+        theme
+      }
+    }
+  `),
+  withApollo,
 );
 export default enhancer(Preferences);
