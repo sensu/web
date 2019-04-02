@@ -58,7 +58,6 @@ class EventsListHeader extends React.Component {
             name
           }
         }
-
         entities(limit: 1000) {
           nodes {
             name
