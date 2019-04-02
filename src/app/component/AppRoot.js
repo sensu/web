@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
-import { Provider } from "react-redux";
 import { ApolloProvider } from "react-apollo";
 import { Switch, Route, withRouter } from "react-router-dom";
 
@@ -27,42 +26,39 @@ import AuthInvalidDialog from "/app/component/partial/AuthInvalidDialog";
 class AppRoot extends React.PureComponent {
   static propTypes = {
     apolloClient: PropTypes.object.isRequired,
-    reduxStore: PropTypes.object.isRequired,
   };
 
   render() {
-    const { reduxStore, apolloClient } = this.props;
+    const { apolloClient } = this.props;
 
     return (
       <RelocationProvider>
-        <Provider store={reduxStore}>
-          <ApolloProvider client={apolloClient}>
-            <AppThemeProvider>
-              <Switch>
-                <Route exact path="/" component={DefaultRedirect} />
-                <UnauthenticatedRoute
-                  exact
-                  path="/signin"
-                  component={SignInView}
-                  fallbackComponent={LastNamespaceRedirect}
-                />
-                <AuthenticatedRoute
-                  path="/:namespace"
-                  component={EnvironmentView}
-                  fallbackComponent={SigninRedirect}
-                />
-                <Route component={NotFoundView} />
-              </Switch>
-              <Switch>
-                <UnauthenticatedRoute exact path="/signin" />
-                <AuthInvalidRoute component={AuthInvalidDialog} />
-              </Switch>
-              <ResetStyles />
-              <ThemeStyles />
-              <GlobalAlert />
-            </AppThemeProvider>
-          </ApolloProvider>
-        </Provider>
+        <ApolloProvider client={apolloClient}>
+          <AppThemeProvider>
+            <Switch>
+              <Route exact path="/" component={DefaultRedirect} />
+              <UnauthenticatedRoute
+                exact
+                path="/signin"
+                component={SignInView}
+                fallbackComponent={LastNamespaceRedirect}
+              />
+              <AuthenticatedRoute
+                path="/:namespace"
+                component={EnvironmentView}
+                fallbackComponent={SigninRedirect}
+              />
+              <Route component={NotFoundView} />
+            </Switch>
+            <Switch>
+              <UnauthenticatedRoute exact path="/signin" />
+              <AuthInvalidRoute component={AuthInvalidDialog} />
+            </Switch>
+            <ResetStyles />
+            <ThemeStyles />
+            <GlobalAlert />
+          </AppThemeProvider>
+        </ApolloProvider>
       </RelocationProvider>
     );
   }

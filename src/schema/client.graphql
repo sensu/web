@@ -32,6 +32,8 @@ extend type Query {
 
   "The networking state of the client"
   localNetwork: LocalNetwork
+
+  theme: Theme
 }
 
 type LocalNetwork {
@@ -40,6 +42,11 @@ type LocalNetwork {
 
   "If the client is offline and trying to retry the connection."
   retry: Boolean!
+}
+
+type Theme {
+  theme: String!
+  dark: Boolean!
 }
 
 extend type Mutation {
@@ -72,6 +79,11 @@ extend type Mutation {
 
   "Flags the client as being offline or online"
   setLocalNetworkOffline(offline: Boolean!): Boolean
+
+  #
+  # Theme
+  setTheme(theme: String!): Boolean
+  toggleDark: Boolean
 }
 
 type Auth {

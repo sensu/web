@@ -72,6 +72,18 @@ const createClient = () => {
     `,
   );
 
+  localStorageSync(
+    client,
+    gql`
+      query SyncThemeQuery {
+        theme @client {
+          theme
+          dark
+        }
+      }
+    `,
+  );
+
   return client;
 };
 

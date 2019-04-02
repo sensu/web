@@ -3,6 +3,7 @@ import { withClientState } from "apollo-link-state";
 import auth from "./resolvers/auth";
 import lastNamespace from "./resolvers/lastNamespace";
 import localNetwork from "./resolvers/localNetwork";
+import theme from "./resolvers/theme";
 import addDeletedFieldTo from "./resolvers/deleted";
 
 const resolvers = merge.all([
@@ -15,6 +16,7 @@ const resolvers = merge.all([
   addDeletedFieldTo("CheckConfig"),
   lastNamespace,
   localNetwork,
+  theme,
 ]);
 
 const stateLink = ({ cache }) => withClientState({ ...resolvers, cache });
