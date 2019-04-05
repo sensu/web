@@ -22,6 +22,7 @@ class EventDetailsReRunAction extends React.PureComponent {
       fragment EventDetailsReRunAction_event on Event {
         check {
           nodeId
+          proxyEntityName
         }
         entity {
           name
@@ -34,13 +35,19 @@ class EventDetailsReRunAction extends React.PureComponent {
   render() {
     const { children, event, client } = this.props;
 
+    // Unless this is a proxy entity target the specific entity
+    let subscriptions = [`entity:${event.entity.name}`];
+    if (event.check.proxyEntityName === event.entity.name) {
+      subscriptions = [];
+    }
+
     return (
       <ToastConnector>
         {({ addToast }) =>
           children(() => {
             const promise = executeCheck(client, {
               id: event.check.nodeId,
-              subscriptions: [`entity:${event.entity.name}`],
+              subscriptions,
             });
 
             addToast(({ remove }) => (
