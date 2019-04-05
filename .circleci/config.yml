@@ -74,4 +74,6 @@ workflows:
       - lint
       - spec
       - audit
+  release:
+    jobs:
       - build
