@@ -36,7 +36,7 @@
     "dev-server": "node scripts serve",
     "flow": "./node_modules/.bin/flow",
     "lint": "./node_modules/.bin/eslint .",
-    "prettier": "./node_modules/.bin/prettier --write '**/*.js'",
+    "prettier": "./node_modules/.bin/prettier --write `git ls-files | grep -E '(js|md|yml|html)$'`",
     "spec": "node scripts test.js --env=jsdom",
     "start": "NODE_ENV=development yarn build:vendor && NODE_ENV=development yarn dev-server",
     "test": "yarn check-version && yarn build && yarn lint && yarn spec --coverage",

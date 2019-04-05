@@ -1,5 +1,10 @@
-# Congruent w/ Go
-trailingComma: all
-
-# Double quotes are more common in Go
 singleQuote: false
+semi: true
+tabWidth: 2
+trailingComma: all
+printWidth: 80
+overrides:
+  - files: "*.yml"
+    options:
+      parser: yaml
+      semi: false
