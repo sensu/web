@@ -9,10 +9,25 @@ const pkgFilename = "dashboard.tgz";
 
 const bucket = "sensu-ci-web-build";
 const pathPrefix = "/oss/webapp";
+
 const outPath = path.join(pathPrefix, currentRev, "web.tgz");
+const refPath = path.join(pathPrefix, "master");
 
 // Setup client
 const s3 = new AWS.S3();
+const upload = (Key, Body) => {
+  return new Promise((resolve, reject) => {
+    s3.upload({ Bucket: bucket, Key, Body }, err => {
+      if (err) {
+        reject(err);
+        console.error(chalk.red("error"), err);
+        process.exit(1);
+      }
+      resolve();
+      console.info(chalk.red("info"), "successfully uploaded files");
+    });
+  });
+};
 
 // Read file from disk
 let pkgFile;
@@ -31,10 +46,13 @@ try {
 
 // Upload
 console.info(chalk.red("info"), "uploading artifact to", outPath);
-s3.upload({ Bucket: bucket, Key: outPath, Body: pkgFile }, err => {
-  if (err) {
-    console.error(chalk.red("error"), err);
-    process.exit(1);
-  }
-  console.info(chalk.red("info"), "successfully uploaded files");
-});
+upload(outPath, pkgFile)
+  .then(() => console.info(chalk.red("info"), "successfully uploaded files"))
+  .catch(err => console.error(chalk.red("error"), err));
+
+// Update Ref
+if (git.branch() === "master") {
+  upload(refPath, currentRev)
+    .then(() => console.info(chalk.red("info"), "successfully updated ref"))
+    .catch(err => console.error(chalk.red("error"), err));
+}
