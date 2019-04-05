@@ -9,9 +9,10 @@ const pkgFilename = "dashboard.tgz";
 
 const bucket = "sensu-ci-web-build";
 const pathPrefix = "/oss/webapp";
+const outPath = path.join(pathPrefix, currentRev, "package.tgz");
 
-const outPath = path.join(pathPrefix, currentRev, "web.tgz");
-const refPath = path.join(pathPrefix, "master");
+const error = (...msg) => console.error(chalk.red("error"), ...msg);
+const info = (...msg) => console.info(chalk.blue("info"), ...msg);
 
 // Setup client
 const s3 = new AWS.S3();
@@ -24,7 +25,6 @@ const upload = (Key, Body) => {
         process.exit(1);
       }
       resolve();
-      console.info(chalk.red("info"), "successfully uploaded files");
     });
   });
 };
@@ -32,9 +32,7 @@ const upload = (Key, Body) => {
 // Read file from disk
 let pkgFile;
 try {
-  const pkgPath = path.join(__dirname, "..", pkgFilename);
-  console.info(pkgPath);
-  pkgFile = fs.readFileSync(pkgPath);
+  pkgFile = fs.readFileSync(path.join(__dirname, "..", pkgFilename));
 } catch (e) {
   console.error(
     chalk.red("error"),
@@ -45,14 +43,18 @@ try {
 }
 
 // Upload
-console.info(chalk.red("info"), "uploading artifact to", outPath);
+info("uploading artifact to", outPath);
 upload(outPath, pkgFile)
-  .then(() => console.info(chalk.red("info"), "successfully uploaded files"))
-  .catch(err => console.error(chalk.red("error"), err));
+  .then(() => info("successfully uploaded files"))
+  .catch(err => error(err));
 
 // Update Ref
-if (git.branch() === "master") {
-  upload(refPath, currentRev)
-    .then(() => console.info(chalk.red("info"), "successfully updated ref"))
-    .catch(err => console.error(chalk.red("error"), err));
+let ref = git.branch();
+if (git.tag() !== currentRev) {
+  ref = git.tag();
 }
+
+info("updating ref at", pathPrefix, ref);
+upload(path.join(pathPrefix, ref), currentRev)
+  .then(() => info("successfully updated ref"))
+  .catch(err => error(err));
