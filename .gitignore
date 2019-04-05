@@ -9,6 +9,7 @@
 # production
 /build
 /stats.json
+/dashboard.tgz
 
 # misc
 .DS_Store
