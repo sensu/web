@@ -8,7 +8,7 @@ const currentRev = git.long();
 const pkgFilename = "dashboard.tgz";
 
 const bucket = "sensu-ci-web-builds";
-const pathPrefix = "/oss/webapp";
+const pathPrefix = "oss/webapp";
 const outPath = path.join(pathPrefix, currentRev, "package.tgz");
 
 const error = (...msg) => console.error(chalk.red("error"), ...msg);
@@ -18,7 +18,7 @@ const info = (...msg) => console.info(chalk.blue("info"), ...msg);
 const s3 = new AWS.S3();
 const upload = (Key, Body) => {
   return new Promise((resolve, reject) => {
-    s3.upload({ Bucket: bucket, Key, Body }, err => {
+    s3.upload({ Bucket: bucket, ACL: "public-read", Key, Body }, err => {
       if (err) {
         reject(err);
         console.error(chalk.red("error"), err);
