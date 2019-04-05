@@ -7,7 +7,7 @@ import git from "git-rev-sync";
 const currentRev = git.long();
 const pkgFilename = "dashboard.tgz";
 
-const bucket = "sensu-ci-web-build";
+const bucket = "sensu-ci-web-builds";
 const pathPrefix = "/oss/webapp";
 const outPath = path.join(pathPrefix, currentRev, "package.tgz");
 
