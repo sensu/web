@@ -8,14 +8,6 @@ changes prior to submitting a pull request for the implementation.
 This helps us to provide direction as to implementation details, which
 branch to base your changes on, and so on.
 
-1. Open an issue to describe your proposed improvement or feature
-1. Fork https://github.com/sensu/web
-1. Clone the fork.
-1. Create your feature branch (`git checkout -b my-new-feature`)
-1. Commit your changes with a [DCO Signed-off-by statement](#dco) (`git
-   commit --signoff`)
-1. Push your feature branch (`git push origin my-new-feature`)
-1. Create a Pull Request as appropriate based on the issue discussion
 
 Sensu is and always will be open source, and we continue to highly value
 community contribution.
@@ -51,6 +43,19 @@ community contribution.
 </details>
 
 ## Getting Started
+
+### Process
+
+1. Open an issue to describe your proposed improvement or feature.
+1. Fork https://github.com/sensu/web
+1. Clone the fork.
+1. Ensure your system is ready for development; see [prereqs](#Prerequisites)
+   below.
+1. Create your feature branch (`git checkout -b my-new-feature`)
+1. Commit your changes with a [DCO Signed-off-by statement](#dco) (`git
+   commit --signoff`)
+1. Push your feature branch (`git push origin my-new-feature`)
+1. Create a Pull Request as appropriate based on the issue discussion
 
 ### Prerequisites
 
