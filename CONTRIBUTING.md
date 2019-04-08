@@ -93,7 +93,6 @@ choice that can automatically fix your code and point out problems.
 - [Code Highlighting](https://atom.io/packages/language-babel)
 - [Linting](https://atom.io/packages/linter-eslint)
 - [Prettier](https://github.com/prettier/prettier-atom)
-- Test Runner - ???
 
 ### VIM
 
