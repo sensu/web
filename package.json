@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "files": [
+    "build/app",
     "build/lib",
     "build/lib-dev",
     "build/vendor",
