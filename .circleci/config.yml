@@ -39,12 +39,17 @@ jobs:
 
   spec:
     executor: build_env
+    environment:
+      JEST_JUNIT_OUTPUT_DIR: "./test-results/spec"
+      JEST_JUNIT_OUTPUT_NAME: "results.xml"
     steps:
       - checkout
       - install_deps
       - run:
           name: Run unit tests
-          command: yarn spec
+          command: yarn spec --testResultsProcessor="jest-junit"
+      - store_test_results:
+          path: test-results
 
   audit:
     executor: build_env
