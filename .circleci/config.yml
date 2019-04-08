@@ -66,8 +66,11 @@ jobs:
       - checkout
       - install_deps
       - run:
-          name: Ensure UI builds
-          command: yarn build
+          name: Package UI
+          command: yarn build:package
+      - run:
+          name: Upload Package
+          command: yarn upload-artifacts
 
 workflows:
   version: 2
@@ -76,4 +79,6 @@ workflows:
       - lint
       - spec
       - audit
+  release:
+    jobs:
       - build
