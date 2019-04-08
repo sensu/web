@@ -7,6 +7,10 @@
   </a>
 </p>
 
+<h3 align="center">
+  Sensu Go Web
+</h3>
+
 <p align="center">
   A web interface for insight and management of your <a href="https://sensu.io/products/core">Sensu Go</a> clusters.
 </p>
