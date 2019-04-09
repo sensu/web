@@ -32,7 +32,7 @@ commands:
             - ~/.cache/yarn
       - save_cache:
           name: Save GraphQL Server Schema Cache
-          key: graphql-schema={{ checksum ".schema/lock.json" }}
+          key: graphql-schema={{ checksum "package.json" }}
           paths:
             - .schema
 
