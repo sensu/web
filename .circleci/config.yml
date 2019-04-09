@@ -21,7 +21,7 @@ commands:
       - restore_cache:
           name: Restore GraphQL Server Schema Cache
           keys:
-            - graphql-schema={{ checksum ".schema/lock.json" }}
+            - graphql-schema={{ checksum "package.json" }}
       - run:
           name: Install Dependencies
           command: yarn install --frozen-lockfile
