@@ -43,7 +43,8 @@
     "test": "yarn check-version && yarn build && yarn lint && yarn spec --coverage",
     "fetch-schema": "node scripts fetch-schema",
     "update-schema": "node scripts update-schema",
-    "upload-artifacts": "node scripts upload-artifacts"
+    "upload-artifacts": "node scripts upload-artifacts",
+    "postinstall": "yarn fetch-schema"
   },
   "dependencies": {
     "@10xjs/date-input-controller": "0.1.6",

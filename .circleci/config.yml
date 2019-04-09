@@ -25,9 +25,6 @@ commands:
       - run:
           name: Install Dependencies
           command: yarn install --frozen-lockfile
-      - run:
-          name: Update GraphQL Server Schema
-          command: yarn fetch-schema
       - save_cache:
           name: Save Yarn Package Cache
           key: yarn-packages-{{ checksum "yarn.lock" }}
