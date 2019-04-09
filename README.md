@@ -1,7 +1,7 @@
 <p align="center">
   <a href="https://www.sensu.io/">
     <img alt="senu"
-      src="https://raw.github.com/sensu/web/master/logo.svg"
+      src="https://raw.github.com/sensu/web/54db41954ea575599ec171948c2a546b5052004c/logo.svg"
       width="144"
     />
   </a>
