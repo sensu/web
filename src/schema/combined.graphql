@@ -910,6 +910,9 @@ type LocalNetwork {
 
 """The root query for implementing GraphQL mutations."""
 type Mutation {
+  """Create or overrwrite resource from given wrapped resource."""
+  putWrapped(raw: String!): PutWrappedPayload!
+
   """Creates a new check."""
   createCheck(input: CreateCheckInput!): CreateCheckPayload
 
@@ -1193,6 +1196,17 @@ type ProxyRequests {
   splayCoverage: Int!
 }
 
+type PutWrappedPayload {
+  """The newly created / updated resource"""
+  node: Node
+
+  """
+  Includes any failed preconditions or unrecoverable errors that occurred while
+  executing the mutation.
+  """
+  errors: [Error!]!
+}
+
 """The query root of Sensu's GraphQL interface."""
 type Query {
   """Current viewer."""
@@ -1219,6 +1233,14 @@ type Query {
     """The ID of an object."""
     id: ID!
   ): Node
+
+  """
+  Node fetches an object given its ID and returns it as wrapped resource.
+  """
+  wrappedNode(
+    """The ID of an object."""
+    id: ID!
+  ): JSON
 
   """Describes state of authorization tokens"""
   auth: Auth
@@ -1352,7 +1374,7 @@ type Silenced implements Node & Namespaced & HasMetadata {
   expireOnResolve: Boolean!
 
   """Creator is the author of the silenced entry"""
-  creator: User!
+  creator: String!
 
   """Check is the name of the check event to be silenced."""
   check: CheckConfig
@@ -1403,6 +1425,10 @@ enum SilencesListOrder {
   BEGIN_DESC
 }
 
+"""
+StandardError is the standard implementation of an error that includes a
+message.
+"""
 type StandardError implements Error {
   """The field associated with the error."""
   input: String
