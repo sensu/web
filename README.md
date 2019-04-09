@@ -1,8 +1,8 @@
 <p align="center">
   <a href="https://www.sensu.io/">
-    <img alt="senu"
-      src="https://raw.github.com/sensu/sensu/master/sensu-logo.png"
-      width="144"
+    <img alt="Sensu"
+      src="https://raw.githubusercontent.com/sensu/web/828c7a0c2a6abb7ea215ca6ded903ba26045f542/logo.png"
+      width="80"
     />
   </a>
 </p>
