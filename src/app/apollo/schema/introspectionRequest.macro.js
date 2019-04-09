@@ -7,12 +7,12 @@
  * app operation - only by dev tooling when the schema definition is required.
  */
 
-import { introspectionFromSchema } from "graphql";
-import mergedSchema from "./mergedSchema";
+const graphql = __non_webpack_require__("graphql");
+const mergedSchema = __non_webpack_require__("./mergedSchema");
 
 export default ({ emitFile }) => {
   return emitFile(
     "schema.json",
-    JSON.stringify({ data: introspectionFromSchema(mergedSchema) }),
+    JSON.stringify({ data: graphql.introspectionFromSchema(mergedSchema) }),
   );
 };

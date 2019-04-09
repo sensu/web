@@ -1,9 +1,10 @@
 // const fs = require("fs");
+// const path = require("path");
 // const graphql = require("graphql");
-const libSchema = require("../../../lib/apollo/schema/mergedSchema.js");
+const libSchema = require("../../../lib/apollo/schema/mergedSchema");
 
 // const rawClientSchema = fs.readFileSync(
-//   require.resolve("./client.graphql"),
+//   path.join(__dirname, "client.graphql"),
 //   "utf-8",
 // );
 // const clientSchemaDoc = graphql.parse(rawClientSchema);
