@@ -82,6 +82,7 @@ class EventsContainer extends React.Component {
             check {
               nodeId
               name
+              proxyEntityName
             }
 
             silences {
@@ -127,9 +128,15 @@ class EventsContainer extends React.Component {
     const { client } = this.props;
 
     events.forEach(({ check, entity }) => {
+      // Unless this is a proxy entity target the specific entity
+      let subscriptions = [`entity:${entity.name}`];
+      if (check.proxyEntityName === entity.name) {
+        subscriptions = [];
+      }
+
       const promise = executeCheck(client, {
         id: check.nodeId,
-        subscriptions: [`entity:${entity.name}`],
+        subscriptions,
       });
 
       this.props.addToast(({ remove }) => (
