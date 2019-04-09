@@ -2,6 +2,12 @@ const graphql = require("graphql");
 
 const schema = require("./apollo/schema/mergedSchema");
 
+const disabledRules = [
+  "NoUnusedFragments",
+  "KnownFragmentNames",
+  "NoUnusedVariables",
+];
+
 module.exports = {
   plugins: ["graphql"],
   rules: {
@@ -11,6 +17,9 @@ module.exports = {
       {
         env: "apollo",
         schemaJson: graphql.introspectionFromSchema(schema),
+        validators: graphql.specifiedRules
+          .map(rule => rule.name)
+          .filter(ruleName => !disabledRules.includes(ruleName)),
       },
     ],
   },
