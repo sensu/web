@@ -6,18 +6,21 @@ import localNetwork from "./resolvers/localNetwork";
 import theme from "./resolvers/theme";
 import addDeletedFieldTo from "./resolvers/deleted";
 
-const resolvers = merge.all([
-  {},
-  auth,
-  addDeletedFieldTo("CheckConfig"),
-  addDeletedFieldTo("Entity"),
-  addDeletedFieldTo("Event"),
-  addDeletedFieldTo("Silenced"),
-  addDeletedFieldTo("CheckConfig"),
-  lastNamespace,
-  localNetwork,
-  theme,
-]);
+const stateLink = ({ cache, resolvers }) =>
+  withClientState({
+    ...merge.all([
+      {},
+      auth,
+      lastNamespace,
+      localNetwork,
+      theme,
+      addDeletedFieldTo("CheckConfig"),
+      addDeletedFieldTo("Entity"),
+      addDeletedFieldTo("Event"),
+      addDeletedFieldTo("Silenced"),
+      ...resolvers,
+    ]),
+    cache,
+  });
 
-const stateLink = ({ cache }) => withClientState({ ...resolvers, cache });
 export default stateLink;
