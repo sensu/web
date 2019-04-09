@@ -5,10 +5,12 @@
 
 # testing
 /coverage
+/test-results
 
 # production
 /build
 /stats.json
+/dashboard.tgz
 
 # misc
 .DS_Store

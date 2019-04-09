@@ -15,7 +15,7 @@ env:
 parser: babel-eslint
 parserOptions:
   ecmaVersion: 2018
-  sourceType: 'module'
+  sourceType: "module"
   ecmaFeatures:
     jsx: true
 globals:
@@ -67,8 +67,7 @@ rules:
   # https://github.com/apollographql/eslint-plugin-graphql
   graphql/template-strings:
     - error
-    -
-      env: apollo
+    - env: apollo
       validators:
         - FieldsOnCorrectType
         - KnownDirectives
