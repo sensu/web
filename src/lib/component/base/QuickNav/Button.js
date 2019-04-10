@@ -41,7 +41,7 @@ class QuickNavButton extends React.Component {
   };
 
   static defaultProps = {
-    exact: NavLink.defaultProps.exact,
+    exact: undefined,
   };
 
   render() {
