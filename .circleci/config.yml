@@ -18,6 +18,10 @@ commands:
           name: Restore Yarn Package Cache
           keys:
             - yarn-packages-{{ checksum "yarn.lock" }}
+      - restore_cache:
+          name: Restore GraphQL Server Schema Cache
+          keys:
+            - graphql-schema={{ checksum "package.json" }}
       - run:
           name: Install Dependencies
           command: yarn install --frozen-lockfile
@@ -26,6 +30,11 @@ commands:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
+      - save_cache:
+          name: Save GraphQL Server Schema Cache
+          key: graphql-schema={{ checksum "package.json" }}
+          paths:
+            - .schema
 
 jobs:
   lint:

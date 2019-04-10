@@ -2,8 +2,8 @@ import fs from "fs";
 import https from "https";
 import path from "path";
 
-import fsPromise from "./fsPromise";
-import api from "./githubApi";
+import fsPromise from "./util/fsPromise";
+import api from "./util/githubApi";
 
 import pkg from "../package.json";
 

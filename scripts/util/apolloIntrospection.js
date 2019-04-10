@@ -1,21 +1,12 @@
-/* eslint-disable import/no-webpack-loader-syntax, import/extensions, import/no-unresolved */
+import { execute, parse } from "graphql";
 
-import { buildASTSchema, execute, parse } from "graphql";
-import rawSchema from "!!raw-loader!./combined.graphql";
-
-export default () => {
-  // Support legacy SDL spec; graphl-go support pending.
-  // https://github.com/graphql/graphql-js/blob/v0.13.0/src/language/parser.js#L89-L97
-  const parserOpts = { allowLegacySDLImplementsInterfaces: true };
-
-  //
+export default schema => {
   // Apollo only needs to be aware of the possible types unions and interfaces
   // may contain. So instead of retrieving the entire schema, we simply retrieve
   // the names and possibleTypes.
   //
   // More: https://www.apollographql.com/docs/react/advanced/fragments.html#fragment-matcher
   //
-  const schema = buildASTSchema(parse(rawSchema, parserOpts));
   const queryAST = parse(
     `
       query IntrospectionQuery {
@@ -41,5 +32,5 @@ export default () => {
     type => type.kind === "UNION" || type.kind === "INTERFACE",
   );
   result.data.__schema.types = filteredTypes;
-  return `module.exports = ${JSON.stringify(result)}`;
+  return result.data;
 };

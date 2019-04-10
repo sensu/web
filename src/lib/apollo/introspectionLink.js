@@ -1,7 +1,5 @@
 import { ApolloLink, Observable } from "apollo-link";
 
-import asset from "/schema/combinedIntrospection.macro";
-
 /**
  * Captures introspection queries sent to client and instead of passing along to
  * the server the combined server and client schema is returned.
@@ -12,6 +10,7 @@ import asset from "/schema/combinedIntrospection.macro";
 export default () =>
   new ApolloLink((operation, forward) => {
     const { operationName } = operation;
+    const context = operation.getContext();
 
     // This is maybe not the most ideal heuristic but the alternative is
     // comparing the given query with the static one included in graphql-js.
@@ -25,7 +24,7 @@ export default () =>
     }
 
     return new Observable(obs => {
-      fetch(asset)
+      fetch(context.introspectionURL)
         .then(response => {
           operation.setContext({ response });
           return response;

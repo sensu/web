@@ -8,16 +8,18 @@ import {
 import ApolloClient from "apollo-client";
 import { setContext } from "apollo-link-context";
 
-// https://www.apollographql.com/docs/react/advanced/fragments.html#fragment-matcher
-import { data as introspectionQueryResultData } from "/schema/combinedTypes.macro";
-
-import authLink from "./authLink";
 import createStateLink from "./stateLink";
-import httpLink from "./httpLink";
-import introspectionLink from "./introspectionLink";
+import createHttpLink from "./httpLink";
+import createIntrospectionLink from "./introspectionLink";
+import createTokenRefreshLink from "./tokenRefreshLink";
 import localStorageSync from "./localStorageSync";
 
-const createClient = () => {
+const createClient = ({
+  link = [],
+  resolvers = [],
+  introspectionQueryResultData,
+  introspectionURL,
+} = {}) => {
   const fragmentMatcher = new IntrospectionFragmentMatcher({
     introspectionQueryResultData,
   });
@@ -28,23 +30,27 @@ const createClient = () => {
   });
 
   let client = null;
-  const getClient = () => {
-    if (!client) {
-      throw new Error("apollo client is not initialized");
-    }
-    return client;
-  };
 
-  const stateLink = createStateLink({ cache });
+  const introspectionLink = createIntrospectionLink();
+  const stateLink = createStateLink({ cache, resolvers });
+  const tokenRefreshLink = createTokenRefreshLink();
+  const httpLink = createHttpLink();
+
+  const contextLink = setContext(() => ({
+    stateLink,
+    client,
+    introspectionURL,
+  }));
 
   client = new ApolloClient({
     cache,
     link: ApolloLink.from([
-      introspectionLink(),
-      setContext(() => ({ stateLink })),
+      contextLink,
+      introspectionLink,
       stateLink,
-      authLink({ getClient }),
-      httpLink({ getClient }),
+      tokenRefreshLink,
+      ...link,
+      httpLink,
     ]),
   });
 

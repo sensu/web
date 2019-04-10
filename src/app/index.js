@@ -10,11 +10,11 @@ import "typeface-roboto";
 
 import polyfill from "/lib/polyfill";
 
-import createClient from "/lib/apollo/client";
-
 import ErrorBoundary from "/lib/component/util/ErrorBoundary";
 
 import AppRoot from "/app/component/AppRoot";
+
+import createClient from "/app/apollo/client";
 
 polyfill().then(() => {
   const client = createClient();
