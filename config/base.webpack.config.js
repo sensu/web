@@ -60,7 +60,7 @@ export default ({
   },
 
   optimization: {
-    splitChunks: { minChunks: 2 },
+    splitChunks: false,
     minimizer: [
       new TerserPlugin({
         sourceMap: true,
