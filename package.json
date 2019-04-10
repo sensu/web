@@ -42,7 +42,6 @@
     "start": "NODE_ENV=development yarn build:vendor && NODE_ENV=development yarn dev-server",
     "test": "yarn check-version && yarn build && yarn lint && yarn spec --coverage",
     "fetch-schema": "node scripts fetch-schema",
-    "update-schema": "node scripts update-schema",
     "upload-artifacts": "node scripts upload-artifacts",
     "postinstall": "yarn fetch-schema"
   },
