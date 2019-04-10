@@ -3,7 +3,7 @@ const path = require("path");
 const glob = require("glob");
 const graphql = require("graphql");
 
-const serverSchemaPath = path.resolve(".schema/*.graphql");
+const serverSchemaPath = path.join(__dirname, "../.schema/*.graphql");
 
 // Support legacy SDL spec; graphl-go support pending.
 // https://github.com/graphql/graphql-js/blob/v0.13.0/src/language/parser.js#L89-L97
