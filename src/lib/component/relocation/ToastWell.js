@@ -7,7 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Well } from "/lib/component/relocation/Relocation";
 import { TOAST } from "/lib/component/relocation/types";
 
-import UnmountObserver from "/lib/component/util/UnmountObserver";
+import { UnmountObserver } from "/lib/component/util";
 
 const styles = theme => ({
   toast: {

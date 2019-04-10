@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import CurrentDateProvider from "/lib/component/util/CurrentDateProvider";
+import { CurrentDateProvider } from "/lib/component/util";
 
 import RelativeDate from "./RelativeDate";
 

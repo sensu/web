@@ -50,7 +50,7 @@ export default makeConfig({
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
-      template: path.resolve(root, "src/app/static/index.html"),
+      template: path.resolve(root, "src/lib/static/index.html"),
       minify: process.env.NODE_ENV !== "development" && {
         removeComments: true,
         collapseWhitespace: true,

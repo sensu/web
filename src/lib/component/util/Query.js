@@ -164,6 +164,14 @@ class Query extends React.PureComponent<Props, State> {
     return nextState;
   }
 
+  constructor(props) {
+    super(props);
+    const state = Query.getDerivedStateFromProps(this.props, null);
+    if (state !== null) {
+      this.state = state;
+    }
+  }
+
   subscribe() {
     if (this.subscription) {
       throw new Error("Cannot subscribe. Currently subscribed.");

@@ -30,6 +30,10 @@ const styles = theme => ({
     button: {
       cursor: "pointer",
     },
+
+    strong: {
+      fontWeight: 600,
+    },
   },
 });
 

@@ -4,10 +4,10 @@ import { Transition, animated } from "react-spring";
 import ResizeObserver from "react-resize-observer";
 import { withStyles } from "@material-ui/core/styles";
 
+import { UnmountObserver } from "/lib/component/util";
+
 import { Well } from "/lib/component/relocation/Relocation";
 import { BANNER } from "/lib/component/relocation/types";
-
-import UnmountObserver from "/lib/component/util/UnmountObserver";
 
 const MAX_BANNERS = 20;
 

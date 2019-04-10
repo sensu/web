@@ -1,4 +1,4 @@
-import createClient from "/lib/apollo/client";
+import { createClient } from "/lib/apollo";
 
 import introspectionURL from "./schema/introspectionRequest.macro";
 import introspectionQueryResultData from "./schema/apolloIntrospection.macro";

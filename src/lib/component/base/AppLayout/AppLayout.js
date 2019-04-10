@@ -7,7 +7,6 @@ import classnames from "classnames";
 import ToastWell from "/lib/component/relocation/ToastWell";
 import BannerWell from "/lib/component/relocation/BannerWell";
 
-import MobileFullWidthContent from "./MobileFullWidthContent";
 import Context from "./Context";
 
 const styles = theme => ({
@@ -134,10 +133,6 @@ class AppLayout extends React.PureComponent {
     content: undefined,
     fullWidth: false,
   };
-
-  static MobileFullWidthContent = MobileFullWidthContent;
-
-  static Context = Context;
 
   state = { topBarHeight: 0 };
 

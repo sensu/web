@@ -4,6 +4,8 @@ import { Redirect, withRouter } from "react-router-dom";
 import { redirectKey } from "/lib/constant/queryParams";
 import gql from "graphql-tag";
 
+import { defaultNamespace } from "/lib/constant/namespace";
+
 import Query from "/lib/component/util/Query";
 
 const primaryQuery = gql`
@@ -34,7 +36,7 @@ class LastNamespaceRedirect extends React.PureComponent {
     }
 
     if (data.viewer && data.viewer.namespaces.length === 0) {
-      return <Redirect to="/default" />;
+      return <Redirect to={`/${defaultNamespace}`} />;
     }
 
     const firstSpace = data.viewer.namespaces[0];
