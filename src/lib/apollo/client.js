@@ -6,12 +6,13 @@ import {
   IntrospectionFragmentMatcher,
 } from "apollo-cache-inmemory";
 import ApolloClient from "apollo-client";
+import { setContext } from "apollo-link-context";
 
 // https://www.apollographql.com/docs/react/advanced/fragments.html#fragment-matcher
 import { data as introspectionQueryResultData } from "/schema/combinedTypes.macro";
 
 import authLink from "./authLink";
-import stateLink from "./stateLink";
+import createStateLink from "./stateLink";
 import httpLink from "./httpLink";
 import introspectionLink from "./introspectionLink";
 import localStorageSync from "./localStorageSync";
@@ -34,11 +35,14 @@ const createClient = () => {
     return client;
   };
 
+  const stateLink = createStateLink({ cache });
+
   client = new ApolloClient({
     cache,
     link: ApolloLink.from([
       introspectionLink(),
-      stateLink({ cache }),
+      setContext(() => ({ stateLink })),
+      stateLink,
       authLink({ getClient }),
       httpLink({ getClient }),
     ]),

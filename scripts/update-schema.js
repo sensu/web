@@ -9,7 +9,7 @@ import { writeFileSync, readFileSync } from "fs";
 import { printSchema, buildASTSchema, extendSchema, parse } from "graphql";
 import chalk from "chalk";
 
-const serverSchemaPath = resolve("../backend/apid/graphql/schema/*.graphql");
+const serverSchemaPath = resolve(".schema/*.graphql");
 const clientSchemaPath = resolve("src/schema/client.graphql");
 const combinedFilePath = resolve("src/schema/combined.graphql");
 
