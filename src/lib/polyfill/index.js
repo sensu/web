@@ -36,7 +36,7 @@ const polyfillArray = () =>
   new Promise(resolve =>
     modernizr.on("es6array", result => {
       if (result) {
-        resolve();
+        return resolve();
       }
 
       return import(/* webpackChunkName: "es6-array" */ "core-js/es6/array").then(
