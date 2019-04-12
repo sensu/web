@@ -1,6 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import pure from "recompose/pure";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import { SvgIcon } from "/vendor/@material-ui/core";
 
 const Icon = props => (
   <SvgIcon {...props}>

@@ -1,20 +1,27 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import ErrorIcon from "@material-ui/icons/Error";
-import InfoIcon from "@material-ui/icons/Info";
-import CloseIcon from "@material-ui/icons/Close";
-import green from "@material-ui/core/colors/green";
-import amber from "@material-ui/core/colors/amber";
-import IconButton from "@material-ui/core/IconButton";
-import WarningIcon from "@material-ui/icons/Warning";
-import { withStyles } from "@material-ui/core/styles";
-import { emphasize } from "@material-ui/core/styles/colorManipulator";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
+import classNames from "/vendor/classnames";
+
+import {
+  colors,
+  withStyles,
+  IconButton,
+  Paper,
+  Typography,
+} from "/vendor/@material-ui/core";
+
+import { emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
 
 import uniqueId from "/lib/util/uniqueId";
+
+import {
+  CloseIcon,
+  CheckCircleIcon,
+  WarningIcon,
+  ErrorIcon,
+  InfoIcon,
+} from "/lib/component/icon";
+
 import { Timer } from "/lib/component/util";
 
 import CircularProgress from "/lib/component/base/CircularProgress";
@@ -88,7 +95,7 @@ export const styles = theme => {
     },
 
     success: {
-      backgroundColor: green[600],
+      backgroundColor: colors.green[600],
     },
     error: {
       backgroundColor: theme.palette.error.dark,
@@ -97,7 +104,7 @@ export const styles = theme => {
       backgroundColor: theme.palette.primary.dark,
     },
     warning: {
-      backgroundColor: amber[700],
+      backgroundColor: colors.amber[700],
     },
     icon: {
       fontSize: 20,

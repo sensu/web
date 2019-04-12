@@ -1,4 +1,4 @@
-import { set, parsePath } from "@10xjs/form";
+import { set, parsePath } from "/vendor/@10xjs/form";
 
 export const REQUIRED = "VALIDATION_REQUIRED";
 export const UNIQUE_CONSTRAINT = "VALIDATION_UNIQUE_CONSTRAINT";

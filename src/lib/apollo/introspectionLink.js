@@ -1,4 +1,4 @@
-import { ApolloLink, Observable } from "apollo-link";
+import { ApolloLink, Observable } from "/vendor/apollo-link";
 
 /**
  * Captures introspection queries sent to client and instead of passing along to

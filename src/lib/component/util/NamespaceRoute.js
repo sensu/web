@@ -1,7 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
-import { Route } from "react-router-dom";
+import gql from "/vendor/graphql-tag";
+import { Route } from "/vendor/react-router-dom";
 
 import { FailedError } from "/lib/error/FetchError";
 

@@ -1,10 +1,8 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
+import gql from "/vendor/graphql-tag";
 
-import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import CardContent from "@material-ui/core/CardContent";
+import { withStyles, Grid, CardContent } from "/vendor/@material-ui/core";
 
 import {
   Dictionary,

@@ -1,13 +1,15 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
-import { withApollo } from "react-apollo";
+import gql from "/vendor/graphql-tag";
+import { withApollo } from "/vendor/react-apollo";
 
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "/vendor/@material-ui/core";
 
 import { TableListEmptyState, Loader } from "/lib/component/base";
 

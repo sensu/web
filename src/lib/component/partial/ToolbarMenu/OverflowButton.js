@@ -1,10 +1,9 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { withStyles, IconButton } from "/vendor/@material-ui/core";
+import { fade } from "/vendor/@material-ui/core/styles/colorManipulator";
 
-import KebabIcon from "/lib/component/icon/Kebab";
-import IconButton from "@material-ui/core/IconButton";
+import { KebabIcon } from "/lib/component/icon";
 
 const styles = theme => ({
   root: {},

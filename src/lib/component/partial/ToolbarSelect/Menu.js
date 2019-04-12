@@ -1,6 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import BaseMenu from "@material-ui/core/Menu";
+import { Menu as BaseMenu } from "/vendor/@material-ui/core";
 
 class Menu extends React.Component {
   static displayName = "ToolbarSelect.Menu";

@@ -1,6 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { Route } from "react-router-dom";
+import { Route } from "/vendor/react-router-dom";
 
 class ConditionalRoute extends React.PureComponent {
   static propTypes = {

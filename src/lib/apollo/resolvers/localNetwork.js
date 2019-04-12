@@ -1,5 +1,5 @@
 // @flow
-import type { ApolloCache } from "react-apollo";
+import type { ApolloCache } from "/vendor/react-apollo";
 
 type Context = { cache: ApolloCache<mixed> };
 

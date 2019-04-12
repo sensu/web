@@ -1,4 +1,4 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 
 import { CurrentDateProvider } from "/lib/component/util";

@@ -1,14 +1,16 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { compose, withProps } from "recompose";
-import { withApollo } from "react-apollo";
+import { withApollo } from "/vendor/react-apollo";
 
-import withMobileDialog from "@material-ui/core/withMobileDialog";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import Slide from "@material-ui/core/Slide";
-import Typography from "@material-ui/core/Typography";
+import {
+  withMobileDialog,
+  Dialog,
+  DialogContent,
+  LinearProgress,
+  Slide,
+  Typography,
+} from "/vendor/@material-ui/core";
 
 import { when } from "/lib/util/promise";
 import { UnauthorizedError } from "/lib/error/FetchError";

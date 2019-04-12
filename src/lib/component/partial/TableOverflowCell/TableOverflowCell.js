@@ -1,8 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-
-import TableCell from "@material-ui/core/TableCell";
+import { withStyles, TableCell } from "/vendor/@material-ui/core";
 
 const styles = theme => ({
   root: {

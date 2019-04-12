@@ -1,8 +1,8 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { Transition, animated } from "react-spring";
-import ResizeObserver from "react-resize-observer";
-import { withStyles } from "@material-ui/core/styles";
+import { Transition, animated } from "/vendor/react-spring";
+import ResizeObserver from "/vendor/react-resize-observer";
+import { withStyles } from "/vendor/@material-ui/core";
 
 import { Well } from "/lib/component/relocation/Relocation";
 import { TOAST } from "/lib/component/relocation/types";

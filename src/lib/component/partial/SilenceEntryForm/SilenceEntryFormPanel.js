@@ -1,14 +1,15 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import Typography from "@material-ui/core/Typography";
+import {
+  withStyles,
+  Grid,
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  Typography,
+} from "/vendor/@material-ui/core";
 
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ErrorIcon from "@material-ui/icons/Error";
+import { ExpandMoreIcon, ErrorIcon } from "/lib/component/icon";
 
 const StyledExpansionPanelSummary = withStyles(() => ({
   content: { maxWidth: "100%" },

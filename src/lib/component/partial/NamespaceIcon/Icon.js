@@ -1,14 +1,13 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-
-import DonutSmallIcon from "@material-ui/icons/DonutSmall";
-import ExploreIcon from "@material-ui/icons/Explore";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import EmoticonIcon from "@material-ui/icons/InsertEmoticon";
+import classnames from "/vendor/classnames";
+import { withStyles } from "/vendor/@material-ui/core";
 
 import {
+  DonutSmallIcon,
+  ExploreIcon,
+  VisibilityIcon,
+  EmoticonIcon,
   HotIcon,
   DonutIcon,
   BriefcaseIcon,

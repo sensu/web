@@ -1,10 +1,8 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "/vendor/react-router-dom";
 
-import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
+import { withStyles, Typography, IconButton } from "/vendor/@material-ui/core";
 
 const styles = theme => ({
   menuText: {

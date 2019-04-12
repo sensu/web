@@ -1,10 +1,9 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import SmallCheck from "/lib/component/icon/SmallCheck";
-import Item from "@material-ui/core/MenuItem";
-import ItemText from "@material-ui/core/ListItemText";
-import ItemIcon from "@material-ui/core/ListItemIcon";
+import { Item, ItemText, ItemIcon } from "/vendor/@material-ui/core";
+
+import { SmallCheckIcon } from "/lib/component/icon";
 
 class Option extends React.PureComponent {
   static displayName = "ToolbarSelect.Option";
@@ -28,7 +27,7 @@ class Option extends React.PureComponent {
       <Item key={value} value={value} {...props}>
         {selected && (
           <ItemIcon>
-            <SmallCheck />
+            <SmallCheckIcon />
           </ItemIcon>
         )}
         <ItemText inset={selected} primary={label} />

@@ -1,4 +1,4 @@
-import React from "react";
+import React from "/vendor/react";
 
 class RenderCounter extends React.Component {
   count = 0;

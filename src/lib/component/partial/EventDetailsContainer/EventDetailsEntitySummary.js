@@ -1,17 +1,19 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
-import Tooltip from "@material-ui/core/Tooltip";
-import Grid from "@material-ui/core/Grid";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import { withStyles } from "@material-ui/core/styles";
+import gql from "/vendor/graphql-tag";
+
+import {
+  withStyles,
+  Card,
+  CardContent,
+  Divider,
+  Typography,
+  Tooltip,
+  Grid,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+} from "/vendor/@material-ui/core";
 
 import {
   Dictionary,
@@ -23,7 +25,7 @@ import {
   RelativeToCurrentDate,
 } from "/lib/component/base";
 import { Maybe } from "/lib/component/util";
-import { SilenceIcon } from "/lib/component/icon";
+import { SilenceIcon, ExpandMoreIcon } from "/lib/component/icon";
 import { statusCodeToId } from "/lib/util/checkStatus";
 
 const Strong = withStyles(() => ({

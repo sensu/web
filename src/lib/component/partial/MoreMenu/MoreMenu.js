@@ -1,9 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import RootRef from "@material-ui/core/RootRef";
+import { IconButton, Menu, RootRef } from "/vendor/@material-ui/core";
 
 import { MenuController } from "/lib/component/controller";
 import { KebabIcon } from "/lib/component/icon";

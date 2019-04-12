@@ -1,14 +1,16 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
-import { withStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Tooltip from "@material-ui/core/Tooltip";
-import List from "@material-ui/core/List";
+import gql from "/vendor/graphql-tag";
+import {
+  withStyles,
+  Card,
+  CardContent,
+  Divider,
+  Grid,
+  Typography,
+  Tooltip,
+  List,
+} from "/vendor/@material-ui/core";
 
 import { statusCodeToId } from "/lib/util/checkStatus";
 

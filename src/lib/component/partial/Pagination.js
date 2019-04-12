@@ -1,9 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
-import { withStyles } from "@material-ui/core/styles";
-
-import TablePagination from "@material-ui/core/TablePagination";
+import gql from "/vendor/graphql-tag";
+import { withStyles, TablePagination } from "/vendor/@material-ui/core";
 
 const StyledTablePagination = withStyles(theme => ({
   root: {

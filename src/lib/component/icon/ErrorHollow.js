@@ -1,5 +1,5 @@
-import React from "react";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import React from "/vendor/react";
+import { SvgIcon } from "/vendor/@material-ui/core";
 
 class Icon extends React.PureComponent {
   render() {

@@ -1,6 +1,6 @@
 export { default } from "./WithWidth";
 export {
-  default as withWidth,
+  withWidth,
   isWidthUp,
   isWidthDown,
-} from "@material-ui/core/withWidth";
+} from "/vendor/@material-ui/core/withWidth";

@@ -1,9 +1,9 @@
 /* eslint-disable react/no-multi-comp */
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import ResizeObserver from "react-resize-observer";
+import ResizeObserver from "/vendor/react-resize-observer";
 
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "/vendor/@material-ui/core";
 
 const styles = theme => ({
   root: {

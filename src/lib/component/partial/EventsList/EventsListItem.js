@@ -1,9 +1,8 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
+import gql from "/vendor/graphql-tag";
 
-import Checkbox from "@material-ui/core/Checkbox";
-import TableCell from "@material-ui/core/TableCell";
+import { Checkbox, TableCell } from "/vendor/@material-ui/core";
 
 import { SilenceIcon } from "/lib/component/icon";
 import { CheckStatusIcon } from "/lib/component/base";

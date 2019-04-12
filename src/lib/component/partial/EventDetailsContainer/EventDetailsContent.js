@@ -1,7 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
-import Grid from "@material-ui/core/Grid";
+import gql from "/vendor/graphql-tag";
+import { Grid } from "/vendor/@material-ui/core";
 
 import { Content, Loader } from "/lib/component/base";
 

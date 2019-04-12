@@ -1,6 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { Form, SubmitValidationError } from "@10xjs/form";
+import { Form, SubmitValidationError } from "/vendor/@10xjs/form";
 
 import { requiredError, parseValidationErrors } from "/lib/util/validation";
 

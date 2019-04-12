@@ -1,13 +1,13 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import EventListener from "react-event-listener";
-import ResizeObserver from "react-resize-observer";
+import ResizeObserver from "/vendor/react-resize-observer";
 import debounce from "debounce";
-import { shallowEqual } from "/lib/util/array";
 
-import RootRef from "@material-ui/core/RootRef";
+import { RootRef } from "/vendor/@material-ui/core";
 
 import { MenuController } from "/lib/component/controller";
+import { shallowEqual } from "/lib/util/array";
 
 import Context from "./context";
 import Menu from "./OverflowMenu";

@@ -1,10 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-
-import Typography from "@material-ui/core/Typography";
-import Checkbox from "@material-ui/core/Checkbox";
+import classnames from "/vendor/classnames";
+import { withStyles, Typography, Checkbox } from "/vendor/@material-ui/core";
 
 import { AppLayoutContext } from "/lib/component/base";
 

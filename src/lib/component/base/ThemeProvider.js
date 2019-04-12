@@ -1,6 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { MuiThemeProvider } from "@material-ui/core/styles";
+import { MuiThemeProvider } from "/vendor/@material-ui/core";
 import * as themes from "/lib/theme";
 
 class ThemeProvider extends React.Component {

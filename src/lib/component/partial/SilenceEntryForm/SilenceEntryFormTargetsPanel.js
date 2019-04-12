@@ -1,13 +1,15 @@
-import React from "react";
-import { Field } from "@10xjs/form";
+import React from "/vendor/react";
+import { Field } from "/vendor/@10xjs/form";
 import PropTypes from "prop-types";
 
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from "/vendor/@material-ui/core/";
 
 import Panel from "./SilenceEntryFormPanel";
 

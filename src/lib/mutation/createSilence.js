@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from "/vendor/graphql-tag";
 import { isApolloError } from "apollo-client/errors/ApolloError";
 
 const RESOURCE_EXISTS_ERROR =

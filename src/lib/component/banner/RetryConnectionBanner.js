@@ -1,8 +1,8 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
-import { withApollo, graphql } from "react-apollo";
-import Button from "@material-ui/core/Button";
+import gql from "/vendor/graphql-tag";
+import { withApollo, graphql } from "/vendor/react-apollo";
+import { Button } from "/vendor/@material-ui/core";
 
 import retryLocalNetwork from "/lib/mutation/retryLocalNetwork";
 

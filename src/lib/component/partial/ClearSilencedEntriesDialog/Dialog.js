@@ -1,26 +1,29 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
-import { withApollo } from "react-apollo";
+import gql from "/vendor/graphql-tag";
+import { withApollo } from "/vendor/react-apollo";
 import { compose, hoistStatics } from "recompose";
 
-import { withStyles } from "@material-ui/core/styles";
 import {
   darken,
   fade,
   lighten,
-} from "@material-ui/core/styles/colorManipulator";
-import Button from "@material-ui/core/Button";
-import Checkbox from "@material-ui/core/Checkbox";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import Typography from "@material-ui/core/Typography";
-import withMobileDialog from "@material-ui/core/withMobileDialog";
+} from "/vendor/@material-ui/core/styles/colorManipulator";
+
+import {
+  withStyles,
+  Button,
+  Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Table,
+  TableBody,
+  TableCell,
+  Typography,
+  withMobileDialog,
+} from "/vendor/@material-ui/core";
 
 import deleteSilence from "/lib/mutation/deleteSilence";
 

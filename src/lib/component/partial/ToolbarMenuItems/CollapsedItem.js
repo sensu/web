@@ -1,9 +1,11 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import MenuItem from "@material-ui/core/MenuItem";
+import {
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+} from "/vendor/@material-ui/core";
 
 class CollapsedItem extends React.Component {
   static displayName = "ToolbarMenuItems.CollapsedItem";

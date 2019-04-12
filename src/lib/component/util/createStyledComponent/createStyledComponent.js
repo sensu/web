@@ -1,5 +1,5 @@
-import classnames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
+import classnames from "/vendor/classnames";
+import { withStyles } from "/vendor/@material-ui/core";
 import {
   compose,
   setDisplayName,

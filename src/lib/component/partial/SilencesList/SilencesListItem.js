@@ -1,24 +1,25 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
+import gql from "/vendor/graphql-tag";
 import { withProps } from "recompose";
+import {
+  Avatar,
+  Button,
+  Checkbox,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Hidden,
+  IconButton,
+  Slide,
+  TableCell,
+  Tooltip,
+} from "/vendor/@material-ui/core";
 
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import Checkbox from "@material-ui/core/Checkbox";
-import Chip from "@material-ui/core/Chip";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import FaceIcon from "@material-ui/icons/Face";
-import Hidden from "@material-ui/core/Hidden";
-import IconButton from "@material-ui/core/IconButton";
-import NotesIcon from "@material-ui/icons/Notes";
-import Slide from "@material-ui/core/Slide";
-import TableCell from "@material-ui/core/TableCell";
-import Tooltip from "@material-ui/core/Tooltip";
+import { FaceIcon, NotesIcon } from "/lib/component/icon";
 
 import { Maybe } from "/lib/component/util";
 import { ModalController, HoverController } from "/lib/component/controller";

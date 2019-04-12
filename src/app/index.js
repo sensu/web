@@ -1,8 +1,13 @@
 import handle from "/lib/exceptionHandler";
 
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import React from "/vendor/react";
+import ReactDOM from "/vendor/react-dom";
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Redirect,
+} from "/vendor/react-router-dom";
 import injectTapEventPlugin from "react-tap-event-plugin";
 
 // eslint-disable-next-line import/extensions

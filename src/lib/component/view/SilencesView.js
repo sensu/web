@@ -1,6 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
+import gql from "/vendor/graphql-tag";
 import withStateHandlers from "recompose/withStateHandlers";
 import toRenderProps from "recompose/toRenderProps";
 

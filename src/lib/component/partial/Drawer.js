@@ -1,24 +1,26 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { Route, Link } from "react-router-dom";
-import gql from "graphql-tag";
-import { withApollo } from "react-apollo";
+import { Route, Link } from "/vendor/react-router-dom";
+import gql from "/vendor/graphql-tag";
+import { withApollo } from "/vendor/react-apollo";
 import { compose } from "recompose";
 
-import MaterialDrawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
-import { withStyles } from "@material-ui/core/styles";
-import FeedbackIcon from "@material-ui/icons/Feedback";
-import LogoutIcon from "@material-ui/icons/ExitToApp";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import {
+  withStyles,
+  List,
+  Divider,
+  IconButton,
+  Drawer as MaterialDrawer,
+} from "/vendor/@material-ui/core";
 
 import invalidateTokens from "/lib/mutation/invalidateTokens";
 
 import { Loader, Preferences, SensuWordmark } from "/lib/component/base";
 
 import {
+  FeedbackIcon,
+  LogoutIcon,
+  MenuIcon,
   CheckIcon,
   EntityIcon,
   EventIcon,

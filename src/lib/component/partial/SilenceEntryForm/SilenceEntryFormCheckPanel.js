@@ -1,10 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { Field } from "@10xjs/form";
-import { withStyles } from "@material-ui/core/styles";
-
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
+import { Field } from "/vendor/@10xjs/form";
+import { withStyles, Typography, TextField } from "/vendor/@material-ui/core";
 
 import ResetAdornment from "/lib/component/partial/ResetAdornment";
 

@@ -1,14 +1,16 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
-import { Link } from "react-router-dom";
+import gql from "/vendor/graphql-tag";
+import { Link } from "/vendor/react-router-dom";
 
-import { withStyles } from "@material-ui/core/styles";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import Divider from "@material-ui/core/Divider";
+import {
+  withStyles,
+  Menu,
+  MenuItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+} from "/vendor/@material-ui/core";
 
 import NamespaceIcon from "/lib/component/partial/NamespaceIcon";
 

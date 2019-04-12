@@ -1,8 +1,8 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
-import { NavLink } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
+import classnames from "/vendor/classnames";
+import { NavLink } from "/vendor/react-router-dom";
+import { withStyles } from "/vendor/@material-ui/core";
 
 const styles = () => ({
   root: {

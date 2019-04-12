@@ -1,5 +1,5 @@
-import React from "react";
-import { withApollo } from "react-apollo";
+import React from "/vendor/react";
+import { withApollo } from "/vendor/react-apollo";
 
 import { SigninDialog } from "/lib/component/partial";
 

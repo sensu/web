@@ -1,12 +1,12 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import ArrowDown from "@material-ui/icons/ArrowDropDown";
-import ArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import { ArrowDropDownIcon, KeyboardArrowRightIcon } from "/lib/component/icon";
+
 import MenuItem from "./AdaptiveMenuItem";
 
-const buttonIcon = <ArrowDown />;
-const menuIcon = <ArrowRight />;
+const buttonIcon = <ArrowDropDownIcon />;
+const menuIcon = <KeyboardArrowRightIcon />;
 
 class Disclosure extends React.Component {
   static displayName = "ToolbarMenuItems.Disclosure";

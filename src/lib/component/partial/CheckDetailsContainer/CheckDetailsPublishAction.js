@@ -1,7 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
-import { withApollo } from "react-apollo";
+import gql from "/vendor/graphql-tag";
+import { withApollo } from "/vendor/react-apollo";
 
 import setCheckPublish from "/lib/mutation/setCheckPublish";
 

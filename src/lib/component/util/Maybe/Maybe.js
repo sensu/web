@@ -1,4 +1,4 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import isObjectLike from "lodash/isObjectLike";
 import isArrayLike from "lodash/isArrayLike";

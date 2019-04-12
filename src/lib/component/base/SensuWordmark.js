@@ -1,9 +1,8 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { compose, pure } from "recompose";
-import SvgIcon from "@material-ui/core/SvgIcon";
-import classnames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
+import { SvgIcon, withStyles } from "/vendor/@material-ui/core";
+import classnames from "/vendor/classnames";
 
 class Icon extends React.Component {
   static propTypes = {

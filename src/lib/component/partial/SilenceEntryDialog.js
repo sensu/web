@@ -1,16 +1,18 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { withApollo } from "react-apollo";
+import { withApollo } from "/vendor/react-apollo";
 import { compose } from "recompose";
 
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import withMobileDialog from "@material-ui/core/withMobileDialog";
+import {
+  withStyles,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  withMobileDialog,
+} from "/vendor/@material-ui/core";
 
 import createSilence from "/lib/mutation/createSilence";
 

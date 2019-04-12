@@ -1,7 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import { compose, setDisplayName, defaultProps } from "recompose";
 
-import UnsilenceIcon from "/lib/component/icon/Unsilence";
+import { UnsilenceIcon } from "/lib/component/icon";
 import MenuItem from "./MenuItem";
 
 const enhance = compose(

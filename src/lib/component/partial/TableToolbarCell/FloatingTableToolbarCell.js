@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unused-prop-types */
 
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-
-import { withStyles } from "@material-ui/core/styles";
 import Media from "react-media";
+
+import { withStyles } from "/vendor/@material-ui/core";
 import TableToolbarCell from "./TableToolbarCell";
 
 const styles = theme => ({

@@ -2,7 +2,7 @@
 /* eslint-disable react/sort-comp */
 /* eslint-disable react/no-unused-state */
 
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 
 import uniqueId from "/lib/util/uniqueId";

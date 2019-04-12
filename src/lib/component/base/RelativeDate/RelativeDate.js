@@ -1,7 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import capitalizeStr from "lodash/capitalize";
-import Tooltip from "@material-ui/core/Tooltip";
+import { Tooltip } from "/vendor/@material-ui/core";
 
 class RelativeDate extends React.Component {
   static propTypes = {

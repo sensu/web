@@ -1,7 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { graphql } from "react-apollo";
-import gql from "graphql-tag";
+import { graphql } from "/vendor/react-apollo";
+import gql from "/vendor/graphql-tag";
 
 import ThemeProvider from "/lib/component/base/ThemeProvider";
 

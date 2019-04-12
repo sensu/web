@@ -1,5 +1,5 @@
-import React from "react";
-import { Field } from "@10xjs/form";
+import React from "/vendor/react";
+import { Field } from "/vendor/@10xjs/form";
 
 import {
   UNIQUE_CONSTRAINT,

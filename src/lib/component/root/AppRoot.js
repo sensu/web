@@ -1,8 +1,8 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
-import { ApolloProvider } from "react-apollo";
-import { Switch, withRouter } from "react-router-dom";
+import { ApolloProvider } from "/vendor/react-apollo";
+import { Switch, withRouter } from "/vendor/react-router-dom";
 
 import {
   AppThemeProvider,

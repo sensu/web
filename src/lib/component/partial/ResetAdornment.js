@@ -1,9 +1,9 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-import Undo from "@material-ui/icons/Undo";
+import { InputAdornment, IconButton } from "/vendor/@material-ui/core";
+
+import { UndoIcon } from "/lib/component/icon";
 
 class ResetAdornment extends React.PureComponent {
   static propTypes = {
@@ -24,7 +24,7 @@ class ResetAdornment extends React.PureComponent {
           onClick={onClick}
           onMouseDown={event => event.preventDefault()}
         >
-          <Undo />
+          <UndoIcon />
         </IconButton>
       </InputAdornment>
     );

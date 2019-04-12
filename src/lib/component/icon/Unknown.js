@@ -1,6 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import { SvgIcon } from "/vendor/@material-ui/core";
 import IconGap from "./IconGap";
 
 class Icon extends React.PureComponent {

@@ -1,14 +1,16 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
+import gql from "/vendor/graphql-tag";
 
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Tooltip from "@material-ui/core/Tooltip";
+import {
+  Card,
+  CardContent,
+  Divider,
+  Grid,
+  List,
+  Typography,
+  Tooltip,
+} from "/vendor/@material-ui/core";
 
 import { Maybe } from "/lib/component/util";
 

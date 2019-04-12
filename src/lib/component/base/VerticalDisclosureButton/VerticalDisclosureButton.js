@@ -1,9 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Disclosure from "@material-ui/icons/MoreVert";
+import classnames from "/vendor/classnames";
+import { withStyles, Button, Disclosure } from "/vendor/@material-ui/core";
 
 const styles = theme => ({
   root: {

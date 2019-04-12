@@ -1,9 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-
-import TableRow from "@material-ui/core/TableRow";
+import classnames from "/vendor/classnames";
+import { withStyles, TableRow } from "/vendor/@material-ui/core";
 
 const styles = theme => {
   const transitionIn = `

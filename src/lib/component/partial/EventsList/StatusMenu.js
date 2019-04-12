@@ -1,10 +1,12 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import {
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+} from "/vendor/@material-ui/core";
 
 import { CheckStatusIcon } from "/lib/component/base";
 import { ErrorHollowIcon } from "/lib/component/icon";

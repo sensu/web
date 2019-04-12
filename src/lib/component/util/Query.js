@@ -7,16 +7,16 @@
 
 import * as React from "react";
 import { ApolloError } from "apollo-client";
-import { withApollo } from "react-apollo";
+import { withApollo } from "/vendor/react-apollo";
 import type {
   ObservableQuery,
   ApolloClient,
   WatchQueryOptions,
   NetworkStatus,
   ApolloQueryResult,
-} from "react-apollo";
+} from "/vendor/react-apollo";
 import shallowEqual from "fbjs/lib/shallowEqual";
-import gql from "graphql-tag";
+import gql from "/vendor/graphql-tag";
 
 import QueryAbortedError from "/lib/error/QueryAbortedError";
 

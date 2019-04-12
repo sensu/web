@@ -1,8 +1,8 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import lowerFirst from "lodash/lowerFirst";
-import cronstrue from "cronstrue";
-import Tooltip from "@material-ui/core/Tooltip";
+import cronstrue from "/vendor/cronstrue";
+import { Tooltip } from "/vendor/@material-ui/core";
 
 class CronDescriptor extends React.PureComponent {
   static propTypes = {

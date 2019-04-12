@@ -1,13 +1,15 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import capitalize from "lodash/capitalize";
 
-import ArrowUp from "@material-ui/icons/ArrowUpward";
-import ArrowDown from "@material-ui/icons/ArrowDownward";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import MenuBase from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import {
+  ListItemText,
+  ListItemIcon,
+  MenuItem,
+  Menu as MenuBase,
+} from "/vendor/@material-ui/core";
+
+import { ArrowUpIcon, ArrowDownIcon } from "/lib/component/icon";
 
 function strEndsWith(str, suffix) {
   return str.indexOf(suffix, str.length - suffix.length) !== -1;
@@ -42,7 +44,11 @@ class Menu extends React.PureComponent {
     if (valueProp === value || valueProp === `${value}_DESC`) {
       icon = (
         <ListItemIcon style={{ transform: "scale(0.77)" }}>
-          {strEndsWith(valueProp, "_DESC") ? <ArrowUp /> : <ArrowDown />}
+          {strEndsWith(valueProp, "_DESC") ? (
+            <ArrowUpIcon />
+          ) : (
+            <ArrowDownIcon />
+          )}
         </ListItemIcon>
       );
     }

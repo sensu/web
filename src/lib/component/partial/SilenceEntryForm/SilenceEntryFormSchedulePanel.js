@@ -1,15 +1,17 @@
-import React from "react";
-import { Field } from "@10xjs/form";
-import DateInputController from "@10xjs/date-input-controller";
+import React from "/vendor/react";
+import { Field } from "/vendor/@10xjs/form";
+import DateInputController from "/vendor/@10xjs/date-input-controller";
 
-import { withStyles } from "@material-ui/core/styles";
-import Collapse from "@material-ui/core/Collapse";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-import Typography from "@material-ui/core/Typography";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
+import {
+  withStyles,
+  Collapse,
+  FormControl,
+  FormControlLabel,
+  Switch,
+  Typography,
+  Select,
+  InputLabel,
+} from "/vendor/@material-ui/core";
 
 import {
   getMonthName,

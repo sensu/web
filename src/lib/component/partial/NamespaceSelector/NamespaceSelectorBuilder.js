@@ -1,10 +1,9 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
+import classNames from "/vendor/classnames";
+import { withStyles, Typography } from "/vendor/@material-ui/core";
 
-import Typography from "@material-ui/core/Typography";
-import ArrowIcon from "@material-ui/icons/ArrowDropDown";
+import { ArrowDropDownIcon } from "/lib/component/icon";
 
 const styles = theme => ({
   label: {
@@ -60,7 +59,7 @@ class NamespaceSelectorBuilder extends React.Component {
             {name}
           </Typography>
           <span className={classes.arrow}>
-            <ArrowIcon />
+            <ArrowDropDownIcon />
           </span>
         </div>
       </div>

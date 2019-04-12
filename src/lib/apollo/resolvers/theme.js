@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from "/vendor/graphql-tag";
 
 const query = gql`
   query ThemeQuery {

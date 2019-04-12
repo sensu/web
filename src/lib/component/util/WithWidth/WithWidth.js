@@ -1,4 +1,4 @@
-import withWidth from "@material-ui/core/withWidth";
+import withWidth from "/vendor/@material-ui/core/withWidth";
 import toRenderProps from "recompose/toRenderProps";
 
 const WithWidth = toRenderProps(withWidth());

@@ -1,15 +1,17 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
-import { withField } from "@10xjs/form";
+import {
+  Collapse,
+  FormControl,
+  FormControlLabel,
+  TextField,
+  Switch,
+  InputAdornment,
+  Typography,
+} from "/vendor/@material-ui/core";
 
-import Collapse from "@material-ui/core/Collapse";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import TextField from "@material-ui/core/TextField";
-import Switch from "@material-ui/core/Switch";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Typography from "@material-ui/core/Typography";
+import { withField } from "/vendor/@10xjs/form";
 
 import Panel from "./SilenceEntryFormPanel";
 

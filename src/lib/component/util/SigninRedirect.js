@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import React from "/vendor/react";
+import { Route, Redirect } from "/vendor/react-router-dom";
 import { redirectKey } from "/lib/constant/queryParams";
 
 const signinPath = "/signin";

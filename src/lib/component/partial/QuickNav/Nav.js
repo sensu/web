@@ -1,12 +1,14 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 
 import { defaultNamespace } from "/lib/constant/namespace";
 
-import CheckIcon from "/lib/component/icon/Check";
-import EntityIcon from "/lib/component/icon/Entity";
-import EventIcon from "/lib/component/icon/Event";
-import SilenceIcon from "/lib/component/icon/Silence";
+import {
+  CheckIcon,
+  EntityIcon,
+  EventIcon,
+  SilenceIcon,
+} from "/lib/component/icon";
 
 import Button from "./Button";
 

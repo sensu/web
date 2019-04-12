@@ -16,24 +16,7 @@ const vendorConfig = makeConfig({
   name: "vendor",
 
   entry: {
-    vendor: [
-      "@material-ui/core",
-      "apollo-cache-inmemory",
-      "apollo-client",
-      "apollo-link",
-      "apollo-link-batch-http",
-      "apollo-link-context",
-      "classnames",
-      "fbjs",
-      "graphql-tag",
-      "prop-types",
-      "react",
-      "react-apollo",
-      "react-dom",
-      "react-resize-observer",
-      "react-router-dom",
-      "react-spring",
-    ],
+    vendor: [path.join(root, "src/vendor")],
   },
 
   output: {

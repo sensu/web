@@ -1,10 +1,8 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { Route } from "react-router-dom";
-
-import gql from "graphql-tag";
-import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/ButtonBase";
+import { Route } from "/vendor/react-router-dom";
+import gql from "/vendor/graphql-tag";
+import { withStyles, ButtonBase as Button } from "/vendor/@material-ui/core";
 
 import NamespaceSelectorBuilder from "./NamespaceSelectorBuilder";
 import NamespaceSelectorMenu from "./NamespaceSelectorMenu";

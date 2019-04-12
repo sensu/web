@@ -1,7 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import RootRef from "@material-ui/core/RootRef";
+import { RootRef } from "/vendor/@material-ui/core";
 
 import { MenuController } from "/lib/component/controller";
 

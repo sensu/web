@@ -1,4 +1,4 @@
-import { ApolloError } from "apollo-client";
+import { ApolloError } from "/vendor/apollo-client";
 
 import handle from "/lib/exceptionHandler";
 

@@ -1,7 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import { compose, setDisplayName, defaultProps } from "recompose";
 
-import DeleteIcon from "/lib/component/icon/Delete";
+import { DeleteIcon } from "/lib/component/icon";
 import MenuItem from "./MenuItem";
 
 const enhance = compose(

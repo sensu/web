@@ -1,6 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import { SvgIcon } from "/vendor/@material-ui/core";
 
 class SensuIcon extends React.PureComponent {
   static propTypes = {

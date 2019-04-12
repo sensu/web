@@ -1,8 +1,8 @@
 /* eslint-disable react/sort-comp */
 
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import { LinearProgress } from "/vendor/@material-ui/core";
 
 import { Toast } from "/lib/component/base";
 import { ToastConnector } from "/lib/component/relocation";

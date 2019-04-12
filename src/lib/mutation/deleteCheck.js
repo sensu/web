@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from "/vendor/graphql-tag";
 import handle from "/lib/exceptionHandler";
 
 const fragment = gql`

@@ -1,9 +1,11 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import BaseButton from "@material-ui/core/Button";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
+import {
+  Button as BaseButton,
+  Tooltip,
+  IconButton,
+} from "/vendor/@material-ui/core";
 
 import { ButtonIcon } from "/lib/component/base";
 

@@ -1,10 +1,9 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, Typography } from "/vendor/@material-ui/core";
 
 // TODO: Clean up the exports of NamespaceIcon
 import Icon from "/lib/component/partial/NamespaceIcon/Icon";
-import Typography from "@material-ui/core/Typography";
 
 class NamespaceLabelBase extends React.Component {
   static propTypes = {

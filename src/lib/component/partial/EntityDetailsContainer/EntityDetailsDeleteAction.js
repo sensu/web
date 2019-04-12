@@ -1,9 +1,9 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "graphql-tag";
+import gql from "/vendor/graphql-tag";
 import { compose } from "recompose";
-import { withApollo } from "react-apollo";
-import { withRouter } from "react-router-dom";
+import { withApollo } from "/vendor/react-apollo";
+import { withRouter } from "/vendor/react-router-dom";
 
 import deleteEntity from "/lib/mutation/deleteEntity";
 

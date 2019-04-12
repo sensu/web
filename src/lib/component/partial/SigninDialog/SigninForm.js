@@ -1,9 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import Button from "@material-ui/core/Button";
-import DialogActions from "@material-ui/core/DialogActions";
-import TextField from "@material-ui/core/TextField";
+import { Button, DialogActions, TextField } from "/vendor/@material-ui/core";
 
 import { createStyledComponent } from "/lib/component/util";
 

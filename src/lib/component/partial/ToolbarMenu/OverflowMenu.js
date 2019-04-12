@@ -1,9 +1,8 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from "/vendor/react";
+import ReactDOM from "/vendor/react-dom";
 import PropTypes from "prop-types";
 
-import Popover from "@material-ui/core/Popover";
-import MenuList from "@material-ui/core/MenuList";
+import { Popover, MenuList } from "/vendor/@material-ui/core";
 
 class OverflowMenu extends React.Component {
   static propTypes = {

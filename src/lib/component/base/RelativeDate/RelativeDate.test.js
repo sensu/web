@@ -1,4 +1,4 @@
-import React from "react";
+import React from "/vendor/react";
 import { mount } from "enzyme";
 import IntlRelativeFormat from "intl-relativeformat";
 import RelativeDate from "./RelativeDate";
