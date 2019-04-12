@@ -4,3 +4,4 @@ import "./icon";
 import "./relocation";
 import "./root";
 import "./util";
+import "./view";

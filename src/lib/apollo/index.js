@@ -1,1 +1,1 @@
-import "./client";
+export { default as createClient } from "./client";

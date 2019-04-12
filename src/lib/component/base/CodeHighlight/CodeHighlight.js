@@ -1,6 +1,6 @@
 import "highlight.js/styles/github-gist.css";
 
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import Worker from "./CodeHighlight.worker";
 

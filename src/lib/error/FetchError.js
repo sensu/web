@@ -1,6 +1,6 @@
 // @flow
 
-import ExtendableError from "es6-error";
+import ExtendableError from "/vendor/es6-error";
 
 export default class FetchError extends ExtendableError {
   statusCode: number;

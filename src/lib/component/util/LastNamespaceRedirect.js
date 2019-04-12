@@ -1,8 +1,10 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { Redirect, withRouter } from "react-router-dom";
+import { Redirect, withRouter } from "/vendor/react-router-dom";
 import { redirectKey } from "/lib/constant/queryParams";
-import gql from "graphql-tag";
+import gql from "/vendor/graphql-tag";
+
+import { defaultNamespace } from "/lib/constant/namespace";
 
 import Query from "/lib/component/util/Query";
 
@@ -34,7 +36,7 @@ class LastNamespaceRedirect extends React.PureComponent {
     }
 
     if (data.viewer && data.viewer.namespaces.length === 0) {
-      return <Redirect to="/default" />;
+      return <Redirect to={`/${defaultNamespace}`} />;
     }
 
     const firstSpace = data.viewer.namespaces[0];

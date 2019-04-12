@@ -1,16 +1,18 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import StackTrace from "stacktrace-js";
 import ErrorStackParser from "error-stack-parser";
 import { isApolloError } from "apollo-client/errors/ApolloError";
 
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import {
+  withStyles,
+  Typography,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "/vendor/@material-ui/core";
 
-import ErrorIcon from "@material-ui/icons/Error";
+import { ErrorIcon } from "/lib/component/icon";
 
 import { sourceURL, sourceRevision } from "/lib/util/buildInfo";
 

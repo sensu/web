@@ -1,7 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
+import classnames from "/vendor/classnames";
+import { withStyles } from "/vendor/@material-ui/core";
 
 const styles = theme => ({
   root: {

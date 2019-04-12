@@ -1,4 +1,4 @@
-import * as muiColors from "@material-ui/core/colors";
+import { colors as muiColors } from "/vendor/@material-ui/core";
 import salmon from "./salmon";
 import appleGreen from "./appleGreen";
 import slateBlue from "./slateBlue";

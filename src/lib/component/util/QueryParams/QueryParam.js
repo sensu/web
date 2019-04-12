@@ -1,6 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import { withRouter } from "/vendor/react-router-dom";
 import QueryParams from "./QueryParams";
 
 class QueryParam extends React.PureComponent {

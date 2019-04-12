@@ -1,7 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { emphasize } from "@material-ui/core/styles/colorManipulator";
-import { withStyles } from "@material-ui/core/styles";
+import { emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
+import { withStyles } from "/vendor/@material-ui/core";
 
 const styles = () => ({
   root: {

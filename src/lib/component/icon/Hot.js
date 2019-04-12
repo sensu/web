@@ -1,7 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import { withStyles, SvgIcon } from "/vendor/@material-ui/core";
 
 const styles = () => ({
   root: {

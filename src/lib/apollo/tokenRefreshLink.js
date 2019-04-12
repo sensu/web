@@ -1,4 +1,4 @@
-import { ApolloLink, Observable } from "apollo-link";
+import { ApolloLink, Observable } from "/vendor/apollo-link";
 
 import { when } from "/lib/util/promise";
 import { UnauthorizedError } from "/lib/error/FetchError";

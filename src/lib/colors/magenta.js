@@ -1,4 +1,7 @@
-import { darken, lighten } from "@material-ui/core/styles/colorManipulator";
+import {
+  darken,
+  lighten,
+} from "/vendor/@material-ui/core/styles/colorManipulator";
 
 // TODO: Don't use lighten / darken
 const magentaColor = "#d86cc5";

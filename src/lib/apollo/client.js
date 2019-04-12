@@ -1,13 +1,13 @@
-import { ApolloLink } from "apollo-link";
-import gql from "graphql-tag";
-import merge from "deepmerge";
+import { ApolloLink } from "/vendor/apollo-link";
+import gql from "/vendor/graphql-tag";
+import merge from "/vendor/deepmerge";
 
 import {
   InMemoryCache,
   IntrospectionFragmentMatcher,
-} from "apollo-cache-inmemory";
-import ApolloClient from "apollo-client";
-import { setContext } from "apollo-link-context";
+} from "/vendor/apollo-cache-inmemory";
+import ApolloClient from "/vendor/apollo-client";
+import { setContext } from "/vendor/apollo-link-context";
 
 import createHttpLink from "./httpLink";
 import createIntrospectionLink from "./introspectionLink";

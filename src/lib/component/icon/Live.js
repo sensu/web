@@ -1,8 +1,7 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import classnames from "/vendor/classnames";
+import { withStyles, SvgIcon } from "/vendor/@material-ui/core";
 
 // https://material.io/design/iconography/animated-icons.html#transitions
 const duration = 500;

@@ -1,5 +1,5 @@
-import { ApolloLink } from "apollo-link";
-import { BatchHttpLink as HttpLink } from "apollo-link-batch-http";
+import { ApolloLink } from "/vendor/apollo-link";
+import { BatchHttpLink as HttpLink } from "/vendor/apollo-link-batch-http";
 import createFetch from "/lib/util/fetch";
 
 const httpLink = () =>

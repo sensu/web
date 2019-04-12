@@ -4,6 +4,7 @@ import webpack from "webpack";
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import TerserPlugin from "terser-webpack-plugin";
 import { StatsWriterPlugin } from "webpack-stats-plugin";
+import CircularDependencyPlugin from "circular-dependency-plugin";
 
 const root = fs.realpathSync(process.cwd());
 
@@ -189,6 +190,10 @@ export default ({
     }),
     // Prevent moment locales from getting bundled.
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new CircularDependencyPlugin({
+      exclude: /a\.js|node_modules/,
+      failOnError: true,
+    }),
   ]
     .concat(
       process.env.NODE_ENV !== "development" && [

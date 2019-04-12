@@ -1,14 +1,17 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
+import classnames from "/vendor/classnames";
 
-import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import Icon from "@material-ui/icons/FilterList";
-import IconButton from "@material-ui/core/IconButton";
-import ClearIcon from "@material-ui/icons/Cancel";
-import Slide from "@material-ui/core/Slide";
+import {
+  withStyles,
+  Paper,
+  Typography,
+  Icon,
+  IconButton,
+  Slide,
+} from "/vendor/@material-ui/core";
+
+import { ClearIcon } from "/lib/component/icon";
 
 const Keycap = withStyles(theme => ({
   root: {

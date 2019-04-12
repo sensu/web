@@ -1,13 +1,12 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import ResizeObserver from "react-resize-observer";
-import classnames from "classnames";
+import { withStyles } from "/vendor/@material-ui/core";
+import ResizeObserver from "/vendor/react-resize-observer";
+import classnames from "/vendor/classnames";
 
 import ToastWell from "/lib/component/relocation/ToastWell";
 import BannerWell from "/lib/component/relocation/BannerWell";
 
-import MobileFullWidthContent from "./MobileFullWidthContent";
 import Context from "./Context";
 
 const styles = theme => ({
@@ -134,10 +133,6 @@ class AppLayout extends React.PureComponent {
     content: undefined,
     fullWidth: false,
   };
-
-  static MobileFullWidthContent = MobileFullWidthContent;
-
-  static Context = Context;
 
   state = { topBarHeight: 0 };
 

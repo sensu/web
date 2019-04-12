@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from "/vendor/react";
+import ReactDOM from "/vendor/react-dom";
 
 import ErrorRoot from "/lib/component/root/ErrorRoot";
 

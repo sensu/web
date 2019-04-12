@@ -1,5 +1,5 @@
-import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import React from "/vendor/react";
+import { withStyles } from "/vendor/@material-ui/core";
 
 const styles = theme => ({
   "@global": {
@@ -29,6 +29,10 @@ const styles = theme => ({
 
     button: {
       cursor: "pointer",
+    },
+
+    strong: {
+      fontWeight: 600,
     },
   },
 });

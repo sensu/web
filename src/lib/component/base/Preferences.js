@@ -1,29 +1,30 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { compose, withProps } from "recompose";
-import gql from "graphql-tag";
-import { withApollo, graphql } from "react-apollo";
-import withMobileDialog from "@material-ui/core/withMobileDialog";
+import gql from "/vendor/graphql-tag";
+import { withApollo, graphql } from "/vendor/react-apollo";
 
-import AppBar from "@material-ui/core/AppBar";
-import BulbIcon from "@material-ui/icons/SettingsBrightness";
-import CloseIcon from "@material-ui/icons/Close";
-import Dialog from "@material-ui/core/Dialog";
-import EyeIcon from "@material-ui/icons/RemoveRedEye";
-import IconButton from "@material-ui/core/IconButton";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import Slide from "@material-ui/core/Slide";
-import Switch from "@material-ui/core/Switch";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import {
+  AppBar,
+  Dialog,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+  ListSubheader,
+  Menu,
+  MenuItem,
+  MenuList,
+  Slide,
+  Switch,
+  Toolbar,
+  Typography,
+  withMobileDialog,
+} from "/vendor/@material-ui/core";
+
+import { BulbIcon, CloseIcon, EyeIcon } from "/lib/component/icon";
 
 const SlideUp = withProps({ direction: "up" })(Slide);
 

@@ -1,21 +1,21 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
+import classnames from "/vendor/classnames";
 
-import { withStyles } from "@material-ui/core/styles";
-import SvgIcon from "@material-ui/core/SvgIcon";
-import Tooltip from "@material-ui/core/Tooltip";
+import { withStyles, SvgIcon, Tooltip } from "/vendor/@material-ui/core";
 
 import { statusCodeToId } from "/lib/util/checkStatus";
 
-import ErrIcon from "/lib/component/icon/Error";
-import ErrIconSm from "/lib/component/icon/ErrorHollow";
-import OKIcon from "/lib/component/icon/OK";
-import OKIconSm from "/lib/component/icon/SmallCheck";
-import WarnIcon from "/lib/component/icon/Warn";
-import WarnIconSm from "/lib/component/icon/WarnHollow";
-import UnknownIcon from "/lib/component/icon/Unknown";
-import SilenceIcon from "/lib/component/icon/Silence";
+import {
+  ErrorIcon,
+  ErrorHollowIcon,
+  OKIcon,
+  SmallCheckIcon,
+  WarnIcon,
+  WarnHollowIcon,
+  UnknownIcon,
+  SilenceIcon,
+} from "/lib/component/icon";
 
 const styles = theme => ({
   inline: {
@@ -49,14 +49,14 @@ const componentMap = {
   normal: {
     success: OKIcon,
     warning: WarnIcon,
-    critical: ErrIcon,
+    critical: ErrorIcon,
     unknown: UnknownIcon,
   },
   small: {
-    success: OKIconSm,
-    warning: WarnIconSm,
-    critical: ErrIconSm,
-    unknown: ErrIconSm,
+    success: SmallCheckIcon,
+    warning: WarnHollowIcon,
+    critical: ErrorHollowIcon,
+    unknown: ErrorHollowIcon,
   },
 };
 

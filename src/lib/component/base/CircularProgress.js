@@ -1,6 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import ResizeObserver from "react-resize-observer";
+import ResizeObserver from "/vendor/react-resize-observer";
 
 class CircularProgress extends React.PureComponent {
   static propTypes = {

@@ -1,4 +1,4 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import getNextId from "/lib/util/uniqueId";
 import ModalController from "./ModalController";

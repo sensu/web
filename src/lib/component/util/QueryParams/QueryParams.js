@@ -1,6 +1,6 @@
-import React from "react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import { withRouter } from "/vendor/react-router-dom";
 
 function expandParams(params, keys, defaults) {
   const matched = Array.from(params).reduce((acc, entry) => {
