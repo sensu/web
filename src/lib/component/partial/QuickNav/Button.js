@@ -34,7 +34,6 @@ class QuickNavButton extends React.Component {
     Icon: PropTypes.func.isRequired,
     caption: PropTypes.string.isRequired,
     to: PropTypes.string.isRequired,
-    namespace: PropTypes.string.isRequired,
     exact: PropTypes.bool,
   };
 
@@ -43,7 +42,7 @@ class QuickNavButton extends React.Component {
   };
 
   render() {
-    const { classes, Icon, caption, to, namespace, exact } = this.props;
+    const { classes, Icon, caption, to, exact } = this.props;
 
     return (
       <IconButton
@@ -53,7 +52,7 @@ class QuickNavButton extends React.Component {
         }}
         className={classes.link}
         component={NavLink}
-        to={`/${namespace}/${to}`}
+        to={to}
         activeClassName={classes.active}
         exact={exact}
       >

@@ -1,55 +1,30 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import { defaultNamespace } from "/lib/constant/namespace";
-
-import {
-  CheckIcon,
-  EntityIcon,
-  EventIcon,
-  SilenceIcon,
-} from "/lib/component/icon";
+import { WithNavigation } from "/lib/component/util";
 
 import Button from "./Button";
 
 class QuickNav extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    namespace: PropTypes.string,
   };
 
-  static defaultProps = { className: "", namespace: defaultNamespace };
+  static defaultProps = { className: "" };
 
   render() {
-    const { className, namespace } = this.props;
+    const { className } = this.props;
 
     return (
-      <div className={className}>
-        <Button
-          namespace={namespace}
-          Icon={EventIcon}
-          caption="Events"
-          to="events"
-        />
-        <Button
-          namespace={namespace}
-          Icon={EntityIcon}
-          caption="Entities"
-          to="entities"
-        />
-        <Button
-          namespace={namespace}
-          Icon={CheckIcon}
-          caption="Checks"
-          to="checks"
-        />
-        <Button
-          namespace={namespace}
-          Icon={SilenceIcon}
-          caption="Silences"
-          to="silences"
-        />
-      </div>
+      <WithNavigation>
+        {links => (
+          <div className={className}>
+            {links.map(({ icon, caption, to }) => (
+              <Button Icon={icon} caption={caption} to={to} />
+            ))}
+          </div>
+        )}
+      </WithNavigation>
     );
   }
 }
