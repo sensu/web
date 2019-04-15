@@ -15,8 +15,8 @@ import {
 } from "/lib/component/partial";
 
 const query = gql`
-  query CheckDetailsContentQuery($namespace: String!, $name: String!) {
-    check(namespace: $namespace, name: $name) {
+  query CheckDetailsContentQuery($namespace: String!, $check: String!) {
+    check(namespace: $namespace, name: $check) {
       ...CheckDetailsContainer_check
     }
   }
