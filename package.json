@@ -226,8 +226,12 @@
     "graphql": "0.13.0",
     "graphql-config/**/graphql": "0.13.0",
     "graphql-import/**/graphql": "0.13.0",
+<<<<<<< HEAD
     "js-yaml": "1.13.1"
 >>>>>>> More vulnerability changes
+=======
+    "js-yaml": "3.13.1"
+>>>>>>> mistype
   },
   "graphQLSchemaRef": "4a0d6ac"
 }
