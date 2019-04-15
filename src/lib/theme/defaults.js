@@ -4,22 +4,22 @@ const common = {
   palette: {
     success: {
       light: "#abd18f",
-      main: "#97c673",
+      main: "rgb(151, 198, 115)",
       dark: "#789e5c",
     },
     warning: {
       light: "#ddbb62",
-      main: "#d5ab3b",
+      main: "rgb(213, 171, 59)",
       dark: "#aa882f",
     },
     critical: {
       light: "#d66483",
-      main: "#cc3e64",
+      main: "rgb(204, 62, 100)",
       dark: "#a33150",
     },
     unknown: {
       light: "#db805d",
-      main: "#D36135",
+      main: "rgb(211, 97, 53)",
       dark: "#a84d2a",
     },
   },
