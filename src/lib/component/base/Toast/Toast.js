@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import classNames from "/vendor/classnames";
 
 import {
-  colors,
   withStyles,
   IconButton,
   Paper,
@@ -104,11 +103,11 @@ export const styles = theme => {
     },
 
     success: {
-      backgroundColor: colors.green[600],
-      color: theme.palette.getContrastText(colors.green[600]),
+      backgroundColor: theme.palette.success.main,
+      color: theme.palette.getContrastText(theme.palette.success.light),
     },
     error: {
-      backgroundColor: theme.palette.error.dark,
+      backgroundColor: theme.palette.error.main,
       color: theme.palette.getContrastText(theme.palette.error.dark),
     },
     info: {
@@ -116,8 +115,8 @@ export const styles = theme => {
       color: theme.palette.getContrastText(theme.palette.primary.main),
     },
     warning: {
-      backgroundColor: colors.amber[800],
       color: theme.palette.getContrastText(theme.palette.common.black),
+      backgroundColor: theme.palette.warning.main,
     },
     icon: {
       fontSize: 20,

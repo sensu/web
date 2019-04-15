@@ -17,6 +17,7 @@ import {
   ErrorIcon,
   InfoIcon,
   CloseIcon,
+  IconButton,
   WarningIcon,
 } from "/lib/component/icon";
 
