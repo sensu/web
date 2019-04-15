@@ -13,6 +13,10 @@ export { default as LastNamespaceRedirect } from "./LastNamespaceRedirect";
 export { default as LastNamespaceUpdater } from "./LastNamespaceUpdater";
 export { default as NamespaceLink } from "./NamespaceLink";
 export { default as NamespaceRoute } from "./NamespaceRoute";
+export {
+  default as NavigationProvider,
+  WithNavigation,
+} from "./NavigationProvider";
 export { default as Query } from "./Query";
 export { default as RenderCounter } from "./RenderCounter";
 export { default as SigninRedirect } from "./SigninRedirect";

@@ -1,6 +1,6 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { Route, Link } from "/vendor/react-router-dom";
+import { Link } from "/vendor/react-router-dom";
 import gql from "/vendor/graphql-tag";
 import { withApollo } from "/vendor/react-apollo";
 import { compose } from "recompose";
@@ -16,23 +16,18 @@ import {
 import invalidateTokens from "/lib/mutation/invalidateTokens";
 
 import { Loader, Preferences, SensuWordmark } from "/lib/component/base";
+import { WithNavigation } from "/lib/component/util";
 
 import {
   FeedbackIcon,
   LogoutIcon,
   MenuIcon,
-  CheckIcon,
-  EntityIcon,
-  EventIcon,
-  SilenceIcon,
   WandIcon,
 } from "/lib/component/icon";
 
 import DrawerButton from "/lib/component/partial/DrawerButton";
 import NamespaceIcon from "/lib/component/partial/NamespaceIcon";
 import NamespaceSelector from "/lib/component/partial/NamespaceSelector";
-
-const linkPath = ({ namespace }, path) => `/${namespace}/${path}`;
 
 const styles = theme => ({
   paper: {
@@ -165,41 +160,21 @@ class Drawer extends React.Component {
               </div>
             </div>
             <Divider />
-            <Route
-              path="/:namespace"
-              render={({ match: { params } }) => (
+            <WithNavigation>
+              {links => (
                 <List>
-                  <DrawerButton
-                    Icon={EventIcon}
-                    primary="Events"
-                    component={Link}
-                    onClick={onToggle}
-                    to={linkPath(params, "events")}
-                  />
-                  <DrawerButton
-                    Icon={EntityIcon}
-                    primary="Entities"
-                    component={Link}
-                    onClick={onToggle}
-                    to={linkPath(params, "entities")}
-                  />
-                  <DrawerButton
-                    Icon={CheckIcon}
-                    primary="Checks"
-                    component={Link}
-                    onClick={onToggle}
-                    to={linkPath(params, "checks")}
-                  />
-                  <DrawerButton
-                    Icon={SilenceIcon}
-                    primary="Silences"
-                    component={Link}
-                    onClick={onToggle}
-                    to={linkPath(params, "silences")}
-                  />
+                  {links.map(({ icon, caption, to }) => (
+                    <DrawerButton
+                      Icon={icon}
+                      primary={caption}
+                      component={Link}
+                      onClick={onToggle}
+                      to={to}
+                    />
+                  ))}
                 </List>
               )}
-            />
+            </WithNavigation>
             <Divider />
             <List>
               <DrawerButton
