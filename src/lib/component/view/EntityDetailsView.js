@@ -14,8 +14,8 @@ import {
 } from "/lib/component/partial";
 
 const query = gql`
-  query EntityDetailsViewQuery($namespace: String!, $name: String!) {
-    entity(namespace: $namespace, name: $name) {
+  query EntityDetailsViewQuery($namespace: String!, $entity: String!) {
+    entity(namespace: $namespace, name: $entity) {
       deleted @client
       ...EntityDetailsContainer_entity
     }
