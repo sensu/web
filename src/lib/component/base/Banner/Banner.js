@@ -6,7 +6,6 @@ import { emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
 
 import {
   withStyles,
-  colors,
   Paper,
   Typography,
   IconButton,
@@ -17,7 +16,6 @@ import {
   ErrorIcon,
   InfoIcon,
   CloseIcon,
-  IconButton,
   WarningIcon,
 } from "/lib/component/icon";
 
@@ -37,8 +35,8 @@ export const styles = theme => {
   const emphasis = theme.palette.type === "light" ? 0.8 : 0.98;
   const backgroundColor = emphasize(theme.palette.background.default, emphasis);
 
-  const successColor = colors.green[600];
-  const warnColor = colors.amber[800];
+  const successColor = theme.palette.success.dark;
+  const warnColor = theme.palette.warning.dark;
   const infoColor = theme.palette.primary.dark;
   const errColor = theme.palette.error.dark;
 
@@ -82,7 +80,6 @@ export const styles = theme => {
     },
 
     message: {
-
       paddingTop: 14,
       paddingBottom: 14,
 

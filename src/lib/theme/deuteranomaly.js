@@ -7,7 +7,7 @@ const theme = (type = "light") =>
       type,
 
       critical: { main: colors.lime[500] },
-      warning: { main: colors.lime[900] },
+      warning: { main: colors.lime[900], secondary: colors.lime[900] },
       unknown: { main: colors.indigo[300] },
       success: { main: colors.grey[300], secondary: colors.blue[200] },
 
