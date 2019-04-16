@@ -103,7 +103,7 @@ class EventDetailsToolbar extends React.Component {
                     )}
                   </ClearSilenceAction>
                 </ToolbarMenu.Item>,
-                <ToolbarMenu.Item key="delete" visible="never">
+                <ToolbarMenu.Item key="delete" visible="if-room">
                   <DeleteAction event={event}>
                     {handler => <DeleteMenuItem onClick={handler} />}
                   </DeleteAction>
