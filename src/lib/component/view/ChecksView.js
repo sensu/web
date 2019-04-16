@@ -23,6 +23,11 @@ class ChecksView extends React.Component {
       limit: PropTypes.string,
     }).isRequired,
     setQueryParams: PropTypes.func.isRequired,
+    toolbarItems: PropTypes.func,
+  };
+
+  static defaultProps = {
+    toolbarItems: undefined,
   };
 
   static query = gql`
@@ -42,7 +47,7 @@ class ChecksView extends React.Component {
   `;
 
   render() {
-    const { match, queryParams, setQueryParams } = this.props;
+    const { match, queryParams, setQueryParams, toolbarItems } = this.props;
     const { limit, offset, filter } = queryParams;
     const variables = { ...match.params, ...queryParams };
 
@@ -73,6 +78,7 @@ class ChecksView extends React.Component {
               <div>
                 <Content marginBottom>
                   <ChecksListToolbar
+                    toolbarItems={toolbarItems}
                     query={filter}
                     onChangeQuery={value => setQueryParams({ filter: value })}
                     onClickReset={() =>

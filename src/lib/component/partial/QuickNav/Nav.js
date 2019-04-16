@@ -20,7 +20,7 @@ class QuickNav extends React.Component {
         {links => (
           <div className={className}>
             {links.map(({ icon, caption, to }) => (
-              <Button Icon={icon} caption={caption} to={to} />
+              <Button key={to} Icon={icon} caption={caption} to={to} />
             ))}
           </div>
         )}

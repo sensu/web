@@ -112,19 +112,19 @@ class EntitiesListItem extends React.PureComponent {
           >
             {() => (
               <ToolbarMenu>
-                <ToolbarMenu.Item id="silence" visible="never">
+                <ToolbarMenu.Item key="silence" visible="never">
                   <SilenceMenuItem
                     disabled={entity.isSilenced}
                     onClick={this.props.onClickSilence}
                   />
                 </ToolbarMenu.Item>
-                <ToolbarMenu.Item id="unsilence" visible="never">
+                <ToolbarMenu.Item key="unsilence" visible="never">
                   <UnsilenceMenuItem
                     disabled={!entity.isSilenced}
                     onClick={this.props.onClickClearSilence}
                   />
                 </ToolbarMenu.Item>
-                <ToolbarMenu.Item id="delete" visible="never">
+                <ToolbarMenu.Item key="delete" visible="never">
                   {menu => (
                     <ConfirmDelete
                       onSubmit={() => {

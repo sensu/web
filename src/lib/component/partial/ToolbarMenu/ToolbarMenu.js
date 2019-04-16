@@ -36,29 +36,30 @@ class ToolbarMenu extends React.PureComponent {
 
   static Item = MenuItem;
 
-  // If the menu items change poison the buttons container's width, to ensure
+  // If the menu items change position the buttons container's width, to ensure
   // that we are displaying as many buttons as possible.
   static getDerivedStateFromProps(props, state) {
-    const ids = React.Children.map(props.children, child => child.props.id);
+    const keys = React.Children.map(props.children, child => child.key);
     const visibility = React.Children.map(
       props.children,
       child => child.props.visible,
     );
+
     if (
       // if we add more props that this equation depends on
       // we should really just rewrite shallowEqual and send these
       // in a single array, but for now, it's fine
-      !shallowEqual(ids, state.ids) ||
+      !shallowEqual(keys, state.keys) ||
       !shallowEqual(visibility, state.visibility)
     ) {
-      return { ids, visibility, buttonsWidth: null };
+      return { keys, visibility, buttonsWidth: null };
     }
     return null;
   }
 
   state = {
-    // List of item ids
-    ids: [],
+    // List of child react keys
+    keys: [],
     visibility: [],
 
     // Width of buttons container
@@ -201,4 +202,4 @@ class ToolbarMenu extends React.PureComponent {
   }
 }
 
-export { Context, ToolbarMenu as default };
+export default ToolbarMenu;

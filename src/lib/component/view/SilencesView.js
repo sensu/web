@@ -36,6 +36,11 @@ class SilencesView extends React.Component {
       limit: PropTypes.string,
     }).isRequired,
     setQueryParams: PropTypes.func.isRequired,
+    toolbarItems: PropTypes.func,
+  };
+
+  static defaultProps = {
+    toolbarItems: undefined,
   };
 
   static query = gql`
@@ -55,7 +60,7 @@ class SilencesView extends React.Component {
   `;
 
   render() {
-    const { match, queryParams, setQueryParams } = this.props;
+    const { match, queryParams, setQueryParams, toolbarItems } = this.props;
     const { filter, limit, offset, order } = queryParams;
     const variables = { ...match.params, ...queryParams };
 
@@ -89,6 +94,7 @@ class SilencesView extends React.Component {
                     <React.Fragment>
                       <Content marginBottom>
                         <SilencesListToolbar
+                          toolbarItems={toolbarItems}
                           filter={filter}
                           onChangeQuery={val => setQueryParams({ filter: val })}
                           onClickCreate={newDialog.open}

@@ -13,14 +13,16 @@ class ChecksListToolbar extends React.PureComponent {
     query: PropTypes.string,
     onChangeQuery: PropTypes.func.isRequired,
     onClickReset: PropTypes.func.isRequired,
+    toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
     query: "",
+    toolbarItems: ({ items }) => items,
   };
 
   render() {
-    const { onChangeQuery, onClickReset, query } = this.props;
+    const { onChangeQuery, onClickReset, query, toolbarItems } = this.props;
 
     return (
       <ListToolbar
@@ -31,14 +33,19 @@ class ChecksListToolbar extends React.PureComponent {
             onSearch={onChangeQuery}
           />
         }
-        toolbarItems={({ collapsed }) => (
+        toolbarItems={props => (
           <ToolbarMenu>
-            <ToolbarMenu.Item
-              id="reset"
-              visible={collapsed ? "never" : "if-room"}
-            >
-              <ResetMenuItem onClick={onClickReset} />
-            </ToolbarMenu.Item>
+            {toolbarItems({
+              ...props,
+              items: [
+                <ToolbarMenu.Item
+                  key="reset"
+                  visible={props.collapsed ? "never" : "if-room"}
+                >
+                  <ResetMenuItem onClick={onClickReset} />
+                </ToolbarMenu.Item>,
+              ],
+            })}
           </ToolbarMenu>
         )}
       />

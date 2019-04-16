@@ -175,7 +175,7 @@ class SilencesListItem extends React.Component {
                 )}
 
                 <ToolbarMenu>
-                  <ToolbarMenu.Item id="delete" visible="never">
+                  <ToolbarMenu.Item key="delete" visible="never">
                     <UnsilenceMenuItem
                       onClick={this.props.onClickClearSilences}
                     />

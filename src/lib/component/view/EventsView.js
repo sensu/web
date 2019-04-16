@@ -33,6 +33,11 @@ class EventsView extends React.Component {
 
     // from withQueryParams HOC
     setQueryParams: PropTypes.func.isRequired,
+    toolbarItems: PropTypes.func,
+  };
+
+  static defaultProps = {
+    toolbarItems: undefined,
   };
 
   static query = gql`
@@ -52,7 +57,7 @@ class EventsView extends React.Component {
   `;
 
   render() {
-    const { queryParams, match, setQueryParams } = this.props;
+    const { queryParams, match, setQueryParams, toolbarItems } = this.props;
     const { filter, limit, offset } = queryParams;
     const variables = { ...match.params, ...queryParams };
 
@@ -83,6 +88,7 @@ class EventsView extends React.Component {
               <div>
                 <Content marginBottom>
                   <EventsListToolbar
+                    toolbarItems={toolbarItems}
                     onChangeQuery={value => setQueryParams({ filter: value })}
                     onClickReset={() =>
                       setQueryParams(q => q.reset(["filter", "order"]))

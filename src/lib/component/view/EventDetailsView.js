@@ -32,9 +32,15 @@ const query = gql`
 class EventDetailsView extends React.PureComponent {
   static propTypes = {
     match: PropTypes.object.isRequired,
+    toolbarItems: PropTypes.func,
+  };
+
+  static defaultProps = {
+    toolbarItems: undefined,
   };
 
   render() {
+    const { toolbarItems } = this.props;
     return (
       <AppLayout namespace={this.props.match.params.namespace}>
         <Query
@@ -60,6 +66,7 @@ class EventDetailsView extends React.PureComponent {
 
             return (
               <EventDetailsContainer
+                toolbarItems={toolbarItems}
                 event={event}
                 loading={loading || !!aborted}
                 refetch={refetch}

@@ -120,14 +120,14 @@ class EventsListHeader extends React.Component {
 
     return (
       <ToolbarMenu>
-        <ToolbarMenu.Item id="resolve" visible="always">
+        <ToolbarMenu.Item key="resolve" visible="always">
           <ResolveMenuItem
             description="Resolve selected event(s)."
             onClick={this.props.onClickResolve}
           />
         </ToolbarMenu.Item>
 
-        <ToolbarMenu.Item id="re-run" visible="if-room">
+        <ToolbarMenu.Item key="re-run" visible="if-room">
           <QueueExecutionMenuItem
             disabled={selectedNonKeepalives.length === 0}
             title="Re-run Checks"
@@ -138,7 +138,7 @@ class EventsListHeader extends React.Component {
         </ToolbarMenu.Item>
 
         <ToolbarMenu.Item
-          id="silence"
+          key="silence"
           visible={allSelectedSilenced ? "never" : "if-room"}
         >
           <SilenceMenuItem
@@ -148,7 +148,7 @@ class EventsListHeader extends React.Component {
         </ToolbarMenu.Item>
 
         <ToolbarMenu.Item
-          id="unsilence"
+          key="unsilence"
           visible={allSelectedUnsilenced ? "never" : "if-room"}
         >
           <UnsilenceMenuItem
@@ -157,7 +157,7 @@ class EventsListHeader extends React.Component {
           />
         </ToolbarMenu.Item>
 
-        <ToolbarMenu.Item id="delete" visible="never">
+        <ToolbarMenu.Item key="delete" visible="never">
           {menu => (
             <ConfirmDelete
               identifier={`${selectedCount} ${
@@ -191,14 +191,14 @@ class EventsListHeader extends React.Component {
       <ToolbarMenu.Autosizer>
         {({ width }) => (
           <ToolbarMenu width={width}>
-            <ToolbarMenu.Item id="hide" visible="if-room">
+            <ToolbarMenu.Item key="hide" visible="if-room">
               <Select title="Hide" onChange={this.requeryHide}>
                 <Option value="passing">Passing</Option>
                 <Option value="silenced">Silenced</Option>
               </Select>
             </ToolbarMenu.Item>
 
-            <ToolbarMenu.Item id="filter-by-entity" visible="if-room">
+            <ToolbarMenu.Item key="filter-by-entity" visible="if-room">
               <Select title="Entity" onChange={this.requeryEntity}>
                 {entities.map(name => (
                   <Option key={name} value={name} />
@@ -206,7 +206,7 @@ class EventsListHeader extends React.Component {
               </Select>
             </ToolbarMenu.Item>
 
-            <ToolbarMenu.Item id="filter-by-check" visible="if-room">
+            <ToolbarMenu.Item key="filter-by-check" visible="if-room">
               <Select title="Check" onChange={this.requeryCheck}>
                 {checks.map(name => (
                   <Option key={name} value={name} />
@@ -214,7 +214,7 @@ class EventsListHeader extends React.Component {
               </Select>
             </ToolbarMenu.Item>
 
-            <ToolbarMenu.Item id="filter-by-status" visible="always">
+            <ToolbarMenu.Item key="filter-by-status" visible="always">
               <SubmenuMenuItem
                 autoClose
                 title="Status"
@@ -231,7 +231,7 @@ class EventsListHeader extends React.Component {
               />
             </ToolbarMenu.Item>
 
-            <ToolbarMenu.Item id="sort" visible="always">
+            <ToolbarMenu.Item key="sort" visible="always">
               <Select title="Sort" onChange={this.updateSort}>
                 <Option value="LASTOK">Last OK</Option>
                 <Option value="SEVERITY">Severity</Option>

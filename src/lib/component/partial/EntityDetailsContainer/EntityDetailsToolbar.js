@@ -19,6 +19,11 @@ class EntityDetailsToolbar extends React.Component {
   static propTypes = {
     entity: PropTypes.object.isRequired,
     refetch: PropTypes.func.isRequired,
+    toolbarItems: PropTypes.func,
+  };
+
+  static defaultProps = {
+    toolbarItems: ({ items }) => items,
   };
 
   static fragments = {
@@ -38,45 +43,47 @@ class EntityDetailsToolbar extends React.Component {
   };
 
   render() {
-    const { entity, refetch } = this.props;
+    const { entity, refetch, toolbarItems } = this.props;
 
     return (
       <Toolbar
         right={
           <ToolbarMenu>
-            <ToolbarMenu.Item
-              id="silence"
-              visible={entity.isSilenced ? "never" : "if-room"}
-            >
-              <SilenceAction entity={entity} onDone={refetch}>
-                {dialog => (
-                  <SilenceMenuItem
-                    disabled={dialog.canOpen}
-                    onClick={dialog.open}
-                  />
-                )}
-              </SilenceAction>
-            </ToolbarMenu.Item>
-
-            <ToolbarMenu.Item
-              id="unsilence"
-              visible={entity.isSilenced ? "if-room" : "never"}
-            >
-              <ClearSilenceAction record={entity} onDone={refetch}>
-                {dialog => (
-                  <UnsilenceMenuItem
-                    disabled={!dialog.canOpen}
-                    onClick={dialog.open}
-                  />
-                )}
-              </ClearSilenceAction>
-            </ToolbarMenu.Item>
-
-            <ToolbarMenu.Item id="delete" visible="never">
-              <DeleteAction entity={entity}>
-                {handler => <DeleteMenuItem onClick={handler} />}
-              </DeleteAction>
-            </ToolbarMenu.Item>
+            {toolbarItems({
+              items: [
+                <ToolbarMenu.Item
+                  key="silence"
+                  visible={entity.isSilenced ? "never" : "if-room"}
+                >
+                  <SilenceAction entity={entity} onDone={refetch}>
+                    {dialog => (
+                      <SilenceMenuItem
+                        disabled={dialog.canOpen}
+                        onClick={dialog.open}
+                      />
+                    )}
+                  </SilenceAction>
+                </ToolbarMenu.Item>,
+                <ToolbarMenu.Item
+                  key="unsilence"
+                  visible={entity.isSilenced ? "if-room" : "never"}
+                >
+                  <ClearSilenceAction record={entity} onDone={refetch}>
+                    {dialog => (
+                      <UnsilenceMenuItem
+                        disabled={!dialog.canOpen}
+                        onClick={dialog.open}
+                      />
+                    )}
+                  </ClearSilenceAction>
+                </ToolbarMenu.Item>,
+                <ToolbarMenu.Item key="delete" visible="never">
+                  <DeleteAction entity={entity}>
+                    {handler => <DeleteMenuItem onClick={handler} />}
+                  </DeleteAction>
+                </ToolbarMenu.Item>,
+              ],
+            })}
           </ToolbarMenu>
         }
       />

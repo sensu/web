@@ -17,13 +17,17 @@ class SilencesListToolbar extends React.Component {
     onChangeQuery: PropTypes.func.isRequired,
     onClickCreate: PropTypes.func.isRequired,
     onClickReset: PropTypes.func.isRequired,
+    toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
     filter: "",
+    toolbarItems: ({ items }) => items,
   };
 
   render() {
+    const { toolbarItems } = this.props;
+
     return (
       <ListToolbar
         search={
@@ -33,21 +37,32 @@ class SilencesListToolbar extends React.Component {
             onSearch={this.props.onChangeQuery}
           />
         }
-        toolbarItems={({ collapsed }) => {
+        toolbarItems={props => {
           const unlessCollapsed = visiblity =>
-            collapsed ? "never" : visiblity;
+            props.collapsed ? "never" : visiblity;
 
           return (
             <ToolbarMenu>
-              <ToolbarMenu.Item id="new" visible={unlessCollapsed("always")}>
-                <NewMenuItem
-                  title="New Silence…"
-                  onClick={this.props.onClickCreate}
-                />
-              </ToolbarMenu.Item>
-              <ToolbarMenu.Item id="reset" visible={unlessCollapsed("if-room")}>
-                <ResetMenuItem onClick={this.props.onClickReset} />
-              </ToolbarMenu.Item>
+              {toolbarItems({
+                ...props,
+                items: [
+                  <ToolbarMenu.Item
+                    key="new"
+                    visible={unlessCollapsed("always")}
+                  >
+                    <NewMenuItem
+                      title="New Silence…"
+                      onClick={this.props.onClickCreate}
+                    />
+                  </ToolbarMenu.Item>,
+                  <ToolbarMenu.Item
+                    key="reset"
+                    visible={unlessCollapsed("if-room")}
+                  >
+                    <ResetMenuItem onClick={this.props.onClickReset} />
+                  </ToolbarMenu.Item>,
+                ],
+              })}
             </ToolbarMenu>
           );
         }}

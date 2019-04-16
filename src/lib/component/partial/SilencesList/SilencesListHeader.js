@@ -28,7 +28,7 @@ class SilencesListHeader extends React.PureComponent {
 
     return (
       <ToolbarMenu>
-        <ToolbarMenu.Item id="sort" visible="always">
+        <ToolbarMenu.Item key="sort" visible="always">
           <ListSortSelector
             onChangeQuery={onChangeQuery}
             options={[
@@ -44,7 +44,7 @@ class SilencesListHeader extends React.PureComponent {
 
   renderBulkActions = () => (
     <ToolbarMenu>
-      <ToolbarMenu.Item id="clearSilence" visible="always">
+      <ToolbarMenu.Item key="clearSilence" visible="always">
         <UnsilenceMenuItem onClick={this.props.onClickClearSilences} />
       </ToolbarMenu.Item>
     </ToolbarMenu>

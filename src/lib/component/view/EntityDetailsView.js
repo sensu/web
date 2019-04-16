@@ -27,9 +27,15 @@ const query = gql`
 class EntityDetailsView extends React.PureComponent {
   static propTypes = {
     match: PropTypes.object.isRequired,
+    toolbarItems: PropTypes.func,
+  };
+
+  static defaultProps = {
+    toolbarItems: undefined,
   };
 
   render() {
+    const { toolbarItems } = this.props;
     return (
       <AppLayout namespace={this.props.match.params.namespace}>
         <Query
@@ -56,7 +62,11 @@ class EntityDetailsView extends React.PureComponent {
             return (
               <Loader loading={loading || aborted} passthrough>
                 {entity && (
-                  <EntityDetailsContainer entity={entity} refetch={refetch} />
+                  <EntityDetailsContainer
+                    toolbarItems={toolbarItems}
+                    entity={entity}
+                    refetch={refetch}
+                  />
                 )}
               </Loader>
             );
