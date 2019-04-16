@@ -8,7 +8,6 @@ import {
   Route,
   Redirect,
 } from "/vendor/react-router-dom";
-import injectTapEventPlugin from "react-tap-event-plugin";
 
 // eslint-disable-next-line import/extensions
 import "typeface-roboto";
@@ -145,6 +144,3 @@ const renderApp = () => {
 polyfill()
   .then(updateServiceWorker)
   .then(renderApp);
-
-// Register React Tap event plugin
-injectTapEventPlugin();
