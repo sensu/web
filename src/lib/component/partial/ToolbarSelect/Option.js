@@ -1,7 +1,11 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import { Item, ItemText, ItemIcon } from "/vendor/@material-ui/core";
+import {
+  MenuItem,
+  ListItemText,
+  ListItemIcon,
+} from "/vendor/@material-ui/core";
 
 import { SmallCheckIcon } from "/lib/component/icon";
 
@@ -24,14 +28,14 @@ class Option extends React.PureComponent {
     const label = children || value;
 
     return (
-      <Item key={value} value={value} {...props}>
+      <MenuItem key={value} value={value} {...props}>
         {selected && (
-          <ItemIcon>
+          <ListItemIcon>
             <SmallCheckIcon />
-          </ItemIcon>
+          </ListItemIcon>
         )}
-        <ItemText inset={selected} primary={label} />
-      </Item>
+        <ListItemText inset={selected} primary={label} />
+      </MenuItem>
     );
   }
 }
