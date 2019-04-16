@@ -25,6 +25,11 @@ class EntitiesView extends React.PureComponent {
       limit: PropTypes.string,
     }).isRequired,
     setQueryParams: PropTypes.func.isRequired,
+    toolbarItems: PropTypes.func,
+  };
+
+  static defaultProps = {
+    toolbarItems: undefined,
   };
 
   static query = gql`
@@ -44,7 +49,7 @@ class EntitiesView extends React.PureComponent {
   `;
 
   render() {
-    const { queryParams, match, setQueryParams } = this.props;
+    const { queryParams, match, setQueryParams, toolbarItems } = this.props;
     const { filter, limit, offset, order } = queryParams;
     const variables = { ...match.params, ...queryParams };
 
@@ -75,6 +80,7 @@ class EntitiesView extends React.PureComponent {
               <div>
                 <Content marginBottom>
                   <EntitiesListToolbar
+                    toolbarItems={toolbarItems}
                     onChangeQuery={value => setQueryParams({ filter: value })}
                     onClickReset={() => setQueryParams(q => q.reset())}
                     query={filter}

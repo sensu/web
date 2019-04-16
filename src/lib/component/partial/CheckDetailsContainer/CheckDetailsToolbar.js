@@ -25,11 +25,13 @@ class CheckDetailsToolbar extends React.Component {
   static propTypes = {
     check: PropTypes.object,
     refetch: PropTypes.func,
+    toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
     check: null,
     refetch: () => null,
+    toolbarItems: ({ items }) => items,
   };
 
   static fragments = {
@@ -51,62 +53,66 @@ class CheckDetailsToolbar extends React.Component {
   };
 
   render() {
-    const { check, refetch } = this.props;
+    const { check, refetch, toolbarItems } = this.props;
 
     return (
       <Toolbar
         right={
           <ToolbarMenu>
-            <ToolbarMenu.Item id="execute " visible="always">
-              <ExecuteAction check={check}>
-                {handler => <QueueExecutionMenuItem onClick={handler} />}
-              </ExecuteAction>
-            </ToolbarMenu.Item>
-            <ToolbarMenu.Item
-              id="silence"
-              visible={check.isSilenced ? "never" : "if-room"}
-            >
-              <SilenceAction check={check} onDone={refetch}>
-                {dialog => (
-                  <SilenceMenuItem
-                    onClick={dialog.open}
-                    disabled={dialog.canOpen}
-                  />
-                )}
-              </SilenceAction>
-            </ToolbarMenu.Item>
-            <ToolbarMenu.Item
-              id="unsilence"
-              visible={check.isSilenced ? "if-room" : "never"}
-            >
-              <ClearSilenceAction record={check} onDone={refetch}>
-                {dialog => (
-                  <UnsilenceMenuItem
-                    onClick={dialog.open}
-                    disabled={!dialog.canOpen}
-                  />
-                )}
-              </ClearSilenceAction>
-            </ToolbarMenu.Item>
-            <ToolbarMenu.Item
-              id={check.publish ? "unpublish" : "publish"}
-              visible="if-room"
-            >
-              {check.publish ? (
-                <UnpublishAction check={check}>
-                  {handler => <UnpublishMenuItem onClick={handler} />}
-                </UnpublishAction>
-              ) : (
-                <PublishAction check={check}>
-                  {handler => <PublishMenuItem onClick={handler} />}
-                </PublishAction>
-              )}
-            </ToolbarMenu.Item>
-            <ToolbarMenu.Item id="delete" visible="never">
-              <DeleteAction check={check}>
-                {handler => <DeleteMenuItem onClick={handler} />}
-              </DeleteAction>
-            </ToolbarMenu.Item>
+            {toolbarItems({
+              items: [
+                <ToolbarMenu.Item key="execute " visible="always">
+                  <ExecuteAction check={check}>
+                    {handler => <QueueExecutionMenuItem onClick={handler} />}
+                  </ExecuteAction>
+                </ToolbarMenu.Item>,
+                <ToolbarMenu.Item
+                  key="silence"
+                  visible={check.isSilenced ? "never" : "if-room"}
+                >
+                  <SilenceAction check={check} onDone={refetch}>
+                    {dialog => (
+                      <SilenceMenuItem
+                        onClick={dialog.open}
+                        disabled={dialog.canOpen}
+                      />
+                    )}
+                  </SilenceAction>
+                </ToolbarMenu.Item>,
+                <ToolbarMenu.Item
+                  key="unsilence"
+                  visible={check.isSilenced ? "if-room" : "never"}
+                >
+                  <ClearSilenceAction record={check} onDone={refetch}>
+                    {dialog => (
+                      <UnsilenceMenuItem
+                        onClick={dialog.open}
+                        disabled={!dialog.canOpen}
+                      />
+                    )}
+                  </ClearSilenceAction>
+                </ToolbarMenu.Item>,
+                <ToolbarMenu.Item
+                  key={check.publish ? "unpublish" : "publish"}
+                  visible="if-room"
+                >
+                  {check.publish ? (
+                    <UnpublishAction check={check}>
+                      {handler => <UnpublishMenuItem onClick={handler} />}
+                    </UnpublishAction>
+                  ) : (
+                    <PublishAction check={check}>
+                      {handler => <PublishMenuItem onClick={handler} />}
+                    </PublishAction>
+                  )}
+                </ToolbarMenu.Item>,
+                <ToolbarMenu.Item key="delete" visible="never">
+                  <DeleteAction check={check}>
+                    {handler => <DeleteMenuItem onClick={handler} />}
+                  </DeleteAction>
+                </ToolbarMenu.Item>,
+              ],
+            })}
           </ToolbarMenu>
         }
       />

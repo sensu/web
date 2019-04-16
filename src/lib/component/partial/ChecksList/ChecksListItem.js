@@ -109,33 +109,33 @@ class CheckListItem extends React.Component {
           >
             {() => (
               <ToolbarMenu>
-                <ToolbarMenu.Item id="queue" visible="never">
+                <ToolbarMenu.Item key="queue" visible="never">
                   <QueueExecutionMenuItem
                     disabled={check.name === "keepalive"}
                     onClick={this.props.onClickExecute}
                   />
                 </ToolbarMenu.Item>
-                <ToolbarMenu.Item id="silence" visible="never">
+                <ToolbarMenu.Item key="silence" visible="never">
                   <SilenceMenuItem
                     disabled={!!check.isSilenced}
                     onClick={this.props.onClickSilence}
                   />
                 </ToolbarMenu.Item>
-                <ToolbarMenu.Item id="unsilence" visible="never">
+                <ToolbarMenu.Item key="unsilence" visible="never">
                   <UnsilenceMenuItem
                     disabled={!check.isSilenced}
                     onClick={this.props.onClickClearSilences}
                   />
                 </ToolbarMenu.Item>
                 {!check.publish ? (
-                  <ToolbarMenu.Item id="publish" visible="never">
+                  <ToolbarMenu.Item key="publish" visible="never">
                     <PublishMenuItem
                       description="Publish check"
                       onClick={() => this.props.onClickSetPublish(true)}
                     />
                   </ToolbarMenu.Item>
                 ) : (
-                  <ToolbarMenu.Item id="unpublish" visible="never">
+                  <ToolbarMenu.Item key="unpublish" visible="never">
                     <UnpublishMenuItem
                       delete
                       description="Unpublish check"
@@ -143,7 +143,7 @@ class CheckListItem extends React.Component {
                     />
                   </ToolbarMenu.Item>
                 )}
-                <ToolbarMenu.Item id="delete" visible="never">
+                <ToolbarMenu.Item key="delete" visible="never">
                   <ConfirmDelete onSubmit={this.props.onClickDelete}>
                     {dialog => <DeleteMenuItem onClick={dialog.open} />}
                   </ConfirmDelete>

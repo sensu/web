@@ -69,14 +69,14 @@ class ChecksListHeader extends React.PureComponent {
 
     return (
       <ToolbarMenu>
-        <ToolbarMenu.Item id="filter-by-subscription" visible="if-room">
+        <ToolbarMenu.Item key="filter-by-subscription" visible="if-room">
           <SelectMenuItem title="Subscription" onChange={this.updateFilter}>
             {subscriptions.map(val => (
               <ToolbarSelectOption key={val} value={val} />
             ))}
           </SelectMenuItem>
         </ToolbarMenu.Item>
-        <ToolbarMenu.Item id="sort" visible="if-room">
+        <ToolbarMenu.Item key="sort" visible="if-room">
           <ListSortSelector
             options={[{ label: "Name", value: "NAME" }]}
             onChangeQuery={onChangeQuery}
@@ -103,7 +103,7 @@ class ChecksListHeader extends React.PureComponent {
 
     return (
       <ToolbarMenu>
-        <ToolbarMenu.Item id="queue" visible="always">
+        <ToolbarMenu.Item key="queue" visible="always">
           <QueueExecutionMenuItem
             disabled={selectedNonKeepalives.length === 0}
             onClick={this.props.onClickExecute}
@@ -111,7 +111,7 @@ class ChecksListHeader extends React.PureComponent {
           />
         </ToolbarMenu.Item>
         <ToolbarMenu.Item
-          id="silence"
+          key="silence"
           visible={allSelectedSilenced ? "never" : "if-room"}
         >
           <SilenceMenuItem
@@ -120,7 +120,7 @@ class ChecksListHeader extends React.PureComponent {
           />
         </ToolbarMenu.Item>
         <ToolbarMenu.Item
-          id="unsilence"
+          key="unsilence"
           visible={allSelectedUnsilenced ? "never" : "if-room"}
         >
           <UnsilenceMenuItem
@@ -129,21 +129,21 @@ class ChecksListHeader extends React.PureComponent {
           />
         </ToolbarMenu.Item>
         {!published ? (
-          <ToolbarMenu.Item id="publish" visible="if-room">
+          <ToolbarMenu.Item key="publish" visible="if-room">
             <PublishMenuItem
               description="Publish selected checks."
               onClick={() => this.props.onClickSetPublish(true)}
             />
           </ToolbarMenu.Item>
         ) : (
-          <ToolbarMenu.Item id="unpublish" visible="if-room">
+          <ToolbarMenu.Item key="unpublish" visible="if-room">
             <UnpublishMenuItem
               description="Unpublish selected checks."
               onClick={() => this.props.onClickSetPublish(false)}
             />
           </ToolbarMenu.Item>
         )}
-        <ToolbarMenu.Item id="delete" visible="never">
+        <ToolbarMenu.Item key="delete" visible="never">
           {menu => (
             <ConfirmDelete
               identifier={

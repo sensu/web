@@ -27,9 +27,16 @@ const query = gql`
 class CheckDetailsContent extends React.PureComponent {
   static propTypes = {
     match: PropTypes.object.isRequired,
+    toolbarItems: PropTypes.func,
+  };
+
+  static defaultProps = {
+    toolbarItems: undefined,
   };
 
   render() {
+    const { toolbarItems } = this.props;
+
     return (
       <AppLayout namespace={this.props.match.params.namespace}>
         <Query
@@ -61,6 +68,7 @@ class CheckDetailsContent extends React.PureComponent {
 
             return (
               <CheckDetailsContainer
+                toolbarItems={toolbarItems}
                 client={client}
                 check={check}
                 loading={loading || aborted}

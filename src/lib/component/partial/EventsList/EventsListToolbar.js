@@ -13,10 +13,12 @@ class EventsListToolbar extends React.PureComponent {
     query: PropTypes.string,
     onChangeQuery: PropTypes.func.isRequired,
     onClickReset: PropTypes.func.isRequired,
+    toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
     query: "",
+    toolbarItems: ({ items }) => items,
   };
 
   reset = ev => {
@@ -24,7 +26,7 @@ class EventsListToolbar extends React.PureComponent {
   };
 
   render() {
-    const { onChangeQuery, query } = this.props;
+    const { onChangeQuery, query, toolbarItems } = this.props;
 
     return (
       <ListToolbar
@@ -35,14 +37,19 @@ class EventsListToolbar extends React.PureComponent {
             onSearch={onChangeQuery}
           />
         }
-        toolbarItems={({ collapsed }) => (
+        toolbarItems={props => (
           <ToolbarMenu>
-            <ToolbarMenu.Item
-              id="reset-query"
-              visible={collapsed ? "never" : "if-room"}
-            >
-              <ResetMenuItem onClick={this.reset} />
-            </ToolbarMenu.Item>
+            {toolbarItems({
+              ...props,
+              items: [
+                <ToolbarMenu.Item
+                  key="reset-query"
+                  visible={props.collapsed ? "never" : "if-room"}
+                >
+                  <ResetMenuItem onClick={this.reset} />
+                </ToolbarMenu.Item>,
+              ],
+            })}
           </ToolbarMenu>
         )}
       />

@@ -14,11 +14,13 @@ class CheckDetailsContainer extends React.PureComponent {
     check: PropTypes.object,
     loading: PropTypes.bool.isRequired,
     refetch: PropTypes.func,
+    toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
     check: null,
     refetch: () => null,
+    toolbarItems: undefined,
   };
 
   static fragments = {
@@ -37,14 +39,18 @@ class CheckDetailsContainer extends React.PureComponent {
   };
 
   render() {
-    const { check, loading, refetch } = this.props;
+    const { check, loading, refetch, toolbarItems } = this.props;
 
     return (
       <Loader loading={loading} passthrough>
         {check && (
           <React.Fragment>
             <Content marginBottom>
-              <Toolbar check={check} refetch={refetch} />
+              <Toolbar
+                toolbarItems={toolbarItems}
+                check={check}
+                refetch={refetch}
+              />
             </Content>
 
             <Grid container spacing={16}>

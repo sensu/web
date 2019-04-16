@@ -16,6 +16,11 @@ class EntityDetailsContainer extends React.PureComponent {
   static propTypes = {
     entity: PropTypes.object.isRequired,
     refetch: PropTypes.func.isRequired,
+    toolbarItems: PropTypes.func,
+  };
+
+  static defaultProps = {
+    toolbarItems: undefined,
   };
 
   static fragments = {
@@ -38,12 +43,16 @@ class EntityDetailsContainer extends React.PureComponent {
   };
 
   render() {
-    const { entity, refetch } = this.props;
+    const { entity, refetch, toolbarItems } = this.props;
 
     return (
       <React.Fragment>
         <Content marginBottom>
-          <EntityDetailsToolbar entity={entity} refetch={refetch} />
+          <EntityDetailsToolbar
+            toolbarItems={toolbarItems}
+            entity={entity}
+            refetch={refetch}
+          />
         </Content>
 
         <Grid container spacing={16}>

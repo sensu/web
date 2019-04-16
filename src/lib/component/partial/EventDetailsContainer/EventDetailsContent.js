@@ -16,11 +16,13 @@ class EventDetailsContainer extends React.Component {
     event: PropTypes.object,
     loading: PropTypes.bool.isRequired,
     refetch: PropTypes.func,
+    toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
     event: null,
     refetch: () => null,
+    toolbarItems: undefined,
   };
 
   static fragments = {
@@ -52,14 +54,18 @@ class EventDetailsContainer extends React.Component {
   };
 
   render() {
-    const { event, loading, refetch } = this.props;
+    const { event, loading, refetch, toolbarItems } = this.props;
 
     return (
       <Loader loading={loading} passthrough>
         {event && (
           <React.Fragment>
             <Content marginBottom>
-              <Toolbar event={event} refetch={refetch} />
+              <Toolbar
+                toolbarItems={toolbarItems}
+                event={event}
+                refetch={refetch}
+              />
             </Content>
             <Grid container spacing={16}>
               <Grid item xs={12}>

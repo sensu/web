@@ -8,13 +8,13 @@ class Item extends React.PureComponent {
   static displayName = "ToolbarMenu.Item";
 
   static propTypes = {
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
-    id: PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     onResize: PropTypes.func,
     visible: PropTypes.oneOf(["if-room", "always", "never"]), // eslint-disable-line react/no-unused-prop-types
   };
 
   static defaultProps = {
+    children: undefined,
     onResize: null,
     visible: "if-room",
   };

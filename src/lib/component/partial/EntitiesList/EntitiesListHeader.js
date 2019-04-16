@@ -55,14 +55,14 @@ class EntitiesListHeader extends React.PureComponent {
 
     return (
       <ToolbarMenu>
-        <ToolbarMenu.Item id="filter-by-subscriptions" visible="if-room">
+        <ToolbarMenu.Item key="filter-by-subscriptions" visible="if-room">
           <SelectMenuItem title="Subscription" onChange={this.updateFilter}>
             {subs.map(v => (
               <ToolbarSelectOption key={v} value={v} />
             ))}
           </SelectMenuItem>
         </ToolbarMenu.Item>
-        <ToolbarMenu.Item id="sort" visible="always">
+        <ToolbarMenu.Item key="sort" visible="always">
           <ListSortSelector
             options={[{ label: "Name", value: "ID" }]}
             onChangeQuery={onChangeQuery}
@@ -84,7 +84,7 @@ class EntitiesListHeader extends React.PureComponent {
     return (
       <ToolbarMenu>
         <ToolbarMenu.Item
-          id="silence"
+          key="silence"
           visible={allSelectedSilenced ? "never" : "always"}
         >
           <SilenceMenuItem
@@ -95,7 +95,7 @@ class EntitiesListHeader extends React.PureComponent {
         </ToolbarMenu.Item>
 
         <ToolbarMenu.Item
-          id="unsilence"
+          key="unsilence"
           visible={allSelectedUnsilenced ? "never" : "if-room"}
         >
           <UnsilenceMenuItem
@@ -105,7 +105,7 @@ class EntitiesListHeader extends React.PureComponent {
           />
         </ToolbarMenu.Item>
 
-        <ToolbarMenu.Item id="delete" visible="never">
+        <ToolbarMenu.Item key="delete" visible="never">
           {menu => (
             <ConfirmDelete
               identifier={`${selectedCount} ${
