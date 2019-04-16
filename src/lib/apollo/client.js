@@ -1,6 +1,5 @@
 import { ApolloLink } from "/vendor/apollo-link";
 import gql from "/vendor/graphql-tag";
-import merge from "/vendor/deepmerge";
 
 import {
   InMemoryCache,
@@ -12,13 +11,8 @@ import { setContext } from "/vendor/apollo-link-context";
 import createHttpLink from "./httpLink";
 import createIntrospectionLink from "./introspectionLink";
 import createTokenRefreshLink from "./tokenRefreshLink";
+import createStateLink from "./stateLink";
 import localStorageSync from "./localStorageSync";
-
-import authResolver from "./resolvers/auth";
-import lastNamespaceResolver from "./resolvers/lastNamespace";
-import localNetworkResolver from "./resolvers/localNetwork";
-import themeResolver from "./resolvers/theme";
-import addDeletedFieldTo from "./resolvers/deleted";
 
 const createClient = ({
   link = [],
@@ -41,25 +35,10 @@ const createClient = ({
   const tokenRefreshLink = createTokenRefreshLink();
   const httpLink = createHttpLink();
 
-  const clientState = merge.all([
-    {},
-    authResolver,
-    lastNamespaceResolver,
-    localNetworkResolver,
-    themeResolver,
-    addDeletedFieldTo("CheckConfig"),
-    addDeletedFieldTo("Entity"),
-    addDeletedFieldTo("Event"),
-    addDeletedFieldTo("Silenced"),
-    ...resolvers,
-  ]);
-
-  const writeDefaults = () => {
-    cache.writeData({ data: clientState.defaults });
-  };
+  const stateLink = createStateLink({ resolvers, cache });
 
   const contextLink = setContext(() => ({
-    stateLink: { writeDefaults },
+    stateLink,
     client,
     introspectionURL,
   }));
@@ -68,15 +47,13 @@ const createClient = ({
     cache,
     link: ApolloLink.from([
       contextLink,
+      stateLink,
       introspectionLink,
       tokenRefreshLink,
       ...link,
       httpLink,
     ]),
-    resolvers: clientState.resolvers,
   });
-
-  writeDefaults();
 
   localStorageSync(
     client,
