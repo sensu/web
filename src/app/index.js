@@ -14,6 +14,7 @@ import injectTapEventPlugin from "react-tap-event-plugin";
 import "typeface-roboto";
 
 import polyfill from "/lib/polyfill";
+import { unregisterAll } from "/lib/util/serviceWorker";
 
 import {
   ErrorBoundary,
@@ -45,7 +46,17 @@ import {
 
 import createClient from "/app/apollo/client";
 
-polyfill().then(() => {
+const updateServiceWorker = () => () =>
+  // Unregister previous service worker scripts since the app does not
+  // currently provide one.
+  unregisterAll().catch(error => {
+    // eslint-disable-next-line no-console
+    console.warn("Service worker unregistration failed.");
+    // eslint-disable-next-line no-console
+    console.warn(error);
+  });
+
+const renderApp = () => {
   const client = createClient();
 
   // Renderer
@@ -129,7 +140,11 @@ polyfill().then(() => {
     </ErrorBoundary>,
     document.getElementById("root"),
   );
-});
+};
+
+polyfill()
+  .then(updateServiceWorker)
+  .then(renderApp);
 
 // Register React Tap event plugin
 injectTapEventPlugin();
