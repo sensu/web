@@ -131,7 +131,7 @@ class EventListItem extends React.Component {
           >
             {() => (
               <ToolbarMenu>
-                <ToolbarMenu.Item key="resolve" visible="always">
+                <ToolbarMenu.Item key="resolve" visible="never">
                   <ResolveMenuItem
                     iconOnly
                     disabled={event.status === 0}
