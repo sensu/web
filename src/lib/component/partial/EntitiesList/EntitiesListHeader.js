@@ -105,7 +105,7 @@ class EntitiesListHeader extends React.PureComponent {
           />
         </ToolbarMenu.Item>
 
-        <ToolbarMenu.Item key="delete" visible="never">
+        <ToolbarMenu.Item key="delete" visible="if-room">
           {menu => (
             <ConfirmDelete
               identifier={`${selectedCount} ${

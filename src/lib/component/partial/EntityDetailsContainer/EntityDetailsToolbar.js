@@ -77,7 +77,7 @@ class EntityDetailsToolbar extends React.Component {
                     )}
                   </ClearSilenceAction>
                 </ToolbarMenu.Item>,
-                <ToolbarMenu.Item key="delete" visible="never">
+                <ToolbarMenu.Item key="delete" visible="if-room">
                   <DeleteAction entity={entity}>
                     {handler => <DeleteMenuItem onClick={handler} />}
                   </DeleteAction>

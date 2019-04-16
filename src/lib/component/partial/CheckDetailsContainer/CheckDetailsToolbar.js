@@ -106,7 +106,7 @@ class CheckDetailsToolbar extends React.Component {
                     </PublishAction>
                   )}
                 </ToolbarMenu.Item>,
-                <ToolbarMenu.Item key="delete" visible="never">
+                <ToolbarMenu.Item key="delete" visible="if-room">
                   <DeleteAction check={check}>
                     {handler => <DeleteMenuItem onClick={handler} />}
                   </DeleteAction>
