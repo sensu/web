@@ -6,5 +6,6 @@ import "./consecutivePairs";
 import "./date";
 import "./fetch";
 import "./promise";
+import "./serviceWorker";
 import "./uniqueId";
 import "./validation";
