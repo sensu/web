@@ -166,6 +166,7 @@ class Drawer extends React.Component {
                 <List>
                   {links.map(({ icon, caption, to }) => (
                     <DrawerButton
+                      key={to}
                       Icon={icon}
                       primary={caption}
                       component={Link}
