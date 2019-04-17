@@ -1,8 +1,9 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { compose, pure } from "recompose";
 import { SvgIcon, withStyles } from "/vendor/@material-ui/core";
 import classnames from "/vendor/classnames";
+
+import compose from "/lib/util/compose";
 
 class Icon extends React.Component {
   static propTypes = {
@@ -38,7 +39,7 @@ class Icon extends React.Component {
 }
 
 const EnhancedIcon = compose(
-  pure,
+  React.memo,
   withStyles(Icon.styles),
 )(Icon);
 EnhancedIcon.muiName = "SvgIcon";

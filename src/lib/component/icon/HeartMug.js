@@ -1,5 +1,4 @@
 import React from "/vendor/react";
-import pure from "recompose/pure";
 import { SvgIcon } from "/vendor/@material-ui/core";
 
 class Icon extends React.Component {
@@ -15,7 +14,7 @@ class Icon extends React.Component {
   }
 }
 
-const HeartMugIcon = pure(Icon);
+const HeartMugIcon = React.memo(Icon);
 HeartMugIcon.muiName = "SvgIcon";
 
 export default HeartMugIcon;

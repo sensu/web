@@ -1,7 +1,6 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { withApollo } from "/vendor/react-apollo";
-import { compose } from "recompose";
 
 import {
   withStyles,
@@ -13,6 +12,8 @@ import {
   DialogTitle,
   withMobileDialog,
 } from "/vendor/@material-ui/core";
+
+import compose from "/lib/util/compose";
 
 import createSilence from "/lib/mutation/createSilence";
 

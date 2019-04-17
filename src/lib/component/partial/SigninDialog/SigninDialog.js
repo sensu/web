@@ -1,6 +1,5 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { compose, withProps } from "recompose";
 import { withApollo } from "/vendor/react-apollo";
 
 import {
@@ -11,6 +10,8 @@ import {
   Slide,
   Typography,
 } from "/vendor/@material-ui/core";
+
+import compose from "/lib/util/compose";
 
 import { when } from "/lib/util/promise";
 import { UnauthorizedError } from "/lib/error/FetchError";
@@ -58,7 +59,7 @@ class SignInView extends React.Component {
 
   static defaultProps = {
     fullScreen: false,
-    TransitionComponent: withProps({ direction: "up" })(Slide),
+    TransitionComponent: props => <Slide {...props} direction="up" />,
     onSuccess: () => {},
     open: true,
   };

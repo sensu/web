@@ -1,7 +1,6 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
-import { withProps } from "recompose";
 import {
   Avatar,
   Button,
@@ -34,13 +33,17 @@ import TableSelectableRow from "/lib/component/partial/TableSelectableRow";
 import { FloatingTableToolbarCell } from "/lib/component/partial/TableToolbarCell";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 
-const SlideUp = withProps({ direction: "up" })(Slide);
-const RightAlign = withProps({
-  style: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-})("div");
+const SlideUp = props => <Slide {...props} direction="up" />;
+
+const RightAlign = props => (
+  <div
+    {...props}
+    style={{
+      display: "flex",
+      justifyContent: "flex-end",
+    }}
+  />
+);
 
 class SilencesListItem extends React.Component {
   static propTypes = {
