@@ -37,7 +37,9 @@ const handle = error => {
     typeof frames[0].fileName === "string" &&
     frames[0].fileName.indexOf(publicPath) !== 0
   ) {
-    // Ignore vendor script error.
+    // Log and silence vendor script error.
+    // eslint-disable-next-line no-console
+    console.error(error);
   } else {
     // eslint-disable-next-line no-console
     renderError(error);
