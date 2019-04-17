@@ -1,10 +1,11 @@
 import "/lib/apollo";
+import "/lib/buildInfo";
 import "/lib/colors";
 import "/lib/component";
 import "/lib/constant";
 import "/lib/error";
 import "/lib/mutation";
+import "/lib/polyfill";
 import "/lib/runtime";
 import "/lib/theme";
 import "/lib/util";
-import "/lib/polyfill";

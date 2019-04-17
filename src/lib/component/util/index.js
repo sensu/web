@@ -23,3 +23,4 @@ export { default as SigninRedirect } from "./SigninRedirect";
 export { default as Timer } from "./Timer";
 export { default as UnauthenticatedRoute } from "./UnauthenticatedRoute";
 export { default as UnmountObserver } from "./UnmountObserver";
+export { default as useBuildInfo } from "./useBuildInfo";
