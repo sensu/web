@@ -1,0 +1,39 @@
+type Auth {
+  """
+  Indicates that the current access token has been rejected by the API and
+  cannot be automatically refreshed. The user must re-authenticate to continue.
+  """
+  invalid: Boolean!
+
+  "Token used to access the system."
+  accessToken: String
+
+  "Long lived token that can be used to obtain a new access token after it has expired."
+  refreshToken: String
+
+  "Time at which the access token will expire."
+  expiresAt: DateTime
+}
+
+extend type Query {
+  "Describes state of authorization tokens"
+  auth: Auth
+}
+
+type RefreshTokensPayload {
+  auth: Auth!
+}
+
+extend type Mutation {
+  "Create new authorization tokens."
+  createTokens(username: String!, password: String!): Boolean
+
+  "Create new authorization tokens using refresh token."
+  refreshTokens(notBefore: DateTime): RefreshTokensPayload!
+
+  "Invalidates authorization tokens."
+  invalidateTokens: Boolean
+
+  "Flags authorization tokens as invalid."
+  flagTokens: Boolean
+}

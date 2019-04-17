@@ -1,0 +1,20 @@
+type LocalNetwork {
+  "The current online state of the client."
+  offline: Boolean!
+
+  "If the client is offline and trying to retry the connection."
+  retry: Boolean!
+}
+
+extend type Query {
+  "The networking state of the client"
+  localNetwork: LocalNetwork
+}
+
+extend type Mutation {
+  "Flag to allow us to retry a connection"
+  retryLocalNetwork: Boolean
+
+  "Flags the client as being offline or online"
+  setLocalNetworkOffline(offline: Boolean!): Boolean
+}

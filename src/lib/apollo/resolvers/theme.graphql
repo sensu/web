@@ -1,0 +1,15 @@
+type Theme {
+  theme: String!
+  dark: Boolean!
+}
+
+extend type Query {
+  theme: Theme
+}
+
+extend type Mutation {
+  #
+  # Theme
+  setTheme(theme: String!): Boolean
+  toggleDark: Boolean
+}

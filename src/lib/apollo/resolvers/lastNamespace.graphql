@@ -1,0 +1,9 @@
+extend type Query {
+  "The last namespace that the client accessed."
+  lastNamespace: String!
+}
+
+extend type Mutation {
+  "Stores given pair as user's last visited namespace."
+  setLastNamespace(name: String!): Boolean
+}
