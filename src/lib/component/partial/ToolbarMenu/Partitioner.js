@@ -15,7 +15,7 @@ const partitionItems = ({ items, itemWidths, width: widthProp }) => {
   //    that are /always/ displayed.
   let remainingWidth = items.reduce((acc, item) => {
     if (item.props.visible === "always") {
-      return acc - (itemWidths[item.props.id] || 0);
+      return acc - (itemWidths[item.key] || 0);
     }
     return acc;
   }, width);
@@ -25,7 +25,7 @@ const partitionItems = ({ items, itemWidths, width: widthProp }) => {
   const visible = [];
   const collapsed = [];
   items.forEach(item => {
-    const id = item.props.id;
+    const id = item.key;
     const itemWidth = itemWidths[id] || 0;
     const visibility = item.props.visible;
 
@@ -117,7 +117,7 @@ class Partitioner extends React.Component {
     const collapsed = [];
 
     this.state.items.forEach(item => {
-      const id = item.props.id;
+      const id = item.key;
 
       if (this.state.visible.includes(id)) {
         visible.push(
