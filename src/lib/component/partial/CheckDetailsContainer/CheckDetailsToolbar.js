@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
 import {
-  DeleteMenuItem,
   PublishMenuItem,
   SilenceMenuItem,
   UnpublishMenuItem,
@@ -15,7 +14,6 @@ import ClearSilenceAction from "/lib/component/partial/ClearSilenceAction";
 import Toolbar from "/lib/component/partial/Toolbar";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 
-import DeleteAction from "./CheckDetailsDeleteAction";
 import ExecuteAction from "./CheckDetailsExecuteAction";
 import PublishAction from "./CheckDetailsPublishAction";
 import UnpublishAction from "./CheckDetailsUnpublishAction";
@@ -39,13 +37,11 @@ class CheckDetailsToolbar extends React.Component {
       fragment CheckDetailsToolbar_check on CheckConfig {
         isSilenced
 
-        ...CheckDetailsDeleteAction_check
         ...CheckDetailsExecuteAction_check
         ...CheckDetailsSilenceAction_check
         ...ClearSilenceAction_record
       }
 
-      ${DeleteAction.fragments.check}
       ${ExecuteAction.fragments.check}
       ${SilenceAction.fragments.check}
       ${ClearSilenceAction.fragments.record}
@@ -105,11 +101,6 @@ class CheckDetailsToolbar extends React.Component {
                       {handler => <PublishMenuItem onClick={handler} />}
                     </PublishAction>
                   )}
-                </ToolbarMenu.Item>,
-                <ToolbarMenu.Item key="delete" visible="if-room">
-                  <DeleteAction check={check}>
-                    {handler => <DeleteMenuItem onClick={handler} />}
-                  </DeleteAction>
                 </ToolbarMenu.Item>,
               ],
             })}

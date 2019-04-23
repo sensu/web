@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
 import {
-  DeleteMenuItem,
   SelectMenuItem,
   PublishMenuItem,
   SilenceMenuItem,
@@ -12,7 +11,6 @@ import {
   QueueExecutionMenuItem,
 } from "/lib/component/partial/ToolbarMenuItems";
 
-import ConfirmDelete from "/lib/component/partial/ConfirmDelete";
 import ListHeader from "/lib/component/partial/ListHeader";
 import ListSortSelector from "/lib/component/partial/ListSortSelector";
 import { ToolbarSelectOption } from "/lib/component/partial/ToolbarSelect";
@@ -24,7 +22,6 @@ class ChecksListHeader extends React.PureComponent {
     namespace: PropTypes.object,
     onChangeQuery: PropTypes.func.isRequired,
     onClickClearSilences: PropTypes.func.isRequired,
-    onClickDelete: PropTypes.func.isRequired,
     onClickExecute: PropTypes.func.isRequired,
     onClickSetPublish: PropTypes.func.isRequired,
     onClickSilence: PropTypes.func.isRequired,
@@ -143,21 +140,6 @@ class ChecksListHeader extends React.PureComponent {
             />
           </ToolbarMenu.Item>
         )}
-        <ToolbarMenu.Item key="delete" visible="if-room">
-          {menu => (
-            <ConfirmDelete
-              identifier={
-                selectedCount > 1 ? `${selectedCount} checks` : "this check"
-              }
-              onSubmit={ev => {
-                this.props.onClickDelete(ev);
-                menu.close();
-              }}
-            >
-              {dialog => <DeleteMenuItem onClick={dialog.open} />}
-            </ConfirmDelete>
-          )}
-        </ToolbarMenu.Item>
       </ToolbarMenu>
     );
   };

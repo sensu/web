@@ -12,9 +12,6 @@ import {
 } from "/vendor/@material-ui/core";
 
 import { TableListEmptyState, Loader } from "/lib/component/base";
-
-import deleteEntity from "/lib/mutation/deleteEntity";
-
 import { ListController } from "/lib/component/controller";
 
 import Pagination from "/lib/component/partial/Pagination";
@@ -26,7 +23,6 @@ import EntitiesListItem from "./EntitiesListItem";
 
 class EntitiesList extends React.PureComponent {
   static propTypes = {
-    client: PropTypes.object.isRequired,
     editable: PropTypes.bool,
     loading: PropTypes.bool,
     namespace: PropTypes.object,
@@ -84,11 +80,6 @@ class EntitiesList extends React.PureComponent {
   state = {
     silence: null,
     unsilence: null,
-  };
-
-  deleteEntities = entities => {
-    const { client } = this.props;
-    entities.forEach(entity => deleteEntity(client, { id: entity.id }));
   };
 
   silenceItems = entities => {
@@ -157,7 +148,6 @@ class EntitiesList extends React.PureComponent {
       onHover={this.props.editable ? setHovered : () => null}
       selected={selected}
       onChangeSelected={setSelected}
-      onClickDelete={() => this.deleteEntities([entity])}
       onClickSilence={() => this.silenceItems([entity])}
       onClickClearSilence={() => this.clearSilences([entity])}
     />
@@ -200,7 +190,6 @@ class EntitiesList extends React.PureComponent {
                 selectedItems={selectedItems}
                 rowCount={children.length || 0}
                 onClickSelect={toggleSelectedItems}
-                onClickDelete={() => this.deleteEntities(selectedItems)}
                 onClickSilence={() => this.silenceItems(selectedItems)}
                 onClickClearSilences={() => this.clearSilences(selectedItems)}
                 onChangeQuery={onChangeQuery}
