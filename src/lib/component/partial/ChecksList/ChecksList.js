@@ -11,7 +11,6 @@ import {
   TableRow,
 } from "/vendor/@material-ui/core";
 
-import deleteCheck from "/lib/mutation/deleteCheck";
 import executeCheck from "/lib/mutation/executeCheck";
 import setCheckPublish from "/lib/mutation/setCheckPublish";
 
@@ -158,10 +157,6 @@ class ChecksList extends React.Component {
     });
   };
 
-  deleteChecks = checks => {
-    checks.forEach(({ id }) => deleteCheck(this.props.client, { id }));
-  };
-
   _handleChangeSort = val => {
     let newVal = val;
     this.props.onChangeQuery(query => {
@@ -212,7 +207,6 @@ class ChecksList extends React.Component {
       selected={selected}
       onChangeSelected={setSelected}
       onClickClearSilences={() => this.clearSilences([check])}
-      onClickDelete={() => this.deleteChecks([check])}
       onClickExecute={() => this.executeChecks([check])}
       onClickSetPublish={publish => this.setChecksPublish([check], publish)}
       onClickSilence={() => this.silenceChecks([check])}
@@ -256,10 +250,6 @@ class ChecksList extends React.Component {
                 namespace={namespace}
                 onChangeQuery={onChangeQuery}
                 onClickClearSilences={() => this.clearSilences(selectedItems)}
-                onClickDelete={() => {
-                  this.deleteChecks(selectedItems);
-                  setSelectedItems([]);
-                }}
                 onClickExecute={() => {
                   this.executeChecks(selectedItems);
                   setSelectedItems([]);

@@ -9,7 +9,6 @@ import { HoverController } from "/lib/component/controller";
 import { SilenceIcon } from "/lib/component/icon";
 
 import {
-  DeleteMenuItem,
   PublishMenuItem,
   SilenceMenuItem,
   UnsilenceMenuItem,
@@ -17,7 +16,6 @@ import {
   QueueExecutionMenuItem,
 } from "/lib/component/partial/ToolbarMenuItems";
 
-import ConfirmDelete from "/lib/component/partial/ConfirmDelete";
 import ResourceDetails from "/lib/component/partial/ResourceDetails";
 import TableOverflowCell from "/lib/component/partial/TableOverflowCell";
 import TableSelectableRow from "/lib/component/partial/TableSelectableRow";
@@ -36,7 +34,6 @@ class CheckListItem extends React.Component {
     selected: PropTypes.bool.isRequired,
     onChangeSelected: PropTypes.func.isRequired,
     onClickClearSilences: PropTypes.func.isRequired,
-    onClickDelete: PropTypes.func.isRequired,
     onClickExecute: PropTypes.func.isRequired,
     onClickSetPublish: PropTypes.func.isRequired,
     onClickSilence: PropTypes.func.isRequired,
@@ -137,17 +134,11 @@ class CheckListItem extends React.Component {
                 ) : (
                   <ToolbarMenu.Item key="unpublish" visible="never">
                     <UnpublishMenuItem
-                      delete
                       description="Unpublish check"
                       onClick={() => this.props.onClickSetPublish(false)}
                     />
                   </ToolbarMenu.Item>
                 )}
-                <ToolbarMenu.Item key="delete" visible="never">
-                  <ConfirmDelete onSubmit={this.props.onClickDelete}>
-                    {dialog => <DeleteMenuItem onClick={dialog.open} />}
-                  </ConfirmDelete>
-                </ToolbarMenu.Item>
               </ToolbarMenu>
             )}
           </FloatingTableToolbarCell>

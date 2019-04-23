@@ -5,12 +5,10 @@ import gql from "/vendor/graphql-tag";
 import { Checkbox, TableCell } from "/vendor/@material-ui/core";
 
 import {
-  DeleteMenuItem,
   SilenceMenuItem,
   UnsilenceMenuItem,
 } from "/lib/component/partial/ToolbarMenuItems";
 
-import ConfirmDelete from "/lib/component/partial/ConfirmDelete";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 import ResourceDetails from "/lib/component/partial/ResourceDetails";
 import TableOverflowCell from "/lib/component/partial/TableOverflowCell";
@@ -33,7 +31,6 @@ class EntitiesListItem extends React.PureComponent {
     selected: PropTypes.bool,
     onChangeSelected: PropTypes.func,
     onClickClearSilence: PropTypes.func,
-    onClickDelete: PropTypes.func,
     onClickSilence: PropTypes.func,
   };
 
@@ -41,7 +38,6 @@ class EntitiesListItem extends React.PureComponent {
     selected: undefined,
     onChangeSelected: ev => ev,
     onClickClearSilence: ev => ev,
-    onClickDelete: ev => ev,
     onClickSilence: ev => ev,
   };
 
@@ -123,24 +119,6 @@ class EntitiesListItem extends React.PureComponent {
                     disabled={!entity.isSilenced}
                     onClick={this.props.onClickClearSilence}
                   />
-                </ToolbarMenu.Item>
-                <ToolbarMenu.Item key="delete" visible="never">
-                  {menu => (
-                    <ConfirmDelete
-                      onSubmit={() => {
-                        this.props.onClickDelete();
-                        menu.close();
-                      }}
-                    >
-                      {dialog => (
-                        <DeleteMenuItem
-                          autoClose={false}
-                          title="Delete…"
-                          onClick={dialog.open}
-                        />
-                      )}
-                    </ConfirmDelete>
-                  )}
                 </ToolbarMenu.Item>
               </ToolbarMenu>
             )}
