@@ -68,7 +68,7 @@ class ListHeader extends React.Component {
         <Checkbox
           component="button"
           onClick={onClickSelect}
-          checked={selectedCount === rowCount}
+          checked={rowCount > 0 && selectedCount === rowCount}
           indeterminate={selectedCount > 0 && selectedCount !== rowCount}
           style={{ color: "inherit" }}
         />
