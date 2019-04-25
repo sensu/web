@@ -10,8 +10,7 @@ import {
   ErrorIcon,
   InfoIcon,
   CloseIcon,
-  green,
-  amber,
+  colors,
   IconButton,
   WarningIcon,
   Paper,
@@ -103,9 +102,9 @@ export const styles = theme => {
     },
 
     success: {
-      backgroundColor: green[600],
+      backgroundColor: colors.green[600],
       "&::before": {
-        backgroundColor: green[600],
+        backgroundColor: colors.green[600],
       },
     },
     error: {
@@ -121,9 +120,9 @@ export const styles = theme => {
       },
     },
     warning: {
-      backgroundColor: amber[700],
+      backgroundColor: colors.amber[700],
       "&::before": {
-        backgroundColor: amber[700],
+        backgroundColor: colors.amber[700],
       },
     },
     icon: {
