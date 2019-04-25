@@ -1,4 +1,4 @@
-const shallowEqual = (as, bs) => {
+export const shallowEqual = (as, bs) => {
   if (as === bs) {
     return true;
   }
@@ -13,4 +13,16 @@ const shallowEqual = (as, bs) => {
   return true;
 };
 
-export { shallowEqual };
+export const mergeAtIndex = (arr, index, update) =>
+  arr
+    .slice(0, index)
+    .concat([
+      {
+        ...arr[index],
+        ...update,
+      },
+    ])
+    .concat(arr.slice(index + 1));
+
+export const removeAtIndex = (arr, index) =>
+  arr.slice(0, index).concat(arr.slice(index + 1));

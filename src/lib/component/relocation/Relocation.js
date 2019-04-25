@@ -1,80 +1,24 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/no-multi-comp */
-/* eslint-disable react/sort-comp */
-/* eslint-disable react/no-unused-state */
 
 import React from "/vendor/react";
-import PropTypes from "prop-types";
 
 import uniqueId from "/lib/util/uniqueId";
+import { mergeAtIndex, removeAtIndex } from "/lib/util/array";
 
-const mergeAtIndex = (arr, index, update) =>
-  arr
-    .slice(0, index)
-    .concat([
-      {
-        ...arr[index],
-        ...update,
-      },
-    ])
-    .concat(arr.slice(index + 1));
-
-const removeAtIndex = (arr, index) =>
-  arr.slice(0, index).concat(arr.slice(index + 1));
+import useUniqiueId from "/lib/component/util/useUniqueId";
 
 const Context = React.createContext({
-  addChild: () => {},
-  updateChild: () => {},
+  setChild: () => {},
   removeChild: () => {},
   elements: [],
 });
 
-class SinkConnector extends React.PureComponent {
-  static propTypes = {
-    addChild: PropTypes.func.isRequired,
-    updateChild: PropTypes.func.isRequired,
-    removeChild: PropTypes.func.isRequired,
-    children: PropTypes.any.isRequired,
-  };
+export const Provider = ({ children }) => {
+  const [elements, setElements] = React.useState([]);
 
-  id = uniqueId();
-
-  componentDidMount() {
-    this.props.addChild(this.id, this.props.children);
-  }
-
-  componentDidUpdate() {
-    this.props.updateChild(this.id, this.props.children);
-  }
-
-  componentWillUnmount() {
-    this.props.removeChild(this.id);
-  }
-
-  render() {
-    return null;
-  }
-}
-
-class ConsumerRender extends React.PureComponent {
-  static propTypes = {
-    children: PropTypes.func.isRequired,
-  };
-
-  render() {
-    const { children, ...props } = this.props;
-    return children(props);
-  }
-}
-
-export class Provider extends React.PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-  };
-
-  static defaultProps = { children: undefined };
-
-  createChild = props => {
-    this.setState(state => {
+  const createChild = React.useCallback(props => {
+    setElements(previousElements => {
       const id = uniqueId();
 
       const element = {
@@ -84,127 +28,79 @@ export class Provider extends React.PureComponent {
         props,
       };
 
-      const elements = state.elements.concat([element]);
-
-      return { elements };
+      return previousElements.concat([element]);
     });
-  };
+  }, []);
 
-  addChild = (id, props) => {
-    this.setState(state => {
-      const index = state.elements.findIndex(element => element.id === id);
-
-      if (index !== -1) {
-        throw new Error("Duplicate relocation child ID");
-      }
-
-      const element = { id, props };
-
-      const elements = state.elements.concat([element]);
-
-      return { elements };
-    });
-  };
-
-  updateChild = (id, props) => {
-    this.setState(state => {
-      const index = state.elements.findIndex(element => element.id === id);
+  const setChild = React.useCallback((id, props) => {
+    setElements(previousElements => {
+      const index = previousElements.findIndex(element => element.id === id);
 
       if (index === -1) {
-        throw new Error("Invalid relocation child ID");
+        const element = { id, props };
+        return previousElements.concat([element]);
       }
 
-      const elements = mergeAtIndex(state.elements, index, { props });
-
-      return { elements };
+      return mergeAtIndex(previousElements, index, { props });
     });
-  };
+  }, []);
 
-  removeChild = id => {
-    this.setState(state => {
-      const index = state.elements.findIndex(element => element.id === id);
+  const removeChild = React.useCallback(id => {
+    setElements(previousElements => {
+      const index = previousElements.findIndex(element => element.id === id);
 
       if (index === -1) {
         return null;
       }
 
-      const elements = removeAtIndex(state.elements, index);
-
-      return { elements };
+      return removeAtIndex(previousElements, index);
     });
-  };
+  }, []);
 
-  state = {
-    createChild: this.createChild,
-    addChild: this.addChild,
-    updateChild: this.updateChild,
-    removeChild: this.removeChild,
-    elements: [],
-  };
+  const context = React.useMemo(
+    () => ({ elements, createChild, setChild, removeChild }),
+    [elements],
+  );
 
-  render() {
-    return (
-      <Context.Provider value={this.state}>
-        {this.props.children}
-      </Context.Provider>
-    );
-  }
-}
+  return <Context.Provider value={context}>{children}</Context.Provider>;
+};
 
-export class Sink extends React.PureComponent {
-  static propTypes = {
-    children: PropTypes.any.isRequired,
-  };
+export const useSink = element => {
+  const id = useUniqiueId();
 
-  render() {
-    return (
-      <Context.Consumer>
-        {({ addChild, updateChild, removeChild }) => (
-          <SinkConnector
-            addChild={addChild}
-            updateChild={updateChild}
-            removeChild={removeChild}
-          >
-            {this.props.children}
-          </SinkConnector>
-        )}
-      </Context.Consumer>
-    );
-  }
-}
+  const { setChild, removeChild } = React.useContext(Context);
 
-export class Well extends React.PureComponent {
-  static propTypes = {
-    children: PropTypes.func.isRequired,
-  };
+  React.useEffect(() => {
+    setChild(id, element);
+  }, [element]);
 
-  render() {
-    return (
-      <Context.Consumer>
-        {({ elements }) => (
-          <ConsumerRender elements={elements}>
-            {this.props.children}
-          </ConsumerRender>
-        )}
-      </Context.Consumer>
-    );
-  }
-}
+  React.useEffect(() => {
+    return () => removeChild(id);
+  }, []);
+};
 
-export class Consumer extends React.PureComponent {
-  static propTypes = {
-    children: PropTypes.func.isRequired,
-  };
+export const Sink = ({ children }) => {
+  useSink(children);
+  return null;
+};
 
-  render() {
-    return (
-      <Context.Consumer>
-        {({ createChild, removeChild }) => (
-          <ConsumerRender createChild={createChild} removeChild={removeChild}>
-            {this.props.children}
-          </ConsumerRender>
-        )}
-      </Context.Consumer>
-    );
-  }
-}
+export const useWell = () => {
+  const { elements } = React.useContext(Context);
+  return elements;
+};
+
+export const Well = ({ children }) => {
+  const elements = useWell();
+  return children({ elements });
+};
+
+export const useRelocation = () => {
+  const { setChild, removeChild } = React.useContext(Context);
+
+  return [setChild, removeChild];
+};
+
+export const Consumer = ({ children }) => {
+  const [setChild, removeChild] = useRelocation();
+  return children({ setChild, removeChild });
+};
