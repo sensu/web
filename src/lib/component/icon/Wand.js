@@ -1,5 +1,4 @@
 import React from "/vendor/react";
-import pure from "recompose/pure";
 import { SvgIcon } from "/vendor/@material-ui/core";
 
 const Icon = props => (
@@ -11,7 +10,7 @@ const Icon = props => (
   </SvgIcon>
 );
 
-const WandIcon = pure(Icon);
+const WandIcon = React.memo(Icon);
 WandIcon.muiName = "SvgIcon";
 
 export default WandIcon;

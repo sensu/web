@@ -1,2 +1,2 @@
-export { default } from "react-apollo";
+// @flow
 export * from "react-apollo";

@@ -2,7 +2,6 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 import { withApollo } from "/vendor/react-apollo";
-import { compose, hoistStatics } from "recompose";
 
 import {
   darken,
@@ -24,6 +23,8 @@ import {
   Typography,
   withMobileDialog,
 } from "/vendor/@material-ui/core";
+
+import compose from "/lib/util/compose";
 
 import deleteSilence from "/lib/mutation/deleteSilence";
 
@@ -186,4 +187,10 @@ const enhancer = compose(
   withApollo,
   withMobileDialog({ breakpoint: "xs" }),
 );
-export default hoistStatics(enhancer)(ClearSilencedEntriesDialog);
+const result = enhancer(ClearSilencedEntriesDialog);
+
+// Manually hoist static fragments property, this is messy bu can eventually
+// be removed once more HOC utilities move to React hooks.
+result.fragments = ClearSilencedEntriesDialog.fragments;
+
+export default result;

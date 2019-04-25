@@ -1,5 +1,5 @@
+/* eslint-disable react/prop-types */
 import React from "/vendor/react";
-import PropTypes from "prop-types";
 
 import {
   ListItem,
@@ -8,13 +8,6 @@ import {
 } from "/vendor/@material-ui/core";
 
 class DrawerButton extends React.Component {
-  static propTypes = {
-    ...ListItem.propTypes,
-    Icon: PropTypes.func.isRequired,
-    primary: PropTypes.string.isRequired,
-    component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  };
-
   static defaultProps = {
     component: "button",
   };

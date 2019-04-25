@@ -1,6 +1,5 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { compose } from "recompose";
 import {
   Collapse,
   FormControl,
@@ -10,6 +9,8 @@ import {
   InputAdornment,
   Typography,
 } from "/vendor/@material-ui/core";
+
+import compose from "/lib/util/compose";
 
 import { withField } from "/vendor/@10xjs/form";
 

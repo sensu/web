@@ -1,6 +1,5 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { compose, withProps } from "recompose";
 import gql from "/vendor/graphql-tag";
 import { withApollo, graphql } from "/vendor/react-apollo";
 
@@ -24,9 +23,11 @@ import {
   withMobileDialog,
 } from "/vendor/@material-ui/core";
 
+import compose from "/lib/util/compose";
+
 import { BulbIcon, CloseIcon, EyeIcon } from "/lib/component/icon";
 
-const SlideUp = withProps({ direction: "up" })(Slide);
+const SlideUp = props => <Slide {...props} direction="up" />;
 
 const setThemeMutation = gql`
   mutation SetThemeMudation($theme: String!) {

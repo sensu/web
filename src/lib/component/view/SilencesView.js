@@ -1,8 +1,6 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
-import withStateHandlers from "recompose/withStateHandlers";
-import toRenderProps from "recompose/toRenderProps";
 
 import { FailedError } from "/lib/error/FetchError";
 import { pollingDuration } from "/lib/constant/polling";
@@ -18,15 +16,15 @@ import {
   SilenceEntryDialog,
 } from "/lib/component/partial";
 
-const WithDialogState = toRenderProps(
-  withStateHandlers(
-    { isOpen: false },
-    {
-      open: () => () => ({ isOpen: true }),
-      close: () => () => ({ isOpen: false }),
-    },
-  ),
-);
+const WithDialogState = ({ children }) => {
+  const [isOpen, setOpen] = React.useState(false);
+
+  return children({
+    isOpen,
+    open: () => setOpen(true),
+    close: () => setOpen(false),
+  });
+};
 
 class SilencesView extends React.Component {
   static propTypes = {

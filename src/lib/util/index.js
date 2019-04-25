@@ -1,6 +1,7 @@
 import "./array";
 import "./authAPI";
 import "./checkStatus";
+import "./compose";
 import "./consecutivePairs";
 import "./date";
 import "./fetch";

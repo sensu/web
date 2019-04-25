@@ -1,5 +1,4 @@
 import React from "/vendor/react";
-import pure from "recompose/pure";
 import { SvgIcon } from "/vendor/@material-ui/core";
 
 class Icon extends React.Component {
@@ -18,7 +17,7 @@ class Icon extends React.Component {
   }
 }
 
-const EspressoIcon = pure(Icon);
+const EspressoIcon = React.memo(Icon);
 EspressoIcon.muiName = "SvgIcon";
 
 export default EspressoIcon;

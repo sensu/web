@@ -1,5 +1,4 @@
 import React from "/vendor/react";
-import { pure } from "recompose";
 import { SvgIcon } from "/vendor/@material-ui/core";
 
 class Icon extends React.Component {
@@ -15,7 +14,7 @@ class Icon extends React.Component {
   }
 }
 
-const UnpublishIcon = pure(Icon);
+const UnpublishIcon = React.memo(Icon);
 UnpublishIcon.muiName = "SvgIcon";
 
 export default UnpublishIcon;

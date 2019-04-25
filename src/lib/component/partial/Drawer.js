@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Link } from "/vendor/react-router-dom";
 import gql from "/vendor/graphql-tag";
 import { withApollo } from "/vendor/react-apollo";
-import { compose } from "recompose";
 
 import {
   withStyles,
@@ -12,6 +11,8 @@ import {
   IconButton,
   Drawer as MaterialDrawer,
 } from "/vendor/@material-ui/core";
+
+import compose from "/lib/util/compose";
 
 import invalidateTokens from "/lib/mutation/invalidateTokens";
 
@@ -165,6 +166,7 @@ class Drawer extends React.Component {
                 <List>
                   {links.map(({ icon, caption, to }) => (
                     <DrawerButton
+                      key={to}
                       Icon={icon}
                       primary={caption}
                       component={Link}
