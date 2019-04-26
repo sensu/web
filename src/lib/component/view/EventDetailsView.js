@@ -21,6 +21,7 @@ const query = gql`
     $entity: String!
   ) {
     event(namespace: $namespace, entity: $entity, check: $check) {
+      id
       deleted @client
       ...EventDetailsContainer_event
     }
