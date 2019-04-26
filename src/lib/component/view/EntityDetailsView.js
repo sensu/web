@@ -16,6 +16,7 @@ import {
 const query = gql`
   query EntityDetailsViewQuery($namespace: String!, $entity: String!) {
     entity(namespace: $namespace, name: $entity) {
+      id
       deleted @client
       ...EntityDetailsContainer_entity
     }

@@ -17,6 +17,7 @@ import {
 const query = gql`
   query CheckDetailsContentQuery($namespace: String!, $check: String!) {
     check(namespace: $namespace, name: $check) {
+      id
       ...CheckDetailsContainer_check
     }
   }
