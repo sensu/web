@@ -9,6 +9,7 @@ import {
   colors,
   Paper,
   Typography,
+  IconButton,
 } from "/vendor/@material-ui/core";
 
 import {
@@ -16,7 +17,6 @@ import {
   ErrorIcon,
   InfoIcon,
   CloseIcon,
-  IconButton,
   WarningIcon,
 } from "/lib/component/icon";
 
