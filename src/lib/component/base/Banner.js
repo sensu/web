@@ -6,16 +6,19 @@ import { emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
 
 import {
   withStyles,
+  colors,
+  Paper,
+  Typography,
+} from "/vendor/@material-ui/core";
+
+import {
   CheckCircleIcon,
   ErrorIcon,
   InfoIcon,
   CloseIcon,
-  colors,
   IconButton,
   WarningIcon,
-  Paper,
-  Typography,
-} from "/vendor/@material-ui/core";
+} from "/lib/component/icon";
 
 import uniqueId from "/lib/util/uniqueId";
 import { Timer } from "/lib/component/util";
@@ -73,6 +76,8 @@ export const styles = theme => {
     },
 
     message: {
+      color: theme.palette.getContrastText(backgroundColor),
+
       paddingTop: 14,
       paddingBottom: 14,
 
@@ -213,8 +218,7 @@ class Banner extends React.PureComponent {
 
     return (
       <Paper
-        component={Typography}
-        headlineMapping={{
+        headlinemapping={{
           body1: "div",
         }}
         role="alertdialog"
@@ -226,10 +230,10 @@ class Banner extends React.PureComponent {
         onMouseLeave={this._handleMouseLeave}
       >
         <div className={classes.content}>
-          <div id={messageId} className={classes.message}>
+          <Typography id={messageId} className={classes.message}>
             {Icon && <Icon className={classes.variantIcon} />}
             {message}
-          </div>
+          </Typography>
           <div className={classes.action}>
             {actions}
             {!!maxAge && closeButton && (
