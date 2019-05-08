@@ -41,4 +41,5 @@ labels: web-ui
 * Sensu version used (sensuctl, sensu-backend, and/or sensu-agent):
 * Installation method (packages, binaries, docker etc.):
 * Operating System and version (e.g. Ubuntu 14.04):
+* Browser used
 
