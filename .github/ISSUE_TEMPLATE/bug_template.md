@@ -1,6 +1,6 @@
 ---
 name: 'Bugs'
-about: 'For bugs'
+about: 'Create bug report'
 labels: 'issue: bug, web-ui'
 
 ---

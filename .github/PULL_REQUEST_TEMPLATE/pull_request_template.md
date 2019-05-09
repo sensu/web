@@ -1,6 +1,6 @@
 ---
 name: 'PRs'
-about: 'For all PRs'
+about: 'Create a new pull request'
 labels: 'web-ui'
 
 ---
