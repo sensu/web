@@ -1,4 +1,6 @@
 ---
+name: 'Feature/Proposal'
+about: 'Suggest new features and changes'
 labels: 'issue: proposal, web-ui'
 
 ---
