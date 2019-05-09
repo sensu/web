@@ -1,4 +1,6 @@
 ---
+name: 'Bugs'
+about: 'For bugs'
 labels: 'issue: bug, web-ui'
 
 ---
@@ -16,7 +18,7 @@ labels: 'issue: bug, web-ui'
 <!--- Not obligatory, but suggest a fix/reason for the bug, -->
 <!--- or ideas as to the implementation of the addition or change -->
 
-## Steps to Reproduce (for bugs)
+## Steps to Reproduce
 <!--- Provide a link to a live example, or an unambiguous set of steps to -->
 <!--- reproduce this bug. Include code or configuration to reproduce, if relevant -->
 1.

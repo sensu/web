@@ -1,4 +1,6 @@
 ---
+name: 'PRs'
+about: 'For all PRs'
 labels: 'web-ui'
 
 ---
