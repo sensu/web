@@ -1,5 +1,6 @@
 ---
-labels: web-ui
+labels: 'web-ui'
+
 ---
 
 ## What is this change?
