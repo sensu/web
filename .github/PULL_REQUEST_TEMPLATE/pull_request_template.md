@@ -1,8 +1,3 @@
----
-labels: 'web-ui'
-
----
-
 ## What is this change?
 
 <!-- A brief one-sentence-ish description of the change. -->
