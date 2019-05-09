@@ -1,17 +1,16 @@
 ---
-labels: web-ui
+labels: 'issue: bug, web-ui'
+
 ---
 
 <!--- Provide a general summary of the issue in the Title above -->
 
 ## Expected Behavior
 <!--- If you're looking for help, please see https://sensuapp.org/support for resources --->
-<!--- If you're describing a bug, tell us what should happen -->
-<!--- If you're suggesting a change/improvement, tell us how it should work -->
+<!--- Tell us what should happen -->
 
 ## Current Behavior
-<!--- If describing a bug, tell us what happens instead of the expected behavior -->
-<!--- If suggesting a change/improvement, explain the difference from current behavior -->
+<!--- Tell us what happens instead of the expected behavior -->
 
 ## Possible Solution
 <!--- Not obligatory, but suggest a fix/reason for the bug, -->
@@ -28,13 +27,6 @@ labels: web-ui
 ## Context
 <!--- How has this issue affected you? What are you trying to accomplish? -->
 <!--- Providing context (e.g. links to configuration settings, stack strace or log data) helps us come up with a solution that is most useful in the real world -->
-
-## Customers
-<!--- A list of the customers affected or requesting, with links for context -->
-1.
-2.
-3.
-4.
 
 ## Your Environment
 <!--- Include as many relevant details about the environment you experienced the bug in -->
