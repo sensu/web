@@ -1,6 +1,4 @@
 ---
-name: 'PRs'
-about: 'Create a new pull request'
 labels: 'web-ui'
 
 ---
