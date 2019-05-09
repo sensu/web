@@ -1,5 +1,5 @@
 ---
-name: 'Bugs'
+name: 'Bug'
 about: 'Create bug report'
 labels: 'issue: bug, web-ui'
 
