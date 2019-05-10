@@ -98,11 +98,11 @@ class EventsView extends React.Component {
                 </Content>
                 <MobileFullWidthContent>
                   <ToastConnector>
-                    {({ addToast }) => (
+                    {({ setToast }) => (
                       <WithWidth>
                         {({ width }) => (
                           <EventsList
-                            addToast={addToast}
+                            setToast={setToast}
                             editable={width !== "xs"}
                             limit={limit}
                             offset={offset}
