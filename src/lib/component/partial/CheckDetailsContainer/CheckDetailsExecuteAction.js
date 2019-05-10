@@ -1,5 +1,3 @@
-import React from "/vendor/react";
-import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 import { withRouter } from "/vendor/react-router-dom";
 import { withApollo } from "/vendor/react-apollo";
@@ -8,52 +6,32 @@ import compose from "/lib/util/compose";
 
 import executeCheck from "/lib/mutation/executeCheck";
 
-import { ToastConnector } from "/lib/component/relocation";
+import { useExecuteCheckStatusToast } from "/lib/component/toast";
 
-import { ExecuteCheckStatusToast } from "/lib/component/toast";
+const CheckDetailsExecuteAction = ({ children, client, check }) => {
+  const createExecuteCheckStatusToast = useExecuteCheckStatusToast();
 
-class CheckDetailsExecuteAction extends React.PureComponent {
-  static propTypes = {
-    children: PropTypes.func.isRequired,
-    client: PropTypes.object.isRequired,
-    check: PropTypes.object.isRequired,
-  };
+  return children(() => {
+    const promise = executeCheck(client, {
+      id: check.id,
+    });
 
-  static fragments = {
-    check: gql`
-      fragment CheckDetailsExecuteAction_check on CheckConfig {
-        id
-        name
-        namespace
-      }
-    `,
-  };
+    createExecuteCheckStatusToast(promise, {
+      checkName: check.name,
+      namespace: check.namespace,
+    });
+  });
+};
 
-  render() {
-    const { children, client, check } = this.props;
-
-    return (
-      <ToastConnector>
-        {({ setToast }) =>
-          children(() => {
-            const promise = executeCheck(client, {
-              id: check.id,
-            });
-
-            setToast(undefined, ({ remove }) => (
-              <ExecuteCheckStatusToast
-                onClose={remove}
-                mutation={promise}
-                checkName={check.name}
-                namespace={check.namespace}
-              />
-            ));
-          })
-        }
-      </ToastConnector>
-    );
-  }
-}
+CheckDetailsExecuteAction.fragments = {
+  check: gql`
+    fragment CheckDetailsExecuteAction_check on CheckConfig {
+      id
+      name
+      namespace
+    }
+  `,
+};
 
 const enhancer = compose(
   withApollo,

@@ -1,87 +1,100 @@
 /* eslint-disable react/sort-comp */
+/* eslint-disable react/prop-types */
 
 import React from "/vendor/react";
-import PropTypes from "prop-types";
 import { LinearProgress } from "/vendor/@material-ui/core";
 
+import { FetchError } from "/lib/error";
+
 import { Toast } from "/lib/component/base";
-import { ToastConnector } from "/lib/component/relocation";
 
-class PublishCheckStatusToast extends React.PureComponent {
-  static propTypes = {
-    mutation: PropTypes.object.isRequired,
-    onClose: PropTypes.func.isRequired,
-    checkName: PropTypes.string.isRequired,
-    publish: PropTypes.bool,
-  };
+import { usePromiseBoundToast } from "/lib/component/relocation";
 
-  static defaultProps = {
-    publish: true,
-  };
+const PublishCheckStatusToast = ({
+  onClose,
+  resolved,
+  rejected,
+  checkName,
+  publish,
+}) => {
+  const subject = (
+    <React.Fragment>
+      <strong>{checkName}</strong>
+    </React.Fragment>
+  );
 
-  state = { loading: true };
-
-  _willUnmount = false;
-
-  componentDidMount() {
-    this.props.mutation.then(
-      () => !this._willUnmount && this.setState({ loading: false }),
-      // TODO: Handle error cases
-    );
-  }
-
-  componentWillUnmount() {
-    // Prevent calling setState on unmounted component after mutation resolves
-    this._willUnmount = true;
-  }
-
-  render() {
-    const { mutation, onClose, checkName } = this.props;
-    const { loading } = this.state;
-
-    const subject = (
-      <React.Fragment>
-        <strong>{checkName}</strong>
-      </React.Fragment>
-    );
-
-    const published = this.props.publish ? "Published" : "Unpublished";
-    const publishing = this.props.publish ? "Publishing" : "Unpublishing";
-
+  if (resolved) {
     return (
-      <ToastConnector>
-        {({ setToast }) => (
-          <Toast
-            maxAge={loading ? undefined : 5000}
-            variant={loading ? "info" : "success"}
-            progress={loading && <LinearProgress />}
-            message={
-              loading ? (
-                <span>
-                  {publishing} {subject}.
-                </span>
-              ) : (
-                <span>
-                  {published} {subject}.{" "}
-                </span>
-              )
-            }
-            onClose={() => {
-              onClose();
-
-              if (loading) {
-                const onMutationEnd = () =>
-                  setToast(undefined, ({ remove }) => (
-                    <PublishCheckStatusToast {...this.props} onClose={remove} />
-                  ));
-                mutation.then(onMutationEnd, onMutationEnd);
-              }
-            }}
-          />
-        )}
-      </ToastConnector>
+      <Toast
+        maxAge={5000}
+        variant="success"
+        message={
+          <span>
+            {publish ? "Published" : "Unpublished"} {subject}.{" "}
+          </span>
+        }
+        onClose={onClose}
+      />
     );
   }
-}
+
+  if (rejected) {
+    return (
+      <Toast
+        variant="error"
+        message={
+          <span>
+            Failed to {publish ? "publish" : "unpublish"} {subject}.
+          </span>
+        }
+        onClose={onClose}
+      />
+    );
+  }
+
+  return (
+    <Toast
+      variant="info"
+      progress={<LinearProgress />}
+      message={
+        <span>
+          {publish ? "Publishing" : "Unpublishing"} {subject}.
+        </span>
+      }
+      onClose={onClose}
+    />
+  );
+};
 
 export default PublishCheckStatusToast;
+
+export const usePublishCheckStatusToast = () => {
+  const createToast = usePromiseBoundToast();
+
+  return (promise, { checkName, publish }) =>
+    createToast(
+      promise,
+      ({ resolved, rejected, remove, error }) => (
+        <PublishCheckStatusToast
+          onClose={remove}
+          resolved={resolved}
+          rejected={rejected}
+          error={error}
+          checkName={checkName}
+          publish={publish}
+        />
+      ),
+      error => {
+        if (
+          error instanceof FetchError ||
+          error.networkError instanceof FetchError
+        ) {
+          // Display any FetchError instance in the toast.
+          return error;
+        }
+
+        // Otherwise allow the app to crash.
+        throw error;
+      },
+    );
+};

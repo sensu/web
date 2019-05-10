@@ -12,12 +12,12 @@ import {
 } from "/vendor/@material-ui/core";
 
 import deleteEvent from "/lib/mutation/deleteEvent";
-import executeCheck from "/lib/mutation/executeCheck";
+import executeCheckMutation from "/lib/mutation/executeCheck";
 import resolveEvent from "/lib/mutation/resolveEvent";
 
 import { Loader, TableListEmptyState } from "/lib/component/base";
 import { ListController } from "/lib/component/controller";
-import { ExecuteCheckStatusToast } from "/lib/component/toast";
+import { useExecuteCheckStatusToast } from "/lib/component/toast";
 
 import Pagination from "/lib/component/partial/Pagination";
 import SilenceEntryDialog from "/lib/component/partial/SilenceEntryDialog";
@@ -26,108 +26,30 @@ import ClearSilencedEntriesDialog from "/lib/component/partial/ClearSilencedEntr
 import EventsListHeader from "./EventsListHeader";
 import EventsListItem from "./EventsListItem";
 
-class EventsContainer extends React.Component {
-  static propTypes = {
-    setToast: PropTypes.func.isRequired,
-    client: PropTypes.object.isRequired,
-    editable: PropTypes.bool,
-    namespace: PropTypes.shape({
-      checks: PropTypes.object,
-      entities: PropTypes.object,
-    }),
-    onChangeQuery: PropTypes.func.isRequired,
-    limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    loading: PropTypes.bool,
-    refetch: PropTypes.func.isRequired,
-  };
+const EventsList = ({
+  client,
+  editable,
+  loading,
+  limit,
+  namespace,
+  offset,
+  onChangeQuery,
+  refetch,
+}) => {
+  const [silence, setSilence] = React.useState(null);
+  const [unsilence, setUnsilence] = React.useState(null);
 
-  static defaultProps = {
-    loading: false,
-    editable: true,
-    namespace: null,
-    limit: undefined,
-    offset: undefined,
-  };
+  const createExecuteCheckStatusToast = useExecuteCheckStatusToast();
 
-  static fragments = {
-    namespace: gql`
-      fragment EventsList_namespace on Namespace {
-        checks(limit: 1000) {
-          nodes {
-            name
-          }
-        }
-
-        entities(limit: 1000) {
-          nodes {
-            name
-          }
-        }
-
-        events(
-          limit: $limit
-          offset: $offset
-          filter: $filter
-          orderBy: $order
-        ) @connection(key: "events", filter: ["filter", "orderBy"]) {
-          nodes {
-            id
-            namespace
-            deleted @client
-
-            entity {
-              name
-            }
-
-            check {
-              nodeId
-              name
-              proxyEntityName
-            }
-
-            silences {
-              ...ClearSilencedEntriesDialog_silence
-            }
-
-            ...EventsListHeader_event
-            ...EventsListItem_event
-          }
-
-          pageInfo {
-            ...Pagination_pageInfo
-          }
-        }
-
-        ...EventsListHeader_namespace
-      }
-
-      ${ClearSilencedEntriesDialog.fragments.silence}
-      ${EventsListHeader.fragments.namespace}
-      ${EventsListHeader.fragments.event}
-      ${EventsListItem.fragments.event}
-      ${Pagination.fragments.pageInfo}
-    `,
-  };
-
-  state = {
-    silence: null,
-    unsilence: null,
-  };
-
-  resolveEvents = events => {
-    const { client } = this.props;
+  const resolveEvents = events => {
     events.forEach(event => resolveEvent(client, { id: event.id }));
   };
 
-  deleteEvents = events => {
-    const { client } = this.props;
+  const deleteEvents = events => {
     events.forEach(event => deleteEvent(client, { id: event.id }));
   };
 
-  executeCheck = events => {
-    const { client } = this.props;
-
+  const executeCheck = events => {
     events.forEach(({ check, entity }) => {
       // Unless this is a proxy entity target the specific entity
       let subscriptions = [`entity:${entity.name}`];
@@ -135,31 +57,27 @@ class EventsContainer extends React.Component {
         subscriptions = [];
       }
 
-      const promise = executeCheck(client, {
+      const promise = executeCheckMutation(client, {
         id: check.nodeId,
         subscriptions,
       });
 
-      this.props.setToast(undefined, ({ remove }) => (
-        <ExecuteCheckStatusToast
-          onClose={remove}
-          mutation={promise}
-          checkName={check.name}
-          namespace={check.namespace}
-        />
-      ));
+      createExecuteCheckStatusToast(promise, {
+        checkName: check.name,
+        namespace: check.namespace,
+      });
     });
   };
 
-  clearSilences = items => {
-    this.setState({
-      unsilence: items
+  const clearSilences = items => {
+    setUnsilence(
+      items
         .filter(item => item.silences.length > 0)
         .reduce((memo, item) => [...memo, ...item.silences], []),
-    });
+    );
   };
 
-  silenceEvents = events => {
+  const silenceEvents = events => {
     const targets = events.map(event => ({
       namespace: event.namespace,
       subscription: `entity:${event.entity.name}`,
@@ -167,192 +85,238 @@ class EventsContainer extends React.Component {
     }));
 
     if (targets.length === 1) {
-      this.setState({
-        silence: {
-          ...targets[0],
-          props: {
-            begin: null,
-          },
+      setSilence({
+        ...targets[0],
+        props: {
+          begin: null,
         },
       });
     } else if (targets.length) {
-      this.setState({
-        silence: {
-          props: {
-            begin: null,
-          },
-          targets,
+      setSilence({
+        props: {
+          begin: null,
         },
+        targets,
       });
     }
   };
 
-  silenceEntity = event => {
-    this.setState({
-      silence: {
-        namespace: event.namespace,
-        check: "*",
-        subscription: `entity:${event.entity.name}`,
-        props: {
-          begin: null,
-        },
+  const silenceEntity = event => {
+    setSilence({
+      namespace: event.namespace,
+      check: "*",
+      subscription: `entity:${event.entity.name}`,
+      props: {
+        begin: null,
       },
     });
   };
 
-  silenceCheck = event => {
-    this.setState({
-      silence: {
-        namespace: event.namespace,
-        check: event.check.name,
-        subscription: "*",
-        props: {
-          begin: null,
-        },
+  const silenceCheck = event => {
+    setSilence({
+      namespace: event.namespace,
+      check: event.check.name,
+      subscription: "*",
+      props: {
+        begin: null,
       },
     });
   };
 
-  renderEmptyState = () => {
-    const { loading } = this.props;
+  const items = namespace
+    ? namespace.events.nodes.filter(event => !event.deleted)
+    : [];
 
-    return (
-      <TableRow>
-        <TableCell>
-          <TableListEmptyState
-            loading={loading}
-            primary="No results matched your query."
-            secondary="
+  return (
+    <ListController
+      items={items}
+      // Event ID includes timestamp and cannot be reliably used to identify
+      // an event between refreshes, subscriptions and mutations.
+      getItemKey={event => `${event.check.name}:::${event.entity.name}`}
+      renderEmptyState={() => {
+        return (
+          <TableRow>
+            <TableCell>
+              <TableListEmptyState
+                loading={loading}
+                primary="No results matched your query."
+                secondary="
           Try refining your search query in the search box. The filter buttons
           above are also a helpful way of quickly finding events.
         "
-          />
-        </TableCell>
-      </TableRow>
-    );
-  };
-
-  renderEvent = ({
-    key,
-    item,
-    selectedCount,
-    hovered,
-    setHovered,
-    selected,
-    setSelected,
-  }) => (
-    <EventsListItem
-      key={key}
-      event={item}
-      editable={this.props.editable}
-      editing={selectedCount > 0}
-      selected={selected}
-      onChangeSelected={setSelected}
-      hovered={hovered}
-      onHover={this.props.editable ? setHovered : () => null}
-      onClickClearSilences={() => this.clearSilences([item])}
-      onClickSilencePair={() => this.silenceEvents([item])}
-      onClickSilenceEntity={() => this.silenceEntity(item)}
-      onClickSilenceCheck={() => this.silenceCheck(item)}
-      onClickResolve={() => this.resolveEvents([item])}
-      onClickRerun={() => this.executeCheck([item])}
-      onClickDelete={() => this.deleteEvents([item])}
-    />
-  );
-
-  render() {
-    const { silence, unsilence } = this.state;
-    const {
-      editable,
-      loading,
-      limit,
-      namespace,
-      offset,
-      onChangeQuery,
-      refetch,
-    } = this.props;
-
-    const items = namespace
-      ? namespace.events.nodes.filter(event => !event.deleted)
-      : [];
-
-    return (
-      <ListController
-        items={items}
-        // Event ID includes timestamp and cannot be reliably used to identify
-        // an event between refreshes, subscriptions and mutations.
-        getItemKey={event => `${event.check.name}:::${event.entity.name}`}
-        renderEmptyState={this.renderEmptyState}
-        renderItem={this.renderEvent}
-      >
-        {({
-          children,
-          selectedItems,
-          setSelectedItems,
-          toggleSelectedItems,
-        }) => (
-          <Paper>
-            <Loader loading={loading}>
-              <EventsListHeader
-                editable={editable}
-                namespace={namespace}
-                onClickSelect={toggleSelectedItems}
-                onClickClearSilences={() => this.clearSilences(selectedItems)}
-                onClickSilence={() => this.silenceEvents(selectedItems)}
-                onClickResolve={() => {
-                  this.resolveEvents(selectedItems);
-                  setSelectedItems([]);
-                }}
-                onClickRerun={() => {
-                  this.executeCheck(selectedItems);
-                  setSelectedItems([]);
-                }}
-                onClickDelete={() => {
-                  this.deleteEvents(selectedItems);
-                  setSelectedItems([]);
-                }}
-                onChangeQuery={onChangeQuery}
-                rowCount={children.length || 0}
-                selectedItems={selectedItems}
               />
+            </TableCell>
+          </TableRow>
+        );
+      }}
+      renderItem={({
+        key,
+        item,
+        selectedCount,
+        hovered,
+        setHovered,
+        selected,
+        setSelected,
+      }) => (
+        <EventsListItem
+          key={key}
+          event={item}
+          editable={editable}
+          editing={selectedCount > 0}
+          selected={selected}
+          onChangeSelected={setSelected}
+          hovered={hovered}
+          onHover={editable ? setHovered : () => null}
+          onClickClearSilences={() => clearSilences([item])}
+          onClickSilencePair={() => silenceEvents([item])}
+          onClickSilenceEntity={() => silenceEntity(item)}
+          onClickSilenceCheck={() => silenceCheck(item)}
+          onClickResolve={() => resolveEvents([item])}
+          onClickRerun={() => executeCheck([item])}
+          onClickDelete={() => deleteEvents([item])}
+        />
+      )}
+    >
+      {({ children, selectedItems, setSelectedItems, toggleSelectedItems }) => (
+        <Paper>
+          <Loader loading={loading}>
+            <EventsListHeader
+              editable={editable}
+              namespace={namespace}
+              onClickSelect={toggleSelectedItems}
+              onClickClearSilences={() => clearSilences(selectedItems)}
+              onClickSilence={() => silenceEvents(selectedItems)}
+              onClickResolve={() => {
+                resolveEvents(selectedItems);
+                setSelectedItems([]);
+              }}
+              onClickRerun={() => {
+                executeCheck(selectedItems);
+                setSelectedItems([]);
+              }}
+              onClickDelete={() => {
+                deleteEvents(selectedItems);
+                setSelectedItems([]);
+              }}
+              onChangeQuery={onChangeQuery}
+              rowCount={children.length || 0}
+              selectedItems={selectedItems}
+            />
 
-              <Table>
-                <TableBody>{children}</TableBody>
-              </Table>
+            <Table>
+              <TableBody>{children}</TableBody>
+            </Table>
 
-              <Pagination
-                limit={limit}
-                offset={offset}
-                pageInfo={namespace && namespace.events.pageInfo}
-                onChangeQuery={onChangeQuery}
-              />
+            <Pagination
+              limit={limit}
+              offset={offset}
+              pageInfo={namespace && namespace.events.pageInfo}
+              onChangeQuery={onChangeQuery}
+            />
 
-              <ClearSilencedEntriesDialog
-                silences={unsilence}
-                open={!!unsilence}
-                close={() => {
-                  this.setState({ unsilence: null });
+            <ClearSilencedEntriesDialog
+              silences={unsilence}
+              open={!!unsilence}
+              close={() => {
+                setUnsilence(null);
+                setSelectedItems([]);
+                refetch();
+              }}
+            />
+
+            {silence && (
+              <SilenceEntryDialog
+                values={silence}
+                onClose={() => {
+                  setSilence(null);
                   setSelectedItems([]);
                   refetch();
                 }}
               />
+            )}
+          </Loader>
+        </Paper>
+      )}
+    </ListController>
+  );
+};
 
-              {silence && (
-                <SilenceEntryDialog
-                  values={silence}
-                  onClose={() => {
-                    this.setState({ silence: null });
-                    setSelectedItems([]);
-                    refetch();
-                  }}
-                />
-              )}
-            </Loader>
-          </Paper>
-        )}
-      </ListController>
-    );
-  }
-}
+EventsList.propTypes = {
+  client: PropTypes.object.isRequired,
+  editable: PropTypes.bool,
+  namespace: PropTypes.shape({
+    checks: PropTypes.object,
+    entities: PropTypes.object,
+  }),
+  onChangeQuery: PropTypes.func.isRequired,
+  limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  loading: PropTypes.bool,
+  refetch: PropTypes.func.isRequired,
+};
 
-export default withApollo(EventsContainer);
+EventsList.defaultProps = {
+  loading: false,
+  editable: true,
+  namespace: null,
+  limit: undefined,
+  offset: undefined,
+};
+
+EventsList.fragments = {
+  namespace: gql`
+    fragment EventsList_namespace on Namespace {
+      checks(limit: 1000) {
+        nodes {
+          name
+        }
+      }
+
+      entities(limit: 1000) {
+        nodes {
+          name
+        }
+      }
+
+      events(limit: $limit, offset: $offset, filter: $filter, orderBy: $order)
+        @connection(key: "events", filter: ["filter", "orderBy"]) {
+        nodes {
+          id
+          namespace
+          deleted @client
+
+          entity {
+            name
+          }
+
+          check {
+            nodeId
+            name
+            proxyEntityName
+          }
+
+          silences {
+            ...ClearSilencedEntriesDialog_silence
+          }
+
+          ...EventsListHeader_event
+          ...EventsListItem_event
+        }
+
+        pageInfo {
+          ...Pagination_pageInfo
+        }
+      }
+
+      ...EventsListHeader_namespace
+    }
+
+    ${ClearSilencedEntriesDialog.fragments.silence}
+    ${EventsListHeader.fragments.namespace}
+    ${EventsListHeader.fragments.event}
+    ${EventsListItem.fragments.event}
+    ${Pagination.fragments.pageInfo}
+  `,
+};
+
+export default withApollo(EventsList);
