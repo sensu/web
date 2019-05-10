@@ -45,14 +45,14 @@ class EventDetailsReRunAction extends React.PureComponent {
 
     return (
       <ToastConnector>
-        {({ addToast }) =>
+        {({ setToast }) =>
           children(() => {
             const promise = executeCheck(client, {
               id: event.check.nodeId,
               subscriptions,
             });
 
-            addToast(({ remove }) => (
+            setToast(undefined, ({ remove }) => (
               <ExecuteCheckStatusToast
                 onClose={remove}
                 mutation={promise}

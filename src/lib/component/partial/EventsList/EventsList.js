@@ -28,7 +28,7 @@ import EventsListItem from "./EventsListItem";
 
 class EventsContainer extends React.Component {
   static propTypes = {
-    addToast: PropTypes.func.isRequired,
+    setToast: PropTypes.func.isRequired,
     client: PropTypes.object.isRequired,
     editable: PropTypes.bool,
     namespace: PropTypes.shape({
@@ -140,7 +140,7 @@ class EventsContainer extends React.Component {
         subscriptions,
       });
 
-      this.props.addToast(({ remove }) => (
+      this.props.setToast(undefined, ({ remove }) => (
         <ExecuteCheckStatusToast
           onClose={remove}
           mutation={promise}

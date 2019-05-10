@@ -8,67 +8,68 @@ import { mergeAtIndex, removeAtIndex } from "/lib/util/array";
 
 import useUniqiueId from "/lib/component/util/useUniqueId";
 
-const Context = React.createContext({
+const StateContext = React.createContext([]);
+
+const ActionContext = React.createContext({
   setChild: () => {},
   removeChild: () => {},
-  elements: [],
 });
 
 export const Provider = ({ children }) => {
   const [elements, setElements] = React.useState([]);
 
-  const createChild = React.useCallback(props => {
-    setElements(previousElements => {
-      const id = uniqueId();
+  const actions = React.useMemo(
+    () => ({
+      removeChild: id => {
+        setElements(previousElements => {
+          const index = previousElements.findIndex(
+            element => element.id === id,
+          );
 
-      const element = {
-        update: nextProps => this.updateChild(id, nextProps),
-        remove: () => this.removeChild(id),
-        id,
-        props,
-      };
+          if (index === -1) {
+            return null;
+          }
 
-      return previousElements.concat([element]);
-    });
-  }, []);
+          return removeAtIndex(previousElements, index);
+        });
+      },
 
-  const setChild = React.useCallback((id, props) => {
-    setElements(previousElements => {
-      const index = previousElements.findIndex(element => element.id === id);
+      setChild: (id = uniqueId(), props) => {
+        setElements(previousElements => {
+          const index = previousElements.findIndex(
+            element => element.id === id,
+          );
 
-      if (index === -1) {
-        const element = { id, props };
-        return previousElements.concat([element]);
-      }
+          if (index === -1) {
+            const element = {
+              id,
+              props,
+              update: nextProps => actions.setChild(id, nextProps),
+              remove: () => actions.removeChild(id),
+            };
+            return previousElements.concat([element]);
+          }
 
-      return mergeAtIndex(previousElements, index, { props });
-    });
-  }, []);
+          return mergeAtIndex(previousElements, index, { props });
+        });
 
-  const removeChild = React.useCallback(id => {
-    setElements(previousElements => {
-      const index = previousElements.findIndex(element => element.id === id);
-
-      if (index === -1) {
-        return null;
-      }
-
-      return removeAtIndex(previousElements, index);
-    });
-  }, []);
-
-  const context = React.useMemo(
-    () => ({ elements, createChild, setChild, removeChild }),
-    [elements],
+        return id;
+      },
+    }),
+    [],
   );
 
-  return <Context.Provider value={context}>{children}</Context.Provider>;
+  return (
+    <ActionContext.Provider value={actions}>
+      <StateContext.Provider value={elements}>{children}</StateContext.Provider>
+    </ActionContext.Provider>
+  );
 };
 
 export const useSink = element => {
   const id = useUniqiueId();
 
-  const { setChild, removeChild } = React.useContext(Context);
+  const { setChild, removeChild } = React.useContext(ActionContext);
 
   React.useEffect(() => {
     setChild(id, element);
@@ -85,8 +86,11 @@ export const Sink = ({ children }) => {
 };
 
 export const useWell = () => {
-  const { elements } = React.useContext(Context);
-  return elements;
+  return React.useContext(StateContext);
+};
+
+export const useRelocation = () => {
+  return React.useContext(ActionContext);
 };
 
 export const Well = ({ children }) => {
@@ -94,13 +98,7 @@ export const Well = ({ children }) => {
   return children({ elements });
 };
 
-export const useRelocation = () => {
-  const { setChild, removeChild } = React.useContext(Context);
-
-  return [setChild, removeChild];
-};
-
 export const Consumer = ({ children }) => {
-  const [setChild, removeChild] = useRelocation();
+  const { setChild, removeChild } = useRelocation();
   return children({ setChild, removeChild });
 };

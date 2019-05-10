@@ -89,7 +89,7 @@ class ChecksView extends React.Component {
 
                 <MobileFullWidthContent>
                   <ToastConnector>
-                    {({ addToast }) => (
+                    {({ setToast }) => (
                       <WithWidth>
                         {({ width }) => (
                           <ChecksList
@@ -101,7 +101,7 @@ class ChecksView extends React.Component {
                             loading={(loading && !namespace) || aborted}
                             refetch={refetch}
                             order={queryParams.order}
-                            addToast={addToast}
+                            setToast={setToast}
                           />
                         )}
                       </WithWidth>

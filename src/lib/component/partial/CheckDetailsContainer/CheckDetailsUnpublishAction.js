@@ -31,13 +31,13 @@ class CheckDetailsUnpublishAction extends React.PureComponent {
 
     return (
       <ToastConnector>
-        {({ addToast }) =>
+        {({ setToast }) =>
           children(() => {
             const promise = setCheckPublish(client, {
               id: check.id,
               publish: false,
             });
-            addToast(({ remove }) => (
+            setToast(undefined, ({ remove }) => (
               <PublishCheckStatusToast
                 onClose={remove}
                 mutation={promise}

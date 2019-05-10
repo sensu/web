@@ -44,7 +44,7 @@ class ChecksList extends React.Component {
     offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     order: PropTypes.string.isRequired,
     refetch: PropTypes.func.isRequired,
-    addToast: PropTypes.func.isRequired,
+    setToast: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -103,7 +103,7 @@ class ChecksList extends React.Component {
         id: check.id,
         publish,
       });
-      this.props.addToast(({ remove }) => (
+      this.props.setToast(undefined, ({ remove }) => (
         <PublishCheckStatusToast
           onClose={remove}
           mutation={promise}
@@ -146,7 +146,7 @@ class ChecksList extends React.Component {
     checks.forEach(({ id, name, namespace }) => {
       const promise = executeCheck(this.props.client, { id });
 
-      this.props.addToast(({ remove }) => (
+      this.props.setToast(undefined, ({ remove }) => (
         <ExecuteCheckStatusToast
           onClose={remove}
           mutation={promise}

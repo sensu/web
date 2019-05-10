@@ -50,7 +50,7 @@ class PublishCheckStatusToast extends React.PureComponent {
 
     return (
       <ToastConnector>
-        {({ addToast }) => (
+        {({ setToast }) => (
           <Toast
             maxAge={loading ? undefined : 5000}
             variant={loading ? "info" : "success"}
@@ -71,7 +71,7 @@ class PublishCheckStatusToast extends React.PureComponent {
 
               if (loading) {
                 const onMutationEnd = () =>
-                  addToast(({ remove }) => (
+                  setToast(undefined, ({ remove }) => (
                     <PublishCheckStatusToast {...this.props} onClose={remove} />
                   ));
                 mutation.then(onMutationEnd, onMutationEnd);

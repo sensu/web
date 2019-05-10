@@ -34,13 +34,13 @@ class CheckDetailsExecuteAction extends React.PureComponent {
 
     return (
       <ToastConnector>
-        {({ addToast }) =>
+        {({ setToast }) =>
           children(() => {
             const promise = executeCheck(client, {
               id: check.id,
             });
 
-            addToast(({ remove }) => (
+            setToast(undefined, ({ remove }) => (
               <ExecuteCheckStatusToast
                 onClose={remove}
                 mutation={promise}
