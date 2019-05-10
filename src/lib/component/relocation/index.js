@@ -1,4 +1,8 @@
-export { default as useBanner, BannerConnector } from "./useBanner";
+export {
+  default as useBanner,
+  usePromiseBoundBanner,
+  BannerConnector,
+} from "./useBanner";
 export { default as BannerSink } from "./BannerSink";
 export { default as BannerWell } from "./BannerWell";
 export {
@@ -10,7 +14,11 @@ export {
   useWell,
   useRelocation,
 } from "./Relocation";
-export { default as useToast, ToastConnector } from "./useToast";
+export {
+  default as useToast,
+  usePromiseBoundToast,
+  ToastConnector,
+} from "./useToast";
 export { default as ToastSink } from "./ToastSink";
 export { default as ToastWell } from "./ToastWell";
 export { TOAST, BANNER } from "./types";
