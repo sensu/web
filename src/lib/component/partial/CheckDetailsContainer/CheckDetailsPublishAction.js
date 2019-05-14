@@ -1,54 +1,40 @@
-import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 import { withApollo } from "/vendor/react-apollo";
 
 import setCheckPublish from "/lib/mutation/setCheckPublish";
 
-import { ToastConnector } from "/lib/component/relocation";
+import { usePublishCheckStatusToast } from "/lib/component/toast";
 
-import { PublishCheckStatusToast } from "/lib/component/toast";
+const CheckDetailsPublishAction = ({ children, client, check }) => {
+  const createPublishCheckStatusToast = usePublishCheckStatusToast();
 
-class CheckDetailsPublishAction extends React.PureComponent {
-  static propTypes = {
-    children: PropTypes.func.isRequired,
-    client: PropTypes.object.isRequired,
-    check: PropTypes.object.isRequired,
-  };
+  return children(() => {
+    const promise = setCheckPublish(client, {
+      id: check.id,
+      publish: true,
+    });
 
-  static fragments = {
-    check: gql`
-      fragment CheckDetailsPublishAction_check on CheckConfig {
-        id
-        name
-        publish
-      }
-    `,
-  };
+    createPublishCheckStatusToast(promise, {
+      checkName: check.name,
+    });
+  });
+};
 
-  render() {
-    const { children, client, check } = this.props;
+CheckDetailsPublishAction.propTypes = {
+  children: PropTypes.func.isRequired,
+  client: PropTypes.object.isRequired,
+  check: PropTypes.object.isRequired,
+};
 
-    return (
-      <ToastConnector>
-        {({ setToast }) =>
-          children(() => {
-            const promise = setCheckPublish(client, {
-              id: check.id,
-              publish: true,
-            });
-            setToast(undefined, ({ remove }) => (
-              <PublishCheckStatusToast
-                onClose={remove}
-                mutation={promise}
-                checkName={check.name}
-              />
-            ));
-          })
-        }
-      </ToastConnector>
-    );
-  }
-}
+CheckDetailsPublishAction.fragments = {
+  check: gql`
+    fragment CheckDetailsPublishAction_check on CheckConfig {
+      id
+      name
+      publish
+    }
+  `,
+};
 
 export default withApollo(CheckDetailsPublishAction);

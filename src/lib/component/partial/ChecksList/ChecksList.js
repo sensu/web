@@ -22,99 +22,45 @@ import Pagination from "/lib/component/partial/Pagination";
 import SilenceEntryDialog from "/lib/component/partial/SilenceEntryDialog";
 
 import {
-  PublishCheckStatusToast,
-  ExecuteCheckStatusToast,
+  usePublishCheckStatusToast,
+  useExecuteCheckStatusToast,
 } from "/lib/component/toast";
 
 import ChecksListHeader from "./ChecksListHeader";
 import ChecksListItem from "./ChecksListItem";
 
-class ChecksList extends React.Component {
-  static propTypes = {
-    client: PropTypes.object.isRequired,
-    editable: PropTypes.bool,
-    namespace: PropTypes.shape({
-      checks: PropTypes.shape({
-        nodes: PropTypes.array.isRequired,
-      }),
-    }),
-    loading: PropTypes.bool,
-    onChangeQuery: PropTypes.func.isRequired,
-    limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    order: PropTypes.string.isRequired,
-    refetch: PropTypes.func.isRequired,
-    setToast: PropTypes.func.isRequired,
-  };
+const ChecksList = ({
+  client,
+  editable,
+  loading,
+  limit,
+  namespace,
+  offset,
+  order,
+  onChangeQuery,
+  refetch,
+}) => {
+  const [silence, setSilence] = React.useState(null);
+  const [unsilence, setUnsilence] = React.useState(null);
 
-  static defaultProps = {
-    editable: true,
-    namespace: null,
-    loading: false,
-    limit: undefined,
-    offset: undefined,
-  };
+  const createPublishCheckStatusToast = usePublishCheckStatusToast();
+  const createExecuteCheckStatusToast = useExecuteCheckStatusToast();
 
-  static fragments = {
-    namespace: gql`
-      fragment ChecksList_namespace on Namespace {
-        checks(
-          limit: $limit
-          offset: $offset
-          orderBy: $order
-          filter: $filter
-        ) @connection(key: "checks", filter: ["filter", "orderBy"]) {
-          nodes {
-            id
-            deleted @client
-            name
-            namespace
-            silences {
-              name
-              ...ClearSilencedEntriesDialog_silence
-            }
-
-            ...ChecksListItem_check
-          }
-
-          pageInfo {
-            ...Pagination_pageInfo
-          }
-        }
-
-        ...ChecksListHeader_namespace
-      }
-
-      ${ChecksListHeader.fragments.namespace}
-      ${ChecksListItem.fragments.check}
-      ${ClearSilencedEntriesDialog.fragments.silence}
-      ${Pagination.fragments.pageInfo}
-    `,
-  };
-
-  state = {
-    silence: null,
-    unsilence: null,
-  };
-
-  setChecksPublish = (checks, publish = true) => {
+  const setChecksPublish = (checks, publish = true) => {
     checks.forEach(check => {
-      const promise = setCheckPublish(this.props.client, {
+      const promise = setCheckPublish(client, {
         id: check.id,
         publish,
       });
-      this.props.setToast(undefined, ({ remove }) => (
-        <PublishCheckStatusToast
-          onClose={remove}
-          mutation={promise}
-          checkName={check.name}
-          publish={publish}
-        />
-      ));
+
+      createPublishCheckStatusToast(promise, {
+        checkName: check.name,
+        publish,
+      });
     });
   };
 
-  silenceChecks = checks => {
+  const silenceChecks = checks => {
     const targets = checks
       .filter(check => check.silences.length === 0)
       .map(check => ({
@@ -123,185 +69,192 @@ class ChecksList extends React.Component {
       }));
 
     if (targets.length === 1) {
-      this.setState({
-        silence: {
-          props: {},
-          ...targets[0],
-        },
-      });
+      setSilence({ props: {}, ...targets[0] });
     } else if (targets.length) {
-      this.setState({
-        silence: { props: {}, targets },
-      });
+      setSilence({ props: {}, targets });
     }
   };
 
-  clearSilences = checks => {
-    this.setState({
-      unsilence: checks.reduce((memo, ch) => [...memo, ...ch.silences], []),
+  const clearSilences = checks => {
+    setUnsilence(checks.reduce((memo, ch) => [...memo, ...ch.silences], []));
+  };
+
+  const executeChecks = checks => {
+    checks.forEach(({ id, name, namespace: checkNamespace }) => {
+      const promise = executeCheck(client, { id });
+
+      createExecuteCheckStatusToast(promise, {
+        checkName: name,
+        namespace: checkNamespace,
+      });
     });
   };
 
-  executeChecks = checks => {
-    checks.forEach(({ id, name, namespace }) => {
-      const promise = executeCheck(this.props.client, { id });
+  const items = namespace
+    ? namespace.checks.nodes.filter(ch => !ch.deleted)
+    : [];
 
-      this.props.setToast(undefined, ({ remove }) => (
-        <ExecuteCheckStatusToast
-          onClose={remove}
-          mutation={promise}
-          checkName={name}
-          namespace={namespace}
-        />
-      ));
-    });
-  };
-
-  _handleChangeSort = val => {
-    let newVal = val;
-    this.props.onChangeQuery(query => {
-      // Toggle between ASC & DESC
-      const curVal = query.get("order");
-      if (curVal === "NAME" && newVal === "NAME") {
-        newVal = "NAME_DESC";
-      }
-      query.set("order", newVal);
-    });
-  };
-
-  renderEmptyState = () => {
-    const { loading } = this.props;
-
-    return (
-      <TableRow>
-        <TableCell>
-          <TableListEmptyState
-            loading={loading}
-            primary="No results matched your query."
-            secondary="
+  return (
+    <ListController
+      items={items}
+      getItemKey={check => check.id}
+      renderEmptyState={() => {
+        return (
+          <TableRow>
+            <TableCell>
+              <TableListEmptyState
+                loading={loading}
+                primary="No results matched your query."
+                secondary="
               Try refining your search query in the search box. The filter
               buttons above are also a helpful way of quickly finding entities.
             "
-          />
-        </TableCell>
-      </TableRow>
-    );
-  };
-
-  renderCheck = ({
-    key,
-    item: check,
-    hovered,
-    setHovered,
-    selectedCount,
-    selected,
-    setSelected,
-  }) => (
-    <ChecksListItem
-      key={key}
-      editable={this.props.editable}
-      editing={selectedCount > 0}
-      check={check}
-      hovered={hovered}
-      onHover={this.props.editable ? setHovered : () => null}
-      selected={selected}
-      onChangeSelected={setSelected}
-      onClickClearSilences={() => this.clearSilences([check])}
-      onClickExecute={() => this.executeChecks([check])}
-      onClickSetPublish={publish => this.setChecksPublish([check], publish)}
-      onClickSilence={() => this.silenceChecks([check])}
-    />
-  );
-
-  render() {
-    const { silence, unsilence } = this.state;
-    const {
-      editable,
-      loading,
-      limit,
-      namespace,
-      offset,
-      order,
-      onChangeQuery,
-      refetch,
-    } = this.props;
-
-    const items = namespace
-      ? namespace.checks.nodes.filter(ch => !ch.deleted)
-      : [];
-
-    return (
-      <ListController
-        items={items}
-        getItemKey={check => check.id}
-        renderEmptyState={this.renderEmptyState}
-        renderItem={this.renderCheck}
-      >
-        {({
-          children,
-          selectedItems,
-          setSelectedItems,
-          toggleSelectedItems,
-        }) => (
-          <Paper>
-            <Loader loading={loading}>
-              <ChecksListHeader
-                editable={editable}
-                namespace={namespace}
-                onChangeQuery={onChangeQuery}
-                onClickClearSilences={() => this.clearSilences(selectedItems)}
-                onClickExecute={() => {
-                  this.executeChecks(selectedItems);
-                  setSelectedItems([]);
-                }}
-                onClickSetPublish={publish => {
-                  this.setChecksPublish(selectedItems, publish);
-                  setSelectedItems([]);
-                }}
-                onClickSilence={() => this.silenceChecks(selectedItems)}
-                order={order}
-                rowCount={items.length}
-                selectedItems={selectedItems}
-                toggleSelectedItems={toggleSelectedItems}
               />
+            </TableCell>
+          </TableRow>
+        );
+      }}
+      renderItem={({
+        key,
+        item: check,
+        hovered,
+        setHovered,
+        selectedCount,
+        selected,
+        setSelected,
+      }) => (
+        <ChecksListItem
+          key={key}
+          editable={editable}
+          editing={selectedCount > 0}
+          check={check}
+          hovered={hovered}
+          onHover={editable ? setHovered : () => null}
+          selected={selected}
+          onChangeSelected={setSelected}
+          onClickClearSilences={() => clearSilences([check])}
+          onClickExecute={() => executeChecks([check])}
+          onClickSetPublish={publish => setChecksPublish([check], publish)}
+          onClickSilence={() => silenceChecks([check])}
+        />
+      )}
+    >
+      {({ children, selectedItems, setSelectedItems, toggleSelectedItems }) => (
+        <Paper>
+          <Loader loading={loading}>
+            <ChecksListHeader
+              editable={editable}
+              namespace={namespace}
+              onChangeQuery={onChangeQuery}
+              onClickClearSilences={() => clearSilences(selectedItems)}
+              onClickExecute={() => {
+                executeChecks(selectedItems);
+                setSelectedItems([]);
+              }}
+              onClickSetPublish={publish => {
+                setChecksPublish(selectedItems, publish);
+                setSelectedItems([]);
+              }}
+              onClickSilence={() => silenceChecks(selectedItems)}
+              order={order}
+              rowCount={items.length}
+              selectedItems={selectedItems}
+              toggleSelectedItems={toggleSelectedItems}
+            />
 
-              <Table>
-                <TableBody>{children}</TableBody>
-              </Table>
+            <Table>
+              <TableBody>{children}</TableBody>
+            </Table>
 
-              <Pagination
-                limit={limit}
-                offset={offset}
-                pageInfo={namespace && namespace.checks.pageInfo}
-                onChangeQuery={onChangeQuery}
-              />
+            <Pagination
+              limit={limit}
+              offset={offset}
+              pageInfo={namespace && namespace.checks.pageInfo}
+              onChangeQuery={onChangeQuery}
+            />
 
-              {silence && (
-                <SilenceEntryDialog
-                  values={silence}
-                  onClose={() => {
-                    this.setState({ silence: null });
-                    setSelectedItems([]);
-                    refetch();
-                  }}
-                />
-              )}
-
-              <ClearSilencedEntriesDialog
-                silences={unsilence}
-                open={!!unsilence}
-                close={() => {
-                  this.setState({ unsilence: null });
+            {silence && (
+              <SilenceEntryDialog
+                values={silence}
+                onClose={() => {
+                  setSilence(null);
                   setSelectedItems([]);
                   refetch();
                 }}
               />
-            </Loader>
-          </Paper>
-        )}
-      </ListController>
-    );
-  }
-}
+            )}
+
+            <ClearSilencedEntriesDialog
+              silences={unsilence}
+              open={!!unsilence}
+              close={() => {
+                setUnsilence(null);
+                setSelectedItems([]);
+                refetch();
+              }}
+            />
+          </Loader>
+        </Paper>
+      )}
+    </ListController>
+  );
+};
+
+ChecksList.propTypes = {
+  client: PropTypes.object.isRequired,
+  editable: PropTypes.bool,
+  namespace: PropTypes.shape({
+    checks: PropTypes.shape({
+      nodes: PropTypes.array.isRequired,
+    }),
+  }),
+  loading: PropTypes.bool,
+  onChangeQuery: PropTypes.func.isRequired,
+  limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  order: PropTypes.string.isRequired,
+  refetch: PropTypes.func.isRequired,
+};
+
+ChecksList.defaultProps = {
+  editable: true,
+  namespace: null,
+  loading: false,
+  limit: undefined,
+  offset: undefined,
+};
+
+ChecksList.fragments = {
+  namespace: gql`
+    fragment ChecksList_namespace on Namespace {
+      checks(limit: $limit, offset: $offset, orderBy: $order, filter: $filter)
+        @connection(key: "checks", filter: ["filter", "orderBy"]) {
+        nodes {
+          id
+          deleted @client
+          name
+          namespace
+          silences {
+            name
+            ...ClearSilencedEntriesDialog_silence
+          }
+
+          ...ChecksListItem_check
+        }
+
+        pageInfo {
+          ...Pagination_pageInfo
+        }
+      }
+
+      ...ChecksListHeader_namespace
+    }
+
+    ${ChecksListHeader.fragments.namespace}
+    ${ChecksListItem.fragments.check}
+    ${ClearSilencedEntriesDialog.fragments.silence}
+    ${Pagination.fragments.pageInfo}
+  `,
+};
 
 export default withApollo(ChecksList);

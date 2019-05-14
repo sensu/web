@@ -45,7 +45,7 @@ export const styles = theme => {
       color: theme.palette.getContrastText(backgroundColor),
       backgroundColor,
       display: "flex",
-      alignItems: "center",
+      alignItems: "flex-start",
       [theme.breakpoints.up("md")]: {
         width: 400,
         borderRadius: theme.shape.borderRadius,
@@ -68,7 +68,7 @@ export const styles = theme => {
       paddingLeft: 24,
 
       display: "flex",
-      alignItems: "center",
+      alignItems: "flex-start",
 
       [theme.breakpoints.down("md")]: {
         marginLeft: "env(safe-area-inset-left)",

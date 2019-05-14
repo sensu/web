@@ -1,102 +1,114 @@
 /* eslint-disable react/sort-comp */
+/* eslint-disable react/prop-types */
 
 import React from "/vendor/react";
-import PropTypes from "prop-types";
 import { LinearProgress } from "/vendor/@material-ui/core";
+
+import { FetchError } from "/lib/error";
+
+import { usePromiseBoundToast } from "/lib/component/relocation";
 
 import { NamespaceLink } from "/lib/component/util";
 
 import { InlineLink, Toast } from "/lib/component/base";
-import { ToastConnector } from "/lib/component/relocation";
 
-class ExecuteCheckStatusToast extends React.PureComponent {
-  static propTypes = {
-    mutation: PropTypes.object.isRequired,
-    onClose: PropTypes.func.isRequired,
-    checkName: PropTypes.string.isRequired,
-    entityName: PropTypes.string,
-    namespace: PropTypes.string.isRequired,
-  };
+const ExecuteCheckStatusToast = ({
+  onClose,
+  resolved,
+  rejected,
+  checkName,
+  entityName,
+  namespace,
+}) => {
+  const subject = (
+    <React.Fragment>
+      <strong>{checkName}</strong>
+      {entityName && (
+        <span>
+          {" "}
+          on <strong>{entityName}</strong>
+        </span>
+      )}
+    </React.Fragment>
+  );
 
-  static defaultProps = {
-    entityName: undefined,
-  };
-
-  state = { loading: true };
-
-  _willUnmount = false;
-
-  componentDidMount() {
-    this.props.mutation.then(
-      () => !this._willUnmount && this.setState({ loading: false }),
-      // TODO: Handle error cases
-    );
-  }
-
-  componentWillUnmount() {
-    // Prevent calling setState on unmounted component after mutation resolves
-    this._willUnmount = true;
-  }
-
-  render() {
-    const { mutation, onClose, checkName, entityName, namespace } = this.props;
-    const { loading } = this.state;
-
-    const subject = (
-      <React.Fragment>
-        <strong>{checkName}</strong>
-        {entityName && (
-          <span>
-            {" "}
-            on <strong>{entityName}</strong>
-          </span>
-        )}
-      </React.Fragment>
-    );
-
+  if (resolved) {
     return (
-      <ToastConnector>
-        {({ setToast }) => (
-          <Toast
-            maxAge={loading ? undefined : 5000}
-            variant={loading ? "info" : "success"}
-            progress={loading && <LinearProgress />}
-            message={
-              loading ? (
-                <span>Executing {subject}.</span>
-              ) : (
-                <span>
-                  Done executing {subject}.{" "}
-                  <InlineLink
-                    component={NamespaceLink}
-                    namespace={namespace}
-                    to={`/events?filter=${encodeURIComponent(
-                      `check.name === "${checkName}"${
-                        entityName ? ` && entity.name === "${entityName}"` : ""
-                      }`,
-                    )}`}
-                  >
-                    View&nbsp;events.
-                  </InlineLink>
-                </span>
-              )
-            }
-            onClose={() => {
-              onClose();
-
-              if (loading) {
-                const onMutationEnd = () =>
-                  setToast(undefined, ({ remove }) => (
-                    <ExecuteCheckStatusToast {...this.props} onClose={remove} />
-                  ));
-                mutation.then(onMutationEnd, onMutationEnd);
-              }
-            }}
-          />
-        )}
-      </ToastConnector>
+      <Toast
+        maxAge={5000}
+        variant="success"
+        message={
+          <span>
+            Done executing {subject}.{" "}
+            <InlineLink
+              component={NamespaceLink}
+              namespace={namespace}
+              to={`/events?filter=${encodeURIComponent(
+                `check.name === "${checkName}"${
+                  entityName ? ` && entity.name === "${entityName}"` : ""
+                }`,
+              )}`}
+            >
+              View&nbsp;events.
+            </InlineLink>
+          </span>
+        }
+        onClose={onClose}
+      />
     );
   }
-}
+
+  if (rejected) {
+    return (
+      <Toast
+        variant="error"
+        // TODO: Render error details.
+        message={<span>Failed to execute {subject}.</span>}
+        onClose={onClose}
+      />
+    );
+  }
+
+  return (
+    <Toast
+      variant="info"
+      progress={<LinearProgress />}
+      message={<span>Executing {subject}.</span>}
+      onClose={onClose}
+    />
+  );
+};
 
 export default ExecuteCheckStatusToast;
+
+export const useExecuteCheckStatusToast = () => {
+  const createToast = usePromiseBoundToast();
+
+  return (promise, { checkName, entityName, namespace }) =>
+    createToast(
+      promise,
+      ({ resolved, rejected, remove, error }) => (
+        <ExecuteCheckStatusToast
+          onClose={remove}
+          resolved={resolved}
+          rejected={rejected}
+          error={error}
+          checkName={checkName}
+          entityName={entityName}
+          namespace={namespace}
+        />
+      ),
+      error => {
+        if (
+          error instanceof FetchError ||
+          error.networkError instanceof FetchError
+        ) {
+          // Display any FetchError instance in the toast.
+          return error;
+        }
+
+        // Otherwise allow the app to crash.
+        throw error;
+      },
+    );
+};
