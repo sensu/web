@@ -14,10 +14,19 @@ import {
   NotFound,
 } from "/lib/component/partial";
 import { Query, withQueryParams, WithWidth } from "/lib/component/util";
-import { ToastConnector } from "/lib/component/relocation";
 
-// If none given default expression is used.
-const defaultExpression = "has_check";
+const coerceFilter = filter => {
+  if (Array.isArray(filter)) {
+    return filter;
+  }
+  if (filter === undefined) {
+    return [];
+  }
+  if (typeof filter === "string") {
+    return [filter];
+  }
+  throw new Error("Invalid argument");
+};
 
 class EventsView extends React.Component {
   static propTypes = {
@@ -43,10 +52,10 @@ class EventsView extends React.Component {
   static query = gql`
     query EnvironmentViewEventsViewQuery(
       $namespace: String!
-      $filter: String = "${defaultExpression}"
+      $filters: [String!]
       $order: EventsListOrder
-      $limit: Int,
-      $offset: Int,
+      $limit: Int
+      $offset: Int
     ) {
       namespace(name: $namespace) {
         ...EventsList_namespace
@@ -58,8 +67,25 @@ class EventsView extends React.Component {
 
   render() {
     const { queryParams, match, setQueryParams, toolbarItems } = this.props;
-    const { filter, limit, offset } = queryParams;
+    const { limit, offset } = queryParams;
     const variables = { ...match.params, ...queryParams };
+
+    const filters = coerceFilter(queryParams.filters).reduce((acc, v) => {
+      const [key, val] = v.split(":", 2);
+      return { ...acc, [key]: val };
+    }, {});
+
+    const setFilters = setter => {
+      const newFilters = setter(filters);
+      const keys = Object.keys(newFilters);
+      const params = keys.reduce((acc, key) => {
+        return [...acc, `${key}:${newFilters[key]}`];
+      }, []);
+      setQueryParams(q => {
+        q.delete("filters");
+        params.forEach(v => q.append("filters", v));
+      });
+    };
 
     return (
       <AppLayout namespace={match.params.namespace}>
@@ -89,32 +115,27 @@ class EventsView extends React.Component {
                 <Content marginBottom>
                   <EventsListToolbar
                     toolbarItems={toolbarItems}
-                    onChangeQuery={value => setQueryParams({ filter: value })}
                     onClickReset={() =>
-                      setQueryParams(q => q.reset(["filter", "order"]))
+                      setQueryParams(q => q.reset(["filters", "order"]))
                     }
-                    query={filter}
                   />
                 </Content>
                 <MobileFullWidthContent>
-                  <ToastConnector>
-                    {({ setToast }) => (
-                      <WithWidth>
-                        {({ width }) => (
-                          <EventsList
-                            setToast={setToast}
-                            editable={width !== "xs"}
-                            limit={limit}
-                            offset={offset}
-                            onChangeQuery={setQueryParams}
-                            namespace={namespace}
-                            loading={(loading && !namespace) || aborted}
-                            refetch={refetch}
-                          />
-                        )}
-                      </WithWidth>
+                  <WithWidth>
+                    {({ width }) => (
+                      <EventsList
+                        editable={width !== "xs"}
+                        limit={limit}
+                        offset={offset}
+                        filters={filters}
+                        onChangeQuery={setQueryParams}
+                        onChangeFilters={setFilters}
+                        namespace={namespace}
+                        loading={(loading && !namespace) || aborted}
+                        refetch={refetch}
+                      />
                     )}
-                  </ToastConnector>
+                  </WithWidth>
                 </MobileFullWidthContent>
               </div>
             );
@@ -126,7 +147,7 @@ class EventsView extends React.Component {
 }
 
 const enhance = withQueryParams({
-  keys: ["filter", "order", "offset", "limit"],
+  keys: ["filters", "order", "offset", "limit"],
   defaults: {
     limit: "25",
     offset: "0",

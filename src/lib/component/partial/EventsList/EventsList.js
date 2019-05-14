@@ -33,6 +33,8 @@ const EventsList = ({
   limit,
   namespace,
   offset,
+  filters,
+  onChangeFilters,
   onChangeQuery,
   refetch,
 }) => {
@@ -183,6 +185,8 @@ const EventsList = ({
             <EventsListHeader
               editable={editable}
               namespace={namespace}
+              filters={filters}
+              onChangeFilters={onChangeFilters}
               onClickSelect={toggleSelectedItems}
               onClickClearSilences={() => clearSilences(selectedItems)}
               onClickSilence={() => silenceEvents(selectedItems)}
@@ -244,10 +248,12 @@ const EventsList = ({
 EventsList.propTypes = {
   client: PropTypes.object.isRequired,
   editable: PropTypes.bool,
+  filters: PropTypes.object,
   namespace: PropTypes.shape({
     checks: PropTypes.object,
     entities: PropTypes.object,
   }),
+  onChangeFilters: PropTypes.func,
   onChangeQuery: PropTypes.func.isRequired,
   limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -258,9 +264,11 @@ EventsList.propTypes = {
 EventsList.defaultProps = {
   loading: false,
   editable: true,
+  filters: {},
   namespace: null,
   limit: undefined,
   offset: undefined,
+  onChangeFilters: () => null,
 };
 
 EventsList.fragments = {
@@ -278,8 +286,12 @@ EventsList.fragments = {
         }
       }
 
-      events(limit: $limit, offset: $offset, filter: $filter, orderBy: $order)
-        @connection(key: "events", filter: ["filter", "orderBy"]) {
+      events(
+        limit: $limit
+        offset: $offset
+        filters: $filters
+        orderBy: $order
+      ) @connection(key: "events", filter: ["filters", "orderBy"]) {
         nodes {
           id
           namespace

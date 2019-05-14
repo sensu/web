@@ -1,40 +1,31 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import {
-  MenuItem,
-  ListItemText,
-  ListItemIcon,
-} from "/vendor/@material-ui/core";
-
-import { SmallCheckIcon } from "/lib/component/icon";
+import { MenuItem, ListItemText } from "/vendor/@material-ui/core";
 
 class Option extends React.PureComponent {
   static displayName = "ToolbarSelect.Option";
 
   static propTypes = {
     children: PropTypes.node,
+    disabled: PropTypes.bool,
     selected: PropTypes.bool,
     value: PropTypes.any.isRequired,
   };
 
   static defaultProps = {
-    selected: false,
     children: null,
+    disabled: false,
+    selected: false,
   };
 
   render() {
-    const { value, selected, children, ...props } = this.props;
+    const { value, children, ...props } = this.props;
     const label = children || value;
 
     return (
       <MenuItem key={value} value={value} {...props}>
-        {selected && (
-          <ListItemIcon>
-            <SmallCheckIcon />
-          </ListItemIcon>
-        )}
-        <ListItemText inset={selected} primary={label} />
+        <ListItemText primary={label} />
       </MenuItem>
     );
   }
