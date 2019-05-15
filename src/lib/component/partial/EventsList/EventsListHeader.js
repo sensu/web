@@ -161,10 +161,10 @@ class EventsListHeader extends React.Component {
                 onChange={toggleParam("silenced", onChangeFilters)}
               >
                 <Option value={null} />
-                <Option value="f" selected={filters.silenced === "f"}>
+                <Option value="false" selected={filters.silenced === "false"}>
                   Hide Silenced
                 </Option>
-                <Option value="t" selected={filters.silenced === "t"}>
+                <Option value="true" selected={filters.silenced === "true"}>
                   Hide Un-silenced
                 </Option>
               </Select>

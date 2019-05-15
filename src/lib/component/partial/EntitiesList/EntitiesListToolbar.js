@@ -9,18 +9,20 @@ class EntitiesListToolbar extends React.PureComponent {
   static propTypes = {
     onClickReset: PropTypes.func.isRequired,
     toolbarItems: PropTypes.func,
+    toolbarContent: PropTypes.node,
   };
 
   static defaultProps = {
+    toolbarContent: <React.Fragment />,
     toolbarItems: ({ items }) => items,
   };
 
   render() {
-    const { onClickReset, toolbarItems } = this.props;
+    const { onClickReset, toolbarContent, toolbarItems } = this.props;
 
     return (
       <ListToolbar
-        search={<React.Fragment />}
+        search={toolbarContent}
         toolbarItems={props => (
           <ToolbarMenu>
             {toolbarItems({

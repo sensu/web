@@ -12,21 +12,31 @@ import {
   AppLayout,
   ChecksList,
   ChecksListToolbar,
+  FilterList,
   NotFound,
 } from "/lib/component/partial";
 
 class ChecksView extends React.Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
+
+    // from withQueryParams HOC
     queryParams: PropTypes.shape({
       offset: PropTypes.string,
       limit: PropTypes.string,
     }).isRequired,
+
+    // from withQueryParams HOC
     setQueryParams: PropTypes.func.isRequired,
+
     toolbarItems: PropTypes.func,
+    toolbarContent: PropTypes.func,
   };
 
   static defaultProps = {
+    toolbarContent: ({ filters, setFilters }) => (
+      <FilterList filters={filters} onChange={setFilters} />
+    ),
     toolbarItems: undefined,
   };
 
@@ -47,7 +57,7 @@ class ChecksView extends React.Component {
   `;
 
   render() {
-    const { match, queryParams, setQueryParams, toolbarItems } = this.props;
+    const { match, queryParams, setQueryParams } = this.props;
     const { limit, offset } = queryParams;
     const variables = { ...match.params, ...queryParams };
 
@@ -84,10 +94,14 @@ class ChecksView extends React.Component {
               <div>
                 <Content marginBottom>
                   <ChecksListToolbar
-                    toolbarItems={toolbarItems}
                     onClickReset={() =>
                       setQueryParams(q => q.reset(["filters", "order"]))
                     }
+                    toolbarContent={this.props.toolbarContent({
+                      filters,
+                      setFilters,
+                    })}
+                    toolbarItems={this.props.toolbarItems}
                   />
                 </Content>
 

@@ -11,6 +11,7 @@ import { Query, withQueryParams, WithWidth } from "/lib/component/util";
 
 import {
   AppLayout,
+  FilterList,
   NotFound,
   SilencesList,
   SilencesListToolbar,
@@ -30,15 +31,24 @@ const WithDialogState = ({ children }) => {
 class SilencesView extends React.Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
+
+    // from withQueryParams HOC
     queryParams: PropTypes.shape({
       offset: PropTypes.string,
       limit: PropTypes.string,
     }).isRequired,
+
+    // from withQueryParams HOC
     setQueryParams: PropTypes.func.isRequired,
+
     toolbarItems: PropTypes.func,
+    toolbarContent: PropTypes.func,
   };
 
   static defaultProps = {
+    toolbarContent: ({ filters, setFilters }) => (
+      <FilterList filters={filters} onChange={setFilters} />
+    ),
     toolbarItems: undefined,
   };
 
@@ -59,7 +69,7 @@ class SilencesView extends React.Component {
   `;
 
   render() {
-    const { match, queryParams, setQueryParams, toolbarItems } = this.props;
+    const { match, queryParams, setQueryParams } = this.props;
     const { limit, offset, order } = queryParams;
     const variables = { ...match.params, ...queryParams };
 
@@ -99,11 +109,15 @@ class SilencesView extends React.Component {
                     <React.Fragment>
                       <Content marginBottom>
                         <SilencesListToolbar
-                          toolbarItems={toolbarItems}
                           onClickCreate={newDialog.open}
                           onClickReset={() =>
                             setQueryParams(q => q.reset(["filters", "offset"]))
                           }
+                          toolbarContent={this.props.toolbarContent({
+                            filters,
+                            setFilters,
+                          })}
+                          toolbarItems={this.props.toolbarItems}
                         />
                       </Content>
 

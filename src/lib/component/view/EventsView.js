@@ -13,6 +13,7 @@ import {
   AppLayout,
   EventsList,
   EventsListToolbar,
+  FilterList,
   NotFound,
 } from "/lib/component/partial";
 
@@ -30,10 +31,15 @@ class EventsView extends React.Component {
 
     // from withQueryParams HOC
     setQueryParams: PropTypes.func.isRequired,
+
+    toolbarContent: PropTypes.func,
     toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
+    toolbarContent: ({ filters, setFilters }) => (
+      <FilterList filters={filters} onChange={setFilters} />
+    ),
     toolbarItems: undefined,
   };
 
@@ -54,7 +60,7 @@ class EventsView extends React.Component {
   `;
 
   render() {
-    const { queryParams, match, setQueryParams, toolbarItems } = this.props;
+    const { queryParams, match, setQueryParams } = this.props;
     const { limit, offset } = queryParams;
     const variables = { ...match.params, ...queryParams };
 
@@ -91,10 +97,14 @@ class EventsView extends React.Component {
               <div>
                 <Content marginBottom>
                   <EventsListToolbar
-                    toolbarItems={toolbarItems}
                     onClickReset={() =>
                       setQueryParams(q => q.reset(["filters", "order"]))
                     }
+                    toolbarContent={this.props.toolbarContent({
+                      filters,
+                      setFilters,
+                    })}
+                    toolbarItems={this.props.toolbarItems}
                   />
                 </Content>
                 <MobileFullWidthContent>

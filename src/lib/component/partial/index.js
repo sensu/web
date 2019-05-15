@@ -80,3 +80,4 @@ export {
   UnsilenceMenuItem,
 } from "./ToolbarMenuItems";
 export { default as GlobalAlert } from "./GlobalAlert";
+export { default as FilterList } from "./FilterList";

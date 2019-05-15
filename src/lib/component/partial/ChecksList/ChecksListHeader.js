@@ -76,15 +76,17 @@ class ChecksListHeader extends React.PureComponent {
             onChange={toggleParam("published", onChangeFilters)}
           >
             <ToolbarSelectOption value={null} />
-            {[["t", "Published"], ["f", "Unpublished"]].map(([v, label]) => (
-              <ToolbarSelectOption
-                key={v}
-                value={v}
-                selected={filters.published === v}
-              >
-                {label}
-              </ToolbarSelectOption>
-            ))}
+            {[["true", "Published"], ["false", "Unpublished"]].map(
+              ([v, label]) => (
+                <ToolbarSelectOption
+                  key={v}
+                  value={v}
+                  selected={filters.published === v}
+                >
+                  {label}
+                </ToolbarSelectOption>
+              ),
+            )}
           </SelectMenuItem>
         </ToolbarMenu.Item>
         <ToolbarMenu.Item key="filter-by-subscription" visible="if-room">

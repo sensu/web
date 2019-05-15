@@ -13,23 +13,33 @@ import {
   AppLayout,
   EntitiesList,
   EntitiesListToolbar,
+  FilterList,
   NotFound,
 } from "/lib/component/partial";
 
 class EntitiesView extends React.PureComponent {
   static propTypes = {
     match: PropTypes.object.isRequired,
+
+    // from withQueryParams HOC
     queryParams: PropTypes.shape({
       filter: PropTypes.string,
       order: PropTypes.string,
       offset: PropTypes.string,
       limit: PropTypes.string,
     }).isRequired,
+
+    // from withQueryParams HOC
     setQueryParams: PropTypes.func.isRequired,
+
+    toolbarContent: PropTypes.func,
     toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
+    toolbarContent: ({ filters, setFilters }) => (
+      <FilterList filters={filters} onChange={setFilters} />
+    ),
     toolbarItems: undefined,
   };
 
@@ -50,7 +60,7 @@ class EntitiesView extends React.PureComponent {
   `;
 
   render() {
-    const { queryParams, match, setQueryParams, toolbarItems } = this.props;
+    const { queryParams, match, setQueryParams } = this.props;
     const { limit, offset, order } = queryParams;
     const variables = { ...match.params, ...queryParams };
 
@@ -87,8 +97,14 @@ class EntitiesView extends React.PureComponent {
               <div>
                 <Content marginBottom>
                   <EntitiesListToolbar
-                    toolbarItems={toolbarItems}
-                    onClickReset={() => setQueryParams(q => q.reset())}
+                    onClickReset={() =>
+                      setQueryParams(q => q.reset(["filters", "order"]))
+                    }
+                    toolbarContent={this.props.toolbarContent({
+                      filters,
+                      setFilters,
+                    })}
+                    toolbarItems={this.props.toolbarItems}
                   />
                 </Content>
 

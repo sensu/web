@@ -9,19 +9,21 @@ import ListToolbar from "/lib/component/partial/ListToolbar";
 class ChecksListToolbar extends React.PureComponent {
   static propTypes = {
     onClickReset: PropTypes.func.isRequired,
+    toolbarContent: PropTypes.node,
     toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
+    toolbarContent: <React.Fragment />,
     toolbarItems: ({ items }) => items,
   };
 
   render() {
-    const { onClickReset, toolbarItems } = this.props;
+    const { onClickReset, toolbarItems, toolbarContent } = this.props;
 
     return (
       <ListToolbar
-        search={<React.Fragment />}
+        search={toolbarContent}
         toolbarItems={props => (
           <ToolbarMenu>
             {toolbarItems({

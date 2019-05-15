@@ -13,19 +13,21 @@ class SilencesListToolbar extends React.Component {
   static propTypes = {
     onClickCreate: PropTypes.func.isRequired,
     onClickReset: PropTypes.func.isRequired,
+    toolbarContent: PropTypes.node,
     toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
+    toolbarContent: <React.Fragment />,
     toolbarItems: ({ items }) => items,
   };
 
   render() {
-    const { toolbarItems } = this.props;
+    const { toolbarItems, toolbarContent } = this.props;
 
     return (
       <ListToolbar
-        search={<React.Fragment />}
+        search={toolbarContent}
         toolbarItems={props => {
           const unlessCollapsed = visiblity =>
             props.collapsed ? "never" : visiblity;
