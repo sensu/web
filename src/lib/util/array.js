@@ -26,3 +26,5 @@ export const mergeAtIndex = (arr, index, update) =>
 
 export const removeAtIndex = (arr, index) =>
   arr.slice(0, index).concat(arr.slice(index + 1));
+
+export const wrapArray = arr => (Array.isArray(arr) ? arr : [arr]);
