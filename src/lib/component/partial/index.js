@@ -21,6 +21,7 @@ export { default as EntityStatusDescriptor } from "./EntityStatusDescriptor";
 export { default as EventDetailsContainer } from "./EventDetailsContainer";
 export { default as EventStatusDescriptor } from "./EventStatusDescriptor";
 export { default as EventsList, EventsListToolbar } from "./EventsList";
+export { default as HandlersList, HandlersListToolbar } from "./HandlersList";
 export { default as Label } from "./Label";
 export { default as LabelsAnnotationsCell } from "./LabelsAnnotationsCell";
 export { default as ListHeader } from "./ListHeader";
