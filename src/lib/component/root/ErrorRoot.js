@@ -40,18 +40,20 @@ const ErrorRoot = ({ error: rawError }) => {
 
   const error = React.useMemo(() => unwrapError(rawError), [rawError]);
 
-  const frames = React.useMemo(
-    () =>
-      ErrorStackParser.parse(error).map(frame => {
+  const frames = React.useMemo(() => {
+    try {
+      return ErrorStackParser.parse(error).map(frame => {
         const fileName = frame.fileName.replace(window.location.origin, "");
 
         return {
           functionName: `${frame.functionName}`,
           source: `${fileName}:${frame.lineNumber}`,
         };
-      }),
-    [error],
-  );
+      });
+    } catch (e) {
+      return [];
+    }
+  }, [error]);
 
   const issueURL = `https://github.com/sensu/web/issues/new?title=${encodeURIComponent(
     `Unexpected Error: "${error.message}"`,
@@ -140,7 +142,7 @@ ${"```"}`
             <Typography variant="body2">Expand for error details</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <Pre>{error.stack}</Pre>
+            <Pre>{error.stack || error.message}</Pre>
           </ExpansionPanelDetails>
         </ExpansionPanel>
       </ExpansionPanelWrapper>
