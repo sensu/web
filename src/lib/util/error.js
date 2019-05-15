@@ -38,5 +38,17 @@ export const unwrapError = error => {
     };
   }
 
-  return { message: `${error}`, stack: "", name: "Error" };
+  let message;
+
+  try {
+    message = `${JSON.stringify(error, null, 2)}`;
+  } catch (e) {
+    message = `${error}`;
+  }
+
+  return {
+    message,
+    stack: "",
+    name: "Error",
+  };
 };
