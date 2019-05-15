@@ -1,9 +1,6 @@
 import gql from "/vendor/graphql-tag";
 import { isApolloError } from "apollo-client/errors/ApolloError";
 
-const RESOURCE_EXISTS_ERROR =
-  "GraphQL error: error: code = 3 desc = resource already exists";
-
 const fragment = gql`
   fragment CreateSilenceMutation_silence on Silenced {
     id
@@ -42,7 +39,10 @@ export default (client, input) =>
       // mutation specific validation errors. This temporarily simulates how we
       // intend to report this error state in the future and can be removed once
       // the API has been updated.
-      if (isApolloError(error) && error.message === RESOURCE_EXISTS_ERROR) {
+      if (
+        isApolloError(error) &&
+        /resource already exists/.test(error.message)
+      ) {
         return {
           data: {
             createSilence: {
