@@ -26,7 +26,8 @@ const handle = error => {
   try {
     frames = ErrorStackParser.parse(error);
   } catch (e) {
-    frames = [];
+    renderError(error);
+    return;
   }
 
   // Detect that the caught error originated from our own code. If the source
