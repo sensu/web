@@ -2,10 +2,12 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
-import { FailedError } from "/lib/error/FetchError";
+import { parseFilterParams, buildFilterParams } from "/lib/util/filterParams";
 import { pollingDuration } from "/lib/constant/polling";
+import { FailedError } from "/lib/error/FetchError";
 
 import { MobileFullWidthContent, Content } from "/lib/component/base";
+import { Query, withQueryParams, WithWidth } from "/lib/component/util";
 
 import {
   AppLayout,
@@ -13,20 +15,6 @@ import {
   EventsListToolbar,
   NotFound,
 } from "/lib/component/partial";
-import { Query, withQueryParams, WithWidth } from "/lib/component/util";
-
-const coerceFilter = filter => {
-  if (Array.isArray(filter)) {
-    return filter;
-  }
-  if (filter === undefined) {
-    return [];
-  }
-  if (typeof filter === "string") {
-    return [filter];
-  }
-  throw new Error("Invalid argument");
-};
 
 class EventsView extends React.Component {
   static propTypes = {
@@ -70,21 +58,10 @@ class EventsView extends React.Component {
     const { limit, offset } = queryParams;
     const variables = { ...match.params, ...queryParams };
 
-    const filters = coerceFilter(queryParams.filters).reduce((acc, v) => {
-      const [key, val] = v.split(":", 2);
-      return { ...acc, [key]: val };
-    }, {});
-
+    const filters = parseFilterParams(queryParams.filters);
     const setFilters = setter => {
-      const newFilters = setter(filters);
-      const keys = Object.keys(newFilters);
-      const params = keys.reduce((acc, key) => {
-        return [...acc, `${key}:${newFilters[key]}`];
-      }, []);
-      setQueryParams(q => {
-        q.delete("filters");
-        params.forEach(v => q.append("filters", v));
-      });
+      const next = setter(filters);
+      setQueryParams({ filters: buildFilterParams(next) });
     };
 
     return (

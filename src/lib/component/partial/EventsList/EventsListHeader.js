@@ -17,17 +17,9 @@ import ListHeader from "/lib/component/partial/ListHeader";
 import { ToolbarSelectOption as Option } from "/lib/component/partial/ToolbarSelect";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 
-import StatusMenu from "./StatusMenu";
+import { toggleParam } from "/lib/util/filterParams";
 
-const toggleFilter = (key, onChange) => val => {
-  onChange(filters => {
-    if (val === null || filters[key] === val) {
-      delete filters[key]; // eslint-disable-line no-param-reassign
-      return filters;
-    }
-    return { ...filters, [key]: val };
-  });
-};
+import StatusMenu from "./StatusMenu";
 
 class EventsListHeader extends React.Component {
   static propTypes = {
@@ -73,28 +65,6 @@ class EventsListHeader extends React.Component {
         }
       }
     `,
-  };
-
-  setEntityFilter = entity => {
-    this.props.onChangeFilters(filters => ({ ...filters, entity }));
-  };
-
-  setCheckFilter = check => {
-    this.props.onChangeFilters(filters => ({ ...filters, check }));
-  };
-
-  setSilencedFilter = silenced => {
-    this.props.onChangeFilters(filters => {
-      if (filters.silenced === silenced || silenced === null) {
-        delete filters.silenced; // eslint-disable-line no-param-reassign
-        return filters;
-      }
-      return { ...filters, silenced };
-    });
-  };
-
-  setStatusFilter = status => {
-    this.props.onChangeFilters(filters => ({ ...filters, status }));
   };
 
   updateSort = newValue => {
@@ -188,7 +158,7 @@ class EventsListHeader extends React.Component {
             <ToolbarMenu.Item key="hide" visible="if-room">
               <Select
                 title="Silenced"
-                onChange={toggleFilter("silenced", onChangeFilters)}
+                onChange={toggleParam("silenced", onChangeFilters)}
               >
                 <Option value={null} />
                 <Option value="f" selected={filters.silenced === "f"}>
@@ -203,7 +173,7 @@ class EventsListHeader extends React.Component {
             <ToolbarMenu.Item key="filter-by-entity" visible="if-room">
               <Select
                 title="Entity"
-                onChange={toggleFilter("entity", onChangeFilters)}
+                onChange={toggleParam("entity", onChangeFilters)}
               >
                 <Option value={null} />
                 {entities.map(name => (
@@ -219,7 +189,7 @@ class EventsListHeader extends React.Component {
             <ToolbarMenu.Item key="filter-by-check" visible="if-room">
               <Select
                 title="Check"
-                onChange={toggleFilter("check", onChangeFilters)}
+                onChange={toggleParam("check", onChangeFilters)}
               >
                 <Option value={null} />
                 {checks.map(name => (
@@ -241,7 +211,7 @@ class EventsListHeader extends React.Component {
                     anchorEl={anchorEl}
                     onClose={close}
                     onChange={val => {
-                      toggleFilter("status", onChangeFilters)(val);
+                      toggleParam("status", onChangeFilters)(val);
                       close();
                     }}
                     selected={filters.status}

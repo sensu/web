@@ -13,10 +13,14 @@ import ListSortSelector from "/lib/component/partial/ListSortSelector";
 import { ToolbarSelectOption } from "/lib/component/partial/ToolbarSelect";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 
+import { toggleParam } from "/lib/util/filterParams";
+
 class EntitiesListHeader extends React.PureComponent {
   static propTypes = {
     editable: PropTypes.bool.isRequired,
+    filters: PropTypes.object.isRequired,
     namespace: PropTypes.object,
+    onChangeFilters: PropTypes.object.isRequired,
     onChangeQuery: PropTypes.func.isRequired,
     onClickClearSilences: PropTypes.func.isRequired,
     onClickSelect: PropTypes.func,
@@ -41,25 +45,49 @@ class EntitiesListHeader extends React.PureComponent {
     `,
   };
 
-  updateFilter = val => {
-    const filter = `subscriptions.indexOf("${val}") >= 0`;
-    this.props.onChangeQuery({ filter });
-  };
-
   renderActions = () => {
-    const { namespace, onChangeQuery, order } = this.props;
-    const subs = namespace ? namespace.subscriptions.values : [];
+    const {
+      filters,
+      namespace,
+      onChangeFilters,
+      onChangeQuery,
+      order,
+    } = this.props;
 
+    const subscriptions = namespace ? namespace.subscriptions.values : [];
     return (
       <ToolbarMenu>
-        <ToolbarMenu.Item key="filter-by-subscriptions" visible="if-room">
-          <SelectMenuItem title="Subscription" onChange={this.updateFilter}>
-            {subs.map(v => (
-              <ToolbarSelectOption key={v} value={v} />
+        <ToolbarMenu.Item key="filter-by-class" visible="if-room">
+          <SelectMenuItem
+            title="Entity Class"
+            onChange={toggleParam("class", onChangeFilters)}
+          >
+            <ToolbarSelectOption value={null} />
+            {["agent", "proxy"].map(v => (
+              <ToolbarSelectOption
+                key={v}
+                value={v}
+                selected={filters.class === v}
+              />
             ))}
           </SelectMenuItem>
         </ToolbarMenu.Item>
-        <ToolbarMenu.Item key="sort" visible="always">
+        <ToolbarMenu.Item key="filter-by-subscriptions" visible="if-room">
+          <SelectMenuItem
+            title="Subscription"
+            onChange={toggleParam("subscription", onChangeFilters)}
+          >
+            <ToolbarSelectOption value={null} />
+            {subscriptions.map(v => (
+              <ToolbarSelectOption
+                key={v}
+                value={v}
+                selected={filters.subscription === v}
+              />
+            ))}
+          </SelectMenuItem>
+        </ToolbarMenu.Item>
+        <ToolbarMenu.Item key="sort" visible="if-room">
           <ListSortSelector
             options={[{ label: "Name", value: "ID" }]}
             onChangeQuery={onChangeQuery}

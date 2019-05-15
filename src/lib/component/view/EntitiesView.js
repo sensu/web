@@ -2,8 +2,9 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
-import { FailedError } from "/lib/error/FetchError";
+import { parseFilterParams, buildFilterParams } from "/lib/util/filterParams";
 import { pollingDuration } from "/lib/constant/polling";
+import { FailedError } from "/lib/error/FetchError";
 
 import { MobileFullWidthContent, Content } from "/lib/component/base";
 import { Query, withQueryParams, WithWidth } from "/lib/component/util";
@@ -38,7 +39,7 @@ class EntitiesView extends React.PureComponent {
       $limit: Int
       $offset: Int
       $order: EntityListOrder
-      $filter: String
+      $filters: [String!]
     ) {
       namespace(name: $namespace) {
         ...EntitiesList_namespace
@@ -50,8 +51,14 @@ class EntitiesView extends React.PureComponent {
 
   render() {
     const { queryParams, match, setQueryParams, toolbarItems } = this.props;
-    const { filter, limit, offset, order } = queryParams;
+    const { limit, offset, order } = queryParams;
     const variables = { ...match.params, ...queryParams };
+
+    const filters = parseFilterParams(queryParams.filters);
+    const setFilters = setter => {
+      const next = setter(filters);
+      setQueryParams({ filters: buildFilterParams(next) });
+    };
 
     return (
       <AppLayout namespace={match.params.namespace}>
@@ -81,9 +88,7 @@ class EntitiesView extends React.PureComponent {
                 <Content marginBottom>
                   <EntitiesListToolbar
                     toolbarItems={toolbarItems}
-                    onChangeQuery={value => setQueryParams({ filter: value })}
                     onClickReset={() => setQueryParams(q => q.reset())}
-                    query={filter}
                   />
                 </Content>
 
@@ -95,6 +100,8 @@ class EntitiesView extends React.PureComponent {
                         limit={limit}
                         offset={offset}
                         loading={(loading && !namespace) || aborted}
+                        filters={filters}
+                        onChangeFilters={setFilters}
                         onChangeQuery={setQueryParams}
                         namespace={namespace}
                         refetch={refetch}
@@ -113,7 +120,7 @@ class EntitiesView extends React.PureComponent {
 }
 
 const enhance = withQueryParams({
-  keys: ["filter", "order", "offset", "limit"],
+  keys: ["filters", "order", "offset", "limit"],
   defaults: {
     limit: "25",
     offset: "0",
