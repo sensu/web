@@ -17,7 +17,7 @@ const HandlersListItem = ({ handler }) => (
         title={
           <NamespaceLink
             namespace={handler.namespace}
-            to={`/handers/${handler.name}`}
+            to={`/handlers/${handler.name}`}
           >
             <strong>{handler.name} </strong>
           </NamespaceLink>

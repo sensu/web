@@ -33,7 +33,7 @@ const HandlersListItemDetails = ({ handler }) => (
             <React.Fragment key={hd.name}>
               <NamespaceLink
                 namespace={hd.namespace}
-                to={`/handers/${hd.name}`}
+                to={`/handlers/${hd.name}`}
               >
                 <CodeHighlight
                   language="json"
