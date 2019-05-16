@@ -26,8 +26,8 @@ export const buildFilterParams = args => {
 export const toggleParam = (key, setter) => val => {
   setter(params => {
     if (val === null || params[key] === val) {
-      delete params[key]; // eslint-disable-line no-param-reassign
-      return params;
+      const { [key]: _, ...rest } = params;
+      return rest;
     }
     return { ...params, [key]: val };
   });
