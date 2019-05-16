@@ -6,14 +6,16 @@ import { parseFilterParams, buildFilterParams } from "/lib/util/filterParams";
 import { pollingDuration } from "/lib/constant/polling";
 import { FailedError } from "/lib/error/FetchError";
 
-import { MobileFullWidthContent, Content } from "/lib/component/base";
 import { Query, withQueryParams, WithWidth } from "/lib/component/util";
-
+import {
+  MobileFullWidthContent,
+  Content,
+  FilterList,
+} from "/lib/component/base";
 import {
   AppLayout,
   EventsList,
   EventsListToolbar,
-  FilterList,
   NotFound,
 } from "/lib/component/partial";
 
