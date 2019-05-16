@@ -27,6 +27,8 @@ class EntitiesList extends React.PureComponent {
     loading: PropTypes.bool,
     namespace: PropTypes.object,
     order: PropTypes.string.isRequired,
+    filters: PropTypes.object.isRequired,
+    onChangeFilters: PropTypes.func.isRequired,
     onChangeQuery: PropTypes.func.isRequired,
     limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -48,9 +50,9 @@ class EntitiesList extends React.PureComponent {
         entities(
           limit: $limit
           offset: $offset
-          filter: $filter
+          filters: $filters
           orderBy: $order
-        ) @connection(key: "entities", filter: ["filter", "orderBy"]) {
+        ) @connection(key: "entities", filter: ["filters", "orderBy"]) {
           nodes {
             id
             namespace
@@ -157,7 +159,9 @@ class EntitiesList extends React.PureComponent {
     const { silence, unsilence } = this.state;
     const {
       editable,
+      filters,
       loading,
+      onChangeFilters,
       onChangeQuery,
       limit,
       namespace,
@@ -187,11 +191,13 @@ class EntitiesList extends React.PureComponent {
             <Loader loading={loading}>
               <EntitiesListHeader
                 editable={editable}
+                filters={filters}
                 selectedItems={selectedItems}
                 rowCount={children.length || 0}
                 onClickSelect={toggleSelectedItems}
                 onClickSilence={() => this.silenceItems(selectedItems)}
                 onClickClearSilences={() => this.clearSilences(selectedItems)}
+                onChangeFilters={onChangeFilters}
                 onChangeQuery={onChangeQuery}
                 namespace={namespace}
                 order={order}

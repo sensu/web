@@ -2,6 +2,15 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { withRouter } from "/vendor/react-router-dom";
 
+function setter(qry, key, val) {
+  if (Array.isArray(val)) {
+    qry.delete(key);
+    val.forEach(v => qry.append(key, v));
+  } else {
+    qry.set(key, val);
+  }
+}
+
 function expandParams(params, keys, defaults) {
   const matched = Array.from(params).reduce((acc, entry) => {
     const [key, val] = entry;
@@ -72,7 +81,7 @@ class QueryParams extends React.Component {
     if (typeof fnOrObj === "function") {
       fnOrObj(params);
     } else {
-      Object.keys(fnOrObj).forEach(key => params.set(key, fnOrObj[key]));
+      Object.keys(fnOrObj).forEach(key => setter(params, key, fnOrObj[key]));
     }
 
     const newPath = `${this.props.location.pathname}?${params.toString()}`;

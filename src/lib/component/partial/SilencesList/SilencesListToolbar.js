@@ -1,8 +1,6 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import { SearchBox } from "/lib/component/base";
-
 import {
   NewMenuItem,
   ResetMenuItem,
@@ -13,30 +11,23 @@ import ListToolbar from "/lib/component/partial/ListToolbar";
 
 class SilencesListToolbar extends React.Component {
   static propTypes = {
-    filter: PropTypes.string,
-    onChangeQuery: PropTypes.func.isRequired,
     onClickCreate: PropTypes.func.isRequired,
     onClickReset: PropTypes.func.isRequired,
+    toolbarContent: PropTypes.node,
     toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
-    filter: "",
+    toolbarContent: <React.Fragment />,
     toolbarItems: ({ items }) => items,
   };
 
   render() {
-    const { toolbarItems } = this.props;
+    const { toolbarItems, toolbarContent } = this.props;
 
     return (
       <ListToolbar
-        search={
-          <SearchBox
-            placeholder="Filter silences…"
-            initialValue={this.props.filter}
-            onSearch={this.props.onChangeQuery}
-          />
-        }
+        search={toolbarContent}
         toolbarItems={props => {
           const unlessCollapsed = visiblity =>
             props.collapsed ? "never" : visiblity;

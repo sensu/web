@@ -37,7 +37,9 @@ const ChecksList = ({
   namespace,
   offset,
   order,
+  filters,
   onChangeQuery,
+  onChangeFilters,
   refetch,
 }) => {
   const [silence, setSilence] = React.useState(null);
@@ -144,7 +146,9 @@ const ChecksList = ({
           <Loader loading={loading}>
             <ChecksListHeader
               editable={editable}
+              filters={filters}
               namespace={namespace}
+              onChangeFilters={onChangeFilters}
               onChangeQuery={onChangeQuery}
               onClickClearSilences={() => clearSilences(selectedItems)}
               onClickExecute={() => {
@@ -209,6 +213,8 @@ ChecksList.propTypes = {
     }),
   }),
   loading: PropTypes.bool,
+  filters: PropTypes.object,
+  onChangeFilters: PropTypes.func,
   onChangeQuery: PropTypes.func.isRequired,
   limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -222,13 +228,19 @@ ChecksList.defaultProps = {
   loading: false,
   limit: undefined,
   offset: undefined,
+  filters: {},
+  onChangeFilters: () => null,
 };
 
 ChecksList.fragments = {
   namespace: gql`
     fragment ChecksList_namespace on Namespace {
-      checks(limit: $limit, offset: $offset, orderBy: $order, filter: $filter)
-        @connection(key: "checks", filter: ["filter", "orderBy"]) {
+      checks(
+        limit: $limit
+        offset: $offset
+        orderBy: $order
+        filters: $filters
+      ) @connection(key: "checks", filter: ["filters", "orderBy"]) {
         nodes {
           id
           deleted @client

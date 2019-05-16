@@ -24,6 +24,7 @@ import ListItem from "./SilencesListItem";
 class SilencesList extends React.Component {
   static propTypes = {
     editable: PropTypes.bool,
+    filters: PropTypes.object,
     loading: PropTypes.bool,
     limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     namespace: PropTypes.shape({
@@ -32,16 +33,19 @@ class SilencesList extends React.Component {
       }),
     }),
     offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    onChangeFilters: PropTypes.func,
     onChangeQuery: PropTypes.func.isRequired,
     order: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
     editable: false,
+    filters: {},
     loading: false,
     limit: undefined,
     namespace: null,
     offset: undefined,
+    onChangeFilters: () => null,
   };
 
   static fragments = {
@@ -51,8 +55,8 @@ class SilencesList extends React.Component {
           limit: $limit
           offset: $offset
           orderBy: $order
-          filter: $filter
-        ) @connection(key: "silences", filter: ["filter", "orderBy"]) {
+          filters: $filters
+        ) @connection(key: "silences", filter: ["filters", "orderBy"]) {
           nodes {
             id
             deleted @client
@@ -64,8 +68,11 @@ class SilencesList extends React.Component {
             ...Pagination_pageInfo
           }
         }
+
+        ...SilencesListHeader_namespace
       }
 
+      ${ListHeader.fragments.namespace}
       ${Pagination.fragments.pageInfo}
       ${ClearSilencedEntriesDialog.fragments.silence}
       ${ListItem.fragments.silence}
@@ -142,11 +149,13 @@ class SilencesList extends React.Component {
   render() {
     const {
       editable,
+      filters,
       loading,
       limit,
       namespace,
       offset,
       order,
+      onChangeFilters,
       onChangeQuery,
     } = this.props;
 
@@ -167,13 +176,16 @@ class SilencesList extends React.Component {
               <Loader loading={loading}>
                 <ListHeader
                   editable={editable}
+                  filters={filters}
                   rowCount={children.length || 0}
                   selectedItems={selectedItems}
+                  namespace={namespace}
                   onChangeQuery={onChangeQuery}
                   onClickSelect={toggleSelectedItems}
                   onClickClearSilences={() =>
                     this.openSilenceDialog(selectedItems)
                   }
+                  onChangeFilters={onChangeFilters}
                   order={order}
                 />
 

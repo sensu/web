@@ -2,12 +2,16 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
+import { parseFilterParams, buildFilterParams } from "/lib/util/filterParams";
 import { pollingDuration } from "/lib/constant/polling";
 import { FailedError } from "/lib/error/FetchError";
 
-import { MobileFullWidthContent, Content } from "/lib/component/base";
 import { Query, withQueryParams, WithWidth } from "/lib/component/util";
-import { ToastConnector } from "/lib/component/relocation";
+import {
+  MobileFullWidthContent,
+  Content,
+  FilterList,
+} from "/lib/component/base";
 import {
   AppLayout,
   ChecksList,
@@ -18,15 +22,24 @@ import {
 class ChecksView extends React.Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
+
+    // from withQueryParams HOC
     queryParams: PropTypes.shape({
       offset: PropTypes.string,
       limit: PropTypes.string,
     }).isRequired,
+
+    // from withQueryParams HOC
     setQueryParams: PropTypes.func.isRequired,
+
     toolbarItems: PropTypes.func,
+    toolbarContent: PropTypes.func,
   };
 
   static defaultProps = {
+    toolbarContent: ({ filters, setFilters }) => (
+      <FilterList filters={filters} onChange={setFilters} />
+    ),
     toolbarItems: undefined,
   };
 
@@ -36,7 +49,7 @@ class ChecksView extends React.Component {
       $limit: Int
       $offset: Int
       $order: CheckListOrder
-      $filter: String
+      $filters: [String!]
     ) {
       namespace(name: $namespace) {
         ...ChecksList_namespace
@@ -47,9 +60,15 @@ class ChecksView extends React.Component {
   `;
 
   render() {
-    const { match, queryParams, setQueryParams, toolbarItems } = this.props;
-    const { limit, offset, filter } = queryParams;
+    const { match, queryParams, setQueryParams } = this.props;
+    const { limit, offset } = queryParams;
     const variables = { ...match.params, ...queryParams };
+
+    const filters = parseFilterParams(queryParams.filters);
+    const setFilters = setter => {
+      const next = setter(filters);
+      setQueryParams({ filters: buildFilterParams(next) });
+    };
 
     return (
       <AppLayout namespace={match.params.namespace}>
@@ -78,35 +97,34 @@ class ChecksView extends React.Component {
               <div>
                 <Content marginBottom>
                   <ChecksListToolbar
-                    toolbarItems={toolbarItems}
-                    query={filter}
-                    onChangeQuery={value => setQueryParams({ filter: value })}
                     onClickReset={() =>
-                      setQueryParams(q => q.reset(["filter", "order"]))
+                      setQueryParams(q => q.reset(["filters", "order"]))
                     }
+                    toolbarContent={this.props.toolbarContent({
+                      filters,
+                      setFilters,
+                    })}
+                    toolbarItems={this.props.toolbarItems}
                   />
                 </Content>
 
                 <MobileFullWidthContent>
-                  <ToastConnector>
-                    {({ setToast }) => (
-                      <WithWidth>
-                        {({ width }) => (
-                          <ChecksList
-                            editable={width !== "xs"}
-                            limit={limit}
-                            offset={offset}
-                            onChangeQuery={setQueryParams}
-                            namespace={namespace}
-                            loading={(loading && !namespace) || aborted}
-                            refetch={refetch}
-                            order={queryParams.order}
-                            setToast={setToast}
-                          />
-                        )}
-                      </WithWidth>
+                  <WithWidth>
+                    {({ width }) => (
+                      <ChecksList
+                        editable={width !== "xs"}
+                        limit={limit}
+                        offset={offset}
+                        filters={filters}
+                        onChangeQuery={setQueryParams}
+                        onChangeFilters={setFilters}
+                        namespace={namespace}
+                        loading={(loading && !namespace) || aborted}
+                        refetch={refetch}
+                        order={queryParams.order}
+                      />
                     )}
-                  </ToastConnector>
+                  </WithWidth>
                 </MobileFullWidthContent>
               </div>
             );
@@ -118,7 +136,7 @@ class ChecksView extends React.Component {
 }
 
 const enhance = withQueryParams({
-  keys: ["filter", "order", "offset", "limit"],
+  keys: ["filters", "order", "offset", "limit"],
   defaults: {
     limit: "25",
     offset: "0",

@@ -2,22 +2,22 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
-import { FailedError } from "/lib/error/FetchError";
+import { parseFilterParams, buildFilterParams } from "/lib/util/filterParams";
 import { pollingDuration } from "/lib/constant/polling";
+import { FailedError } from "/lib/error/FetchError";
 
-import { MobileFullWidthContent, Content } from "/lib/component/base";
-
+import { Query, withQueryParams, WithWidth } from "/lib/component/util";
+import {
+  MobileFullWidthContent,
+  Content,
+  FilterList,
+} from "/lib/component/base";
 import {
   AppLayout,
   EventsList,
   EventsListToolbar,
   NotFound,
 } from "/lib/component/partial";
-import { Query, withQueryParams, WithWidth } from "/lib/component/util";
-import { ToastConnector } from "/lib/component/relocation";
-
-// If none given default expression is used.
-const defaultExpression = "has_check";
 
 class EventsView extends React.Component {
   static propTypes = {
@@ -33,20 +33,25 @@ class EventsView extends React.Component {
 
     // from withQueryParams HOC
     setQueryParams: PropTypes.func.isRequired,
+
+    toolbarContent: PropTypes.func,
     toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
+    toolbarContent: ({ filters, setFilters }) => (
+      <FilterList filters={filters} onChange={setFilters} />
+    ),
     toolbarItems: undefined,
   };
 
   static query = gql`
     query EnvironmentViewEventsViewQuery(
       $namespace: String!
-      $filter: String = "${defaultExpression}"
+      $filters: [String!]
       $order: EventsListOrder
-      $limit: Int,
-      $offset: Int,
+      $limit: Int
+      $offset: Int
     ) {
       namespace(name: $namespace) {
         ...EventsList_namespace
@@ -57,9 +62,15 @@ class EventsView extends React.Component {
   `;
 
   render() {
-    const { queryParams, match, setQueryParams, toolbarItems } = this.props;
-    const { filter, limit, offset } = queryParams;
+    const { queryParams, match, setQueryParams } = this.props;
+    const { limit, offset } = queryParams;
     const variables = { ...match.params, ...queryParams };
+
+    const filters = parseFilterParams(queryParams.filters);
+    const setFilters = setter => {
+      const next = setter(filters);
+      setQueryParams({ filters: buildFilterParams(next) });
+    };
 
     return (
       <AppLayout namespace={match.params.namespace}>
@@ -88,33 +99,32 @@ class EventsView extends React.Component {
               <div>
                 <Content marginBottom>
                   <EventsListToolbar
-                    toolbarItems={toolbarItems}
-                    onChangeQuery={value => setQueryParams({ filter: value })}
                     onClickReset={() =>
-                      setQueryParams(q => q.reset(["filter", "order"]))
+                      setQueryParams(q => q.reset(["filters", "order"]))
                     }
-                    query={filter}
+                    toolbarContent={this.props.toolbarContent({
+                      filters,
+                      setFilters,
+                    })}
+                    toolbarItems={this.props.toolbarItems}
                   />
                 </Content>
                 <MobileFullWidthContent>
-                  <ToastConnector>
-                    {({ setToast }) => (
-                      <WithWidth>
-                        {({ width }) => (
-                          <EventsList
-                            setToast={setToast}
-                            editable={width !== "xs"}
-                            limit={limit}
-                            offset={offset}
-                            onChangeQuery={setQueryParams}
-                            namespace={namespace}
-                            loading={(loading && !namespace) || aborted}
-                            refetch={refetch}
-                          />
-                        )}
-                      </WithWidth>
+                  <WithWidth>
+                    {({ width }) => (
+                      <EventsList
+                        editable={width !== "xs"}
+                        limit={limit}
+                        offset={offset}
+                        filters={filters}
+                        onChangeQuery={setQueryParams}
+                        onChangeFilters={setFilters}
+                        namespace={namespace}
+                        loading={(loading && !namespace) || aborted}
+                        refetch={refetch}
+                      />
                     )}
-                  </ToastConnector>
+                  </WithWidth>
                 </MobileFullWidthContent>
               </div>
             );
@@ -126,7 +136,7 @@ class EventsView extends React.Component {
 }
 
 const enhance = withQueryParams({
-  keys: ["filter", "order", "offset", "limit"],
+  keys: ["filters", "order", "offset", "limit"],
   defaults: {
     limit: "25",
     offset: "0",

@@ -2,12 +2,16 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
-import { FailedError } from "/lib/error/FetchError";
+import { parseFilterParams, buildFilterParams } from "/lib/util/filterParams";
 import { pollingDuration } from "/lib/constant/polling";
+import { FailedError } from "/lib/error/FetchError";
 
-import { Content, MobileFullWidthContent } from "/lib/component/base";
 import { Query, withQueryParams, WithWidth } from "/lib/component/util";
-
+import {
+  Content,
+  MobileFullWidthContent,
+  FilterList,
+} from "/lib/component/base";
 import {
   AppLayout,
   NotFound,
@@ -29,15 +33,24 @@ const WithDialogState = ({ children }) => {
 class SilencesView extends React.Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
+
+    // from withQueryParams HOC
     queryParams: PropTypes.shape({
       offset: PropTypes.string,
       limit: PropTypes.string,
     }).isRequired,
+
+    // from withQueryParams HOC
     setQueryParams: PropTypes.func.isRequired,
+
     toolbarItems: PropTypes.func,
+    toolbarContent: PropTypes.func,
   };
 
   static defaultProps = {
+    toolbarContent: ({ filters, setFilters }) => (
+      <FilterList filters={filters} onChange={setFilters} />
+    ),
     toolbarItems: undefined,
   };
 
@@ -47,7 +60,7 @@ class SilencesView extends React.Component {
       $limit: Int
       $offset: Int
       $order: SilencesListOrder
-      $filter: String
+      $filters: [String!]
     ) {
       namespace(name: $namespace) {
         ...SilencesList_namespace
@@ -58,9 +71,15 @@ class SilencesView extends React.Component {
   `;
 
   render() {
-    const { match, queryParams, setQueryParams, toolbarItems } = this.props;
-    const { filter, limit, offset, order } = queryParams;
+    const { match, queryParams, setQueryParams } = this.props;
+    const { limit, offset, order } = queryParams;
     const variables = { ...match.params, ...queryParams };
+
+    const filters = parseFilterParams(queryParams.filters);
+    const setFilters = setter => {
+      const next = setter(filters);
+      setQueryParams({ filters: buildFilterParams(next) });
+    };
 
     return (
       <AppLayout namespace={match.params.namespace}>
@@ -92,13 +111,15 @@ class SilencesView extends React.Component {
                     <React.Fragment>
                       <Content marginBottom>
                         <SilencesListToolbar
-                          toolbarItems={toolbarItems}
-                          filter={filter}
-                          onChangeQuery={val => setQueryParams({ filter: val })}
                           onClickCreate={newDialog.open}
                           onClickReset={() =>
-                            setQueryParams(q => q.reset(["filter", "offset"]))
+                            setQueryParams(q => q.reset(["filters", "offset"]))
                           }
+                          toolbarContent={this.props.toolbarContent({
+                            filters,
+                            setFilters,
+                          })}
+                          toolbarItems={this.props.toolbarItems}
                         />
                       </Content>
 
@@ -127,6 +148,8 @@ class SilencesView extends React.Component {
                         limit={limit}
                         offset={offset}
                         order={order}
+                        filters={filters}
+                        onChangeFilters={setFilters}
                         onChangeQuery={setQueryParams}
                         namespace={namespace}
                         loading={(loading && !namespace) || aborted}
@@ -145,7 +168,7 @@ class SilencesView extends React.Component {
 }
 
 const enhance = withQueryParams({
-  keys: ["filter", "order", "offset", "limit"],
+  keys: ["filters", "order", "offset", "limit"],
   defaults: {
     limit: "25",
     offset: "0",

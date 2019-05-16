@@ -2,12 +2,16 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
-import { FailedError } from "/lib/error/FetchError";
+import { parseFilterParams, buildFilterParams } from "/lib/util/filterParams";
 import { pollingDuration } from "/lib/constant/polling";
+import { FailedError } from "/lib/error/FetchError";
 
-import { MobileFullWidthContent, Content } from "/lib/component/base";
 import { Query, withQueryParams, WithWidth } from "/lib/component/util";
-
+import {
+  MobileFullWidthContent,
+  Content,
+  FilterList,
+} from "/lib/component/base";
 import {
   AppLayout,
   EntitiesList,
@@ -18,17 +22,26 @@ import {
 class EntitiesView extends React.PureComponent {
   static propTypes = {
     match: PropTypes.object.isRequired,
+
+    // from withQueryParams HOC
     queryParams: PropTypes.shape({
       filter: PropTypes.string,
       order: PropTypes.string,
       offset: PropTypes.string,
       limit: PropTypes.string,
     }).isRequired,
+
+    // from withQueryParams HOC
     setQueryParams: PropTypes.func.isRequired,
+
+    toolbarContent: PropTypes.func,
     toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
+    toolbarContent: ({ filters, setFilters }) => (
+      <FilterList filters={filters} onChange={setFilters} />
+    ),
     toolbarItems: undefined,
   };
 
@@ -38,7 +51,7 @@ class EntitiesView extends React.PureComponent {
       $limit: Int
       $offset: Int
       $order: EntityListOrder
-      $filter: String
+      $filters: [String!]
     ) {
       namespace(name: $namespace) {
         ...EntitiesList_namespace
@@ -49,9 +62,15 @@ class EntitiesView extends React.PureComponent {
   `;
 
   render() {
-    const { queryParams, match, setQueryParams, toolbarItems } = this.props;
-    const { filter, limit, offset, order } = queryParams;
+    const { queryParams, match, setQueryParams } = this.props;
+    const { limit, offset, order } = queryParams;
     const variables = { ...match.params, ...queryParams };
+
+    const filters = parseFilterParams(queryParams.filters);
+    const setFilters = setter => {
+      const next = setter(filters);
+      setQueryParams({ filters: buildFilterParams(next) });
+    };
 
     return (
       <AppLayout namespace={match.params.namespace}>
@@ -80,10 +99,14 @@ class EntitiesView extends React.PureComponent {
               <div>
                 <Content marginBottom>
                   <EntitiesListToolbar
-                    toolbarItems={toolbarItems}
-                    onChangeQuery={value => setQueryParams({ filter: value })}
-                    onClickReset={() => setQueryParams(q => q.reset())}
-                    query={filter}
+                    onClickReset={() =>
+                      setQueryParams(q => q.reset(["filters", "order"]))
+                    }
+                    toolbarContent={this.props.toolbarContent({
+                      filters,
+                      setFilters,
+                    })}
+                    toolbarItems={this.props.toolbarItems}
                   />
                 </Content>
 
@@ -95,6 +118,8 @@ class EntitiesView extends React.PureComponent {
                         limit={limit}
                         offset={offset}
                         loading={(loading && !namespace) || aborted}
+                        filters={filters}
+                        onChangeFilters={setFilters}
                         onChangeQuery={setQueryParams}
                         namespace={namespace}
                         refetch={refetch}
@@ -113,7 +138,7 @@ class EntitiesView extends React.PureComponent {
 }
 
 const enhance = withQueryParams({
-  keys: ["filter", "order", "offset", "limit"],
+  keys: ["filters", "order", "offset", "limit"],
   defaults: {
     limit: "25",
     offset: "0",

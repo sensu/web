@@ -6,33 +6,24 @@ import { ResetMenuItem } from "/lib/component/partial/ToolbarMenuItems";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 import ListToolbar from "/lib/component/partial/ListToolbar";
 
-import { SearchBox } from "/lib/component/base";
-
 class ChecksListToolbar extends React.PureComponent {
   static propTypes = {
-    query: PropTypes.string,
-    onChangeQuery: PropTypes.func.isRequired,
     onClickReset: PropTypes.func.isRequired,
+    toolbarContent: PropTypes.node,
     toolbarItems: PropTypes.func,
   };
 
   static defaultProps = {
-    query: "",
+    toolbarContent: <React.Fragment />,
     toolbarItems: ({ items }) => items,
   };
 
   render() {
-    const { onChangeQuery, onClickReset, query, toolbarItems } = this.props;
+    const { onClickReset, toolbarItems, toolbarContent } = this.props;
 
     return (
       <ListToolbar
-        search={
-          <SearchBox
-            placeholder="Filter checks…"
-            initialValue={query}
-            onSearch={onChangeQuery}
-          />
-        }
+        search={toolbarContent}
         toolbarItems={props => (
           <ToolbarMenu>
             {toolbarItems({

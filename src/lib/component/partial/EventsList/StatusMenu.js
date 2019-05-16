@@ -1,5 +1,6 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
+import capitalizeStr from "lodash/capitalize";
 
 import {
   ListItemIcon,
@@ -11,12 +12,36 @@ import {
 import { CheckStatusIcon } from "/lib/component/base";
 import { ErrorHollowIcon } from "/lib/component/icon";
 
+const options = [
+  {
+    value: "incident",
+    Icon: () => <ErrorHollowIcon />,
+  },
+  {
+    value: "warning",
+    Icon: () => <CheckStatusIcon statusCode={1} />,
+  },
+  {
+    value: "critical",
+    Icon: () => <CheckStatusIcon statusCode={2} />,
+  },
+  {
+    value: "unknown",
+    Icon: () => <CheckStatusIcon statusCode={3} />,
+  },
+  {
+    value: "passing",
+    Icon: () => <CheckStatusIcon statusCode={0} />,
+  },
+];
+
 class StatusMenu extends React.Component {
   static propTypes = {
     anchorEl: PropTypes.object,
     className: PropTypes.string,
     onChange: PropTypes.func,
     onClose: PropTypes.func,
+    selected: PropTypes.string,
   };
 
   static defaultProps = {
@@ -24,43 +49,26 @@ class StatusMenu extends React.Component {
     className: undefined,
     onChange: undefined,
     onClose: undefined,
+    selected: undefined,
   };
 
   render() {
-    const { anchorEl, className, onClose, onChange } = this.props;
+    const { anchorEl, className, onClose, onChange, selected } = this.props;
 
     return (
       <Menu anchorEl={anchorEl} className={className} onClose={onClose} open>
-        <MenuItem key="incident" onClick={() => onChange("incident")}>
-          <ListItemIcon>
-            <ErrorHollowIcon />
-          </ListItemIcon>
-          <ListItemText primary="Incident" />
-        </MenuItem>
-        <MenuItem key="warning" onClick={() => onChange("warning")}>
-          <ListItemIcon>
-            <CheckStatusIcon statusCode={1} />
-          </ListItemIcon>
-          <ListItemText primary="Warning" />
-        </MenuItem>
-        <MenuItem key="critical" onClick={() => onChange("critical")}>
-          <ListItemIcon>
-            <CheckStatusIcon statusCode={2} />
-          </ListItemIcon>
-          <ListItemText primary="Critical" />
-        </MenuItem>
-        <MenuItem key="unknown" onClick={() => onChange("unknown")}>
-          <ListItemIcon>
-            <CheckStatusIcon statusCode={3} />
-          </ListItemIcon>
-          <ListItemText primary="Unknown" />
-        </MenuItem>
-        <MenuItem key="passing" onClick={() => onChange("ok")}>
-          <ListItemIcon>
-            <CheckStatusIcon statusCode={0} />
-          </ListItemIcon>
-          <ListItemText primary="Passing" />
-        </MenuItem>
+        <MenuItem onClick={() => onChange(null)} />
+        {options.map(({ value, Icon }) => (
+          <MenuItem
+            onClick={() => onChange(value)}
+            selected={selected === value}
+          >
+            <ListItemIcon>
+              <Icon />
+            </ListItemIcon>
+            <ListItemText primary={capitalizeStr(value)} />
+          </MenuItem>
+        ))}
       </Menu>
     );
   }

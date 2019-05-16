@@ -17,19 +17,14 @@ import ListHeader from "/lib/component/partial/ListHeader";
 import { ToolbarSelectOption as Option } from "/lib/component/partial/ToolbarSelect";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 
-import StatusMenu from "./StatusMenu";
+import { toggleParam } from "/lib/util/filterParams";
 
-const filterMap = {
-  ok: "check.status === 0",
-  warning: "check.status === 1",
-  critical: "check.status === 2",
-  unknown: "check.status > 2",
-  incident: "check.status > 0",
-};
+import StatusMenu from "./StatusMenu";
 
 class EventsListHeader extends React.Component {
   static propTypes = {
     editable: PropTypes.bool.isRequired,
+    filters: PropTypes.object.isRequired,
     onClickClearSilences: PropTypes.func.isRequired,
     onClickSelect: PropTypes.func.isRequired,
     onClickSilence: PropTypes.func.isRequired,
@@ -42,6 +37,7 @@ class EventsListHeader extends React.Component {
       checks: PropTypes.object,
       entities: PropTypes.object,
     }),
+    onChangeFilters: PropTypes.func.isRequired,
     onChangeQuery: PropTypes.func.isRequired,
   };
 
@@ -69,38 +65,6 @@ class EventsListHeader extends React.Component {
         }
       }
     `,
-  };
-
-  requeryEntity = newValue => {
-    this.props.onChangeQuery({ filter: `entity.name === "${newValue}"` });
-  };
-
-  requeryCheck = newValue => {
-    this.props.onChangeQuery({ filter: `check.name === "${newValue}"` });
-  };
-
-  requeryHide = newValue => {
-    if (newValue === "passing") {
-      this.props.onChangeQuery({ filter: `check.status !== 0` });
-    } else if (newValue === "silenced") {
-      this.props.onChangeQuery({ filter: `!is_silenced` });
-    } else {
-      throw new TypeError(`unknown value ${newValue}`);
-    }
-  };
-
-  requeryStatus = newValue => {
-    if (newValue === "") {
-      this.props.onChangeQuery(query => query.delete("filter"));
-      return;
-    }
-
-    const filter = filterMap[newValue];
-    if (!filter) {
-      throw new Error("received unexpected argument");
-    }
-
-    this.props.onChangeQuery({ filter });
   };
 
   updateSort = newValue => {
@@ -183,7 +147,7 @@ class EventsListHeader extends React.Component {
   };
 
   renderActions = () => {
-    const { namespace: ns } = this.props;
+    const { namespace: ns, filters, onChangeFilters } = this.props;
     const entities = ns ? ns.entities.nodes.map(e => e.name) : [];
     const checks = ns ? ns.checks.nodes.map(e => e.name) : [];
 
@@ -192,24 +156,48 @@ class EventsListHeader extends React.Component {
         {({ width }) => (
           <ToolbarMenu width={width}>
             <ToolbarMenu.Item key="hide" visible="if-room">
-              <Select title="Hide" onChange={this.requeryHide}>
-                <Option value="passing">Passing</Option>
-                <Option value="silenced">Silenced</Option>
+              <Select
+                title="Silenced"
+                onChange={toggleParam("silenced", onChangeFilters)}
+              >
+                <Option value={null} />
+                <Option value="false" selected={filters.silenced === "false"}>
+                  Hide Silenced
+                </Option>
+                <Option value="true" selected={filters.silenced === "true"}>
+                  Hide Un-silenced
+                </Option>
               </Select>
             </ToolbarMenu.Item>
 
             <ToolbarMenu.Item key="filter-by-entity" visible="if-room">
-              <Select title="Entity" onChange={this.requeryEntity}>
+              <Select
+                title="Entity"
+                onChange={toggleParam("entity", onChangeFilters)}
+              >
+                <Option value={null} />
                 {entities.map(name => (
-                  <Option key={name} value={name} />
+                  <Option
+                    key={name}
+                    value={name}
+                    selected={filters.entity === name}
+                  />
                 ))}
               </Select>
             </ToolbarMenu.Item>
 
             <ToolbarMenu.Item key="filter-by-check" visible="if-room">
-              <Select title="Check" onChange={this.requeryCheck}>
+              <Select
+                title="Check"
+                onChange={toggleParam("check", onChangeFilters)}
+              >
+                <Option value={null} />
                 {checks.map(name => (
-                  <Option key={name} value={name} />
+                  <Option
+                    key={name}
+                    value={name}
+                    selected={filters.check === name}
+                  />
                 ))}
               </Select>
             </ToolbarMenu.Item>
@@ -223,9 +211,10 @@ class EventsListHeader extends React.Component {
                     anchorEl={anchorEl}
                     onClose={close}
                     onChange={val => {
-                      this.requeryStatus(val);
+                      toggleParam("status", onChangeFilters)(val);
                       close();
                     }}
+                    selected={filters.status}
                   />
                 )}
               />

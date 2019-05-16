@@ -16,10 +16,14 @@ import ListSortSelector from "/lib/component/partial/ListSortSelector";
 import { ToolbarSelectOption } from "/lib/component/partial/ToolbarSelect";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 
+import { toggleParam } from "/lib/util/filterParams";
+
 class ChecksListHeader extends React.PureComponent {
   static propTypes = {
     editable: PropTypes.bool.isRequired,
+    filters: PropTypes.object.isRequired,
     namespace: PropTypes.object,
+    onChangeFilters: PropTypes.func.isRequired,
     onChangeQuery: PropTypes.func.isRequired,
     onClickClearSilences: PropTypes.func.isRequired,
     onClickExecute: PropTypes.func.isRequired,
@@ -38,7 +42,7 @@ class ChecksListHeader extends React.PureComponent {
   static fragments = {
     namespace: gql`
       fragment ChecksListHeader_namespace on Namespace {
-        subscriptions(orderBy: OCCURRENCES) {
+        subscriptions(orderBy: OCCURRENCES, omitEntity: true) {
           values(limit: 25)
         }
       }
@@ -54,22 +58,49 @@ class ChecksListHeader extends React.PureComponent {
     `,
   };
 
-  updateFilter = val => {
-    this.props.onChangeQuery({
-      filter: `subscriptions.indexOf("${val}") >= 0`,
-    });
-  };
-
   renderActions = () => {
-    const { namespace, onChangeQuery, order } = this.props;
-    const subscriptions = namespace ? namespace.subscriptions.values : [];
+    const {
+      filters,
+      namespace,
+      onChangeQuery,
+      onChangeFilters,
+      order,
+    } = this.props;
 
+    const subscriptions = namespace ? namespace.subscriptions.values : [];
     return (
       <ToolbarMenu>
+        <ToolbarMenu.Item key="filter-by-published" visible="if-room">
+          <SelectMenuItem
+            title="Published"
+            onChange={toggleParam("published", onChangeFilters)}
+          >
+            <ToolbarSelectOption value={null} />
+            {[["true", "Published"], ["false", "Unpublished"]].map(
+              ([v, label]) => (
+                <ToolbarSelectOption
+                  key={v}
+                  value={v}
+                  selected={filters.published === v}
+                >
+                  {label}
+                </ToolbarSelectOption>
+              ),
+            )}
+          </SelectMenuItem>
+        </ToolbarMenu.Item>
         <ToolbarMenu.Item key="filter-by-subscription" visible="if-room">
-          <SelectMenuItem title="Subscription" onChange={this.updateFilter}>
+          <SelectMenuItem
+            title="Subscription"
+            onChange={toggleParam("subscription", onChangeFilters)}
+          >
+            <ToolbarSelectOption value={null} />
             {subscriptions.map(val => (
-              <ToolbarSelectOption key={val} value={val} />
+              <ToolbarSelectOption
+                key={val}
+                value={val}
+                selected={val === filters.subscription}
+              />
             ))}
           </SelectMenuItem>
         </ToolbarMenu.Item>
