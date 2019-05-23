@@ -30,11 +30,13 @@ class LabelsAnnotationsCell extends React.PureComponent {
     classes: PropTypes.object.isRequired,
     entity: PropTypes.object,
     check: PropTypes.object,
+    handler: PropTypes.object,
   };
 
   static defaultProps = {
     entity: null,
     check: null,
+    handler: null,
   };
 
   static fragments = {
@@ -53,9 +55,9 @@ class LabelsAnnotationsCell extends React.PureComponent {
   };
 
   render() {
-    const { check, classes, entity } = this.props;
+    const { check, classes, entity, handler } = this.props;
 
-    const object = check || entity;
+    const object = check || entity || handler;
 
     const annotations = Object.keys(object.metadata.annotations).reduce(
       (anno, key) => {
