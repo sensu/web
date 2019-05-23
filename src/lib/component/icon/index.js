@@ -21,6 +21,7 @@ export {
 } from "@material-ui/icons/FavoriteBorder";
 export { default as FavoriteIcon } from "@material-ui/icons/Favorite";
 export { default as FeedbackIcon } from "@material-ui/icons/Feedback";
+export { default as HandlerIcon } from "@material-ui/icons/DeviceHub";
 export { default as InfoIcon } from "@material-ui/icons/Info";
 export { default as KebabIcon } from "@material-ui/icons/MoreVert";
 export {

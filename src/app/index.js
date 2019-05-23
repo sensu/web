@@ -26,6 +26,7 @@ import {
   CheckIcon,
   EntityIcon,
   EventIcon,
+  HandlerIcon,
   SilenceIcon,
 } from "/lib/component/icon";
 
@@ -35,6 +36,7 @@ import {
   ChecksView,
   EntitiesView,
   EventsView,
+  HandlersView,
   SilencesView,
   NotFoundView,
   CheckDetailsView,
@@ -86,6 +88,11 @@ const renderApp = () => {
                       caption: "Checks",
                     },
                     {
+                      to: `${props.match.url}/handlers`,
+                      icon: HandlerIcon,
+                      caption: "Handlers",
+                    },
+                    {
                       to: `${props.match.url}/silences`,
                       icon: SilenceIcon,
                       caption: "Silences",
@@ -121,6 +128,10 @@ const renderApp = () => {
                     <Route
                       path={`${props.match.path}/events`}
                       component={EventsView}
+                    />
+                    <Route
+                      path={`${props.match.path}/handlers`}
+                      component={HandlersView}
                     />
                     <Route
                       path={`${props.match.path}/silences`}
