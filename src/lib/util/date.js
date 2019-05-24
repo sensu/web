@@ -44,9 +44,9 @@ export const getDayperiod = date => {
   return "";
 };
 
-export const nanosecond = 1;
-export const microsecond = 1000 * nanosecond;
-export const millisecond = 1000 * microsecond;
+export const millisecond = 1;
+export const microsecond = millisecond / 1000;
+export const nanosecond = microsecond / 1000;
 export const second = 1000 * millisecond;
 export const minute = 60 * second;
 export const hour = 60 * minute;
