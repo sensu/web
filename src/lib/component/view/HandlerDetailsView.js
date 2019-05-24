@@ -18,6 +18,7 @@ const query = gql`
   query HandlerDetailsContentQuery($namespace: String!, $handler: String!) {
     handler(namespace: $namespace, name: $handler) {
       id
+      deleted @client
       ...HandlerDetailsContainer_handler
     }
   }
@@ -44,7 +45,7 @@ const HandlerDetailsView = ({ match, toolbarItems }) => (
         // see: https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
         const loading = networkStatus < 6;
 
-        if (!loading && !aborted && !handler) {
+        if (!loading && !aborted && (!handler || handler.deleted)) {
           return <NotFound />;
         }
 
