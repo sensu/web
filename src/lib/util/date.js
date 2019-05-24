@@ -94,10 +94,6 @@ export const parseDuration = original => {
     if (match) {
       consumedLength = match[0].length;
       string = string.slice(consumedLength);
-      const parsed = parseInt(match[0], 10);
-      if (parsed > Number.MAX_SAFE_INTEGER) {
-        throw new Error("time: bad [0-9]*");
-      }
       return parseInt(match[0], 10);
     }
 
@@ -178,23 +174,11 @@ export const parseDuration = original => {
 
     let value = digit * unit;
 
-    if (value > Number.MAX_SAFE_INTEGER) {
-      throw new TypeError(`time: invalid duration ${original}`);
-    }
-
     if (fraction > 0) {
       value += fraction * (unit / scale);
     }
 
-    if (value > Number.MAX_SAFE_INTEGER) {
-      throw new TypeError(`time: invalid duration ${original}`);
-    }
-
     duration += value;
-
-    if (duration > Number.MAX_SAFE_INTEGER) {
-      throw new TypeError(`time: invalid duration ${original}`);
-    }
   }
 
   return negative ? -duration : duration;
