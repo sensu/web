@@ -40,6 +40,9 @@ HandlerDetailsContainer.defaultProps = {
 HandlerDetailsContainer.fragments = {
   handler: gql`
     fragment HandlerDetailsContainer_handler on Handler {
+      id
+      deleted @client
+
       ...HandlerDetailsConfiguration_handler
     }
     ${Configuration.fragments.handler}

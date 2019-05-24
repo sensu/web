@@ -123,6 +123,8 @@ HandlersList.fragments = {
         filters: $filters
       ) @connection(key: "handlers", filter: ["filters", "orderBy"]) {
         nodes {
+          id
+          deleted @client
           ...HandlersListItem_handler
         }
 

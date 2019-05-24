@@ -17,6 +17,7 @@ const stateLink = ({ cache, resolvers }) =>
       addDeletedFieldTo("CheckConfig"),
       addDeletedFieldTo("Entity"),
       addDeletedFieldTo("Event"),
+      addDeletedFieldTo("Handler"),
       addDeletedFieldTo("Silenced"),
       ...resolvers,
     ]),

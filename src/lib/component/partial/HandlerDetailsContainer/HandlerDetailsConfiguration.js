@@ -189,6 +189,8 @@ HandlerDetailsConfiguration.defaultProps = {
 HandlerDetailsConfiguration.fragments = {
   handler: gql`
     fragment HandlerDetailsConfiguration_handler on Handler {
+      deleted @client
+      id
       name
       type
       command
