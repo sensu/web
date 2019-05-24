@@ -10,7 +10,7 @@ import {
 
 describe("date utils", () => {
   describe("parseDuration", () => {
-    it("should match go time::parseDuration spec", () => {
+    it("should behave like go time.parseDuration", () => {
       const parseDurationTests = [
         // simple
         ["0", true, 0],
