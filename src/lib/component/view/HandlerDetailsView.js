@@ -17,6 +17,7 @@ import {
 const query = gql`
   query HandlerDetailsContentQuery($namespace: String!, $handler: String!) {
     handler(namespace: $namespace, name: $handler) {
+      id
       ...HandlerDetailsContainer_handler
     }
   }
