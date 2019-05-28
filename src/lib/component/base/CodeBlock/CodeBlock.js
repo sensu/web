@@ -7,7 +7,7 @@ import { emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
 const styles = theme => ({
   root: {
     fontFamily: theme.typography.monospace.fontFamily,
-    overflowX: "scroll",
+    overflowX: "auto",
     userSelect: "text",
     tabSize: 2,
     color:
