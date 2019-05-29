@@ -2,6 +2,7 @@ import "./array";
 import "./authAPI";
 import "./checkStatus";
 import "./compose";
+import "./cron";
 import "./consecutivePairs";
 import "./date";
 import "./fetch";
