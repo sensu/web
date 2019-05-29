@@ -15,6 +15,9 @@ describe("cron utils", () => {
       expect(normalize("@every 5m")).toEqual("0 */5 * * * *");
       expect(normalize("@every 1h5m")).toEqual("0 */65 * * * *");
       expect(normalize("@every 5s")).toEqual("*/5 * * * * *");
+      expect(normalize("@every 900ms")).toEqual("*/1 * * * * *");
+      expect(normalize("@every 5ms")).toEqual("* * * * * *");
+      expect(normalize("@every 5000000000ns")).toEqual("*/5 * * * * *");
 
       expect(normalize("not a valid expression")).toEqual(
         "not a valid expression",
@@ -37,6 +40,8 @@ describe("cron utils", () => {
       expect(format("@midnight")).toEqual("At 12:00 AM");
       expect(format("@hourly")).toEqual("Every hour");
 
+      expect(format("@every 5000000000ns")).toEqual("Every 5 seconds");
+      expect(format("@every 5ms")).toEqual("Every second");
       expect(format("@every 5s")).toEqual("Every 5 seconds");
       expect(format("@every 5m")).toEqual("Every 5 minutes");
       expect(format("@every 1h5m")).toEqual("Every 65 minutes");
