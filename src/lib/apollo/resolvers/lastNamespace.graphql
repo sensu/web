@@ -1,6 +1,6 @@
 extend type Query {
   "The last namespace that the client accessed."
-  lastNamespace: String!
+  lastNamespace: String
 }
 
 extend type Mutation {
