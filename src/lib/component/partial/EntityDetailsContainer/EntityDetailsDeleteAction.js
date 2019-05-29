@@ -1,7 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
-import { compose } from "recompose";
+import compose from "/lib/util/compose";
 import { withApollo } from "/vendor/react-apollo";
 import { withRouter } from "/vendor/react-router-dom";
 
