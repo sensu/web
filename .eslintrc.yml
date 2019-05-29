@@ -74,6 +74,9 @@ overrides:
       react/prop-types: error
       "@typescript-eslint/no-var-requires": off
   - files: ["*.ts", "*.tsx"]
+    rules:
+      # Rely on typescript to check that imports resolve correctly
+      import/no-unresolved: off
   - files: ["*.test.tsx", "*.test.js", "*.test.ts"]
     env:
       jest: true

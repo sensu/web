@@ -1,5 +1,5 @@
 globals:
-  __webpack_public_path__: false;
-  __non_webpack_require__: false;
+  __webpack_public_path__: false
+  __non_webpack_require__: false
 env:
-  browser: true;
+  browser: true
