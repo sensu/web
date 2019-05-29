@@ -23,7 +23,7 @@ const SignInForm = ({ disabled, error, onSubmit }) => {
       onSubmit({ username, password });
       ev.preventDefault();
     },
-    [username, password],
+    [username, password, onSubmit],
   );
 
   return (
