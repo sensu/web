@@ -90,7 +90,13 @@ const HandlerDetailsConfiguration = ({ handler }) => (
               <DictionaryKey>Timeout</DictionaryKey>
               <DictionaryValue>
                 <Maybe value={handler.timeout > 0} fallback="—">
-                  {val => (val ? <Duration duration={val * 1000} /> : "Never")}
+                  {() =>
+                    handler.timeout ? (
+                      <Duration duration={handler.timeout * 1000} />
+                    ) : (
+                      "Never"
+                    )
+                  }
                 </Maybe>
               </DictionaryValue>
             </DictionaryEntry>
