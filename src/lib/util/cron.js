@@ -25,23 +25,26 @@ export const normalize = expression => {
 
   const match = /^@every +(.*)$/.exec(expression);
   if (match) {
-    const duration = parseDuration(match[1]);
+    // Parse the duration in ms rounded to the nearest second
+    const duration = Math.round(parseDuration(match[1]) / second) * second;
 
-    if (duration % day === 0) {
-      return `0 0 0 */${duration / day} * *`;
+    if (duration > 0) {
+      if (duration % day === 0) {
+        return `0 0 0 */${duration / day} * *`;
+      }
+
+      if (duration % hour === 0) {
+        return `0 0 */${duration / hour} * * *`;
+      }
+
+      if (duration % minute === 0) {
+        return `0 */${duration / minute} * * * *`;
+      }
     }
 
-    if (duration % hour === 0) {
-      return `0 0 */${duration / hour} * * *`;
-    }
+    const seconds = duration / second;
 
-    if (duration % minute === 0) {
-      return `0 */${duration / minute} * * * *`;
-    }
-
-    const seconds = Math.round(duration / second);
-
-    if (seconds) {
+    if (seconds > 0) {
       return `*/${seconds} * * * * *`;
     }
 
