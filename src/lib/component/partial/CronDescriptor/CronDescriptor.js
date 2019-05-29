@@ -1,35 +1,41 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import lowerFirst from "lodash/lowerFirst";
-import cronstrue from "/vendor/cronstrue";
 import { Tooltip } from "/vendor/@material-ui/core";
 
-class CronDescriptor extends React.PureComponent {
-  static propTypes = {
-    capitalize: PropTypes.bool,
-    expression: PropTypes.string.isRequired,
-    component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  };
+import { format } from "/lib/util/cron";
 
-  static defaultProps = {
-    capitalize: false,
-    component: "span",
-  };
-
-  render() {
-    const { capitalize, expression, component: Component } = this.props;
-
-    let statement = cronstrue.toString(expression);
-    if (!capitalize) {
-      statement = lowerFirst(statement);
+const CronDescriptor = ({ capitalize, expression, component: Component }) => {
+  let statement = React.useMemo(() => {
+    try {
+      return format(expression);
+    } catch (e) {
+      // The cron expression could not be formatted, return the raw expression
+      // as a fallback.
+      return expression;
     }
+  }, [expression]);
 
-    return (
-      <Tooltip title={expression}>
-        <Component>{statement}</Component>
-      </Tooltip>
-    );
+  if (!capitalize) {
+    statement = lowerFirst(statement);
   }
-}
+
+  return (
+    <Tooltip title={expression}>
+      <Component>{statement}</Component>
+    </Tooltip>
+  );
+};
+
+CronDescriptor.propTypes = {
+  capitalize: PropTypes.bool,
+  expression: PropTypes.string.isRequired,
+  component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+};
+
+CronDescriptor.defaultProps = {
+  capitalize: false,
+  component: "span",
+};
 
 export default CronDescriptor;
