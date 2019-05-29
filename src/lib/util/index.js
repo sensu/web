@@ -10,4 +10,5 @@ import "./filterParams";
 import "./serviceWorker";
 import "./uniqueId";
 import "./validation";
+import "./validator";
 import "./promise";
