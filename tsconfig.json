@@ -10,7 +10,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "paths": {
-      "/*": ["src/*"],
+      "/*": ["src/*"]
     },
     "skipLibCheck": true,
     "sourceMap": true,

@@ -111,8 +111,8 @@ class Query extends React.PureComponent<Props, State> {
   public static defaultProps = {
     variables: {},
     pollInterval: 0,
-    children: () => null,
-    onError: (error: Error) => {
+    children: (): null => null,
+    onError: (error: Error): void => {
       throw error;
     },
   };
@@ -222,7 +222,7 @@ class Query extends React.PureComponent<Props, State> {
     errors,
     loading,
     networkStatus /* stale */,
-  }: ApolloQueryResult<unknown>) => {
+  }: ApolloQueryResult<unknown>): void => {
     let error = null;
 
     if (errors && errors.length > 0) {
@@ -242,31 +242,33 @@ class Query extends React.PureComponent<Props, State> {
     }
   };
 
-  private onNextLocal = ({ data }: ApolloQueryResult<LocalData>) => {
-    this.setState((state: State, props: Props) => {
-      let nextState = {
-        localQuery: {
-          ...state.localQuery,
-          data,
-        },
-      };
-
-      if (
-        state.localQuery.data.localNetwork.offline &&
-        (!nextState.localQuery.data.localNetwork.offline ||
-          nextState.localQuery.data.localNetwork.retry)
-      ) {
-        nextState = {
-          ...nextState,
-          ...createQueryObservable(props),
+  private onNextLocal = ({ data }: ApolloQueryResult<LocalData>): void => {
+    this.setState(
+      (state: State, props: Props): State => {
+        let nextState = {
+          localQuery: {
+            ...state.localQuery,
+            data,
+          },
         };
-      }
 
-      return nextState;
-    });
+        if (
+          state.localQuery.data.localNetwork.offline &&
+          (!nextState.localQuery.data.localNetwork.offline ||
+            nextState.localQuery.data.localNetwork.retry)
+        ) {
+          nextState = {
+            ...nextState,
+            ...createQueryObservable(props),
+          };
+        }
+
+        return nextState as State;
+      },
+    );
   };
 
-  private onError = (error: Error) => {
+  private onError = (error: Error): void => {
     if ((error as any).networkError instanceof QueryAbortedError) {
       this.setState({ aborted: true, error: null });
     } else {
@@ -275,7 +277,7 @@ class Query extends React.PureComponent<Props, State> {
     }
   };
 
-  private onErrorLocal = (error: Error) => {
+  private onErrorLocal = (error: Error): void => {
     throw error;
   };
 

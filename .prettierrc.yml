@@ -11,3 +11,4 @@ overrides:
   - files: ["*.tsx", "*.ts"]
     options:
       parser: typescript
+      arrowParens: always

@@ -89,7 +89,11 @@ class LabelsAnnotationsCell extends React.PureComponent {
                   <Maybe value={object.metadata.labels} fallback="None">
                     {val =>
                       val.map(pair => [
-                        <Label name={pair.key} value={pair.val} />,
+                        <Label
+                          key={pair.key}
+                          name={pair.key}
+                          value={pair.val}
+                        />,
                         " ",
                       ])
                     }

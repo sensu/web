@@ -15,7 +15,7 @@ const doFetch = (cache: ApolloCache<any>): typeof fetch => (
 ): Promise<Response> =>
   // Wrap fetch call in bluebird promise to enable global rejection tracking
   Promise.resolve(fetch(input, config)).then(
-    response => {
+    (response: Response): Response => {
       if (response.status === 0) {
         // The request failed for one of a number of possible reasons:
         //  - blocked by CORS
@@ -50,7 +50,7 @@ const doFetch = (cache: ApolloCache<any>): typeof fetch => (
 
       return response;
     },
-    error => {
+    (error: Error): Response => {
       // Set the offline flag in the apollo cache
       setOffline(cache, true);
       throw new FailedError(0, input, null, error);

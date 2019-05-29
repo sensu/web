@@ -29,7 +29,11 @@ export default {
   },
   resolvers: {
     Mutation: {
-      retryLocalNetwork: (_: unknown, args: unknown, { cache }: Context) => {
+      retryLocalNetwork: (
+        _: unknown,
+        args: unknown,
+        { cache }: Context,
+      ): null => {
         const data = {
           localNetwork: {
             __typename: "LocalNetwork",
@@ -43,7 +47,7 @@ export default {
         _: unknown,
         { offline }: { offline: boolean },
         { cache }: Context,
-      ) => {
+      ): null => {
         setOffline(cache, offline);
         return null;
       },

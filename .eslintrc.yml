@@ -1,16 +1,21 @@
 parser: "@typescript-eslint/parser"
-parserOptions:
-  project: tsconfig.json
 plugins:
   - jsx-a11y
   - prettier
   - react
+  - react-hooks
+  - import
   - "@typescript-eslint"
+settings:
+  import/resolver:
+    babel-module:
 extends:
-  - plugin:@typescript-eslint/recommended
   - eslint:recommended
   - plugin:react/recommended
+  - plugin:@typescript-eslint/recommended
   - plugin:jsx-a11y/recommended
+  - plugin:import/errors
+  - plugin:import/warnings
   - prettier
   - prettier/react
 env:
@@ -20,6 +25,19 @@ globals:
   IntlRelativeFormat: false
   isNaN: false
 rules:
+  react-hooks/rules-of-hooks: error
+  react-hooks/exhaustive-deps: error
+
+  react/no-deprecated: warn
+
+  # The ability of eslint-plugin-import to check that a named export exists is
+  # limited to checking the immediately referenced file. `export * from "..."`
+  # expressions are not unwrapped. We can instead rely on Typescript to
+  # assert the shapes of imported modules.
+  import/named: off
+  import/namespace: off
+  import/default: off
+
   # Indent is owned by prettier
   "@typescript-eslint/indent": off
   react/jsx-indent: off
@@ -27,42 +45,35 @@ rules:
   # Allow explicit use of `any`
   "@typescript-eslint/no-explicit-any": off
 
-  "@typescript-eslint/explicit-function-return-type":
-    - warn
-    - allowTypedFunctionExpressions: true
-      allowExpressions: true
+  # Require explicit return types on all functions
+  "@typescript-eslint/explicit-function-return-type": error
+
+  "@typescript-eslint/no-unused-vars":
+    - error
+    # Allow underscore-prefix unused vars
+    - varsIgnorePattern: "^_"
+      # allow using rest spread as an objecty omit utility
+      ignoreRestSiblings: true
+
+  # Some imported module interfaces / APIs require camelcase names
+  "@typescript-eslint/camelcase": off
 
   # Single line conditionals are more difficult to set breakpoints on.
   curly:
     - error
     - all
 
-  # Little practical value in making the distinction
-  react/jsx-filename-extension: 0
+  # This is good practice but hard to accomodate while using material-ui
+  jsx-a11y/mouse-events-have-key-events: warn
 
-  # Moving to flowtype
-  react/forbid-prop-types: 0
-
-  # We use underscores to prefix "private" class methods
-  no-underscore-dangle: 0
-
-  # babel-plugin-module-resolver aliases absolute paths to the src directory
-  import/no-absolute-path: 0
-
-  # ...
-  react/destructuring-assignment: 0
-  prefer-destructuring: 0
-  import/prefer-default-export: 0
-
-  # Conflicts with macros
-  import/named: 0
-
-  # Conflicts with toasts, may re-enable later
-  jsx-a11y/mouse-events-have-key-events: 0
+  # We trust our own discression to use this responsibily
+  jsx-a11y/no-autofocus: off
 overrides:
-  - files: "*.tsx"
+  - files: "*.js"
     rules:
-      react/prop-types: off
+      react/prop-types: error
+      "@typescript-eslint/no-var-requires": off
+  - files: ["*.ts", "*.tsx"]
   - files: ["*.test.tsx", "*.test.js", "*.test.ts"]
     env:
       jest: true
