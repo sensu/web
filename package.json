@@ -13,7 +13,8 @@
     "src",
     ".eslintrc.yml",
     ".babelrc",
-    "babel.config.js"
+    "babel.config.js",
+    "tsconfig.json"
   ],
   "engines": {
     "node": ">= 8",
