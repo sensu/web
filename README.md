@@ -40,6 +40,6 @@ community contribution. For guidelines on how to contribute to this project, how
 to hack on Sensu, and information about what we require from project
 contributors, please see [CONTRIBUTING.md].
 
-[Sensu Go]:https://sensu.io/products/core
-[installation documentation]:https://docs.sensu.io/sensu-go/latest/installation/install-sensu/
-[CONTRIBUTING.md]:CONTRIBUTING.md
+[sensu go]: https://sensu.io/products/core
+[installation documentation]: https://docs.sensu.io/sensu-go/latest/installation/install-sensu/
+[contributing.md]: CONTRIBUTING.md

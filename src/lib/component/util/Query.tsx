@@ -1,61 +1,63 @@
-// @flow
-/* eslint-disable react/no-unused-prop-types */
-/* eslint-disable react/sort-comp */
-/* eslint-disable react/no-multi-comp */
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/default-props-match-prop-types */
-
-import * as React from "react";
-import { ApolloError } from "apollo-client";
-import { withApollo } from "/vendor/react-apollo";
-import type {
+import React from "/vendor/react";
+import {
+  ApolloError,
   ObservableQuery,
+  OperationVariables,
   ApolloClient,
   WatchQueryOptions,
   NetworkStatus,
   ApolloQueryResult,
-} from "/vendor/react-apollo";
+} from "apollo-client";
+import { withApollo } from "/vendor/react-apollo";
 import shallowEqual from "fbjs/lib/shallowEqual";
 import gql from "/vendor/graphql-tag";
 
 import QueryAbortedError from "/lib/error/QueryAbortedError";
 
-type ObservableMethods = {
-  fetchMore: $PropertyType<ObservableQuery<mixed>, "fetchMore">,
-  refetch: $PropertyType<ObservableQuery<mixed>, "refetch">,
-  startPolling: $PropertyType<ObservableQuery<mixed>, "startPolling">,
-  stopPolling: $PropertyType<ObservableQuery<mixed>, "stopPolling">,
-  subscribeToMore: $PropertyType<ObservableQuery<mixed>, "subscribeToMore">,
-  updateQuery: $PropertyType<ObservableQuery<mixed>, "updateQuery">,
-};
+interface ObservableMethods<T = any, V = OperationVariables> {
+  fetchMore: ObservableQuery<T, V>["fetchMore"];
+  refetch: ObservableQuery<T, V>["refetch"];
+  startPolling: ObservableQuery<T, V>["startPolling"];
+  stopPolling: ObservableQuery<T, V>["stopPolling"];
+  subscribeToMore: ObservableQuery<T, V>["subscribeToMore"];
+  updateQuery: ObservableQuery<T, V>["updateQuery"];
+}
 
-type Props = {
-  client: ApolloClient<mixed>,
+interface Props extends WatchQueryOptions {
+  client: ApolloClient<unknown>;
   // eslint-disable-next-line no-use-before-define
-  children: State => React.Node,
-  onError: Error => void,
-} & WatchQueryOptions;
+  children: (state: State) => React.ReactNode;
+  onError: (error: Error) => void;
+}
 
-type LocalData = { localNetwork: { offline: boolean, retry: boolean } };
+interface LocalData {
+  localNetwork: {
+    offline: boolean;
+    retry: boolean;
+  };
+}
 
-type State = {
-  aborted: boolean,
-  data: mixed | null, // TODO: Infer data type from query
-  error: Error | null,
-  loading: boolean,
-  networkStatus: NetworkStatus,
-  observable: ObservableQuery<mixed>,
+interface ObservableState<T = any, V = OperationVariables> {
+  observable: ObservableQuery<T, V>;
+  data: T;
+  loading: boolean;
+  networkStatus: NetworkStatus;
+}
+
+interface State extends ObservableState, ObservableMethods {
+  aborted: boolean;
+  error: Error | null;
   localQuery: {
-    observable: ObservableQuery<LocalData>,
-    data: LocalData,
-  },
-  props: Props,
-} & ObservableMethods;
+    observable: ObservableQuery<LocalData>;
+    data: LocalData;
+  };
+  props: Props;
+}
 
 const modifiableWatchQueryOptionsHaveChanged = (
   a: WatchQueryOptions,
   b: WatchQueryOptions,
-) =>
+): boolean =>
   a.pollInterval !== b.pollInterval ||
   a.fetchPolicy !== b.fetchPolicy ||
   a.errorPolicy !== b.errorPolicy ||
@@ -63,9 +65,7 @@ const modifiableWatchQueryOptionsHaveChanged = (
   a.notifyOnNetworkStatusChange !== b.notifyOnNetworkStatusChange ||
   !shallowEqual(a.variables, b.variables);
 
-const extractQueryOptions = (
-  props: WatchQueryOptions,
-): $Shape<WatchQueryOptions> => ({
+const extractQueryOptions = (props: WatchQueryOptions): WatchQueryOptions => ({
   variables: props.variables,
   pollInterval: props.pollInterval,
   query: props.query,
@@ -83,8 +83,10 @@ const localQuery = gql`
   }
 `;
 
-const createQueryObservable = (props: Props) => {
-  const observable: ObservableQuery<mixed> = props.client.watchQuery(
+const createQueryObservable = (
+  props: Props,
+): ObservableMethods & ObservableState => {
+  const observable: ObservableQuery = props.client.watchQuery(
     extractQueryOptions(props),
   );
 
@@ -106,25 +108,28 @@ const createQueryObservable = (props: Props) => {
 };
 
 class Query extends React.PureComponent<Props, State> {
-  static defaultProps = {
+  public static defaultProps = {
     variables: {},
     pollInterval: 0,
-    children: () => {},
+    children: () => null,
     onError: (error: Error) => {
       throw error;
     },
   };
 
-  subscription: { unsubscribe(): void } | null = null;
+  private subscription: { unsubscribe(): void } | null = null;
 
-  localSubscription: { unsubscribe(): void } | null = null;
+  private localSubscription: { unsubscribe(): void } | null = null;
 
-  static getDerivedStateFromProps(props: Props, state: State | null) {
+  public static getDerivedStateFromProps(
+    props: Props,
+    state: State | null,
+  ): State | null {
     if (state !== null && state.props === props) {
       return null;
     }
 
-    let nextState: $Shape<State> = { props };
+    let nextState: Partial<State> = { props };
 
     if (state === null || state.props.client !== props.client) {
       const observable: ObservableQuery<LocalData> = props.client.watchQuery({
@@ -138,7 +143,7 @@ class Query extends React.PureComponent<Props, State> {
         localQuery: {
           observable,
           // flowlint-next-line unclear-type: off
-          data: ((data: any): LocalData),
+          data: (data as any) as LocalData,
         },
       };
     }
@@ -161,10 +166,10 @@ class Query extends React.PureComponent<Props, State> {
 
     // Changes to `metadata` and `context` props are ignored.
 
-    return nextState;
+    return nextState as State;
   }
 
-  constructor(props) {
+  public constructor(props: Props) {
     super(props);
     const state = Query.getDerivedStateFromProps(this.props, null);
     if (state !== null) {
@@ -172,7 +177,7 @@ class Query extends React.PureComponent<Props, State> {
     }
   }
 
-  subscribe() {
+  private subscribe(): void {
     if (this.subscription) {
       throw new Error("Cannot subscribe. Currently subscribed.");
     }
@@ -183,7 +188,7 @@ class Query extends React.PureComponent<Props, State> {
     });
   }
 
-  subscribeLocal() {
+  private subscribeLocal(): void {
     if (this.localSubscription) {
       throw new Error("Cannot subscribe. Currently subscribed.");
     }
@@ -194,7 +199,7 @@ class Query extends React.PureComponent<Props, State> {
     });
   }
 
-  unsubscribe() {
+  private unsubscribe(): void {
     if (!this.subscription) {
       throw new Error("Cannot unsubscribe. Not currently subscribed");
     }
@@ -203,7 +208,7 @@ class Query extends React.PureComponent<Props, State> {
     this.subscription = null;
   }
 
-  unsubscribeLocal() {
+  private unsubscribeLocal(): void {
     if (!this.localSubscription) {
       throw new Error("Cannot unsubscribe. Not currently subscribed");
     }
@@ -212,12 +217,12 @@ class Query extends React.PureComponent<Props, State> {
     this.localSubscription = null;
   }
 
-  onNext = ({
+  private onNext = ({
     data,
     errors,
     loading,
     networkStatus /* stale */,
-  }: ApolloQueryResult<mixed>) => {
+  }: ApolloQueryResult<unknown>) => {
     let error = null;
 
     if (errors && errors.length > 0) {
@@ -237,7 +242,7 @@ class Query extends React.PureComponent<Props, State> {
     }
   };
 
-  onNextLocal = ({ data }: ApolloQueryResult<LocalData>) => {
+  private onNextLocal = ({ data }: ApolloQueryResult<LocalData>) => {
     this.setState((state: State, props: Props) => {
       let nextState = {
         localQuery: {
@@ -261,9 +266,8 @@ class Query extends React.PureComponent<Props, State> {
     });
   };
 
-  onError = (error: Error) => {
-    // flowlint-next-line unclear-type: off
-    if ((error: Object).networkError instanceof QueryAbortedError) {
+  private onError = (error: Error) => {
+    if ((error as any).networkError instanceof QueryAbortedError) {
       this.setState({ aborted: true, error: null });
     } else {
       this.setState({ error });
@@ -271,16 +275,16 @@ class Query extends React.PureComponent<Props, State> {
     }
   };
 
-  onErrorLocal = (error: Error) => {
+  private onErrorLocal = (error: Error) => {
     throw error;
   };
 
-  componentDidMount() {
+  public componentDidMount(): void {
     this.subscribe();
     this.subscribeLocal();
   }
 
-  componentDidUpdate(previousProps: Props, previousState: State) {
+  public componentDidUpdate(previousProps: Props, previousState: State): void {
     if (this.state.observable !== previousState.observable) {
       this.unsubscribe();
       this.subscribe();
@@ -294,12 +298,12 @@ class Query extends React.PureComponent<Props, State> {
     }
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount(): void {
     this.unsubscribe();
     this.unsubscribeLocal();
   }
 
-  render() {
+  public render(): React.ReactNode {
     return this.props.children(this.state);
   }
 }

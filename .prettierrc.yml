@@ -8,3 +8,6 @@ overrides:
     options:
       parser: yaml
       semi: false
+  - files: ["*.tsx", "*.ts"]
+    options:
+      parser: typescript

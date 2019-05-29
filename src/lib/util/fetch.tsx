@@ -1,5 +1,4 @@
-// @flow
-import type { ApolloCache } from "/vendor/react-apollo";
+import { ApolloCache } from "/vendor/apollo-cache";
 
 import {
   FailedError,
@@ -10,7 +9,10 @@ import {
 
 import { setOffline } from "/lib/apollo/resolvers/localNetwork";
 
-const doFetch = (cache: ApolloCache<mixed>): typeof fetch => (input, config) =>
+const doFetch = (cache: ApolloCache<any>): typeof fetch => (
+  input: RequestInfo,
+  config?: RequestInit,
+): Promise<Response> =>
   // Wrap fetch call in bluebird promise to enable global rejection tracking
   Promise.resolve(fetch(input, config)).then(
     response => {

@@ -1,3 +1,2 @@
-// @flow
-export { default } from "react";
+export {default} from "react";
 export * from "react";

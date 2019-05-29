@@ -1,11 +1,9 @@
-// @flow
-
 import ExtendableError from "/vendor/es6-error";
 
 class QueryAbortedError extends ExtendableError {
-  original: Error | null;
+  public original: Error | null;
 
-  constructor(error: Error) {
+  public constructor(error: Error) {
     super(error.name);
     this.original = error;
   }

@@ -1,4 +1,4 @@
-import React from "react";
+import React from "/vendor/react";
 
 import { getWebRevision, getSensuVersion } from "/lib/buildInfo";
 
