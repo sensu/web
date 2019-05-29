@@ -30,6 +30,9 @@ rules:
 
   react/no-deprecated: warn
 
+  # Require dependencies to be explicitly declared
+  import/no-extraneous-dependencies: error
+
   # The ability of eslint-plugin-import to check that a named export exists is
   # limited to checking the immediately referenced file. `export * from "..."`
   # expressions are not unwrapped. We can instead rely on Typescript to
