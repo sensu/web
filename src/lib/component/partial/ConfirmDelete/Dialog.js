@@ -59,7 +59,7 @@ class ConfirmDeleteDialog extends React.Component {
               Cancel
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               onClick={this.props.onConfirm}
               color="primary"
             >

@@ -10,13 +10,14 @@ class Option extends React.PureComponent {
     children: PropTypes.node,
     disabled: PropTypes.bool,
     selected: PropTypes.bool,
-    value: PropTypes.any.isRequired,
+    value: PropTypes.any,
   };
 
   static defaultProps = {
     children: null,
     disabled: false,
     selected: false,
+    value: null,
   };
 
   render() {

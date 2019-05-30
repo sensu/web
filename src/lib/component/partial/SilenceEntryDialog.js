@@ -93,7 +93,7 @@ class SilenceEntryDialog extends React.PureComponent {
                       submit();
                     }}
                     color="primary"
-                    variant="raised"
+                    variant="contained"
                     autoFocus
                     disabled={hasErrors || submitting}
                   >
