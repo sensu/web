@@ -73,11 +73,11 @@ export const useSink = element => {
 
   React.useEffect(() => {
     setChild(id, element);
-  }, [element]);
+  }, [element, id, setChild]);
 
   React.useEffect(() => {
     return () => removeChild(id);
-  }, []);
+  }, [id, removeChild]);
 };
 
 export const Sink = ({ children }) => {

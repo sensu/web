@@ -46,4 +46,3 @@ Aside from unit/integration tests, please describe the e2e steps to verify this 
 Eng@Sensu: Add the test case to the TestRail QA plan, and write an automated Rspec test, if applicable.
 The corresponding sensu-go-qa-crucible PR or issue should be linked here.
 -->
-

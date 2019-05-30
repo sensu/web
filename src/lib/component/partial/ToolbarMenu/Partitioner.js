@@ -4,7 +4,7 @@ import { shallowEqual } from "/lib/util/array";
 
 import MenuItem from "./Item";
 
-const MenuItemType = <MenuItem />.type;
+const { type: MenuItemType } = <MenuItem />;
 
 // Return given set of menu items and a width return map describing which items
 // are visible and which items should be collapsed.

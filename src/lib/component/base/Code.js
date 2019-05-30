@@ -1,4 +1,4 @@
-import * as React from "/vendor/react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { withStyles } from "/vendor/@material-ui/core";
 import { fade } from "/vendor/@material-ui/core/styles/colorManipulator";

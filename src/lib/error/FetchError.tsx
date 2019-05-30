@@ -1,17 +1,15 @@
-// @flow
-
 import ExtendableError from "/vendor/es6-error";
 
 export default class FetchError extends ExtendableError {
-  statusCode: number;
+  public statusCode: number;
 
-  input: RequestInfo;
+  public input: RequestInfo;
 
-  original: Error | null;
+  public original: Error | null;
 
-  response: Response | null;
+  public response: Response | null;
 
-  constructor(
+  public constructor(
     status: number,
     input: RequestInfo,
     response: Response | null = null,
@@ -33,13 +31,13 @@ export default class FetchError extends ExtendableError {
 export class FailedError extends FetchError {}
 
 export class ServerError extends FetchError {
-  constructor(status: number, input: RequestInfo, response: ?Response) {
+  public constructor(status: number, input: RequestInfo, response?: Response) {
     super(status, input, response, null);
   }
 }
 
 export class ClientError extends FetchError {
-  constructor(status: number, input: RequestInfo, response: ?Response) {
+  public constructor(status: number, input: RequestInfo, response?: Response) {
     super(status, input, response, null);
   }
 }
