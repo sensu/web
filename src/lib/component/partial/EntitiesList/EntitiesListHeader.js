@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
 import {
+  DeleteMenuItem,
   SelectMenuItem,
   SilenceMenuItem,
   UnsilenceMenuItem,
 } from "/lib/component/partial/ToolbarMenuItems";
 
+import ConfirmDelete from "/lib/component/partial/ConfirmDelete";
 import ListHeader from "/lib/component/partial/ListHeader";
 import ListSortSelector from "/lib/component/partial/ListSortSelector";
 import { ToolbarSelectOption } from "/lib/component/partial/ToolbarSelect";
@@ -23,6 +25,7 @@ class EntitiesListHeader extends React.PureComponent {
     onChangeFilters: PropTypes.object.isRequired,
     onChangeQuery: PropTypes.func.isRequired,
     onClickClearSilences: PropTypes.func.isRequired,
+    onClickDelete: PropTypes.func,
     onClickSelect: PropTypes.func,
     onClickSilence: PropTypes.func.isRequired,
     order: PropTypes.string.isRequired,
@@ -31,6 +34,7 @@ class EntitiesListHeader extends React.PureComponent {
   };
 
   static defaultProps = {
+    onClickDelete: () => {},
     onClickSelect: () => {},
     namespace: undefined,
   };
@@ -128,6 +132,28 @@ class EntitiesListHeader extends React.PureComponent {
             disabled={allSelectedUnsilenced}
             onClick={this.props.onClickClearSilences}
           />
+        </ToolbarMenu.Item>
+
+        <ToolbarMenu.Item key="delete" visible="if-room">
+          {menu => (
+            <ConfirmDelete
+              identifier={`${selectedCount} ${
+                selectedCount === 1 ? "entity" : "entities"
+              }`}
+              onSubmit={() => {
+                this.props.onClickDelete();
+                menu.close();
+              }}
+            >
+              {confirm => (
+                <DeleteMenuItem
+                  autoClose={false}
+                  title="Delete…"
+                  onClick={confirm.open}
+                />
+              )}
+            </ConfirmDelete>
+          )}
         </ToolbarMenu.Item>
       </ToolbarMenu>
     );

@@ -1,15 +1,16 @@
+import process from "process";
 import AWS from "aws-sdk";
 import fs from "fs";
 import path from "path";
 import chalk from "chalk";
 import git from "git-rev-sync";
 
-const currentRev = git.long();
-const pkgFilename = "dashboard.tgz";
-
+const artifactPath = process.argv[3] || "./dashboard.tgz";
+const pathPrefix = process.argv[4] || "oss/webapp";
 const bucket = "sensu-ci-web-builds";
-const pathPrefix = "oss/webapp";
-const outPath = path.join(pathPrefix, currentRev, "package.tgz");
+
+const currentRev = git.long();
+const outPath = path.join(pathPrefix, currentRev, path.basename(artifactPath));
 
 const error = (...msg) => console.error(chalk.red("error"), ...msg);
 const info = (...msg) => console.info(chalk.blue("info"), ...msg);
@@ -30,21 +31,20 @@ const upload = (Key, Body) => {
 };
 
 // Read file from disk
-let pkgFile;
+let artifactFile;
 try {
-  pkgFile = fs.readFileSync(path.join(__dirname, "..", pkgFilename));
+  artifactFile = fs.readFileSync(path.join(process.cwd(), artifactPath));
 } catch (e) {
   console.error(
     chalk.red("error"),
-    "unable to find package file; ensure that you have built it before attempting to upload",
-    e,
+    "unable to find artifact; ensure artifact is present before uploading.",
   );
   process.exit(1);
 }
 
 // Upload
 info("uploading artifact to", outPath);
-upload(outPath, pkgFile)
+upload(outPath, artifactFile)
   .then(() => info("successfully uploaded files"))
   .catch(err => error(err));
 
