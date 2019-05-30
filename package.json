@@ -61,6 +61,7 @@
     "@material-ui/icons": "^3.0.0",
     "@octokit/plugin-throttling": "^2.4.0",
     "@octokit/rest": "^16.23.2",
+    "@testing-library/react": "^8.0.1",
     "@types/classnames": "^2.2.7",
     "@types/es6-error": "^4.0.2",
     "@types/react": "^16.8.18",
@@ -145,7 +146,6 @@
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "react-spring": "^5.6.10",
-    "react-testing-library": "^7.0.1",
     "regenerator-runtime": "^0.11.1",
     "semver": "^5.6.0",
     "style-loader": "^0.23.1",
@@ -173,7 +173,7 @@
       "<rootDir>/src/**/?(*.)(spec|test).[jt]s?(x)"
     ],
     "setupFilesAfterEnv": [
-      "react-testing-library/cleanup-after-each.js",
+      "@testing-library/react/cleanup-after-each.js",
       "<rootDir>/src/setupTests.tsx"
     ],
     "transform": {

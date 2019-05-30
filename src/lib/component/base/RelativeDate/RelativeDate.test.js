@@ -1,6 +1,6 @@
 import React from "/vendor/react";
 import IntlRelativeFormat from "intl-relativeformat";
-import { render } from "react-testing-library";
+import { render } from "@testing-library/react";
 
 import RelativeDate from "./RelativeDate";
 
