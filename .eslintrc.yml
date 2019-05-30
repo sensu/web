@@ -9,6 +9,7 @@ plugins:
   - jsx-a11y
   - prettier
   - react
+  - "@sensuapp"
 env:
   browser: true
 parser: babel-eslint
@@ -28,6 +29,12 @@ rules:
   curly:
     - error
     - all
+
+  # Disallow global RegExp instances to prevent unwanted side-effects
+  "@sensuapp/no-global-regex":
+    - error
+    - allowCallExpressions: true
+      allowSafeExpressions: true
 
   # While I personally prefer stateless functional components, since not every
   # component can be one, I'd rather be consistent and extend React.Component.
