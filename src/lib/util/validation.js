@@ -2,7 +2,7 @@ import { set, parsePath } from "/vendor/@10xjs/form";
 
 export const REQUIRED = "VALIDATION_REQUIRED";
 export const UNIQUE_CONSTRAINT = "VALIDATION_UNIQUE_CONSTRAINT";
-export const INVALID_SYMBOL = "INVALID_SYMBOL";
+export const INVALID_SYMBOL = "VALIDATION_INVALID_SYMBOL";
 
 export const requiredError = () => ({
   code: REQUIRED,
