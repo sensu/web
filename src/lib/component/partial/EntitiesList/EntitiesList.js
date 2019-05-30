@@ -14,6 +14,8 @@ import {
 import { TableListEmptyState, Loader } from "/lib/component/base";
 import { ListController } from "/lib/component/controller";
 
+import deleteEntity from "/lib/mutation/deleteEntity";
+
 import Pagination from "/lib/component/partial/Pagination";
 import SilenceEntryDialog from "/lib/component/partial/SilenceEntryDialog";
 import ClearSilencedEntriesDialog from "/lib/component/partial/ClearSilencedEntriesDialog";
@@ -23,6 +25,8 @@ import EntitiesListItem from "./EntitiesListItem";
 
 class EntitiesList extends React.PureComponent {
   static propTypes = {
+    // from withApollo HOC
+    client: PropTypes.object.isRequired,
     editable: PropTypes.bool,
     loading: PropTypes.bool,
     namespace: PropTypes.object,
@@ -82,6 +86,12 @@ class EntitiesList extends React.PureComponent {
   state = {
     silence: null,
     unsilence: null,
+  };
+
+  deleteEntities = entities => {
+    entities.forEach(entity =>
+      deleteEntity(this.props.client, { id: entity.id }),
+    );
   };
 
   silenceItems = entities => {
@@ -150,6 +160,7 @@ class EntitiesList extends React.PureComponent {
       onHover={this.props.editable ? setHovered : () => null}
       selected={selected}
       onChangeSelected={setSelected}
+      onClickDelete={() => this.deleteEntities([entity])}
       onClickSilence={() => this.silenceItems([entity])}
       onClickClearSilence={() => this.clearSilences([entity])}
     />
@@ -195,6 +206,7 @@ class EntitiesList extends React.PureComponent {
                 selectedItems={selectedItems}
                 rowCount={children.length || 0}
                 onClickSelect={toggleSelectedItems}
+                onClickDelete={() => this.deleteEntities(selectedItems)}
                 onClickSilence={() => this.silenceItems(selectedItems)}
                 onClickClearSilences={() => this.clearSilences(selectedItems)}
                 onChangeFilters={onChangeFilters}

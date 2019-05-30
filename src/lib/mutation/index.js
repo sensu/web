@@ -1,5 +1,6 @@
 import "./createSilence";
 import "./createTokens";
+import "./deleteEntity";
 import "./deleteEvent";
 import "./deleteSilence";
 import "./executeCheck";

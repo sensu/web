@@ -3,12 +3,15 @@ import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
 import {
+  DeleteMenuItem,
   SilenceMenuItem,
   UnsilenceMenuItem,
 } from "/lib/component/partial/ToolbarMenuItems";
 
 import ClearSilenceAction from "/lib/component/partial/ClearSilenceAction";
+import DeleteAction from "./EntityDetailsDeleteAction";
 import SilenceAction from "./EntityDetailsSilenceAction";
+
 import Toolbar from "/lib/component/partial/Toolbar";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 
@@ -28,12 +31,14 @@ class EntityDetailsToolbar extends React.Component {
       fragment EntityDetailsToolbar_entity on Entity {
         isSilenced
 
+        ...EntityDetailsDeleteAction_entity
         ...EntityDetailsSilenceAction_entity
         ...ClearSilenceAction_record
       }
 
-      ${SilenceAction.fragments.entity}
       ${ClearSilenceAction.fragments.record}
+      ${DeleteAction.fragments.entity}
+      ${SilenceAction.fragments.entity}
     `,
   };
 
@@ -59,6 +64,7 @@ class EntityDetailsToolbar extends React.Component {
                     )}
                   </SilenceAction>
                 </ToolbarMenu.Item>,
+
                 <ToolbarMenu.Item
                   key="unsilence"
                   visible={entity.isSilenced ? "if-room" : "never"}
@@ -71,6 +77,12 @@ class EntityDetailsToolbar extends React.Component {
                       />
                     )}
                   </ClearSilenceAction>
+                </ToolbarMenu.Item>,
+
+                <ToolbarMenu.Item key="delete" visible="if-room">
+                  <DeleteAction entity={entity}>
+                    {handler => <DeleteMenuItem onClick={handler} />}
+                  </DeleteAction>
                 </ToolbarMenu.Item>,
               ],
             })}
