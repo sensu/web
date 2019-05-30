@@ -1,4 +1,4 @@
-import React from "/vendor/react";
+import React, { useState, useCallback } from "/vendor/react";
 import PropTypes from "prop-types";
 
 import { Button, DialogActions, TextField } from "/vendor/@material-ui/core";
@@ -14,77 +14,71 @@ const StyledDialoagActions = createStyledComponent({
   }),
 });
 
-class SignInForm extends React.Component {
-  static propTypes = {
-    disabled: PropTypes.bool,
-    error: PropTypes.string,
-    onSubmit: PropTypes.func.isRequired,
-  };
+const SignInForm = ({ disabled, error, onSubmit }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  static defaultProps = {
-    disabled: false,
-    error: null,
-  };
+  const handleSubmit = useCallback(
+    ev => {
+      onSubmit({ username, password });
+      ev.preventDefault();
+    },
+    [username, password, onSubmit],
+  );
 
-  handleSubmit = ev => {
-    const { username, password } = this.state;
-
-    ev.preventDefault();
-    this.props.onSubmit({ username, password });
-  };
-
-  render() {
-    const { disabled, error } = this.props;
-
-    const changeField = (name, val) =>
-      this.setState({
-        // authError: null, // TODO: unused
-        [name]: val,
-      });
-    const handleUsername = ev => changeField("username", ev.target.value);
-    const handlePassword = ev => this.setState({ password: ev.target.value });
-
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <TextField
-          name="username"
-          label="Username"
-          aria-label="Username"
-          autoComplete="username"
-          autoCorrect="false"
-          autoCapitalize="none"
-          spellCheck={false}
-          fullWidth
-          margin="normal"
-          onChange={handleUsername}
+  return (
+    <form onSubmit={handleSubmit}>
+      <TextField
+        name="username"
+        label="Username"
+        aria-label="Username"
+        autoComplete="username"
+        autoCorrect="false"
+        autoCapitalize="none"
+        disabled={disabled}
+        spellCheck={false}
+        fullWidth
+        margin="normal"
+        onChange={ev => setUsername(ev.target.value)}
+        value={username}
+        error={!!error}
+      />
+      <TextField
+        type="password"
+        name="password"
+        label="Password"
+        aria-label="Password"
+        autoComplete="current-password"
+        fullWidth
+        onChange={ev => setPassword(ev.target.value)}
+        value={password}
+        disabled={disabled}
+        error={!!error}
+        helperText={error}
+      />
+      <StyledDialoagActions>
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
           disabled={disabled}
-          error={!!error}
-        />
-        <TextField
-          type="password"
-          name="password"
-          label="Password"
-          aria-label="Password"
-          autoComplete="current-password"
-          fullWidth
-          onChange={handlePassword}
-          disabled={disabled}
-          error={!!error}
-          helperText={error}
-        />
-        <StyledDialoagActions>
-          <Button
-            type="submit"
-            color="primary"
-            variant="raised"
-            disabled={disabled}
-          >
-            Sign in
-          </Button>
-        </StyledDialoagActions>
-      </form>
-    );
-  }
-}
+        >
+          Sign in
+        </Button>
+      </StyledDialoagActions>
+    </form>
+  );
+};
+
+SignInForm.propTypes = {
+  disabled: PropTypes.bool,
+  error: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired,
+};
+
+SignInForm.defaultProps = {
+  disabled: false,
+  error: null,
+};
 
 export default SignInForm;
