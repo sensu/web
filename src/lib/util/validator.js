@@ -1,15 +1,10 @@
-const nameRegex = /^[\w.-]+$/g;
-const subscriptionNameRegex = /^[\w.-]+:?[\w.-]+$/g;
+// match valid resource names
+// https://github.com/sensu/sensu-go/blob/0d61cbddf963c2c62d04ccb56b23d9605ac4d770/api/core/v2/validators.go#L13-L14
+const nameRegex = /^[\w.-]+$/;
 
-const validateWithPattern = (name, pattern) => {
-  if (name && !name.search) {
-    return false;
-  }
+// match valid subscription names including entitiy subscriptions
+// https://github.com/sensu/sensu-go/blob/0d61cbddf963c2c62d04ccb56b23d9605ac4d770/api/core/v2/validators.go#L20-L23
+const subscriptionNameRegex = /^[\w.-]+:?[\w.-]+$/;
 
-  return name.search(pattern) >= 0;
-};
-
-export const validName = name => validateWithPattern(name, nameRegex);
-
-export const validSubscriptionName = name =>
-  validateWithPattern(name, subscriptionNameRegex);
+export const validName = name => nameRegex.test(name);
+export const validSubscriptionName = name => subscriptionNameRegex.test(name);
