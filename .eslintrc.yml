@@ -29,6 +29,8 @@ rules:
   react-hooks/rules-of-hooks: error
   react-hooks/exhaustive-deps: error
 
+  react/no-deprecated: warn
+
   # Disallow global RegExp instances to prevent unwanted side-effects
   "@sensuapp/no-global-regex":
     - error
