@@ -86,7 +86,9 @@ module.exports = {
                   return true;
                 }
 
+                // Exit if the RegExp is a method callee.
                 if (
+                  current === node &&
                   current.parent.type === "CallExpression" &&
                   current.parent.callee === current
                 ) {
