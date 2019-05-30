@@ -32,7 +32,7 @@ module.exports = {
                 type: "boolean",
                 default: false,
               },
-              allowSafeExpressions: {
+              allowEphemeral: {
                 type: "boolean",
                 default: false,
               },
@@ -68,7 +68,7 @@ module.exports = {
               return;
             }
 
-            if (options.allowSafeExpressions) {
+            if (options.allowEphemeral) {
               const ancestor = findAncestor(node, current => {
                 // Exit if we have reached the root node
                 if (!current.parent) {
