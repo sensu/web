@@ -74,7 +74,6 @@ class Loader extends React.PureComponent {
     spinnerPosition: { top: 0, left: 0, width: 0, height: 0 },
   };
 
-  // eslint-disable-next-line react/sort-comp
   _timeout = null;
 
   componentWillMount() {

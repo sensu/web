@@ -1,5 +1,4 @@
 node_modules
 build
 coverage
-flow-typed
-combined.graphql
+.schema

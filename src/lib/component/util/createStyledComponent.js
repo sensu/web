@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from "react";
+import React from "/vendor/react";
 import classnames from "/vendor/classnames";
 import { withStyles } from "/vendor/@material-ui/core";
 
