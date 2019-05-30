@@ -37,7 +37,7 @@ try {
 } catch (e) {
   console.error(
     chalk.red("error"),
-    "unable to find artifact; ensure that built it before attempting to upload.",
+    "unable to find artifact; ensure artifact is present before uploading.",
   );
   process.exit(1);
 }
