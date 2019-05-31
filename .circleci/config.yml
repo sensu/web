@@ -44,7 +44,15 @@ jobs:
       - install_deps
       - run:
           name: Lint
-          command: yarn lint
+          command: yarn test:lint
+  types:
+    executor: build_env
+    steps:
+      - checkout
+      - install_deps
+      - run:
+          name: Check Types
+          command: yarn test:types
 
   spec:
     executor: build_env
@@ -56,7 +64,7 @@ jobs:
       - install_deps
       - run:
           name: Run unit tests
-          command: yarn spec --testResultsProcessor="jest-junit"
+          command: yarn test:spec --testResultsProcessor="jest-junit"
       - store_test_results:
           path: test-results
 
@@ -86,6 +94,7 @@ workflows:
   quality:
     jobs:
       - lint
+      - types
       - spec
       - audit
   release:

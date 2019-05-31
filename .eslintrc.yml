@@ -1,64 +1,86 @@
-extends:
-  - react-app
-  - plugin:jsx-a11y/recommended
-  - airbnb
-  - prettier
-  - prettier/react
+parser: "@typescript-eslint/parser"
 plugins:
-  - import
   - jsx-a11y
   - prettier
   - react
-env:
-  browser: true
-parser: babel-eslint
-parserOptions:
-  ecmaVersion: 2018
-  sourceType: "module"
-  ecmaFeatures:
-    jsx: true
-globals:
-  IntlRelativeFormat: false
-  isNaN: false
+  - react-hooks
+  - import
+  - "@typescript-eslint"
 settings:
   import/resolver:
     babel-module:
+extends:
+  - eslint:recommended
+  - plugin:react/recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:jsx-a11y/recommended
+  - plugin:import/errors
+  - plugin:import/warnings
+  - prettier
+  - prettier/react
+env:
+  node: true
+  es6: true
+globals:
+  IntlRelativeFormat: false
+  isNaN: false
 rules:
+  react-hooks/rules-of-hooks: error
+  react-hooks/exhaustive-deps: error
+
+  react/no-deprecated: warn
+
+  # Require dependencies to be explicitly declared
+  import/no-extraneous-dependencies: error
+
+  # The ability of eslint-plugin-import to check that a named export exists is
+  # limited to checking the immediately referenced file. `export * from "..."`
+  # expressions are not unwrapped. We can instead rely on Typescript to
+  # assert the shapes of imported modules.
+  import/named: off
+  import/namespace: off
+  import/default: off
+
+  # Indent is owned by prettier
+  "@typescript-eslint/indent": off
+  react/jsx-indent: off
+
+  # Allow explicit use of `any`
+  "@typescript-eslint/no-explicit-any": off
+
+  # Require explicit return types on all functions
+  "@typescript-eslint/explicit-function-return-type": error
+
+  "@typescript-eslint/no-unused-vars":
+    - error
+    # Allow underscore-prefix unused vars
+    - varsIgnorePattern: "^_"
+      # allow using rest spread as an objecty omit utility
+      ignoreRestSiblings: true
+
+  # Some imported module interfaces / APIs require camelcase names
+  "@typescript-eslint/camelcase": off
+
   # Single line conditionals are more difficult to set breakpoints on.
   curly:
     - error
     - all
 
-  # While I personally prefer stateless functional components, since not every
-  # component can be one, I'd rather be consistent and extend React.Component.
-  react/prefer-es6-class: 2
-  react/prefer-stateless-function: 0
+  # This is good practice but hard to accomodate while using material-ui
+  jsx-a11y/mouse-events-have-key-events: warn
 
-  # Little practical value in making the distinction
-  react/jsx-filename-extension: 0
-
-  # Moving to flowtype
-  react/forbid-prop-types: 0
-
-  # Avoid conflicts with Prettier
-  react/jsx-indent: 0
-
-  # https://github.com/prettier/prettier#eslint
-  prettier/prettier: error
-
-  # We use underscores to prefix "private" class methods
-  no-underscore-dangle: 0
-
-  # babel-plugin-module-resolver aliases absolute paths to the src directory
-  import/no-absolute-path: 0
-
-  # ...
-  react/destructuring-assignment: 0
-  prefer-destructuring: 0
-  import/prefer-default-export: 0
-
-  # Conflicts with macros
-  import/named: 0
-
-  # Conflicts with toasts, may re-enable later
-  jsx-a11y/mouse-events-have-key-events: 0
+  # We trust our own discression to use this responsibily
+  jsx-a11y/no-autofocus: off
+overrides:
+  - files: "*.js"
+    rules:
+      react/prop-types: error
+      "@typescript-eslint/no-var-requires": off
+  - files: ["*.ts", "*.tsx"]
+    rules:
+      # Rely on typescript to check that imports resolve correctly
+      import/no-unresolved: off
+  - files: ["*.test.tsx", "*.test.js", "*.test.ts"]
+    env:
+      jest: true
+      node: true

@@ -35,17 +35,12 @@ const setSelectedKeys = selectedKeys => state => ({
 
 class ListController extends React.PureComponent {
   static propTypes = {
-    // the linter isn't smart enough, we do use these
-    // eslint-disable-next-line
     renderItem: PropTypes.func.isRequired,
-    // eslint-disable-next-line
     renderEmptyState: PropTypes.func.isRequired,
-    // eslint-disable-next-line
     children: PropTypes.func.isRequired,
-    // eslint-disable-next-line
     initialSelectedKeys: PropTypes.array,
-    // eslint-disable-next-line
     items: PropTypes.array,
+    getItemKey: PropTypes.func,
   };
 
   static defaultProps = { initialSelectedKeys: [], items: [] };

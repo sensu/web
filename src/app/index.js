@@ -9,7 +9,6 @@ import {
   Redirect,
 } from "/vendor/react-router-dom";
 
-// eslint-disable-next-line import/extensions
 import "typeface-roboto";
 
 import polyfill from "/lib/polyfill";

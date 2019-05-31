@@ -15,23 +15,33 @@ import { ErrorHollowIcon } from "/lib/component/icon";
 const options = [
   {
     value: "incident",
-    Icon: () => <ErrorHollowIcon />,
+    Icon: function IncidentIcon() {
+      return <ErrorHollowIcon />;
+    },
   },
   {
     value: "warning",
-    Icon: () => <CheckStatusIcon statusCode={1} />,
+    Icon: function WarningIcon() {
+      return <CheckStatusIcon statusCode={1} />;
+    },
   },
   {
     value: "critical",
-    Icon: () => <CheckStatusIcon statusCode={2} />,
+    Icon: function CriticalIcon() {
+      return <CheckStatusIcon statusCode={2} />;
+    },
   },
   {
     value: "unknown",
-    Icon: () => <CheckStatusIcon statusCode={3} />,
+    Icon: function UnknownIcon() {
+      return <CheckStatusIcon statusCode={3} />;
+    },
   },
   {
     value: "passing",
-    Icon: () => <CheckStatusIcon statusCode={0} />,
+    Icon: function PassingIcon() {
+      return <CheckStatusIcon statusCode={0} />;
+    },
   },
 ];
 
@@ -60,6 +70,7 @@ class StatusMenu extends React.Component {
         <MenuItem onClick={() => onChange(null)} />
         {options.map(({ value, Icon }) => (
           <MenuItem
+            key={value}
             onClick={() => onChange(value)}
             selected={selected === value}
           >

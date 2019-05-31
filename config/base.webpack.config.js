@@ -32,10 +32,8 @@ export default ({
     ? "[name]"
     : "[name]_[hash:4]",
 
-  context,
   entry,
   output,
-  devServer,
   plugins,
   optimization,
   module: { rules = [], ...module } = {},
@@ -70,6 +68,7 @@ export default ({
           // names. This makes tracking down bugs in production builds far
           // more manageable at the expense of slightly larger (about 15%)
           // compressed bundle sizes.
+          // eslint-disable-next-line
           keep_fnames: true,
         },
       }),
@@ -78,7 +77,7 @@ export default ({
   },
 
   resolve: {
-    extensions: [".web.js", ".js", ".json", ".web.jsx", ".jsx"],
+    extensions: [".web.js", ".js", ".json", ".web.jsx", ".jsx", ".ts", ".tsx"],
     alias: {
       // Alias any reference to babel runtime Promise to bluebird. This
       // prevents duplicate promise polyfills in the build.
@@ -96,7 +95,7 @@ export default ({
             use: ["style-loader", "css-loader"],
           },
           {
-            test: /\.worker\.js$/,
+            test: /\.worker\.[jt]s$/,
             loader: "worker-loader",
             options: {
               name: path.join(jsPath, `${contentHashName}.js`),
@@ -121,7 +120,7 @@ export default ({
             ],
           },
           {
-            test: /\.(mjs|js|jsx)$/,
+            test: /\.(jsx?|tsx?|mjs)$/,
             include: [
               path.join(root, "src"),
               path.join(root, "node_modules/@sensuapp/web/src"),

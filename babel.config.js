@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 const path = require("path");
 
 module.exports = {
@@ -14,28 +15,15 @@ module.exports = {
         modules: false,
       },
     ],
+    "@babel/preset-typescript",
     "@babel/preset-react",
-    "@babel/preset-flow",
   ],
   plugins: [
     "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-destructuring",
     [
       "@babel/plugin-proposal-class-properties",
       {
         loose: true,
-      },
-    ],
-    [
-      "@babel/plugin-proposal-object-rest-spread",
-      {
-        useBuiltIns: true,
-      },
-    ],
-    [
-      "@babel/plugin-transform-react-jsx",
-      {
-        useBuiltIns: true,
       },
     ],
     [
@@ -44,16 +32,11 @@ module.exports = {
         alias: {
           "": path.join(__dirname, "src"),
         },
+        extensions: [".tsx", ".ts", ".jsx", ".js"],
       },
     ],
   ],
   env: {
-    development: {
-      plugins: [
-        // "@babel/plugin-transform-react-jsx-source",
-        // "@babel/plugin-transform-react-jsx-self"
-      ],
-    },
     test: {
       presets: [
         [
