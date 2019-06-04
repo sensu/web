@@ -5,8 +5,6 @@ import { ApolloContext } from "react-apollo";
 import { ApolloClient } from "apollo-client";
 
 type NotNull<T> = T extends null ? never : T;
-type NotUndefined<T> = T extends undefined ? never : T;
-type ContextType<T> = T extends React.Context<infer C> ? C : never;
 
 function getContext(): NotNull<typeof ApolloContext> {
   if (ApolloContext === null) {
