@@ -48,6 +48,7 @@
     "postinstall": "yarn fetch-schema"
   },
   "dependencies": {
+    "@sensuapp/eslint-plugin": "link:./config/eslint-plugin",
     "@10xjs/date-input-controller": "0.1.6",
     "@10xjs/form": "^0.1.7",
     "@babel/core": "^7.0.0",
