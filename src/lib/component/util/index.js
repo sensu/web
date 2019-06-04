@@ -25,3 +25,4 @@ export { default as UnauthenticatedRoute } from "./UnauthenticatedRoute";
 export { default as UnmountObserver } from "./UnmountObserver";
 export { default as useBuildInfo } from "./useBuildInfo";
 export { default as useQuery } from "./useQuery";
+export { default as useApolloClient } from "./useApolloClient";

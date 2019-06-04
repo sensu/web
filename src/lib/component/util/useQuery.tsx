@@ -13,9 +13,9 @@ import {
   ApolloError,
 } from "apollo-client";
 
-import { ApolloContext } from "react-apollo";
-
 import QueryAbortedError from "/lib/error/QueryAbortedError";
+
+import useApolloClient from "./useApolloClient";
 
 // export type OperationVariables = { [key: string]: any };
 interface UseQueryConfig<V> extends WatchQueryOptions<V> {
@@ -119,7 +119,7 @@ function useQuery<T, V = OperationVariables>(
   );
   configRef.current = {
     // Default to using client from the context, otherwise use what is provided.
-    client: (React.useContext(ApolloContext as any) as any).client,
+    client: useApolloClient(),
     ...defaultOptions,
     ...options,
   };
