@@ -6,6 +6,7 @@ plugins:
   - react-hooks
   - import
   - "@typescript-eslint"
+  - "@sensuapp"
 settings:
   import/resolver:
     babel-module:
@@ -29,6 +30,12 @@ rules:
   react-hooks/exhaustive-deps: error
 
   react/no-deprecated: warn
+
+  # Disallow global RegExp instances to prevent unwanted side-effects
+  "@sensuapp/no-global-regex":
+    - error
+    - allowCallExpressions: true
+      allowEphemeral: true
 
   # Require dependencies to be explicitly declared
   import/no-extraneous-dependencies: error
