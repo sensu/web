@@ -1,4 +1,4 @@
-export const shallowEqual = (as, bs) => {
+export const shallowEqual = (as: any[], bs: any[]): boolean => {
   if (as === bs) {
     return true;
   }
@@ -13,7 +13,11 @@ export const shallowEqual = (as, bs) => {
   return true;
 };
 
-export const mergeAtIndex = (arr, index, update) =>
+export const mergeAtIndex = <T extends any>(
+  arr: T[],
+  index: number,
+  update: Partial<T>,
+): T[] =>
   arr
     .slice(0, index)
     .concat([
@@ -24,7 +28,8 @@ export const mergeAtIndex = (arr, index, update) =>
     ])
     .concat(arr.slice(index + 1));
 
-export const removeAtIndex = (arr, index) =>
+export const removeAtIndex = <T extends any>(arr: T[], index: number): T[] =>
   arr.slice(0, index).concat(arr.slice(index + 1));
 
-export const wrapArray = arr => (Array.isArray(arr) ? arr : [arr]);
+export const wrapArray = <T extends any>(arr: T[] | T): T[] =>
+  Array.isArray(arr) ? arr : [arr];

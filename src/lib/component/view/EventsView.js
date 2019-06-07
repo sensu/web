@@ -100,7 +100,10 @@ class EventsView extends React.Component {
                 <Content marginBottom>
                   <EventsListToolbar
                     onClickReset={() =>
-                      setQueryParams(q => q.reset(["filters", "order"]))
+                      setQueryParams(q => {
+                        q.delete("filters");
+                        q.delete("order");
+                      })
                     }
                     toolbarContent={this.props.toolbarContent({
                       filters,

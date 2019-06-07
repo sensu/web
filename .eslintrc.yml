@@ -52,7 +52,7 @@ rules:
   "@typescript-eslint/indent": off
   react/jsx-indent: off
 
-  # Allow explicit use of `any`.
+  # Allow explicit use of `any`
   "@typescript-eslint/no-explicit-any": off
 
   # Don't require explicit return types. TypeScript's type inferrence has come

@@ -113,7 +113,10 @@ class SilencesView extends React.Component {
                         <SilencesListToolbar
                           onClickCreate={newDialog.open}
                           onClickReset={() =>
-                            setQueryParams(q => q.reset(["filters", "offset"]))
+                            setQueryParams(q => {
+                              q.delete("filters");
+                              q.delete("offset");
+                            })
                           }
                           toolbarContent={this.props.toolbarContent({
                             filters,
