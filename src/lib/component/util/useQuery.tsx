@@ -17,34 +17,34 @@ import QueryAbortedError from "/lib/error/QueryAbortedError";
 
 import useApolloClient from "./useApolloClient";
 
-// export type OperationVariables = { [key: string]: any };
-interface UseQueryConfig<V> extends WatchQueryOptions<V> {
+interface UseQueryConfig<TVariables> extends WatchQueryOptions<TVariables> {
   client: ApolloClient<any>;
   onError(error: Error): void;
 }
 
-export type UseQueryOptions<V> = Optional<
-  UseQueryConfig<V>,
-  "onError" | "client"
->;
+export interface UseQueryOptions<TVariables = OperationVariables>
+  extends WatchQueryOptions<TVariables> {
+  client?: ApolloClient<any>;
+  onError?: (error: Error) => void;
+}
 
-interface ObservableState<T, V> {
-  observable: ObservableQuery<T, V>;
-  data: T | {};
+interface ObservableState<TData, TVariables> {
+  observable: ObservableQuery<TData, TVariables>;
+  data: TData | {};
   loading: boolean;
   networkStatus: NetworkStatus;
 
-  fetchMore: ObservableQuery<T, V>["fetchMore"];
-  refetch: ObservableQuery<T, V>["refetch"];
-  startPolling: ObservableQuery<T, V>["startPolling"];
-  stopPolling: ObservableQuery<T, V>["stopPolling"];
-  subscribeToMore: ObservableQuery<T, V>["subscribeToMore"];
-  updateQuery: ObservableQuery<T, V>["updateQuery"];
+  fetchMore: ObservableQuery<TData, TVariables>["fetchMore"];
+  refetch: ObservableQuery<TData, TVariables>["refetch"];
+  startPolling: ObservableQuery<TData, TVariables>["startPolling"];
+  stopPolling: ObservableQuery<TData, TVariables>["stopPolling"];
+  subscribeToMore: ObservableQuery<TData, TVariables>["subscribeToMore"];
+  updateQuery: ObservableQuery<TData, TVariables>["updateQuery"];
 }
 
-function getObservableState<T, V>(
-  observable: ObservableQuery<T, V>,
-): ObservableState<T, V> {
+function getObservableState<TData, TVariables>(
+  observable: ObservableQuery<TData, TVariables>,
+): ObservableState<TData, TVariables> {
   const { data, loading, networkStatus } = observable.currentResult();
 
   return {
@@ -62,7 +62,8 @@ function getObservableState<T, V>(
   };
 }
 
-export interface UseQueryResult<T, V> extends ObservableState<T, V> {
+export interface UseQueryResult<TData, TVariables>
+  extends ObservableState<TData, TVariables> {
   aborted: boolean;
   error: Error | null;
   resubscribe(): void;
@@ -107,15 +108,13 @@ const defaultOptions = {
   },
 };
 
-type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
-
-function useQuery<T, V = OperationVariables>(
-  options: UseQueryOptions<V>,
-): UseQueryResult<T, V> {
-  const configRef = React.useRef<UseQueryConfig<V>>(
+function useQuery<TData = any, TVariables = OperationVariables>(
+  options: UseQueryOptions<TVariables>,
+): UseQueryResult<TData, TVariables> {
+  const configRef = React.useRef<UseQueryConfig<TVariables>>(
     // Prevent typescript from defining configRef as maybe undefined. This is
     // safe as long as we immediately set configRef.current below.
-    (undefined as any) as UseQueryConfig<V>,
+    (undefined as any) as UseQueryConfig<TVariables>,
   );
   configRef.current = {
     // Default to using client from the context, otherwise use what is provided.
@@ -124,9 +123,11 @@ function useQuery<T, V = OperationVariables>(
     ...options,
   };
 
-  const observableRef = React.useRef<ObservableQuery<T, V> | null>(null);
+  const observableRef = React.useRef<ObservableQuery<TData, TVariables> | null>(
+    null,
+  );
   const subscriptionRef = React.useRef<ZenObservable.Subscription | null>(null);
-  const prevConfigRef = React.useRef<UseQueryConfig<V> | null>(null);
+  const prevConfigRef = React.useRef<UseQueryConfig<TVariables> | null>(null);
 
   if (prevConfigRef.current !== null && observableRef.current !== null) {
     if (staticOptionsHaveChanged(configRef.current, prevConfigRef.current)) {
@@ -168,7 +169,7 @@ function useQuery<T, V = OperationVariables>(
 
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         setResult(
-          (result): UseQueryResult<T, V> => ({
+          (result): UseQueryResult<TData, TVariables> => ({
             ...result,
             aborted: false,
             error,
@@ -192,7 +193,7 @@ function useQuery<T, V = OperationVariables>(
         if ((error as ApolloError).networkError instanceof QueryAbortedError) {
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           setResult(
-            (result): UseQueryResult<T, V> => ({
+            (result): UseQueryResult<TData, TVariables> => ({
               ...result,
               aborted: true,
               error: null,
@@ -200,7 +201,12 @@ function useQuery<T, V = OperationVariables>(
           );
         } else {
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          setResult((result): UseQueryResult<T, V> => ({ ...result, error }));
+          setResult(
+            (result): UseQueryResult<TData, TVariables> => ({
+              ...result,
+              error,
+            }),
+          );
           if (configRef.current.onError) {
             configRef.current.onError(error);
           } else {
@@ -216,8 +222,11 @@ function useQuery<T, V = OperationVariables>(
   }
 
   const [result, setResult] = React.useState(
-    (): UseQueryResult<T, V> => ({
-      ...getObservableState(observableRef.current as ObservableQuery<T, V>),
+    (): UseQueryResult<TData, TVariables> => ({
+      ...getObservableState(observableRef.current as ObservableQuery<
+        TData,
+        TVariables
+      >),
       error: null,
       aborted: false,
       resubscribe,
@@ -247,9 +256,10 @@ const localNetworkStatusQuery = gql`
   }
 `;
 
-function useLocalNetworkAwareQuery<T, V = OperationVariables>(
-  options: UseQueryOptions<V>,
-): UseQueryResult<T, V> {
+function useLocalNetworkAwareQuery<
+  TData = any,
+  TVariables = OperationVariables
+>(options: UseQueryOptions<TVariables>): UseQueryResult<TData, TVariables> {
   // Create an additional query subscription to observe the local network
   // connection state.
   const localNetworkStatus = useQuery<any>({
@@ -262,7 +272,7 @@ function useLocalNetworkAwareQuery<T, V = OperationVariables>(
     data: { localNetwork: { offline = false, retry = false } = {} } = {},
   } = localNetworkStatus;
 
-  const result = useQuery<T, V>(options);
+  const result = useQuery<TData, TVariables>(options);
   // The react-hooks/exhaustive-deps lint rule considers `result` a dependency
   // even if we only reference the `result.resubscribe` property. Storing
   // it under it's own identifier avoids this problem without having to disable

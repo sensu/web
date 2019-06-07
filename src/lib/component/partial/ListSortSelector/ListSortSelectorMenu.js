@@ -9,13 +9,15 @@ import {
   Menu as MenuBase,
 } from "/vendor/@material-ui/core";
 
+import { useSearchParams } from "/lib/component/util";
+
 import { ArrowUpIcon, ArrowDownIcon } from "/lib/component/icon";
 
 function strEndsWith(str, suffix) {
   return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 
-class Menu extends React.PureComponent {
+class ListSortSelectorMenu extends React.PureComponent {
   static displayName = "ListSortSelector.Menu";
 
   static propTypes = {
@@ -26,7 +28,7 @@ class Menu extends React.PureComponent {
       }),
     ).isRequired,
     queryKey: PropTypes.string,
-    onChangeQuery: PropTypes.func.isRequired,
+    setParams: PropTypes.func.isRequired,
     anchorEl: PropTypes.instanceOf(Element).isRequired,
     onClose: PropTypes.func.isRequired,
     value: PropTypes.string,
@@ -38,7 +40,7 @@ class Menu extends React.PureComponent {
   };
 
   renderOption = ({ label, value }) => {
-    const { onChangeQuery, onClose, queryKey, value: valueProp } = this.props;
+    const { setParams, onClose, queryKey, value: valueProp } = this.props;
 
     let icon;
     if (valueProp === value || valueProp === `${value}_DESC`) {
@@ -54,8 +56,11 @@ class Menu extends React.PureComponent {
     }
 
     const onClick = () => {
-      onChangeQuery(query => {
-        query.set(queryKey, valueProp === value ? `${value}_DESC` : value);
+      setParams(params => {
+        return {
+          ...params,
+          [queryKey]: valueProp === value ? `${value}_DESC` : value,
+        };
       });
       onClose();
     };
@@ -79,4 +84,10 @@ class Menu extends React.PureComponent {
   }
 }
 
-export default Menu;
+const ListSortSelectorMenuWrapper = props => {
+  const [_params, setParams] = useSearchParams();
+
+  return <ListSortSelectorMenu {...props} setParams={setParams} />;
+};
+
+export default ListSortSelectorMenuWrapper;

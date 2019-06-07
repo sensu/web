@@ -24,7 +24,6 @@ class ChecksListHeader extends React.PureComponent {
     filters: PropTypes.object.isRequired,
     namespace: PropTypes.object,
     onChangeFilters: PropTypes.func.isRequired,
-    onChangeQuery: PropTypes.func.isRequired,
     onClickClearSilences: PropTypes.func.isRequired,
     onClickExecute: PropTypes.func.isRequired,
     onClickSetPublish: PropTypes.func.isRequired,
@@ -59,13 +58,7 @@ class ChecksListHeader extends React.PureComponent {
   };
 
   renderActions = () => {
-    const {
-      filters,
-      namespace,
-      onChangeQuery,
-      onChangeFilters,
-      order,
-    } = this.props;
+    const { filters, namespace, onChangeFilters, order } = this.props;
 
     const subscriptions = namespace ? namespace.subscriptions.values : [];
     return (
@@ -107,7 +100,6 @@ class ChecksListHeader extends React.PureComponent {
         <ToolbarMenu.Item key="sort" visible="if-room">
           <ListSortSelector
             options={[{ label: "Name", value: "NAME" }]}
-            onChangeQuery={onChangeQuery}
             value={order}
           />
         </ToolbarMenu.Item>

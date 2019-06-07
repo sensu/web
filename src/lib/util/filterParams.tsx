@@ -7,9 +7,9 @@ const separator = ":";
 //
 // This pattern is one used by the TypeScript team.
 // see: https://github.com/microsoft/TypeScript/blob/cd09cbbd5e5e483d5441e41d0acbcde9e868af60/src/compiler/types.ts#L1282-L1287
-interface Filter extends String {
+type Filter = string & {
   readonly brand: unique symbol;
-}
+};
 
 export type FilterTuple = [string, string];
 export type FilterMap = Record<string, string>;

@@ -10,5 +10,6 @@ import "./fetch";
 import "./filterParams";
 import "./serviceWorker";
 import "./promise";
+import "./queryParam";
 import "./uniqueId";
 import "./validation";

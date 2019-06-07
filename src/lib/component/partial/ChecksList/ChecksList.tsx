@@ -1,7 +1,5 @@
 import React from "/vendor/react";
-import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
-import { withApollo } from "/vendor/react-apollo";
 
 import {
   Paper,
@@ -14,6 +12,7 @@ import {
 import executeCheck from "/lib/mutation/executeCheck";
 import setCheckPublish from "/lib/mutation/setCheckPublish";
 
+import { useSearchParams, useApolloClient } from "/lib/component/util";
 import { ListController } from "/lib/component/controller";
 import { Loader, TableListEmptyState } from "/lib/component/base";
 
@@ -29,8 +28,34 @@ import {
 import ChecksListHeader from "./ChecksListHeader";
 import ChecksListItem from "./ChecksListItem";
 
+interface Check {
+  id: string;
+  deleted: boolean;
+  name: string;
+  namespace: string;
+  silences: unknown[];
+  pageInfo: unknown;
+}
+
+interface Namespace {
+  checks: {
+    nodes: Check[];
+  };
+}
+
+interface Props {
+  editable: boolean;
+  loading: boolean;
+  limit?: number;
+  namespace?: Namespace;
+  offset?: number;
+  order?: string;
+  filters: Record<string, string>;
+  onChangeFilters(...args: any[]): any;
+  refetch(...args: any[]): any;
+}
+
 const ChecksList = ({
-  client,
   editable,
   loading,
   limit,
@@ -38,18 +63,21 @@ const ChecksList = ({
   offset,
   order,
   filters,
-  onChangeQuery,
   onChangeFilters,
   refetch,
-}) => {
-  const [silence, setSilence] = React.useState(null);
-  const [unsilence, setUnsilence] = React.useState(null);
+}: Props) => {
+  const client = useApolloClient();
+
+  const setParams = useSearchParams()[1];
+
+  const [silence, setSilence] = React.useState<any>(null);
+  const [unsilence, setUnsilence] = React.useState<any>(null);
 
   const createPublishCheckStatusToast = usePublishCheckStatusToast();
   const createExecuteCheckStatusToast = useExecuteCheckStatusToast();
 
-  const setChecksPublish = (checks, publish = true) => {
-    checks.forEach(check => {
+  const setChecksPublish = (checks: Check[], publish: boolean = true) => {
+    checks.forEach((check) => {
       const promise = setCheckPublish(client, {
         id: check.id,
         publish,
@@ -62,10 +90,10 @@ const ChecksList = ({
     });
   };
 
-  const silenceChecks = checks => {
+  const silenceChecks = (checks: Check[]) => {
     const targets = checks
-      .filter(check => check.silences.length === 0)
-      .map(check => ({
+      .filter((check) => check.silences.length === 0)
+      .map((check) => ({
         namespace: check.namespace,
         check: check.name,
       }));
@@ -77,29 +105,30 @@ const ChecksList = ({
     }
   };
 
-  const clearSilences = checks => {
+  const clearSilences = (checks: Check[]) => {
     setUnsilence(checks.reduce((memo, ch) => [...memo, ...ch.silences], []));
   };
 
-  const executeChecks = checks => {
+  const executeChecks = (checks: Check[]) => {
     checks.forEach(({ id, name, namespace: checkNamespace }) => {
       const promise = executeCheck(client, { id });
 
       createExecuteCheckStatusToast(promise, {
         checkName: name,
         namespace: checkNamespace,
+        entityName: undefined,
       });
     });
   };
 
-  const items = namespace
-    ? namespace.checks.nodes.filter(ch => !ch.deleted)
+  const items: Check[] = namespace
+    ? namespace.checks.nodes.filter((ch: Check) => !ch.deleted)
     : [];
 
   return (
     <ListController
       items={items}
-      getItemKey={check => check.id}
+      getItemKey={(check: Check) => check.id}
       renderEmptyState={() => {
         return (
           <TableRow>
@@ -136,7 +165,9 @@ const ChecksList = ({
           onChangeSelected={setSelected}
           onClickClearSilences={() => clearSilences([check])}
           onClickExecute={() => executeChecks([check])}
-          onClickSetPublish={publish => setChecksPublish([check], publish)}
+          onClickSetPublish={(publish: boolean) =>
+            setChecksPublish([check], publish)
+          }
           onClickSilence={() => silenceChecks([check])}
         />
       )}
@@ -149,13 +180,12 @@ const ChecksList = ({
               filters={filters}
               namespace={namespace}
               onChangeFilters={onChangeFilters}
-              onChangeQuery={onChangeQuery}
               onClickClearSilences={() => clearSilences(selectedItems)}
               onClickExecute={() => {
                 executeChecks(selectedItems);
                 setSelectedItems([]);
               }}
-              onClickSetPublish={publish => {
+              onClickSetPublish={(publish: boolean) => {
                 setChecksPublish(selectedItems, publish);
                 setSelectedItems([]);
               }}
@@ -174,7 +204,9 @@ const ChecksList = ({
               limit={limit}
               offset={offset}
               pageInfo={namespace && namespace.checks.pageInfo}
-              onChangeQuery={onChangeQuery}
+              onChangeQuery={(update: any) =>
+                setParams((params) => ({ ...params, ...update }))
+              }
             />
 
             {silence && (
@@ -202,24 +234,6 @@ const ChecksList = ({
       )}
     </ListController>
   );
-};
-
-ChecksList.propTypes = {
-  client: PropTypes.object.isRequired,
-  editable: PropTypes.bool,
-  namespace: PropTypes.shape({
-    checks: PropTypes.shape({
-      nodes: PropTypes.array.isRequired,
-    }),
-  }),
-  loading: PropTypes.bool,
-  filters: PropTypes.object,
-  onChangeFilters: PropTypes.func,
-  onChangeQuery: PropTypes.func.isRequired,
-  limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  order: PropTypes.string.isRequired,
-  refetch: PropTypes.func.isRequired,
 };
 
 ChecksList.defaultProps = {
@@ -269,4 +283,4 @@ ChecksList.fragments = {
   `,
 };
 
-export default withApollo(ChecksList);
+export default ChecksList;

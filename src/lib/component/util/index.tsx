@@ -1,12 +1,7 @@
 export { default as ConditionalRoute } from "./ConditionalRoute";
 export { default as CurrentDateProvider } from "./CurrentDateProvider";
 export { default as Maybe } from "./Maybe";
-export {
-  default as QueryParams,
-  withQueryParams,
-  QueryParamsUpdater,
-  QueryParamsMap,
-} from "./QueryParams";
+export { default as QueryParams, withQueryParams } from "./QueryParams";
 export { default as WithWidth, isWidthUp } from "./WithWidth";
 export { default as createStyledComponent } from "./createStyledComponent";
 export { default as AuthInvalidRoute } from "./AuthInvalidRoute";
@@ -30,4 +25,7 @@ export { default as UnauthenticatedRoute } from "./UnauthenticatedRoute";
 export { default as UnmountObserver } from "./UnmountObserver";
 export { default as useBuildInfo } from "./useBuildInfo";
 export { default as useQuery } from "./useQuery";
+export * from "./useQuery";
 export { default as useApolloClient } from "./useApolloClient";
+export { default as useRouter } from "./useRouter";
+export { default as useSearchParams } from "./useSearchParams";
