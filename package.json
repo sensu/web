@@ -65,7 +65,7 @@
     "@testing-library/react": "^8.0.1",
     "@types/classnames": "^2.2.7",
     "@types/es6-error": "^4.0.2",
-    "@types/react": "^16.8.18",
+    "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",
     "@types/react-router-dom": "^4.3.3",
     "@typescript-eslint/eslint-plugin": "^1.9.0",

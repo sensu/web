@@ -99,7 +99,12 @@ class HandlersView extends React.Component {
               <div>
                 <Content marginBottom>
                   <HandlersListToolbar
-                    onClickReset={() => setQueryParams(q => q.reset())}
+                    onClickReset={() =>
+                      setQueryParams(q => {
+                        q.delete("filters");
+                        q.delete("order");
+                      })
+                    }
                     toolbarContent={toolbarContent({
                       filters,
                       setFilters,
