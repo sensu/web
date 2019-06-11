@@ -145,7 +145,16 @@ export const ChecksViewContent = ({
   );
 };
 
-const ChecksView = () => {
+const BoundFilterList = () => {
+  const [filters, setFilters] = useFilterParams();
+  return <FilterList filters={filters} onChange={setFilters} />;
+};
+
+ChecksViewContent.defaultProps = {
+  toolbarContent: <BoundFilterList />,
+};
+
+export const ChecksView = () => {
   const variables = useChecksViewQueryVariables();
 
   const query = useQuery({
@@ -162,15 +171,5 @@ const ChecksView = () => {
     },
   });
 
-  const [filters, setFilters] = useFilterParams();
-
-  return (
-    <ChecksViewContent
-      query={query}
-      variables={variables}
-      toolbarContent={<FilterList filters={filters} onChange={setFilters} />}
-    />
-  );
+  return <ChecksViewContent query={query} variables={variables} />;
 };
-
-export default ChecksView;
