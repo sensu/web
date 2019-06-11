@@ -29,3 +29,4 @@ export * from "./useQuery";
 export { default as useApolloClient } from "./useApolloClient";
 export { default as useRouter } from "./useRouter";
 export { default as useSearchParams } from "./useSearchParams";
+export { default as useFilterParams } from "./useFilterParams";

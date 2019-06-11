@@ -2,15 +2,20 @@ import * as React from "react";
 
 import useRouter from "./useRouter";
 
-export interface SearchParamsMap {
+interface SearchParamsMap {
   // All values in SearchParamsMap are maybe undefined since the actual contents
   // of the location search segment are opaque to TypeScript.
   readonly [name: string]: string | string[] | undefined;
 }
 
-export type SetSearchParamsAction =
+type SetSearchParamsAction =
   | SearchParamsMap
   | ((prevParams: SearchParamsMap) => SearchParamsMap);
+
+type SearchParamsHook = [
+  SearchParamsMap,
+  (action: SetSearchParamsAction) => void
+];
 
 // Memoize the most recent call to `parseSearch`
 let _cache: SearchParamsMap = {};
@@ -42,7 +47,8 @@ function parseSearch(search: string): SearchParamsMap {
     }
   }
 
-  // Prevent accidental mutation of cached result.
+  // Prevent accidental mutation of cached result which may be shared between
+  // many component instances.
   Object.freeze(map);
 
   _cacheKey = search;
@@ -84,19 +90,18 @@ function formatSearch(map: SearchParamsMap): string {
  * of the entire location.search state.
  *
  */
-const useSearchParams = (): [
-  SearchParamsMap,
-  (action: SetSearchParamsAction) => void
-] => {
+function useSearchParams(): SearchParamsHook {
   const router = useRouter();
 
-  const params = parseSearch(router.location.search);
+  const paramsRef = React.useRef<SearchParamsMap>({});
+  paramsRef.current = parseSearch(router.location.search);
 
   const setParams = React.useCallback(
     (action: SetSearchParamsAction) => {
-      const nextParams = typeof action === "function" ? action(params) : action;
+      const nextParams =
+        typeof action === "function" ? action(paramsRef.current) : action;
 
-      if (nextParams === params) {
+      if (nextParams === paramsRef.current) {
         // Abort loction change if the same previous params object is returned.
         return;
       }
@@ -112,10 +117,10 @@ const useSearchParams = (): [
       // location properties (`path` etc.) are preserved.
       router.history.push({ search });
     },
-    [params, router.location.search, router.history],
+    [router.location.search, router.history],
   );
 
-  return [params, setParams];
-};
+  return [paramsRef.current, setParams];
+}
 
 export default useSearchParams;

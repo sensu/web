@@ -1,6 +1,4 @@
-import { wrapArray } from "./array";
-
-const separator = ":";
+export const SEPARATOR = ":";
 
 // Use 'brand' syntax to grant nominal typing. This enables TypeScript to
 // differenciate formatted filter strings from raw string values.
@@ -12,46 +10,100 @@ type Filter = string & {
 };
 
 export type FilterTuple = [string, string];
-export type FilterMap = Record<string, string>;
-export type FilterArray = Filter[];
+export interface FilterMap {
+  readonly [name: string]: string | undefined;
+}
 
 export const parseFilter = (param: string): FilterTuple => {
-  const pair = param.split(separator, 2);
-  return pair.slice(0, 2) as FilterTuple;
+  const [key, val] = param.split(SEPARATOR, 2);
+  return [key, val];
 };
 
-export const parseFilterParams = (params: string[] | string = []): FilterMap =>
-  wrapArray(params).reduce((acc: FilterMap, pair): FilterMap => {
+export const parseFilterParams = (filters: string[] | string): FilterMap => {
+  const map = {};
+
+  const filterArray = Array.isArray(filters)
+    ? filters
+    : filters
+    ? [filters]
+    : [];
+
+  filterArray.forEach((pair) => {
     const [key, val] = parseFilter(pair);
-    return { ...acc, [key]: val };
+
+    if (key && val) {
+      map[key] = val;
+    } else if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.warn(`removed invalid filter pair ${key}:${val}`);
+    }
   }, {});
 
-export const buildFilter = (key: string, val: string): Filter =>
-  ((key + separator + val) as unknown) as Filter;
-
-export const castFilter = (rawFilter: string): Filter =>
-  buildFilter(...parseFilter(rawFilter));
-
-export const buildFilterParams = (args: FilterMap): FilterArray => {
-  const keys = Object.keys(args);
-  return keys.reduce((acc: FilterArray, key): FilterArray => {
-    const filter = buildFilter(key, args[key]);
-    return [...acc, filter];
-  }, []);
+  return map;
 };
 
-type Toggle = (val: string | null) => void;
-export type ToggleSetter = (params: any) => unknown;
-export const toggleParam = (key: string, setter: ToggleSetter): Toggle => (
-  val,
-): void => {
-  setter(
-    (params: FilterMap): FilterMap => {
-      if (val === null || params[key] === val) {
-        const { [key]: _, ...rest } = params;
-        return rest;
+export const buildFilter = (key: string, val: string): Filter =>
+  ((key + SEPARATOR + val) as unknown) as Filter;
+
+export const buildFilterParams = (args: FilterMap): Filter[] => {
+  const filters: Filter[] = [];
+
+  Object.keys(args).forEach((key) => {
+    const val = args[key];
+
+    if (key && val) {
+      filters.push(buildFilter(key, val));
+    } else if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.warn(`ignored invalid filter pair ${key}:${val}`);
+    }
+  });
+
+  return filters;
+};
+
+function omit<T extends {}, K extends string>(key: K, target: T): Omit<T, K> {
+  const { [key]: _, ...rest } = target;
+  return rest;
+}
+
+/*
+ * toggleParam creates a bound update function for a given filter. It is
+ * designed to be used in conjunction with the `setFilters` function returned
+ * from the `useFilters` hook
+ *
+ * example with a given filter `foo` which can either be "true" or not present:
+ *
+ * import {useFilters} from "/lib/component/util";
+ * import {toggleParam} from "/lib/util/filterParam";
+ *
+ * const FooFilterCheckbox = () => {
+ *   const [filters, setFilters] = useFilters();
+ *
+ *   return (
+ *     <input
+ *       type="checkbox"
+ *       checked={filters.foo === "true"}
+ *       onChange={() => toggleParam("foo", setFilters)("true")}
+ *     />
+ * };
+ *
+ * calling `toggleParam("foo", setFilters)("true")` will toggle the `foo` filter
+ * between "true" and removing it.
+ *
+ * calling `toggleParam("foo", setFilters)(null)` will remove it.
+ */
+export const toggleParam = (
+  key: string,
+  setFilters: (update: (prevFilters: FilterMap) => FilterMap) => void,
+): ((val?: string | null) => void) => (val) => {
+  setFilters(
+    (prevFilters: FilterMap): FilterMap => {
+      if (val === null || prevFilters[key] === val) {
+        return omit(key, prevFilters);
       }
-      return { ...params, [key]: val };
+
+      return { ...prevFilters, [key]: val };
     },
   );
 };
