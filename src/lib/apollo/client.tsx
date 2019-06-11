@@ -30,6 +30,12 @@ class CustomCache extends InMemoryCache {
     this.writeData({ data: this.cacheDefaults });
   }
 
+  // Override the super `reset` reset function. We don't actually call the super
+  // function since it includes a call to `broadcastWatches` which may result in
+  // some queries updating before the required defaults are written back to the
+  // cache. (`writeData` itself calls `broadcastWatches` when it completes)
+  //
+  // see original: https://github.com/apollographql/apollo-client/blob/f58fc635cdf324074b31a1978b3a41d3de12f839/packages/apollo-cache-inmemory/src/inMemoryCache.ts#L235-L240
   reset() {
     (this as any).data.clear();
     this.writeData({ data: this.cacheDefaults });
