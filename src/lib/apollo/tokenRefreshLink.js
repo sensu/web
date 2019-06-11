@@ -10,17 +10,15 @@ import refreshTokens from "/lib/mutation/refreshTokens";
 const EXPIRY_THRESHOLD_MS = 13 * 60 * 1000;
 const MAX_REFRESHES = 3;
 
-const tokenRefreshLink = () =>
+const tokenRefreshLink = getClient =>
   new ApolloLink((operation, forward) => {
-    const context = operation.getContext();
-
     return new Observable(observer => {
       let sub;
 
       const fetchToken = (attempts = 0) => {
         const forceRefresh = attempts > 0;
 
-        refreshTokens(context.client, {
+        refreshTokens(getClient(), {
           notBefore: forceRefresh
             ? null
             : new Date(Date.now() + EXPIRY_THRESHOLD_MS).toISOString(),
@@ -48,7 +46,7 @@ const tokenRefreshLink = () =>
                       sub.unsubscribe();
                       fetchToken(attempts + 1);
                     } else {
-                      flagTokens(context.client);
+                      flagTokens(getClient());
                       observer.error(new QueryAbortedError(err));
                     }
                   } else {

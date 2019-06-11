@@ -99,12 +99,11 @@ export default {
         );
       },
 
-      invalidateTokens: (_, vars, { cache, stateLink }) => {
+      invalidateTokens: (_, vars, { cache }) => {
         const result = cache.readQuery({ query });
 
         // Reset all data in the client cache.
         cache.reset();
-        stateLink.writeDefaults();
 
         return invalidateTokens(cache, result.auth).then(
           handleTokens(cache, "InvalidateTokensMutation"),

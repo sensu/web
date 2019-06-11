@@ -3,10 +3,11 @@ import gql from "/vendor/graphql-tag";
 
 import {
   InMemoryCache,
+  InMemoryCacheConfig,
   IntrospectionFragmentMatcher,
+  IntrospectionResultData,
 } from "/vendor/apollo-cache-inmemory";
 import ApolloClient from "/vendor/apollo-client";
-import { setContext } from "/vendor/apollo-link-context";
 
 import createHttpLink from "./httpLink";
 import createIntrospectionLink from "./introspectionLink";
@@ -14,45 +15,75 @@ import createTokenRefreshLink from "./tokenRefreshLink";
 import createStateLink from "./stateLink";
 import localStorageSync from "./localStorageSync";
 
+interface CustomCacheConfig extends InMemoryCacheConfig {
+  defaults?: {};
+}
+
+class CustomCache extends InMemoryCache {
+  cacheDefaults: {};
+
+  constructor(config: CustomCacheConfig) {
+    super(config);
+
+    this.cacheDefaults = config.defaults || {};
+
+    this.writeData({ data: this.cacheDefaults });
+  }
+
+  reset() {
+    (this as any).data.clear();
+    this.writeData({ data: this.cacheDefaults });
+    return Promise.resolve();
+  }
+}
+
+interface Resolver {
+  resolvers: {};
+  defaults: {};
+}
+
+interface CreateClientConfig {
+  link?: ApolloLink[];
+  resolvers?: Resolver[];
+  introspectionQueryResultData: IntrospectionResultData;
+  introspectionURL: string;
+}
+
 const createClient = ({
   link = [],
   resolvers = [],
   introspectionQueryResultData,
   introspectionURL,
-} = {}) => {
-  const fragmentMatcher = new IntrospectionFragmentMatcher({
-    introspectionQueryResultData,
+}: CreateClientConfig) => {
+  let client: ApolloClient<any> | null = null;
+
+  function getClient(): ApolloClient<any> {
+    if (client === null) {
+      throw Error("Apollo client not yet initialized");
+    }
+
+    return client;
+  }
+
+  const clientState = createStateLink(resolvers) as Resolver;
+
+  const cache = new CustomCache({
+    fragmentMatcher: new IntrospectionFragmentMatcher({
+      introspectionQueryResultData,
+    }),
+    dataIdFromObject: (object) => object.id,
+    defaults: clientState.defaults,
   });
-
-  const cache = new InMemoryCache({
-    fragmentMatcher,
-    dataIdFromObject: object => object.id,
-  });
-
-  let client = null;
-
-  const introspectionLink = createIntrospectionLink();
-  const tokenRefreshLink = createTokenRefreshLink();
-  const httpLink = createHttpLink();
-
-  const stateLink = createStateLink({ resolvers, cache });
-
-  const contextLink = setContext(() => ({
-    stateLink,
-    client,
-    introspectionURL,
-  }));
 
   client = new ApolloClient({
     cache,
     link: ApolloLink.from([
-      contextLink,
-      stateLink,
-      introspectionLink,
-      tokenRefreshLink,
+      createIntrospectionLink(introspectionURL),
+      createTokenRefreshLink(getClient),
       ...link,
-      httpLink,
+      createHttpLink(),
     ]),
+    resolvers: clientState.resolvers,
   });
 
   localStorageSync(
