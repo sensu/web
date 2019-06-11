@@ -2,11 +2,6 @@ import * as React from "/vendor/react";
 import gql from "/vendor/graphql-tag";
 import { ApolloError } from "/vendor/apollo-client";
 
-import {
-  parseFilterParams,
-  buildFilterParams,
-  FilterMap,
-} from "/lib/util/filterParams";
 import { pollingDuration } from "/lib/constant/polling";
 import { FailedError } from "/lib/error/FetchError";
 
@@ -19,6 +14,7 @@ import {
 import {
   useSearchParams,
   useQuery,
+  useFilterParams,
   UseQueryResult,
   WithWidth,
   useRouter,
@@ -31,11 +27,27 @@ import {
 import {
   AppLayout,
   ChecksList,
+  checksListFragments,
   ChecksListToolbar,
   NotFound,
 } from "/lib/component/partial";
+import { ChecksListVariables } from "/lib/component/partial/ChecksList/ChecksList";
 
-const Query = gql`
+interface Variables extends ChecksListVariables {
+  namespace: string;
+}
+
+export const checksViewFramgents = {
+  namespace: gql`
+    fragment ChecksView_namespace on Namespace {
+      ...ChecksList_namespace
+    }
+
+    ${checksListFragments.namespace}
+  `,
+};
+
+export const ChecksViewQuery = gql`
   query ChecksViewQuery(
     $namespace: String!
     $limit: Int
@@ -44,38 +56,14 @@ const Query = gql`
     $filters: [String!]
   ) {
     namespace(name: $namespace) {
-      ...ChecksList_namespace
+      ...ChecksView_namespace
     }
   }
 
-  ${ChecksList.fragments.namespace}
+  ${checksViewFramgents.namespace}
 `;
 
-interface Variables {
-  namespace: string;
-  limit: number;
-  offset: number;
-  order: string;
-  filters: string[];
-}
-
-export function useChecksViewQuery(variables: Variables) {
-  return useQuery({
-    query: Query,
-    fetchPolicy: "cache-and-network",
-    pollInterval: pollingDuration.short,
-    variables,
-    onError: (error: Error): void => {
-      if ((error as ApolloError).networkError instanceof FailedError) {
-        return;
-      }
-
-      throw error;
-    },
-  });
-}
-
-export function useChecksViewQueryVariables() {
+export function useChecksViewQueryVariables(): Variables {
   const [params] = useSearchParams();
   const limit = parseIntParam(params.limit, 25);
   const offset = parseIntParam(params.offset, 0);
@@ -97,9 +85,11 @@ export function useChecksViewQueryVariables() {
   };
 }
 
-interface ToolbartContentProps {
-  filters: FilterMap;
-  setFilters(updater: (filters: FilterMap) => FilterMap): void;
+interface ChecksViewContentProps {
+  toolbarContent?: React.ReactNode;
+  toolbarItems?: React.ReactNode;
+  query: UseQueryResult<any, any>;
+  variables: Variables;
 }
 
 export const ChecksViewContent = ({
@@ -107,23 +97,12 @@ export const ChecksViewContent = ({
   toolbarItems,
   query,
   variables,
-}: {
-  toolbarContent(props: ToolbartContentProps): React.ReactNode;
-  toolbarItems?: React.ReactNode;
-  query: UseQueryResult<any, any>;
-  variables: Variables;
-}) => {
-  const [params, setParams] = useSearchParams();
-
-  const filters = parseFilterParams(params.filters);
-  const setFilters = (updater: (filters: FilterMap) => FilterMap): void => {
-    const next = updater(filters);
-    setParams((params) => ({ ...params, filters: buildFilterParams(next) }));
-  };
-
+}: ChecksViewContentProps) => {
   const { aborted, data, networkStatus, refetch } = query;
   // see: https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
   const loading = networkStatus < 6;
+
+  const [, setParams] = useSearchParams();
 
   if (!(data || {}).namespace && !loading && !aborted) {
     return <NotFound />;
@@ -141,10 +120,7 @@ export const ChecksViewContent = ({
                 order: undefined,
               }));
             }}
-            toolbarContent={toolbarContent({
-              filters,
-              setFilters,
-            })}
+            toolbarContent={toolbarContent}
             toolbarItems={toolbarItems}
           />
         </Content>
@@ -156,8 +132,6 @@ export const ChecksViewContent = ({
                 editable={width !== "xs"}
                 limit={variables.limit}
                 offset={variables.offset}
-                filters={filters}
-                onChangeFilters={setFilters}
                 namespace={(data || {}).namespace}
                 loading={(loading && !variables.namespace) || aborted}
                 refetch={refetch}
@@ -173,15 +147,28 @@ export const ChecksViewContent = ({
 
 const ChecksView = () => {
   const variables = useChecksViewQueryVariables();
-  const query = useChecksViewQuery(variables);
+
+  const query = useQuery({
+    query: ChecksViewQuery,
+    variables,
+    fetchPolicy: "cache-and-network",
+    pollInterval: pollingDuration.short,
+    onError: (error: Error): void => {
+      if ((error as ApolloError).networkError instanceof FailedError) {
+        return;
+      }
+
+      throw error;
+    },
+  });
+
+  const [filters, setFilters] = useFilterParams();
 
   return (
     <ChecksViewContent
       query={query}
       variables={variables}
-      toolbarContent={({ filters, setFilters }: ToolbartContentProps) => {
-        return <FilterList filters={filters} onChange={setFilters} />;
-      }}
+      toolbarContent={<FilterList filters={filters} onChange={setFilters} />}
     />
   );
 };

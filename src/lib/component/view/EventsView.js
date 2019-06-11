@@ -87,9 +87,11 @@ class EventsView extends React.Component {
             throw error;
           }}
         >
-          {({ data: { namespace } = {}, networkStatus, aborted, refetch }) => {
+          {({ data, networkStatus, aborted, refetch }) => {
             // see: https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
             const loading = networkStatus < 6;
+
+            const { namespace } = data || {};
 
             if (!namespace && !loading && !aborted) {
               return <NotFound />;

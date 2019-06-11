@@ -12,7 +12,11 @@ import {
 import executeCheck from "/lib/mutation/executeCheck";
 import setCheckPublish from "/lib/mutation/setCheckPublish";
 
-import { useSearchParams, useApolloClient } from "/lib/component/util";
+import {
+  useSearchParams,
+  useFilterParams,
+  useApolloClient,
+} from "/lib/component/util";
 import { ListController } from "/lib/component/controller";
 import { Loader, TableListEmptyState } from "/lib/component/base";
 
@@ -28,6 +32,50 @@ import {
 import ChecksListHeader from "./ChecksListHeader";
 import ChecksListItem from "./ChecksListItem";
 
+export interface ChecksListVariables {
+  limit: number;
+  offset: number;
+  order: string;
+  filters: string[];
+}
+
+export const checksListFragments = {
+  namespace: gql`
+    fragment ChecksList_namespace on Namespace {
+      checks(
+        limit: $limit
+        offset: $offset
+        orderBy: $order
+        filters: $filters
+      ) @connection(key: "checks", filter: ["filters", "orderBy"]) {
+        nodes {
+          id
+          deleted @client
+          name
+          namespace
+          silences {
+            name
+            ...ClearSilencedEntriesDialog_silence
+          }
+
+          ...ChecksListItem_check
+        }
+
+        pageInfo {
+          ...Pagination_pageInfo
+        }
+      }
+
+      ...ChecksListHeader_namespace
+    }
+
+    ${ChecksListHeader.fragments.namespace}
+    ${ChecksListItem.fragments.check}
+    ${ClearSilencedEntriesDialog.fragments.silence}
+    ${Pagination.fragments.pageInfo}
+  `,
+};
+
 interface Check {
   id: string;
   deleted: boolean;
@@ -37,8 +85,13 @@ interface Check {
   pageInfo: unknown;
 }
 
+interface PageInfo {
+  totalCount: number;
+}
+
 interface Namespace {
   checks: {
+    pageInfo: PageInfo;
     nodes: Check[];
   };
 }
@@ -50,9 +103,7 @@ interface Props {
   namespace?: Namespace;
   offset?: number;
   order?: string;
-  filters: Record<string, string>;
-  onChangeFilters(...args: any[]): any;
-  refetch(...args: any[]): any;
+  refetch(): void;
 }
 
 const ChecksList = ({
@@ -62,13 +113,12 @@ const ChecksList = ({
   namespace,
   offset,
   order,
-  filters,
-  onChangeFilters,
   refetch,
 }: Props) => {
   const client = useApolloClient();
 
-  const setParams = useSearchParams()[1];
+  const [, setParams] = useSearchParams();
+  const [filters, setFilters] = useFilterParams();
 
   const [silence, setSilence] = React.useState<any>(null);
   const [unsilence, setUnsilence] = React.useState<any>(null);
@@ -106,7 +156,12 @@ const ChecksList = ({
   };
 
   const clearSilences = (checks: Check[]) => {
-    setUnsilence(checks.reduce((memo, ch) => [...memo, ...ch.silences], []));
+    setUnsilence(
+      checks.reduce(
+        (memo: unknown[], check) => [...memo, ...check.silences],
+        [],
+      ),
+    );
   };
 
   const executeChecks = (checks: Check[]) => {
@@ -179,7 +234,7 @@ const ChecksList = ({
               editable={editable}
               filters={filters}
               namespace={namespace}
-              onChangeFilters={onChangeFilters}
+              onChangeFilters={setFilters}
               onClickClearSilences={() => clearSilences(selectedItems)}
               onClickExecute={() => {
                 executeChecks(selectedItems);
@@ -244,43 +299,6 @@ ChecksList.defaultProps = {
   offset: undefined,
   filters: {},
   onChangeFilters: () => null,
-};
-
-ChecksList.fragments = {
-  namespace: gql`
-    fragment ChecksList_namespace on Namespace {
-      checks(
-        limit: $limit
-        offset: $offset
-        orderBy: $order
-        filters: $filters
-      ) @connection(key: "checks", filter: ["filters", "orderBy"]) {
-        nodes {
-          id
-          deleted @client
-          name
-          namespace
-          silences {
-            name
-            ...ClearSilencedEntriesDialog_silence
-          }
-
-          ...ChecksListItem_check
-        }
-
-        pageInfo {
-          ...Pagination_pageInfo
-        }
-      }
-
-      ...ChecksListHeader_namespace
-    }
-
-    ${ChecksListHeader.fragments.namespace}
-    ${ChecksListItem.fragments.check}
-    ${ClearSilencedEntriesDialog.fragments.silence}
-    ${Pagination.fragments.pageInfo}
-  `,
 };
 
 export default ChecksList;

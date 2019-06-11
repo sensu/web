@@ -9,7 +9,7 @@ import "./error";
 import "./fetch";
 import "./filterParams";
 import "./serviceWorker";
+import "./params";
 import "./promise";
-import "./queryParam";
 import "./uniqueId";
 import "./validation";
