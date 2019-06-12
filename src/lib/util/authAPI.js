@@ -42,7 +42,7 @@ export const createTokens = memoize(
       },
     };
 
-    return fetch(cache)(path, config)
+    return fetch(path, config)
       .then(response => response.json())
       .then(parseTokenResponse);
   },
@@ -67,7 +67,7 @@ export const refreshTokens = memoize(
       }),
     };
 
-    return fetch(cache)(path, config)
+    return fetch(path, config)
       .then(response => response.json())
       .then(parseTokenResponse);
   },
@@ -90,7 +90,7 @@ export const invalidateTokens = memoize(
         refresh_token: refreshToken,
       }),
     };
-    return fetch(cache)(path, config)
+    return fetch(path, config)
       .catch(when(UnauthorizedError, () => {}))
       .then(() => ({
         accessToken: null,
