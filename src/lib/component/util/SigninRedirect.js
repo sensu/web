@@ -1,6 +1,6 @@
 import React from "/vendor/react";
 import { Route, Redirect } from "/vendor/react-router-dom";
-import { redirectKey } from "/lib/constant/queryParams";
+import { SearchParamKey } from "/lib/constant";
 
 const signinPath = "/signin";
 
@@ -11,7 +11,10 @@ class SigninRedirect extends React.PureComponent {
     // Add next path
     if (location.pathname !== signinPath) {
       const newQuery = new URLSearchParams(queryParams);
-      newQuery.set(redirectKey, location.pathname + location.search);
+      newQuery.set(
+        SearchParamKey.redirect,
+        location.pathname + location.search,
+      );
       queryParams = `?${newQuery.toString()}`;
     }
 

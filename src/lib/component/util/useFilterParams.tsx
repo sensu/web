@@ -1,19 +1,42 @@
 import * as React from "react";
+
+import { SearchParamKey } from "/lib/constant";
 import {
   parseFilterParams,
   buildFilterParams,
-  FilterMap,
+  FilterParamMap,
+  FilterParam,
+  FilterParamKey,
 } from "/lib/util/filterParams";
 import { parseArrayParam } from "/lib/util/params";
 
-import useSearchParams from "./useSearchParams";
+import { useSearchParam } from "./useSearchParams";
 
-type SetFiltersAction = FilterMap | ((prevFilters: FilterMap) => FilterMap);
+// defines the allowable type of the argument passed to useFilterParams()[1]
+export type SetFilterParamsAction =
+  | FilterParamMap
+  | ((prevFilters: FilterParamMap) => FilterParamMap);
 
-type FilterParamsHook = [FilterMap, (action: SetFiltersAction) => void];
+// defines the return tuple type of useFilterParams()
+export type FilterParamsHook = [
+  FilterParamMap,
+  (action: SetFilterParamsAction) => void
+];
+
+// defines the allowable type of the arument passed to useFilterParam()[1]
+export type SetFilterAction =
+  | FilterParam
+  | undefined
+  | ((prevFilter?: FilterParam) => FilterParam | undefined);
+
+// defines the return tuple type of useFilterParam()
+export type FilterParamHook = [
+  FilterParam | undefined,
+  (action: SetFilterAction) => void
+];
 
 // Memoize the most recent call to `parseFilterMap`
-let _cache: FilterMap = {};
+let _cache: FilterParamMap = {};
 let _cacheKey = "";
 
 /*
@@ -22,7 +45,7 @@ let _cacheKey = "";
  * This ensures that using `useFilterParams` in many locations at once won't
  * become a performance concern.
  */
-function parseFilterMap(filters: string[]): FilterMap {
+function parseFilterMap(filters: string[]): FilterParamMap {
   const cacheKey = filters.map(encodeURIComponent).join("&");
 
   if (_cacheKey === cacheKey) {
@@ -87,25 +110,47 @@ function parseFilterMap(filters: string[]): FilterMap {
  * ```
  *
  */
-function useFilterParams(paramKey: string = "filter"): FilterParamsHook {
-  const [params, setParams] = useSearchParams();
+export function useFilterParams(
+  paramKey: SearchParamKey = SearchParamKey.filters,
+): FilterParamsHook {
+  const [param, setParam] = useSearchParam(paramKey);
 
-  const filterMapRef = React.useRef<FilterMap>({});
-  filterMapRef.current = parseFilterMap(parseArrayParam(params[paramKey]));
+  const filterMapRef = React.useRef<FilterParamMap>({});
+  filterMapRef.current = parseFilterMap(parseArrayParam(param));
 
   const setFilters = React.useCallback(
-    (action: SetFiltersAction) => {
+    (action: SetFilterParamsAction) => {
       const nextFilterMap =
         typeof action === "function" ? action(filterMapRef.current) : action;
 
       const nextFilters = buildFilterParams(nextFilterMap);
 
-      setParams((params) => ({ ...params, [paramKey]: nextFilters }));
+      setParam(nextFilters);
     },
-    [setParams, paramKey],
+    [setParam],
   );
 
   return [filterMapRef.current, setFilters];
 }
 
-export default useFilterParams;
+/*
+ * useFilterParam wraps useFilterParams, binding it to a given filter param key
+ */
+export function useFilterParam(key: FilterParamKey): FilterParamHook {
+  const [filters, setFilters] = useFilterParams();
+
+  const filterRef = React.useRef<FilterParam>();
+  filterRef.current = filters[key];
+
+  const setFilter = React.useCallback(
+    (action: SetFilterAction) => {
+      const nextFilter =
+        typeof action === "function" ? action(filterRef.current) : action;
+
+      setFilters((filters) => ({ ...filters, [key]: nextFilter }));
+    },
+    [key, setFilters],
+  );
+
+  return [filterRef.current, setFilter];
+}

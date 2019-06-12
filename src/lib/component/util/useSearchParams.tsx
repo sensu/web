@@ -1,20 +1,37 @@
 import * as React from "react";
 
+import { SearchParamKey } from "/lib/constant";
+
 import useRouter from "./useRouter";
 
-interface SearchParamsMap {
-  // All values in SearchParamsMap are maybe undefined since the actual contents
-  // of the location search segment are opaque to TypeScript.
-  readonly [name: string]: string | string[] | undefined;
-}
+// defines the type of a URLSearchParams entry
+export type SearchParam = string | string[];
 
-type SetSearchParamsAction =
+// defines the type of a parsed map of URLSearchParams entries. Keys must be
+// members of the SearchParamKey enum.
+export type SearchParamsMap = { readonly [K in SearchParamKey]?: SearchParam };
+
+// defines the allowable argument that can be provided to useSearchParams()[1]
+export type SetSearchParamsAction =
   | SearchParamsMap
   | ((prevParams: SearchParamsMap) => SearchParamsMap);
 
-type SearchParamsHook = [
+// defines the return tuple type of useSearchParams
+export type SearchParamsHook = [
   SearchParamsMap,
   (action: SetSearchParamsAction) => void
+];
+
+// defines the allowable argument that can be provided to useSearchParam()[1]
+export type SetSearchParamAction =
+  | SearchParam
+  | undefined
+  | ((prevSearchParam?: SearchParam) => SearchParam | undefined);
+
+// defines the return value of useSearchParam
+export type SearchParamHook = [
+  SearchParam | undefined,
+  (action: SetSearchParamAction) => void
 ];
 
 // Memoize the most recent call to `parseSearch`
@@ -90,7 +107,7 @@ function formatSearch(map: SearchParamsMap): string {
  * of the entire location.search state.
  *
  */
-function useSearchParams(): SearchParamsHook {
+export function useSearchParams(): SearchParamsHook {
   const router = useRouter();
 
   const paramsRef = React.useRef<SearchParamsMap>({});
@@ -123,4 +140,21 @@ function useSearchParams(): SearchParamsHook {
   return [paramsRef.current, setParams];
 }
 
-export default useSearchParams;
+export function useSearchParam(key: SearchParamKey): SearchParamHook {
+  const [params, setParams] = useSearchParams();
+
+  const paramRef = React.useRef<SearchParam>();
+  paramRef.current = params[key];
+
+  const setParam = React.useCallback(
+    (action: SetSearchParamAction) => {
+      const nextParam =
+        typeof action === "function" ? action(paramRef.current) : action;
+
+      setParams((params) => ({ ...params, [key]: nextParam }));
+    },
+    [key, setParams],
+  );
+
+  return [paramRef.current, setParam];
+}

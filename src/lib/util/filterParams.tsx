@@ -9,17 +9,21 @@ type Filter = string & {
   readonly brand: unique symbol;
 };
 
+// TODO: Define FilterParamKey as an enum or union to check that filter keys
+// are correct wherever referenced
+export type FilterParamKey = string;
+export type FilterParam = string;
 export type FilterTuple = [string, string];
-export interface FilterMap {
-  readonly [name: string]: string | undefined;
-}
+export type FilterParamMap = { readonly [K in FilterParamKey]?: FilterParam };
 
 export const parseFilter = (param: string): FilterTuple => {
   const [key, val] = param.split(SEPARATOR, 2);
   return [key, val];
 };
 
-export const parseFilterParams = (filters: string[] | string): FilterMap => {
+export const parseFilterParams = (
+  filters: string[] | string,
+): FilterParamMap => {
   const map = {};
 
   const filterArray = Array.isArray(filters)
@@ -45,7 +49,7 @@ export const parseFilterParams = (filters: string[] | string): FilterMap => {
 export const buildFilter = (key: string, val: string): Filter =>
   ((key + SEPARATOR + val) as unknown) as Filter;
 
-export const buildFilterParams = (args: FilterMap): Filter[] => {
+export const buildFilterParams = (args: FilterParamMap): Filter[] => {
   const filters: Filter[] = [];
 
   Object.keys(args).forEach((key) => {
@@ -95,10 +99,10 @@ function omit<T extends {}, K extends string>(key: K, target: T): Omit<T, K> {
  */
 export const toggleParam = (
   key: string,
-  setFilters: (update: (prevFilters: FilterMap) => FilterMap) => void,
+  setFilters: (update: (prevFilters: FilterParamMap) => FilterParamMap) => void,
 ): ((val?: string | null) => void) => (val) => {
   setFilters(
-    (prevFilters: FilterMap): FilterMap => {
+    (prevFilters: FilterParamMap): FilterParamMap => {
       if (val === null || prevFilters[key] === val) {
         return omit(key, prevFilters);
       }

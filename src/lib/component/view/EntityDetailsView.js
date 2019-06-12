@@ -2,7 +2,7 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
-import { pollingDuration } from "/lib/constant/polling";
+import { PollingDuration } from "../../constant";
 import { FailedError } from "/lib/error/FetchError";
 import { Query } from "/lib/component/util";
 import { Loader } from "/lib/component/base";
@@ -42,7 +42,7 @@ class EntityDetailsView extends React.PureComponent {
         <Query
           query={query}
           fetchPolicy="cache-and-network"
-          pollInterval={pollingDuration.short}
+          pollInterval={PollingDuration.short}
           variables={this.props.match.params}
           onError={error => {
             if (error.networkError instanceof FailedError) {

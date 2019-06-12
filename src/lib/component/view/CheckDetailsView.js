@@ -2,7 +2,7 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
-import { pollingDuration } from "/lib/constant/polling";
+import { PollingDuration } from "../../constant";
 
 import { FailedError } from "/lib/error/FetchError";
 
@@ -42,7 +42,7 @@ class CheckDetailsContent extends React.PureComponent {
       <AppLayout namespace={this.props.match.params.namespace}>
         <Query
           query={query}
-          pollInterval={pollingDuration.short}
+          pollInterval={PollingDuration.short}
           fetchPolicy="cache-and-network"
           variables={this.props.match.params}
           onError={error => {

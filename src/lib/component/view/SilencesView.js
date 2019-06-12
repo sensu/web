@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
 import { parseFilterParams, buildFilterParams } from "/lib/util/filterParams";
-import { pollingDuration } from "/lib/constant/polling";
+import { PollingDuration } from "../../constant";
 import { FailedError } from "/lib/error/FetchError";
 
 import { Query, withQueryParams, WithWidth } from "/lib/component/util";
@@ -86,7 +86,7 @@ class SilencesView extends React.Component {
         <Query
           query={SilencesView.query}
           fetchPolicy="cache-and-network"
-          pollInterval={pollingDuration.short}
+          pollInterval={PollingDuration.short}
           variables={variables}
           onError={error => {
             if (error.networkError instanceof FailedError) {

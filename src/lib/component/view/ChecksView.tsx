@@ -2,7 +2,7 @@ import * as React from "/vendor/react";
 import gql from "/vendor/graphql-tag";
 import { ApolloError } from "/vendor/apollo-client";
 
-import { pollingDuration } from "/lib/constant/polling";
+import { PollingDuration } from "../../constant";
 import { FailedError } from "/lib/error/FetchError";
 
 import {
@@ -13,6 +13,7 @@ import {
 
 import {
   useSearchParams,
+  SearchParamsMap,
   useQuery,
   useFilterParams,
   UseQueryResult,
@@ -114,17 +115,18 @@ export const ChecksViewContent = ({
         <Content marginBottom>
           <ChecksListToolbar
             onClickReset={() => {
-              setParams((params) => ({
-                ...params,
-                fiters: undefined,
-                order: undefined,
-              }));
+              setParams(
+                (params): SearchParamsMap => ({
+                  ...params,
+                  filters: undefined,
+                  order: undefined,
+                }),
+              );
             }}
             toolbarContent={toolbarContent}
             toolbarItems={toolbarItems}
           />
         </Content>
-
         <MobileFullWidthContent>
           <WithWidth>
             {({ width }) => (
@@ -161,7 +163,7 @@ export const ChecksView = () => {
     query: ChecksViewQuery,
     variables,
     fetchPolicy: "cache-and-network",
-    pollInterval: pollingDuration.short,
+    pollInterval: PollingDuration.short,
     onError: (error: Error): void => {
       if ((error as ApolloError).networkError instanceof FailedError) {
         return;

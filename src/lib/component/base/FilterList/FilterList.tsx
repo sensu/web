@@ -1,7 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import { FilterMap } from "/lib/util/filterParams";
+import { FilterParamMap } from "/lib/util/filterParams";
 
 import { createStyledComponent } from "/lib/component/util";
 import { Chip as MUIChip } from "/vendor/@material-ui/core";
@@ -32,8 +32,8 @@ const Em = createStyledComponent({
 });
 
 interface Props {
-  filters: FilterMap;
-  onChange(action: (prevFilters: FilterMap) => FilterMap): void;
+  filters: FilterParamMap;
+  onChange(action: (prevFilters: FilterParamMap) => FilterParamMap): void;
 }
 
 const FilterList = ({ filters, onChange }: Props) => {
