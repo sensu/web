@@ -69,7 +69,7 @@ export function useChecksViewQueryVariables(): Variables {
   const limit = parseIntParam(params.limit, 25);
   const offset = parseIntParam(params.offset, 0);
   const order = parseStringParam(params.order, "NAME");
-  const filters = parseArrayParam(params.order);
+  const filters = parseArrayParam(params.filters);
 
   const router = useRouter();
   const namespace = parseStringParam(
