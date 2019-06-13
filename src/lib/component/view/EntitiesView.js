@@ -100,7 +100,10 @@ class EntitiesView extends React.PureComponent {
                 <Content marginBottom>
                   <EntitiesListToolbar
                     onClickReset={() =>
-                      setQueryParams(q => q.reset(["filters", "order"]))
+                      setQueryParams(q => {
+                        q.delete("filters");
+                        q.delete("order");
+                      })
                     }
                     toolbarContent={this.props.toolbarContent({
                       filters,

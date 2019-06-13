@@ -7,10 +7,9 @@ import { ApolloLink, Observable } from "/vendor/apollo-link";
  * In practice this means the apollo dev tools can not only display the server's
  * schema but any additions the client has made.
  */
-export default () =>
+export default introspectionUrl =>
   new ApolloLink((operation, forward) => {
     const { operationName } = operation;
-    const context = operation.getContext();
 
     // This is maybe not the most ideal heuristic but the alternative is
     // comparing the given query with the static one included in graphql-js.
@@ -24,7 +23,7 @@ export default () =>
     }
 
     return new Observable(obs => {
-      fetch(context.introspectionURL)
+      fetch(introspectionUrl)
         .then(response => {
           operation.setContext({ response });
           return response;
