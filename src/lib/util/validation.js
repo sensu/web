@@ -2,6 +2,7 @@ import { set, parsePath } from "/vendor/@10xjs/form";
 
 export const REQUIRED = "VALIDATION_REQUIRED";
 export const UNIQUE_CONSTRAINT = "VALIDATION_UNIQUE_CONSTRAINT";
+export const INVALID_SYMBOL = "VALIDATION_INVALID_SYMBOL";
 
 export const requiredError = () => ({
   code: REQUIRED,
@@ -9,6 +10,10 @@ export const requiredError = () => ({
 
 export const uniqueConstraintError = () => ({
   code: UNIQUE_CONSTRAINT,
+});
+
+export const invalidSymbolError = () => ({
+  code: INVALID_SYMBOL,
 });
 
 export const formatValidationError = error => {
@@ -19,6 +24,7 @@ export const formatValidationError = error => {
   const messageMap = {
     [REQUIRED]: () => "Field is required.",
     [UNIQUE_CONSTRAINT]: () => "Value must be unique.",
+    [INVALID_SYMBOL]: () => "Cannot contain special characters.",
   };
 
   if (messageMap[error.code]) {

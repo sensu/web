@@ -12,3 +12,4 @@ import "./serviceWorker";
 import "./promise";
 import "./uniqueId";
 import "./validation";
+import "./validator";

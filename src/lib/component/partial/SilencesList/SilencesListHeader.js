@@ -24,12 +24,13 @@ class SilencesListHeader extends React.PureComponent {
     order: PropTypes.string.isRequired,
     selectedItems: PropTypes.array,
     rowCount: PropTypes.number,
-    namespace: PropTypes.object.isRequired,
+    namespace: PropTypes.object,
   };
 
   static defaultProps = {
     rowCount: 0,
     selectedItems: [],
+    namespace: null,
   };
 
   static fragments = {
