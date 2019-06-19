@@ -48,7 +48,6 @@
     "postinstall": "yarn fetch-schema"
   },
   "dependencies": {
-    "@sensuapp/eslint-plugin": "link:./config/eslint-plugin",
     "@10xjs/date-input-controller": "0.1.6",
     "@10xjs/form": "^0.1.7",
     "@babel/core": "^7.0.0",
@@ -62,6 +61,7 @@
     "@material-ui/icons": "^3.0.0",
     "@octokit/plugin-throttling": "^2.4.0",
     "@octokit/rest": "^16.23.2",
+    "@sensuapp/eslint-plugin": "link:./config/eslint-plugin",
     "@testing-library/react": "^8.0.1",
     "@types/classnames": "^2.2.7",
     "@types/es6-error": "^4.0.2",
@@ -76,6 +76,7 @@
     "apollo-client": "^2.6.2",
     "apollo-link": "^1.2.11",
     "apollo-link-batch-http": "^1.2.11",
+    "apollo-link-context": "^1.0.18",
     "autoprefixer": "^7.1.2",
     "aws-sdk": "^2.437.0",
     "babel-eslint": "^10.0.1",

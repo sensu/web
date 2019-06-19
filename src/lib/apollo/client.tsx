@@ -8,10 +8,11 @@ import {
   IntrospectionResultData,
 } from "/vendor/apollo-cache-inmemory";
 import ApolloClient from "/vendor/apollo-client";
+import { setContext } from "/vendor/apollo-link-context";
 
-import createHttpLink from "./httpLink";
-import createIntrospectionLink from "./introspectionLink";
-import createTokenRefreshLink from "./tokenRefreshLink";
+import httpLink from "./httpLink";
+import introspectionLink from "./introspectionLink";
+import tokenRefreshLink from "./tokenRefreshLink";
 import createStateLink from "./stateLink";
 import localStorageSync from "./localStorageSync";
 
@@ -81,13 +82,19 @@ const createClient = ({
     defaults: clientState.defaults,
   });
 
+  const contextLink = setContext(() => ({
+    getClient,
+    introspectionURL,
+  }));
+
   client = new ApolloClient({
     cache,
     link: ApolloLink.from([
-      createIntrospectionLink(introspectionURL),
-      createTokenRefreshLink(getClient),
+      contextLink,
+      introspectionLink,
+      tokenRefreshLink,
       ...link,
-      createHttpLink(),
+      httpLink,
     ]),
     resolvers: clientState.resolvers,
   });
