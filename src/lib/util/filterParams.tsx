@@ -16,8 +16,11 @@ export type FilterMap = Record<string, string>;
 export type FilterArray = Filter[];
 
 export const parseFilter = (param: string): FilterTuple => {
-  const pair = param.split(separator, 2);
-  return pair.slice(0, 2) as FilterTuple;
+  const pos = param.indexOf(separator);
+  if (pos === -1) {
+    return [param, ""];
+  }
+  return [param.slice(0, pos), param.slice(pos + 1)];
 };
 
 export const parseFilterParams = (params: string[] | string = []): FilterMap =>
