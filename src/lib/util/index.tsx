@@ -13,3 +13,4 @@ import "./params";
 import "./promise";
 import "./uniqueId";
 import "./validation";
+import "./validator";

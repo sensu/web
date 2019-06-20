@@ -17,8 +17,11 @@ export type FilterTuple = [string, string];
 export type FilterParamMap = { readonly [K in FilterParamKey]?: FilterParam };
 
 export const parseFilter = (param: string): FilterTuple => {
-  const [key, val] = param.split(SEPARATOR, 2);
-  return [key, val];
+  const pos = param.indexOf(SEPARATOR);
+  if (pos === -1) {
+    return [param, ""];
+  }
+  return [param.slice(0, pos), param.slice(pos + 1)];
 };
 
 export const parseFilterParams = (

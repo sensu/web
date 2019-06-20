@@ -168,7 +168,7 @@ class ClearSilencedEntriesDialog extends React.PureComponent {
                 <Button
                   onClick={() => this.clearItems(selectedItems)}
                   color="primary"
-                  variant="raised"
+                  variant="contained"
                   autoFocus
                   disabled={selectedItems.length === 0 || submitting}
                 >

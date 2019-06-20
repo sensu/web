@@ -2,7 +2,12 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { Form, SubmitValidationError } from "/vendor/@10xjs/form";
 
-import { requiredError, parseValidationErrors } from "/lib/util/validation";
+import { validName, validSubscriptionName } from "/lib/util/validator";
+import {
+  requiredError,
+  invalidSymbolError,
+  parseValidationErrors,
+} from "/lib/util/validation";
 
 const validate = values => {
   const errors = {};
@@ -14,6 +19,18 @@ const validate = values => {
   ) {
     errors.check = requiredError();
     errors.subscription = requiredError();
+  }
+
+  if (values.check && values.check !== "*" && !validName(values.check)) {
+    errors.check = invalidSymbolError();
+  }
+
+  if (
+    values.subscription &&
+    values.subscription !== "*" &&
+    !validSubscriptionName(values.subscription)
+  ) {
+    errors.subscription = invalidSymbolError();
   }
 
   return errors;
