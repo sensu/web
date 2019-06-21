@@ -1,14 +1,16 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 
+import { FilterParamMap } from "/lib/util/filterParams";
+
 import { createStyledComponent } from "/lib/component/util";
 import { Chip as MUIChip } from "/vendor/@material-ui/core";
-import { toggleParam } from "/lib/util/filterParams";
 
-const Chip = createStyledComponent({
+// TODO: Remove `any` types once `createStyledComponent` is fully annotated
+const Chip = (createStyledComponent as any)({
   name: "FilterList.Chip",
   component: MUIChip,
-  styles: theme => {
+  styles: (theme: any) => {
     const margin = theme.spacing.unit / 2;
     return {
       marginRight: margin,
@@ -29,18 +31,22 @@ const Em = createStyledComponent({
   styles: () => ({ fontStyle: "italic" }),
 });
 
-const FilterList = ({ filters, onChange }) => {
-  let onClickDelete;
-  if (onChange) {
-    onClickDelete = key => toggleParam(key, onChange)(null);
-  }
+interface Props {
+  filters: FilterParamMap;
+  onChange(action: (prevFilters: FilterParamMap) => FilterParamMap): void;
+}
 
+const FilterList = ({ filters, onChange }: Props) => {
   const chips = Object.keys(filters)
     .sort()
-    .map(key => (
+    .map((key) => (
       <Chip
         key={key}
-        onDelete={() => onClickDelete(key)}
+        onDelete={
+          onChange
+            ? () => onChange((filters) => ({ ...filters, [key]: undefined }))
+            : undefined
+        }
         label={
           <React.Fragment>
             <Key>{key}</Key>

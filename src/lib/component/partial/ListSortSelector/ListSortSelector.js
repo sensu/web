@@ -7,7 +7,7 @@ import { MenuController } from "/lib/component/controller";
 
 import { DisclosureMenuItem } from "/lib/component/partial/ToolbarMenuItems";
 
-import Menu from "./Menu";
+import Menu from "./ListSortSelectorMenu";
 
 class ListSortSelector extends React.Component {
   static propTypes = {

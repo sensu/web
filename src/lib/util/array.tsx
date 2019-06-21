@@ -30,6 +30,3 @@ export const mergeAtIndex = <T extends any>(
 
 export const removeAtIndex = <T extends any>(arr: T[], index: number): T[] =>
   arr.slice(0, index).concat(arr.slice(index + 1));
-
-export const wrapArray = <T extends any>(arr: T[] | T): T[] =>
-  Array.isArray(arr) ? arr : [arr];

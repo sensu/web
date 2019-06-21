@@ -1,7 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { Redirect, withRouter } from "/vendor/react-router-dom";
-import { redirectKey } from "/lib/constant/queryParams";
+import { SearchParamKey } from "/lib/constant";
 import gql from "/vendor/graphql-tag";
 
 import { defaultNamespace } from "/lib/constant/namespace";
@@ -48,7 +48,7 @@ class LastNamespaceRedirect extends React.PureComponent {
 
     // 1. if 'redirect-to' query parameter is present use given path.
     const queryParams = new URLSearchParams(location.search);
-    const redirectQueryParam = queryParams.get(redirectKey);
+    const redirectQueryParam = queryParams.get(SearchParamKey.redirect);
     if (redirectQueryParam) {
       return <Redirect to={redirectQueryParam} />;
     }

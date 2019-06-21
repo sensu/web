@@ -12,7 +12,7 @@ import {
   EventDetailsContainer,
 } from "/lib/component/partial";
 
-import { pollingDuration } from "/lib/constant/polling";
+import { PollingDuration } from "../../constant";
 
 const query = gql`
   query EventDetailsViewQuery(
@@ -47,7 +47,7 @@ class EventDetailsView extends React.PureComponent {
         <Query
           query={query}
           fetchPolicy="cache-and-network"
-          pollInterval={pollingDuration.short}
+          pollInterval={PollingDuration.short}
           variables={this.props.match.params}
           onError={error => {
             if (error.networkError instanceof FailedError) {

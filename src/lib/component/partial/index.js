@@ -6,7 +6,11 @@ export { default as AppBar } from "./AppBar";
 export { default as AppLayout } from "./AppLayout";
 export { default as AuthInvalidDialog } from "./AuthInvalidDialog";
 export { default as CheckDetailsContainer } from "./CheckDetailsContainer";
-export { default as ChecksList, ChecksListToolbar } from "./ChecksList";
+export {
+  default as ChecksList,
+  ChecksListToolbar,
+  checksListFragments,
+} from "./ChecksList";
 export { default as ClearSilenceAction } from "./ClearSilenceAction";
 export {
   default as ClearSilencedEntriesDialog,

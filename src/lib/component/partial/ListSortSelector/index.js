@@ -1,2 +1,2 @@
-export { default } from "./ControlledSelector";
-export { default as ListSortSelectorMenu } from "./Menu";
+export { default } from "./ListSortSelector";
+export { default as ListSortSelectorMenu } from "./ListSortSelectorMenu";
