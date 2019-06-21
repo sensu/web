@@ -99,13 +99,13 @@ export const ChecksViewContent = ({
   query,
   variables,
 }: ChecksViewContentProps) => {
-  const { aborted, data, networkStatus, refetch } = query;
+  const { aborted, data = {}, networkStatus, refetch } = query;
   // see: https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
   const loading = networkStatus < 6;
 
   const [, setParams] = useSearchParams();
 
-  if (!(data || {}).namespace && !loading && !aborted) {
+  if (!data.namespace && !loading && !aborted) {
     return <NotFound />;
   }
 
@@ -135,7 +135,7 @@ export const ChecksViewContent = ({
                 limit={variables.limit}
                 offset={variables.offset}
                 namespace={(data || {}).namespace}
-                loading={(loading && !variables.namespace) || aborted}
+                loading={(loading && !data.namespace) || aborted}
                 refetch={refetch}
                 order={variables.order}
               />
