@@ -101,6 +101,25 @@ const HandlerDetailsConfiguration = ({ handler }) => (
               </DictionaryValue>
             </DictionaryEntry>
             <DictionaryEntry>
+              <DictionaryKey>Mutator</DictionaryKey>
+              <DictionaryValue>
+                <Maybe value={handler.mutator} fallback="—">
+                  {mutator => (
+                    <NamespaceLink
+                      namespace={mutator.namespace}
+                      to={`/mutators/${mutator.name}`}
+                    >
+                      <CodeHighlight
+                        language="json"
+                        code={`${mutator.name}`}
+                        component={Code}
+                      />
+                    </NamespaceLink>
+                  )}
+                </Maybe>
+              </DictionaryValue>
+            </DictionaryEntry>
+            <DictionaryEntry>
               <DictionaryKey>Handlers</DictionaryKey>
               <DictionaryValue>
                 <Maybe value={handler.type === "set"} fallback="—">
@@ -203,10 +222,15 @@ HandlerDetailsConfiguration.fragments = {
       timeout
       handlers {
         name
+        namespace
       }
       socket {
         port
         host
+      }
+      mutator {
+        name
+        namespace
       }
       filters
       envVars
