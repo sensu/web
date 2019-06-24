@@ -19,7 +19,7 @@ extend type Handler {
 }
 
 extend type Mutator {
-  "Describes whether the handler has been deleted from the system"
+  "Describes whether the mutator has been deleted from the system"
   deleted: Boolean!
 }
 
