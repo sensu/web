@@ -16,6 +16,7 @@ export default resolvers =>
     addDeletedFieldTo("Entity"),
     addDeletedFieldTo("Event"),
     addDeletedFieldTo("Handler"),
+    addDeletedFieldTo("Mutator"),
     addDeletedFieldTo("Silenced"),
     ...resolvers,
   ]);

@@ -33,6 +33,10 @@ export { default as ListHeader } from "./ListHeader";
 export { default as ListSortSelector } from "./ListSortSelector";
 export { default as ListToolbar } from "./ListToolbar";
 export { default as MoreMenu } from "./MoreMenu";
+export {
+  default as MutatorDetailsContainer,
+  mutatorDetailsContainerFragments,
+} from "./MutatorDetailsContainer";
 export { default as NamespaceIcon } from "./NamespaceIcon";
 export { default as NamespaceLabel } from "./NamespaceLabel";
 export { default as NamespaceSelector } from "./NamespaceSelector";
