@@ -18,16 +18,25 @@ interface Variables {
   name: string;
 }
 
-const mutatorDetailsViewQuery = gql`
-  query MutatorDetailsContentQuery($namespace: String!, $name: String!) {
-    mutator(namespace: $namespace, name: $name) {
+export const mutatorDetailsViewFragments = {
+  mutator: gql`
+    fragment MutatorDetailsView_mutator on Mutator {
       id
       deleted @client
       ...MutatorDetailsContainer_mutator
     }
-  }
 
-  ${mutatorDetailsContainerFragments.mutator}
+    ${mutatorDetailsContainerFragments.mutator}
+  `,
+};
+
+const mutatorDetailsViewQuery = gql`
+  query MutatorDetailsContentQuery($namespace: String!, $name: String!) {
+    mutator(namespace: $namespace, name: $name) {
+      ...MutatorDetailsView_mutator
+    }
+  }
+  ${mutatorDetailsViewFragments.mutator}
 `;
 
 export function useMutatorDetailsViewQueryVariables(): Variables {
