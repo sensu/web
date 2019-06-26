@@ -12,7 +12,6 @@ import {
 import { Maybe } from "/lib/component/util";
 
 import {
-  Code,
   CodeBlock,
   CodeHighlight,
   Duration,
@@ -76,11 +75,7 @@ const MutatorDetailsConfiguration = ({
               <DictionaryValue>
                 {mutator.command ? (
                   <CodeBlock>
-                    <CodeHighlight
-                      language="bash"
-                      code={mutator.command}
-                      component={Code}
-                    />
+                    <CodeHighlight language="bash" code={mutator.command} />
                   </CodeBlock>
                 ) : (
                   "None"
@@ -104,7 +99,6 @@ const MutatorDetailsConfiguration = ({
                     <CodeHighlight
                       language="properties"
                       code={mutator.envVars.join("\n")}
-                      component={Code}
                     />
                   </CodeBlock>
                 ) : (

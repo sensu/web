@@ -158,11 +158,7 @@ const HandlerDetailsConfiguration = ({ handler }) => (
               <DictionaryValue>
                 {handler.command ? (
                   <CodeBlock>
-                    <CodeHighlight
-                      language="bash"
-                      code={handler.command}
-                      component={Code}
-                    />
+                    <CodeHighlight language="bash" code={handler.command} />
                   </CodeBlock>
                 ) : (
                   "None"
@@ -186,7 +182,6 @@ const HandlerDetailsConfiguration = ({ handler }) => (
                     <CodeHighlight
                       language="properties"
                       code={handler.envVars.join("\n")}
-                      component={Code}
                     />
                   </CodeBlock>
                 ) : (

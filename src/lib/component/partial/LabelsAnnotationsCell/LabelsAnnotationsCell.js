@@ -59,18 +59,15 @@ class LabelsAnnotationsCell extends React.PureComponent {
   render() {
     const { resource } = this.props;
 
-    const annotations = Object.keys(resource.metadata.annotations).reduce(
-      (anno, kvPair) => {
-        let value;
-        try {
-          value = JSON.parse(kvPair.val);
-        } catch (e) {
-          value = kvPair.val;
-        }
-        return { ...anno, [kvPair.key]: value };
-      },
-      {},
-    );
+    const annotations = resource.metadata.annotations.reduce((anno, kvPair) => {
+      let value;
+      try {
+        value = JSON.parse(kvPair.val);
+      } catch (e) {
+        value = kvPair.val;
+      }
+      return { ...anno, [kvPair.key]: value };
+    }, {});
 
     return (
       <CardContent>
