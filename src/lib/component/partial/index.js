@@ -25,6 +25,11 @@ export { default as EntityStatusDescriptor } from "./EntityStatusDescriptor";
 export { default as EventDetailsContainer } from "./EventDetailsContainer";
 export { default as EventStatusDescriptor } from "./EventStatusDescriptor";
 export { default as EventsList, EventsListToolbar } from "./EventsList";
+export {
+  default as EventFiltersList,
+  EventFiltersListToolbar,
+  eventFiltersListFragments,
+} from "./EventFiltersList";
 export { default as HandlersList, HandlersListToolbar } from "./HandlersList";
 export { default as HandlerDetailsContainer } from "./HandlerDetailsContainer";
 export { default as Label } from "./Label";
