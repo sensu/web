@@ -101,6 +101,25 @@ const HandlerDetailsConfiguration = ({ handler }) => (
               </DictionaryValue>
             </DictionaryEntry>
             <DictionaryEntry>
+              <DictionaryKey>Mutator</DictionaryKey>
+              <DictionaryValue>
+                <Maybe value={handler.mutator} fallback="—">
+                  {mutator => (
+                    <NamespaceLink
+                      namespace={mutator.namespace}
+                      to={`/mutators/${mutator.name}`}
+                    >
+                      <CodeHighlight
+                        language="json"
+                        code={`${mutator.name}`}
+                        component={Code}
+                      />
+                    </NamespaceLink>
+                  )}
+                </Maybe>
+              </DictionaryValue>
+            </DictionaryEntry>
+            <DictionaryEntry>
               <DictionaryKey>Handlers</DictionaryKey>
               <DictionaryValue>
                 <Maybe value={handler.type === "set"} fallback="—">
@@ -139,11 +158,7 @@ const HandlerDetailsConfiguration = ({ handler }) => (
               <DictionaryValue>
                 {handler.command ? (
                   <CodeBlock>
-                    <CodeHighlight
-                      language="bash"
-                      code={handler.command}
-                      component={Code}
-                    />
+                    <CodeHighlight language="bash" code={handler.command} />
                   </CodeBlock>
                 ) : (
                   "None"
@@ -167,7 +182,6 @@ const HandlerDetailsConfiguration = ({ handler }) => (
                     <CodeHighlight
                       language="properties"
                       code={handler.envVars.join("\n")}
-                      component={Code}
                     />
                   </CodeBlock>
                 ) : (
@@ -180,7 +194,7 @@ const HandlerDetailsConfiguration = ({ handler }) => (
       </Grid>
     </CardContent>
     <Divider />
-    <LabelsAnnotationsCell handler={handler} />
+    <LabelsAnnotationsCell resource={handler} />
   </Card>
 );
 
@@ -203,10 +217,15 @@ HandlerDetailsConfiguration.fragments = {
       timeout
       handlers {
         name
+        namespace
       }
       socket {
         port
         host
+      }
+      mutator {
+        name
+        namespace
       }
       filters
       envVars

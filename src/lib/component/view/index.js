@@ -4,6 +4,7 @@ export { default as EntitiesView } from "./EntitiesView";
 export { default as EntityDetailsView } from "./EntityDetailsView";
 export { default as EventDetailsView } from "./EventDetailsView";
 export { default as HandlerDetailsView } from "./HandlerDetailsView";
+export * from "./MutatorDetailsView";
 export { default as EventsView } from "./EventsView";
 export { default as HandlersView } from "./HandlersView";
 export { default as NamespaceNotFoundView } from "./NamespaceNotFoundView";

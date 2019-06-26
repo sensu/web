@@ -18,6 +18,11 @@ extend type Handler {
   deleted: Boolean!
 }
 
+extend type Mutator {
+  "Describes whether the mutator has been deleted from the system"
+  deleted: Boolean!
+}
+
 extend type Silenced {
   "Describes whether the entry has been deleted from the system"
   deleted: Boolean!

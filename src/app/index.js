@@ -42,6 +42,7 @@ import {
   EventDetailsView,
   EntityDetailsView,
   HandlerDetailsView,
+  MutatorDetailsView,
   NamespaceNotFoundView,
 } from "/lib/component/view";
 
@@ -120,6 +121,10 @@ const renderApp = () => {
                     <Route
                       path={`${props.match.path}/handlers/:handler`}
                       component={HandlerDetailsView}
+                    />
+                    <Route
+                      path={`${props.match.path}/mutators/:mutator`}
+                      component={MutatorDetailsView}
                     />
                     <Route
                       path={`${props.match.path}/checks`}

@@ -289,7 +289,7 @@ class EntityDetailsInformation extends React.PureComponent {
           </CardContent>
         </Maybe>
         <Divider />
-        <LabelsAnnotationsCell entity={entity} />
+        <LabelsAnnotationsCell resource={entity} />
       </Card>
     );
   }

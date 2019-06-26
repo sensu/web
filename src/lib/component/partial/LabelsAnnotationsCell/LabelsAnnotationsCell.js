@@ -2,7 +2,7 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
-import { withStyles, Grid, CardContent } from "/vendor/@material-ui/core";
+import { Grid, CardContent } from "/vendor/@material-ui/core";
 
 import {
   Dictionary,
@@ -12,31 +12,33 @@ import {
   CodeBlock,
   CodeHighlight,
 } from "/lib/component/base";
-import { Maybe } from "/lib/component/util";
+import { createStyledComponent, Maybe } from "/lib/component/util";
 
 import Label from "/lib/component/partial/Label";
 
-const styles = () => ({
-  override: {
+const Key = createStyledComponent({
+  name: "LabelsAnnotationsCell.Key",
+  component: DictionaryKey,
+  styles: () => ({
     width: "25%",
-  },
-  fullWidth: {
+  }),
+});
+
+const Value = createStyledComponent({
+  name: "LabelsAnnotationsCell.Value",
+  component: DictionaryValue,
+  styles: () => ({
     width: "100%",
-  },
+  }),
 });
 
 class LabelsAnnotationsCell extends React.PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
-    entity: PropTypes.object,
-    check: PropTypes.object,
-    handler: PropTypes.object,
+    resource: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
-    entity: null,
-    check: null,
-    handler: null,
+    resource: null,
   };
 
   static fragments = {
@@ -55,26 +57,17 @@ class LabelsAnnotationsCell extends React.PureComponent {
   };
 
   render() {
-    const { check, classes, entity, handler } = this.props;
+    const { resource } = this.props;
 
-    const object = check || entity || handler;
-
-    const annotations = Object.keys(object.metadata.annotations).reduce(
-      (anno, key) => {
-        try {
-          // eslint-disable-next-line
-          anno[object.metadata.annotations[key].key] = JSON.parse(
-            object.metadata.annotations[key].val,
-          );
-        } catch (e) {
-          // eslint-disable-next-line
-          anno[object.metadata.annotations[key].key] =
-            object.metadata.annotations[key].val;
-        }
-        return anno;
-      },
-      {},
-    );
+    const annotations = resource.metadata.annotations.reduce((anno, kvPair) => {
+      let value;
+      try {
+        value = JSON.parse(kvPair.val);
+      } catch (e) {
+        value = kvPair.val;
+      }
+      return { ...anno, [kvPair.key]: value };
+    }, {});
 
     return (
       <CardContent>
@@ -82,11 +75,9 @@ class LabelsAnnotationsCell extends React.PureComponent {
           <Grid item xs={12} sm={12}>
             <Dictionary>
               <DictionaryEntry>
-                <DictionaryKey className={classes.override}>
-                  Labels
-                </DictionaryKey>
-                <DictionaryValue explicitRightMargin>
-                  <Maybe value={object.metadata.labels} fallback="None">
+                <Key>Labels</Key>
+                <Value explicitRightMargin>
+                  <Maybe value={resource.metadata.labels} fallback="None">
                     {val =>
                       val.map(pair => [
                         <Label
@@ -98,18 +89,16 @@ class LabelsAnnotationsCell extends React.PureComponent {
                       ])
                     }
                   </Maybe>
-                </DictionaryValue>
+                </Value>
               </DictionaryEntry>
             </Dictionary>
           </Grid>
           <Grid item xs={12} sm={12}>
             <Dictionary>
               <DictionaryEntry>
-                <DictionaryKey className={classes.override}>
-                  Annotations
-                </DictionaryKey>
-                <DictionaryValue className={classes.fullWidth}>
-                  {object.metadata.annotations.length > 0 ? (
+                <Key>Annotations</Key>
+                <Value explicitRightMargin>
+                  {resource.metadata.annotations.length > 0 ? (
                     <CodeBlock>
                       <CodeHighlight
                         language="json"
@@ -120,7 +109,7 @@ class LabelsAnnotationsCell extends React.PureComponent {
                   ) : (
                     "None"
                   )}
-                </DictionaryValue>
+                </Value>
               </DictionaryEntry>
             </Dictionary>
           </Grid>
@@ -130,4 +119,4 @@ class LabelsAnnotationsCell extends React.PureComponent {
   }
 }
 
-export default withStyles(styles)(LabelsAnnotationsCell);
+export default LabelsAnnotationsCell;
