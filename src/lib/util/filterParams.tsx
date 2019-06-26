@@ -15,6 +15,9 @@ export type FilterParamKey = string;
 export type FilterParam = string;
 export type FilterTuple = [string, string];
 export type FilterParamMap = { readonly [K in FilterParamKey]?: FilterParam };
+export type SetFiltersFunc = (
+  update: (prevFilters: FilterParamMap) => FilterParamMap,
+) => void;
 
 export const parseFilter = (param: string): FilterTuple => {
   const pos = param.indexOf(SEPARATOR);
@@ -102,7 +105,7 @@ function omit<T extends {}, K extends string>(key: K, target: T): Omit<T, K> {
  */
 export const toggleParam = (
   key: string,
-  setFilters: (update: (prevFilters: FilterParamMap) => FilterParamMap) => void,
+  setFilters: SetFiltersFunc,
 ): ((val?: string | null) => void) => (val) => {
   setFilters(
     (prevFilters: FilterParamMap): FilterParamMap => {
