@@ -12,7 +12,7 @@ import {
   FilterParamMap,
 } from "/lib/util/filterParams";
 
-const EVENT_FITLER_ACTION_TYPES = [
+const EVENT_FILTER_ACTION_TYPES = [
   { label: "ALLOW", value: "allow" },
   { label: "DENY", value: "deny" },
 ];
@@ -41,7 +41,7 @@ export const EventFiltersListHeader = ({
             onChange={toggleParam("action", onChangeFilters)}
           >
             <ToolbarSelectOption value={null} />
-            {EVENT_FITLER_ACTION_TYPES.map(({ label, value }) => (
+            {EVENT_FILTER_ACTION_TYPES.map(({ label, value }) => (
               <ToolbarSelectOption
                 key={value}
                 value={value}

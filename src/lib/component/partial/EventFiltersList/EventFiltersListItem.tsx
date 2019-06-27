@@ -56,7 +56,7 @@ export const EventFilterListItem = ({ eventFilter }: Props) => {
       <TableOverflowCell>
         <ResourceDetails
           title={
-            <NamespaceLink namespace={namespace} to={`/fitlers/${name}`}>
+            <NamespaceLink namespace={namespace} to={`/filters/${name}`}>
               <strong>{name} </strong>
             </NamespaceLink>
           }
