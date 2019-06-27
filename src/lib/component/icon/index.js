@@ -12,6 +12,7 @@ export { default as DonutSmallIcon } from "@material-ui/icons/DonutSmall";
 export { default as EmoticonIcon } from "@material-ui/icons/InsertEmoticon";
 export { default as EntityIcon } from "@material-ui/icons/DesktopMac";
 export { default as EventIcon } from "@material-ui/icons/Notifications";
+export { default as EventFilterIcon } from "@material-ui/icons/FilterList";
 export { default as ExpandMoreIcon } from "@material-ui/icons/ExpandMore";
 export { default as ExploreIcon } from "@material-ui/icons/Explore";
 export { default as EyeIcon } from "@material-ui/icons/RemoveRedEye";
