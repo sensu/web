@@ -15,6 +15,7 @@ export default resolvers =>
     addDeletedFieldTo("CheckConfig"),
     addDeletedFieldTo("Entity"),
     addDeletedFieldTo("Event"),
+    addDeletedFieldTo("EventFilter"),
     addDeletedFieldTo("Handler"),
     addDeletedFieldTo("Mutator"),
     addDeletedFieldTo("Silenced"),
