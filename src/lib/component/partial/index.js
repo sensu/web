@@ -30,6 +30,10 @@ export {
   EventFiltersListToolbar,
   eventFiltersListFragments,
 } from "./EventFiltersList";
+export {
+  default as EventFilterDetailsContainer,
+  eventFilterDetailsContainerFragments,
+} from "./EventFilterDetailsContainer";
 export { default as HandlersList, HandlersListToolbar } from "./HandlersList";
 export { default as HandlerDetailsContainer } from "./HandlerDetailsContainer";
 export { default as Label } from "./Label";
