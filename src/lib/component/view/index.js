@@ -3,6 +3,7 @@ export * from "./ChecksView";
 export { default as EntitiesView } from "./EntitiesView";
 export { default as EntityDetailsView } from "./EntityDetailsView";
 export { default as EventDetailsView } from "./EventDetailsView";
+export * from "./EventFilterDetailsView";
 export { default as HandlerDetailsView } from "./HandlerDetailsView";
 export * from "./MutatorDetailsView";
 export { default as EventsView } from "./EventsView";
