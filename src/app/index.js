@@ -102,6 +102,11 @@ const renderApp = () => {
                       caption: "Handlers",
                     },
                     {
+                      to: `${props.match.url}/mutators`,
+                      icon: HandlerIcon,
+                      caption: "Mutators",
+                    },
+                    {
                       to: `${props.match.url}/silences`,
                       icon: SilenceIcon,
                       caption: "Silences",
@@ -157,6 +162,10 @@ const renderApp = () => {
                     <Route
                       path={`${props.match.path}/handlers`}
                       component={HandlersView}
+                    />
+                    <Route
+                      path={`${props.match.path}/mutators`}
+                      component={MutatorsView}
                     />
                     <Route
                       path={`${props.match.path}/silences`}
