@@ -22,7 +22,7 @@ class EntitiesListHeader extends React.PureComponent {
     editable: PropTypes.bool.isRequired,
     filters: PropTypes.object.isRequired,
     namespace: PropTypes.object,
-    onChangeFilters: PropTypes.object.isRequired,
+    onChangeFilters: PropTypes.func.isRequired,
     onChangeQuery: PropTypes.func.isRequired,
     onClickClearSilences: PropTypes.func.isRequired,
     onClickDelete: PropTypes.func,
