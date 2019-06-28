@@ -54,6 +54,7 @@ class ListHeader extends React.Component {
     renderActions: () => {},
     renderBulkActions: () => {},
     onClickSelect: () => {},
+    selectedCount: 0,
   };
 
   renderCheckbox = () => {

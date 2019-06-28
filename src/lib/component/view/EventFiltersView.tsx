@@ -48,7 +48,7 @@ export const eventFiltersViewFragments = {
 };
 
 const EventFiltersViewQuery = gql`
-  query EventFitlersViewQuery(
+  query EventFiltersViewQuery(
     $namespace: String!
     $limit: Int
     $offset: Int

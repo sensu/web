@@ -25,7 +25,8 @@ function postMessage(msg, callback) {
 
 class CodeHighlight extends React.Component {
   static propTypes = {
-    language: PropTypes.oneOf(["json", "bash", "properties"]).isRequired,
+    language: PropTypes.oneOf(["javascript", "json", "bash", "properties"])
+      .isRequired,
     code: PropTypes.string.isRequired,
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   };

@@ -42,6 +42,7 @@ import {
   NotFoundView,
   CheckDetailsView,
   EventDetailsView,
+  EventFilterDetailsView,
   EntityDetailsView,
   HandlerDetailsView,
   MutatorDetailsView,
@@ -120,6 +121,10 @@ const renderApp = () => {
                     <Route
                       path={`${props.match.path}/events/:entity/:check`}
                       component={EventDetailsView}
+                    />
+                    <Route
+                      path={`${props.match.path}/filters/:filter`}
+                      component={EventFilterDetailsView}
                     />
                     <Route
                       path={`${props.match.path}/entities/:entity`}

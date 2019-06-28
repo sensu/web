@@ -13,6 +13,11 @@ extend type Event {
   deleted: Boolean!
 }
 
+extend type EventFilter {
+  "Describes whether the EventFilter has been deleted from the system"
+  deleted: Boolean!
+}
+
 extend type Handler {
   "Describes whether the handler has been deleted from the system"
   deleted: Boolean!
