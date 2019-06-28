@@ -18,6 +18,7 @@ import {
   DictionaryEntry,
 } from "/lib/component/base";
 
+import EventFilterActionLabel from "/lib/component/partial/EventFilterActionLabel";
 import LabelsAnnotationsCell from "/lib/component/partial/LabelsAnnotationsCell";
 
 interface EventFilterDetailsConfigurationProps {
@@ -47,7 +48,7 @@ const EventFilterDetailsConfiguration = ({
             <DictionaryEntry>
               <DictionaryKey>Action</DictionaryKey>
               <DictionaryValue>
-                <CodeHighlight language="bash" code={eventFilter.action} />
+                <EventFilterActionLabel action={eventFilter.action} />
               </DictionaryValue>
             </DictionaryEntry>
           </Dictionary>
@@ -66,7 +67,7 @@ const EventFilterDetailsConfiguration = ({
                 eventFilter.expressions.length > 0 ? (
                   <CodeBlock>
                     <CodeHighlight
-                      language="json"
+                      language="javascript"
                       code={eventFilter.expressions.join("\n")}
                     />
                   </CodeBlock>
