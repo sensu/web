@@ -20,95 +20,77 @@ import {
 
 import EventFilterActionLabel from "/lib/component/partial/EventFilterActionLabel";
 import LabelsAnnotationsCell from "/lib/component/partial/LabelsAnnotationsCell";
+import RuntimeAssetsCell, {
+  RuntimeAsset,
+} from "/lib/component/partial/RuntimeAssetsCell";
 
 interface EventFilterDetailsConfigurationProps {
   eventFilter: {
     name: string;
     action: string;
     expressions: string[];
-    runtimeAssets: string[];
+    runtimeAssets: RuntimeAsset[];
   };
 }
 
 const EventFilterDetailsConfiguration = ({
   eventFilter,
-}: EventFilterDetailsConfigurationProps) => (
-  <Card>
-    <CardContent>
-      <Typography variant="h5" gutterBottom>
-        Filter Configuration
-      </Typography>
-      <Grid container spacing={0}>
-        <Grid item xs={12} sm={6}>
-          <Dictionary>
-            <DictionaryEntry>
-              <DictionaryKey>Name</DictionaryKey>
-              <DictionaryValue>{eventFilter.name}</DictionaryValue>
-            </DictionaryEntry>
-            <DictionaryEntry>
-              <DictionaryKey>Action</DictionaryKey>
-              <DictionaryValue>
-                <EventFilterActionLabel action={eventFilter.action} />
-              </DictionaryValue>
-            </DictionaryEntry>
-          </Dictionary>
+}: EventFilterDetailsConfigurationProps) => {
+  const { name, action, expressions, runtimeAssets } = eventFilter;
+  return (
+    <Card>
+      <CardContent>
+        <Typography variant="h5" gutterBottom>
+          Filter Configuration
+        </Typography>
+        <Grid container spacing={0}>
+          <Grid item xs={12} sm={6}>
+            <Dictionary>
+              <DictionaryEntry>
+                <DictionaryKey>Name</DictionaryKey>
+                <DictionaryValue>{name}</DictionaryValue>
+              </DictionaryEntry>
+              <DictionaryEntry>
+                <DictionaryKey>Action</DictionaryKey>
+                <DictionaryValue>
+                  <EventFilterActionLabel action={action} />
+                </DictionaryValue>
+              </DictionaryEntry>
+            </Dictionary>
+          </Grid>
         </Grid>
-      </Grid>
-    </CardContent>
-    <Divider />
-    <CardContent>
-      <Grid container spacing={0}>
-        <Grid item xs={12}>
-          <Dictionary>
-            <DictionaryEntry fullWidth={!!eventFilter.expressions}>
-              <DictionaryKey>Expressions</DictionaryKey>
-              <DictionaryValue>
-                {eventFilter.expressions &&
-                eventFilter.expressions.length > 0 ? (
-                  <CodeBlock>
-                    <CodeHighlight
-                      language="javascript"
-                      code={eventFilter.expressions.join("\n")}
-                    />
-                  </CodeBlock>
-                ) : (
-                  "None"
-                )}
-              </DictionaryValue>
-            </DictionaryEntry>
-          </Dictionary>
+      </CardContent>
+      <Divider />
+      <CardContent>
+        <Grid container spacing={0}>
+          <Grid item xs={12}>
+            <Dictionary>
+              <DictionaryEntry fullWidth={!!expressions}>
+                <DictionaryKey>Expressions</DictionaryKey>
+                <DictionaryValue>
+                  {expressions && expressions.length > 0 ? (
+                    <CodeBlock>
+                      <CodeHighlight
+                        language="javascript"
+                        code={expressions.join("\n")}
+                      />
+                    </CodeBlock>
+                  ) : (
+                    "None"
+                  )}
+                </DictionaryValue>
+              </DictionaryEntry>
+            </Dictionary>
+          </Grid>
         </Grid>
-      </Grid>
-    </CardContent>
-    <Divider />
-    <CardContent>
-      <Grid container spacing={0}>
-        <Grid item xs={12}>
-          <Dictionary>
-            <DictionaryEntry fullWidth={!!eventFilter.runtimeAssets}>
-              <DictionaryKey>Runtime Assets</DictionaryKey>
-              <DictionaryValue>
-                {eventFilter.runtimeAssets &&
-                eventFilter.runtimeAssets.length > 0 ? (
-                  <CodeBlock>
-                    <CodeHighlight
-                      language="properties"
-                      code={eventFilter.runtimeAssets.join("\n")}
-                    />
-                  </CodeBlock>
-                ) : (
-                  "None"
-                )}
-              </DictionaryValue>
-            </DictionaryEntry>
-          </Dictionary>
-        </Grid>
-      </Grid>
-    </CardContent>
-    <Divider />
-    <LabelsAnnotationsCell resource={eventFilter} />
-  </Card>
-);
+      </CardContent>
+      <Divider />
+      <RuntimeAssetsCell runtimeAssets={runtimeAssets} />
+      <Divider />
+      <LabelsAnnotationsCell resource={eventFilter} />
+    </Card>
+  );
+};
 
 EventFilterDetailsConfiguration.fragments = {
   eventFilter: gql`
@@ -118,11 +100,15 @@ EventFilterDetailsConfiguration.fragments = {
       name
       action
       expressions
+      runtimeAssets {
+        ...RuntimeAssetsCell_assets
+      }
       metadata {
         ...LabelsAnnotationsCell_objectmeta
       }
     }
     ${LabelsAnnotationsCell.fragments.objectmeta}
+    ${RuntimeAssetsCell.fragments.assets}
   `,
 };
 
