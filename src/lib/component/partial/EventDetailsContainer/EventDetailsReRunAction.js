@@ -17,7 +17,10 @@ const EventDetailsReRunAction = ({ children, event, client }) => {
 
   const createExecuteCheckStatusToast = useExecuteCheckStatusToast();
 
-  return children(() => {
+  const disableRunCheck =
+    event.check.name === "keepalive" || subscriptions.length <= 0;
+
+  const runCheck = () => {
     const promise = executeCheck(client, {
       id: event.check.nodeId,
       subscriptions,
@@ -28,7 +31,9 @@ const EventDetailsReRunAction = ({ children, event, client }) => {
       entityName: event.entity.name,
       namespace: event.namespace,
     });
-  });
+  };
+
+  return children({ runCheck, canRunCheck: !disableRunCheck });
 };
 
 EventDetailsReRunAction.fragments = {
@@ -37,6 +42,7 @@ EventDetailsReRunAction.fragments = {
       check {
         nodeId
         proxyEntityName
+        name
       }
       entity {
         name
