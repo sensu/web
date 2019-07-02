@@ -29,7 +29,7 @@ const MutatorsList = ({
   onChangeQuery,
 }) => {
   const items = namespace
-    ? namespace.mutators.nodes.filter(hd => !hd.deleted)
+    ? namespace.mutators.nodes.filter(mt => !mt.deleted)
     : [];
 
   return (
@@ -108,12 +108,8 @@ MutatorsList.defaultProps = {
 MutatorsList.fragments = {
   namespace: gql`
     fragment MutatorsList_namespace on Namespace {
-      mutators(
-        limit: $limit
-        offset: $offset
-        orderBy: $order
-        filters: $filters
-      ) @connection(key: "mutators", filter: ["filters", "orderBy"]) {
+      mutators(limit: $limit, offset: $offset, orderBy: $order)
+        @connection(key: "mutators", filter: ["orderBy"]) {
         nodes {
           id
           deleted @client

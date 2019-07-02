@@ -38,7 +38,6 @@ class MutatorsView extends React.Component {
       $limit: Int
       $offset: Int
       $order: MutatorListOrder
-      $filters: [String!]
     ) {
       namespace(name: $namespace) {
         ...MutatorsList_namespace
