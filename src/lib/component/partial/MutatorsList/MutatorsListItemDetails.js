@@ -3,17 +3,21 @@ import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
 import { Code, CodeHighlight } from "/lib/component/base";
-import { Maybe, NamespaceLink } from "/lib/component/util";
+import { Maybe } from "/lib/component/util";
 
 const MutatorsListItemDetails = ({ mutator }) => (
   <React.Fragment>
-    <div>
-      {`Type: `}
-      <strong>{mutator.id}</strong>
-    </div>
-
     <Maybe value={mutator.id}>
-      {() => <React.Fragment>{`Command: `}</React.Fragment>}
+      {() => (
+        <React.Fragment>
+          {`Command: `}
+          <CodeHighlight
+            language="bash"
+            code={mutator.command}
+            component={Code}
+          />
+        </React.Fragment>
+      )}
     </Maybe>
   </React.Fragment>
 );
@@ -24,10 +28,9 @@ MutatorsListItemDetails.propTypes = {
 
 MutatorsListItemDetails.fragments = {
   mutator: gql`
-    fragment MuatorssListItemDetails_mutator on Mutator {
-      id
+    fragment MutatorsListItemDetails_mutator on Mutator {
       name
-      namespace
+      command
     }
   `,
 };

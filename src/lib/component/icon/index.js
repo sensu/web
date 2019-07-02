@@ -31,6 +31,7 @@ export {
 export { default as LaunchIcon } from "@material-ui/icons/Launch";
 export { default as LogoutIcon } from "@material-ui/icons/ExitToApp";
 export { default as MenuIcon } from "@material-ui/icons/Menu";
+export { default as MutatorIcon } from "@material-ui/icons/Transform";
 export { default as NewIcon } from "@material-ui/icons/Add";
 export { default as NewReleasesIcon } from "@material-ui/icons/NewReleases";
 export { default as NotesIcon } from "@material-ui/icons/Notes";

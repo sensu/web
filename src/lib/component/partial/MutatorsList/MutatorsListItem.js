@@ -10,7 +10,7 @@ import TableOverflowCell from "/lib/component/partial/TableOverflowCell";
 
 import MutatorsListItemDetails from "./MutatorsListItemDetails";
 
-const MutatorsListItem = ({ handler }) => (
+const MutatorsListItem = ({ mutator }) => (
   <TableRow>
     <TableOverflowCell>
       <ResourceDetails
@@ -33,9 +33,8 @@ MutatorsListItem.propTypes = {
 };
 
 MutatorsListItem.fragments = {
-  handler: gql`
+  mutator: gql`
     fragment MutatorsListItem_mutator on Mutator {
-      id
       name
       namespace
 

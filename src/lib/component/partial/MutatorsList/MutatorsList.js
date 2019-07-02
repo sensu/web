@@ -54,7 +54,7 @@ const MutatorsList = ({
           </TableRow>
         );
       }}
-      renderItem={({ key, item: handler }) => (
+      renderItem={({ key, item: mutator }) => (
         <MutatorsListItem key={key} mutator={mutator} />
       )}
     >
@@ -77,7 +77,7 @@ const MutatorsList = ({
             <Pagination
               limit={limit}
               offset={offset}
-              pageInfo={namespace && mutators.handlers.pageInfo}
+              pageInfo={namespace && namespace.mutators.pageInfo}
               onChangeQuery={onChangeQuery}
             />
           </Loader>
@@ -125,7 +125,7 @@ MutatorsList.fragments = {
         nodes {
           id
           deleted @client
-          ...MutatorsListItem_handler
+          ...MutatorsListItem_mutator
         }
 
         pageInfo {

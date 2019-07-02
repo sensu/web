@@ -27,6 +27,7 @@ import {
   EventIcon,
   EventFilterIcon,
   HandlerIcon,
+  MutatorIcon,
   SilenceIcon,
 } from "/lib/component/icon";
 
@@ -45,6 +46,7 @@ import {
   EventFilterDetailsView,
   EntityDetailsView,
   HandlerDetailsView,
+  MutatorsView,
   MutatorDetailsView,
   NamespaceNotFoundView,
 } from "/lib/component/view";
@@ -103,7 +105,7 @@ const renderApp = () => {
                     },
                     {
                       to: `${props.match.url}/mutators`,
-                      icon: HandlerIcon,
+                      icon: MutatorIcon,
                       caption: "Mutators",
                     },
                     {

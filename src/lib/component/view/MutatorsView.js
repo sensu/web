@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
 import { parseFilterParams, buildFilterParams } from "/lib/util/filterParams";
-import { pollingDuration } from "/lib/constant/polling";
+import { PollingDuration } from "/lib/constant";
 import { FailedError } from "/lib/error/FetchError";
 
 import {
@@ -77,7 +77,7 @@ class MutatorsView extends React.Component {
         <Query
           query={MutatorsView.query}
           fetchPolicy="cache-and-network"
-          pollInterval={pollingDuration.short}
+          pollInterval={PollingDuration.short}
           variables={variables}
           onError={error => {
             if (error.networkError instanceof FailedError) {
