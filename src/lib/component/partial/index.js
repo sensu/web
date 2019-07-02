@@ -56,6 +56,7 @@ export { default as QuickNav } from "./QuickNav";
 export { default as RelatedEntitiesCard } from "./RelatedEntitiesCard";
 export { default as ResetAdornment } from "./ResetAdornment";
 export { default as ResourceDetails } from "./ResourceDetails";
+export { default as RuntimeAssetsCell } from "./RuntimeAssetsCell";
 export { default as SigninDialog } from "./SigninDialog";
 export { default as SilenceEntryDialog } from "./SilenceEntryDialog";
 export { SilenceEntryForm, SilenceEntryFormFields } from "./SilenceEntryForm";
