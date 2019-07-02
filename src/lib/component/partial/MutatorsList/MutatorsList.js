@@ -103,7 +103,6 @@ MutatorsList.defaultProps = {
   loading: false,
   limit: undefined,
   offset: undefined,
-  onChangeFilters: () => null,
 };
 
 MutatorsList.fragments = {
