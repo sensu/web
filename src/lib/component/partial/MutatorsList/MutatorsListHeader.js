@@ -43,7 +43,7 @@ MutatorsListHeader.propTypes = {
 };
 
 MutatorsListHeader.defaultProps = {
-  editable: false,
+  editable: true,
 };
 
 export default MutatorsListHeader;
