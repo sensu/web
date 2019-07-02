@@ -110,7 +110,7 @@ class MutatorsView extends React.Component {
 }
 
 const enhance = withQueryParams({
-  keys: ["filters", "order", "offset", "limit"],
+  keys: ["order", "offset", "limit"],
   defaults: {
     limit: "25",
     offset: "0",
