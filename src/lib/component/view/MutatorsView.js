@@ -2,10 +2,15 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
+import { parseFilterParams, buildFilterParams } from "/lib/util/filterParams";
 import { PollingDuration } from "/lib/constant";
 import { FailedError } from "/lib/error/FetchError";
 
-import { Content, MobileFullWidthContent } from "/lib/component/base";
+import {
+  Content,
+  FilterList,
+  MobileFullWidthContent,
+} from "/lib/component/base";
 import {
   AppLayout,
   MutatorsList,
@@ -28,7 +33,9 @@ class MutatorsView extends React.Component {
   };
 
   static defaultProps = {
-    toolbarContent: undefined,
+    toolbarContent: ({ filters, setFilters }) => (
+      <FilterList filters={filters} onChange={setFilters} />
+    ),
     toolbarItems: undefined,
   };
 
@@ -38,6 +45,7 @@ class MutatorsView extends React.Component {
       $limit: Int
       $offset: Int
       $order: MutatorListOrder
+      $filters: [String!]
     ) {
       namespace(name: $namespace) {
         ...MutatorsList_namespace
@@ -48,9 +56,21 @@ class MutatorsView extends React.Component {
   `;
 
   render() {
-    const { match, queryParams, setQueryParams, toolbarItems } = this.props;
+    const {
+      match,
+      queryParams,
+      setQueryParams,
+      toolbarItems,
+      toolbarContent,
+    } = this.props;
     const { limit, offset } = queryParams;
     const variables = { ...match.params, ...queryParams };
+
+    const filters = parseFilterParams(queryParams.filters);
+    const setFilters = setter => {
+      const next = setter(filters);
+      setQueryParams({ filters: buildFilterParams(next) });
+    };
 
     return (
       <AppLayout namespace={match.params.namespace}>
@@ -81,9 +101,14 @@ class MutatorsView extends React.Component {
                   <MutatorsListToolbar
                     onClickReset={() =>
                       setQueryParams(q => {
+                        q.delete("filters");
                         q.delete("order");
                       })
                     }
+                    toolbarContent={toolbarContent({
+                      filters,
+                      setFilters,
+                    })}
                     toolbarItems={toolbarItems}
                   />
                 </Content>
@@ -92,7 +117,9 @@ class MutatorsView extends React.Component {
                   <MutatorsList
                     editable={false}
                     limit={limit}
+                    filters={filters}
                     offset={offset}
+                    onChangeFilters={setFilters}
                     onChangeQuery={setQueryParams}
                     namespace={namespace}
                     loading={(loading && !namespace) || aborted}
@@ -110,7 +137,7 @@ class MutatorsView extends React.Component {
 }
 
 const enhance = withQueryParams({
-  keys: ["order", "offset", "limit"],
+  keys: ["filters", "order", "offset", "limit"],
   defaults: {
     limit: "25",
     offset: "0",

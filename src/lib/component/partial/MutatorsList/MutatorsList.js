@@ -22,11 +22,13 @@ import MutatorsListItem from "./MutatorsListItem";
 const MutatorsList = ({
   editable,
   loading,
+  filters,
   limit,
   namespace,
   offset,
   order,
   onChangeQuery,
+  onChangeFilters,
 }) => {
   const items = namespace
     ? namespace.mutators.nodes.filter(mt => !mt.deleted)
@@ -61,9 +63,11 @@ const MutatorsList = ({
           <Loader loading={loading}>
             <MutatorsListHeader
               editable={editable}
+              filters={filters}
               selectedItems={selectedItems}
               rowCount={children.length || 0}
               order={order}
+              onChangeFilters={onChangeFilters}
               onChangeQuery={onChangeQuery}
             />
             <Table>
@@ -91,6 +95,8 @@ MutatorsList.propTypes = {
     }),
   }),
   loading: PropTypes.bool,
+  filters: PropTypes.object,
+  onChangeFilters: PropTypes.func,
   onChangeQuery: PropTypes.func.isRequired,
   limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -103,13 +109,19 @@ MutatorsList.defaultProps = {
   loading: false,
   limit: undefined,
   offset: undefined,
+  filters: {},
+  onChangeFilters: () => null,
 };
 
 MutatorsList.fragments = {
   namespace: gql`
     fragment MutatorsList_namespace on Namespace {
-      mutators(limit: $limit, offset: $offset, orderBy: $order)
-        @connection(key: "mutators", filter: ["orderBy"]) {
+      mutators(
+        limit: $limit
+        offset: $offset
+        filters: $filters
+        orderBy: $order
+      ) @connection(key: "mutators", filter: ["filters", "orderBy"]) {
         nodes {
           id
           deleted @client
