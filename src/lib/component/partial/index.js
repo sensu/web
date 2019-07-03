@@ -43,6 +43,7 @@ export { default as ListHeader } from "./ListHeader";
 export { default as ListSortSelector } from "./ListSortSelector";
 export { default as ListToolbar } from "./ListToolbar";
 export { default as MoreMenu } from "./MoreMenu";
+export { default as MutatorsList, MutatorsListToolbar } from "./MutatorsList";
 export {
   default as MutatorDetailsContainer,
   mutatorDetailsContainerFragments,
