@@ -40,9 +40,6 @@ const styles = theme => ({
     paddingTop: "env(safe-area-inset-top)",
     backgroundColor: theme.palette.primary.dark,
   },
-  header: {
-    height: 172,
-  },
   row: {
     display: "flex",
     flexWrap: "wrap",

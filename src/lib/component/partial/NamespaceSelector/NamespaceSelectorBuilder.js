@@ -11,13 +11,6 @@ const styles = theme => ({
     opacity: 0.9,
     display: "block",
   },
-  heavier: {
-    fontWeight: 400,
-  },
-  lighter: {
-    fontWeight: 300,
-    opacity: 0.71,
-  },
   nameLabel: {
     fontSize: "1.25rem",
   },
@@ -28,6 +21,7 @@ const styles = theme => ({
   },
   arrow: {
     color: theme.palette.primary.contrastText,
+    paddingTop: "4px",
   },
 });
 
@@ -44,8 +38,6 @@ class NamespaceSelectorBuilder extends React.Component {
   render() {
     const { classes, namespace } = this.props;
 
-    const nsComponents = namespace.name.split("-");
-
     return (
       <div className={classes.selectorContainer}>
         <div className={classes.nameContainer}>
@@ -53,13 +45,7 @@ class NamespaceSelectorBuilder extends React.Component {
             className={classNames(classes.label, classes.nameLabel)}
             variant="subtitle1"
           >
-            {nsComponents.length > 1 && (
-              <React.Fragment>
-                <span className={classes.lighter}>{nsComponents.shift()}</span>
-                {" - "}
-              </React.Fragment>
-            )}
-            <span className={classes.heavier}>{nsComponents.join("-")}</span>
+            {namespace.name}
           </Typography>
           <span className={classes.arrow}>
             <ArrowDropDownIcon />
