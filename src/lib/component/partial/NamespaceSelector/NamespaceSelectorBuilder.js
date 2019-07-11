@@ -11,9 +11,12 @@ const styles = theme => ({
     opacity: 0.9,
     display: "block",
   },
-  prefixLabel: {
-    fontWeight: "lighter",
-    fontSize: "0.75rem",
+  heavier: {
+    fontWeight: 400,
+  },
+  lighter: {
+    fontWeight: 300,
+    opacity: 0.71,
   },
   nameLabel: {
     fontSize: "1.25rem",
@@ -41,22 +44,22 @@ class NamespaceSelectorBuilder extends React.Component {
   render() {
     const { classes, namespace } = this.props;
 
-    let [prefix, ...name] = namespace ? namespace.name.split("-") : [];
-    if (name.length === 0) {
-      name = prefix;
-      prefix = null;
-    } else {
-      name = name.join("-");
-    }
+    const nsComponents = namespace.name.split("-");
 
     return (
       <div className={classes.selectorContainer}>
-        <Typography className={classNames(classes.label, classes.prefixLabel)}>
-          {prefix || " "}
-        </Typography>
         <div className={classes.nameContainer}>
-          <Typography className={classNames(classes.label, classes.nameLabel)}>
-            {name}
+          <Typography
+            className={classNames(classes.label, classes.nameLabel)}
+            variant="subtitle1"
+          >
+            {nsComponents.length > 1 && (
+              <React.Fragment>
+                <span className={classes.lighter}>{nsComponents.shift()}</span>
+                {" - "}
+              </React.Fragment>
+            )}
+            <span className={classes.heavier}>{nsComponents.join("-")}</span>
           </Typography>
           <span className={classes.arrow}>
             <ArrowDropDownIcon />
