@@ -17,11 +17,12 @@ const styles = theme => ({
   nameContainer: {
     margin: "-6px 0 0",
     display: "flex",
+    height: "32px",
     justifyContent: "space-between",
   },
   arrow: {
     color: theme.palette.primary.contrastText,
-    paddingTop: "4px",
+    paddingTop: "6px",
   },
 });
 
