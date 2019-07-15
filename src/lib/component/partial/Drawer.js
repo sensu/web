@@ -40,9 +40,6 @@ const styles = theme => ({
     paddingTop: "env(safe-area-inset-top)",
     backgroundColor: theme.palette.primary.dark,
   },
-  header: {
-    height: 172,
-  },
   row: {
     display: "flex",
     flexWrap: "wrap",
@@ -53,9 +50,8 @@ const styles = theme => ({
     margin: "16px 16px 0 0",
   },
   namespaceSelector: {
-    margin: "8px 0 -8px 0",
+    margin: "8px 0 0 0",
     width: "100%",
-    height: 56,
   },
   namespaceIcon: {
     margin: "24px 0 0 16px",
