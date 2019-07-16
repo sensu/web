@@ -1,27 +1,32 @@
 import React from "/vendor/react";
-import PropTypes from "prop-types";
-import { graphql } from "/vendor/react-apollo";
 import gql from "/vendor/graphql-tag";
 
-import ConditionalRoute from "/lib/component/util/ConditionalRoute";
+import { FailedError } from "/lib/error/FetchError";
 
-class AuthInvalidRoute extends React.PureComponent {
-  static propTypes = {
-    ...ConditionalRoute.propTypes,
-    data: PropTypes.object.isRequired,
-  };
+import ConditionalRoute from "./ConditionalRoute";
+import useQuery from "./useQuery";
 
-  render() {
-    const { data, ...props } = this.props;
-
-    return <ConditionalRoute {...props} active={data.auth.invalid} />;
-  }
-}
-
-export default graphql(gql`
+const AuthInvalidRouteQuery = gql`
   query AuthInvalidRouteQuery {
     auth @client {
       invalid
     }
   }
-`)(AuthInvalidRoute);
+`;
+
+const AuthInvalidRoute = props => {
+  const { data = {} } = useQuery({
+    query: AuthInvalidRouteQuery,
+    onError: err => {
+      if (err.networkError instanceof FailedError) {
+        return;
+      }
+
+      throw err;
+    },
+  });
+
+  return <ConditionalRoute {...props} active={data.auth.invalid} />;
+};
+
+export default AuthInvalidRoute;
