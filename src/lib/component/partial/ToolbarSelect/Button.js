@@ -1,7 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 
-import { button as BaseButton } from "/vendor/@material-ui/core";
+import { Button as BaseButton } from "/vendor/@material-ui/core";
 
 class Button extends React.PureComponent {
   static displayName = "ToolbarSelect.Button";
