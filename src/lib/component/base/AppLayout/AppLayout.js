@@ -79,8 +79,8 @@ const styles = theme => ({
     marginLeft: "auto",
     marginRight: "auto",
 
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit,
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
 
     paddingTop: 16,
     paddingBottom: 24,

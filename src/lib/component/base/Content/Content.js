@@ -9,7 +9,7 @@ const styles = theme => ({
     alignItems: "center",
   },
   marginBottom: {
-    marginBottom: theme.spacing.unit * 2,
+    marginBottom: theme.spacing(2),
   },
 });
 

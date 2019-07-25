@@ -26,10 +26,10 @@ import Panel from "./SilenceEntryFormPanel";
 
 const StyledFormControl = withStyles(theme => ({
   root: {
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     "& + &": {
       marginLeft: 0,
     },

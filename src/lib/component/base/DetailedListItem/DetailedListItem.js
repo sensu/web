@@ -4,7 +4,7 @@ import { withStyles } from "/vendor/@material-ui/core";
 
 const styles = theme => ({
   root: {
-    paddingTop: theme.spacing.unit / 2,
+    paddingTop: theme.spacing(0.5),
     "&:first-child": {
       paddingTop: 0,
     },

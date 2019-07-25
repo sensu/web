@@ -4,7 +4,7 @@ import classnames from "/vendor/classnames";
 import { withStyles } from "/vendor/@material-ui/core";
 
 const styles = theme => {
-  const padding = theme.spacing.unit;
+  const padding = theme.spacing(1);
   const margin = (padding / 2) * -1;
 
   return {

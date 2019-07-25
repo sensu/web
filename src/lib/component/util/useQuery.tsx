@@ -142,7 +142,8 @@ function useQuery<TData = any, TVariables = OperationVariables>(
       modifiableOptionsHaveChanged(configRef.current, prevConfigRef.current)
     ) {
       // Certain options can be modified without discarding the observable.
-      observableRef.current.setOptions(configRef.current)
+      observableRef.current
+        .setOptions(configRef.current)
         // Any rejection here will also be passed to the query observer below.
         // There is no benefit to handling the error here as well.
         .catch(() => null);

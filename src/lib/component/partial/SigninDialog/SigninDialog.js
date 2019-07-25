@@ -24,10 +24,10 @@ import Form from "./SigninForm";
 const Branding = createStyledComponent({
   component: Typography,
   styles: theme => ({
-    marginBottom: theme.spacing.unit * 3,
+    marginBottom: theme.spacing(3),
 
     "& svg": {
-      marginRight: theme.spacing.unit / 2,
+      marginRight: theme.spacing(0.5),
     },
   }),
 });
@@ -35,14 +35,14 @@ const Branding = createStyledComponent({
 const Headline = createStyledComponent({
   component: "div",
   styles: theme => ({
-    marginBottom: theme.spacing.unit * 3,
+    marginBottom: theme.spacing(3),
   }),
 });
 
 const Container = createStyledComponent({
   component: DialogContent,
   styles: theme => ({
-    padding: theme.spacing.unit * 6,
+    padding: theme.spacing(6),
     height: "auto",
     minHeight: 500,
   }),

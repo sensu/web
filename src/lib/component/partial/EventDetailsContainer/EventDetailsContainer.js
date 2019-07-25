@@ -8,6 +8,7 @@ import { Content, Loader } from "/lib/component/base";
 import RelatedEntitiesCard from "/lib/component/partial/RelatedEntitiesCard";
 
 import CheckResult from "./EventDetailsCheckSummary";
+import CheckHistory from "./EventDetailsCheckHistory";
 import Toolbar from "./EventDetailsToolbar";
 import EntitySummary from "./EventDetailsEntitySummary";
 
@@ -36,7 +37,14 @@ class EventDetailsContainer extends React.Component {
 
         check {
           ...EventDetailsCheckSummary_check
+          name
+          interval
+          history {
+            executed
+            status
+          }
         }
+
         entity {
           ...EventDetailsCheckSummary_entity
           ...RelatedEntitiesCard_entity
@@ -67,7 +75,14 @@ class EventDetailsContainer extends React.Component {
                 refetch={refetch}
               />
             </Content>
-            <Grid container spacing={16}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <CheckHistory
+                  name={event.check.name}
+                  interval={event.check.interval}
+                  history={event.check.history}
+                />
+              </Grid>
               <Grid item xs={12}>
                 <CheckResult
                   event={event}

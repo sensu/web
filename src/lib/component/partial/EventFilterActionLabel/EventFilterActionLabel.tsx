@@ -17,7 +17,7 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
     color: theme.palette.common.white,
     fontSize: "0.7rem",
     fontWeight: "bold",
-    padding: theme.spacing.unit / 2,
+    padding: theme.spacing(0.5),
     backgroundColor: theme.palette.primary.main,
   },
   allow: {

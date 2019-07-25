@@ -26,14 +26,14 @@ const Icon = withStyles(theme => ({
   root: {
     width: 32,
     height: 32,
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing(2),
   },
 }))(ErrorIcon);
 
 const DialogContent = withStyles(theme => ({
   root: {
     margin: 0,
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
   },
 }))(MuiDialogContent);
 
@@ -41,15 +41,15 @@ const DialogActions = withStyles(theme => ({
   root: {
     borderTop: `1px solid ${theme.palette.divider}`,
     margin: 0,
-    padding: theme.spacing.unit,
+    padding: theme.spacing(1),
   },
 }))(MuiDialogActions);
 
 const BuildInfo = createStyledComponent({
   styles: theme => ({
     position: "absolute",
-    bottom: theme.spacing.unit,
-    left: theme.spacing.unit,
+    bottom: theme.spacing(1),
+    left: theme.spacing(1),
   }),
 });
 

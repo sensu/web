@@ -12,8 +12,8 @@ const styles = theme => {
     },
     container: {
       display: "flex",
-      paddingLeft: theme.spacing.unit * 1.5,
-      paddingRight: theme.spacing.unit * 1.5,
+      paddingLeft: theme.spacing(1.5),
+      paddingRight: theme.spacing(1.5),
     },
     floating: {
       top: 0,
@@ -21,10 +21,10 @@ const styles = theme => {
       position: "absolute",
       backgroundColor: bgColor,
       boxShadow: `
-        ${-theme.spacing.unit * 4}px
+        ${theme.spacing(-4)}px
         0px
-        ${theme.spacing.unit * 2}px
-        ${-theme.spacing.unit}px
+        ${theme.spacing(2)}px
+        ${theme.spacing(-1)}px
         ${bgColor}
       `,
       overflow: "hidden",

@@ -8,6 +8,12 @@ const fragment = gql`
     check {
       status
       output
+      executed
+      occurrences
+      history {
+        status
+        executed
+      }
     }
   }
 `;
@@ -57,6 +63,8 @@ export default (client, { id }) =>
           timestamp: getTime(),
           check: {
             status: 0,
+            executed: getTime(),
+            occurrences: 1,
             output: `Resolved manually with ${source}`,
             __typename: "Check",
           },

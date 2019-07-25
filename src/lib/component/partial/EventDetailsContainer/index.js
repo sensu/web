@@ -1,1 +1,1 @@
-export { default } from "./EventDetailsContent";
+export { default } from "./EventDetailsContainer";

@@ -8,7 +8,7 @@ const styles = theme => ({
     // ...
   },
   inset: {
-    paddingLeft: theme.spacing.unit * 2.5,
+    paddingLeft: theme.spacing(2.5),
   },
 });
 

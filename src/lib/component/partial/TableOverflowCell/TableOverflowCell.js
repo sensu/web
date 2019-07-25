@@ -14,7 +14,7 @@ const styles = theme => ({
     },
 
     "&:first-child": {
-      paddingLeft: theme.spacing.unit * 2.5,
+      paddingLeft: theme.spacing(2.5),
     },
   },
 });

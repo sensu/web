@@ -19,11 +19,11 @@ const Keycap = withStyles(theme => ({
     fontSize: "0.71rem",
     lineHeight: "inherit",
     fontFamily: theme.typography.monospace.fontFamily,
-    paddingLeft: theme.spacing.unit / 2,
-    paddingRight: theme.spacing.unit / 2,
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: theme.spacing(0.5),
     border: `1px solid ${theme.palette.divider}`,
     borderBottomWidth: 2,
-    borderRadius: theme.spacing.unit / 2,
+    borderRadius: theme.spacing(0.5),
   },
 }))(({ classes, ...props }) => (
   <Typography
@@ -57,14 +57,14 @@ const styles = theme => ({
     border: "1px solid",
     borderColor: theme.palette.divider,
     alignItems: "center",
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit,
-    height: theme.spacing.unit * 5,
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    height: theme.spacing(0.5),
   },
   iconContainer: {
     display: "flex",
     alignItems: "center",
-    paddingRight: theme.spacing.unit,
+    paddingRight: theme.spacing(1),
     color: theme.palette.action.active,
   },
   inputContainer: {

@@ -6,8 +6,8 @@ import { withStyles, Button, Disclosure } from "/vendor/@material-ui/core";
 const styles = theme => ({
   root: {
     minWidth: 0,
-    paddingLeft: theme.spacing.unit / 2,
-    paddingRight: theme.spacing.unit / 2,
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: theme.spacing(0.5),
   },
 });
 
