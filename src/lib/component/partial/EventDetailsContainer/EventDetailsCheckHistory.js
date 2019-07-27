@@ -1,16 +1,29 @@
 /* eslint-disable react/prop-types */
 
-import React, { useState, useEffect, useCallback } from "/vendor/react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useMemo,
+} from "/vendor/react";
 
 import { Group } from "@vx/group";
 import { Bar } from "@vx/shape";
 import { AxisBottom } from "@vx/axis";
 import { scaleTime } from "@vx/scale";
 import ResizeObserver from "/vendor/react-resize-observer";
-import { Card, CardContent, Typography } from "/vendor/@material-ui/core";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Tooltip,
+} from "/vendor/@material-ui/core";
 import { useTheme } from "/vendor/@material-ui/styles";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import { calcSplay, nextInterval } from "/lib/util/check";
+import { RelativeDate } from "/lib/component/base";
+import { darken, emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
 // import gql from "/vendor/graphql-tag";
 
 import { SmallCheckIcon, ErrorIcon, WarnIcon } from "/lib/component/icon";
@@ -30,8 +43,10 @@ const addEntry = (col, e) => {
     idx = 0;
   }
 
+  const list = [...col.list.slice(0, idx), entry, ...col.list.slice(idx)];
+
   return {
-    list: [...col.list.slice(0, idx), entry, ...col.list.slice(idx)].slice(
+    list: list.slice(
       0,
       500,
     ),
@@ -42,25 +57,27 @@ const addEntry = (col, e) => {
   };
 };
 
-const getColor = (palette, st) => {
-  if (st === 0) {
-    return palette.grey[300];
-  } else if (st === 1) {
+const getGrey = (palette) => emphasize(palette.background.paper, 0.083);
+
+const getColor = (palette, status) => {
+  switch (status) {
+  case 0:
+    return getGrey(palette);
+  case 1:
     return palette.warning;
+  default:
   }
   return palette.critical;
 };
 
 const StatusIcon = ({ status, style = {}, ...extra }) => {
-  let Component;
+  let Component = ErrorIcon;
   let opacity = 0.178;
   if (status === 0) {
     Component = SmallCheckIcon;
     opacity = 0.71;
   } else if (status === 1) {
     Component = WarnIcon;
-  } else {
-    Component = ErrorIcon;
   }
   return (
     <Component
@@ -79,13 +96,20 @@ const StyledBar = ({ status, ...extra }) => {
 };
 StyledBar.displayName = "EventDetailsCheckHistory.Bar";
 
-const ScheduleIndicator = ({ nextInterval, x, y }) => {
+const ScheduleIndicator = ({ date, nextDate, x, y }) => {
   const theme = useTheme();
-  const bgColor = theme.palette.grey[300];
+  const bgColor = getGrey(theme.palette);
 
   return (
     <React.Fragment>
-      <rect x={x} y={y} width={38} height={lineHeight} fill={bgColor} />
+      <Tooltip
+        title={
+          <RelativeDate dateTime={nextDate} precision="seconds" to={date} />
+        }
+        aria-label="next occurrence"
+      >
+        <rect x={x} y={y} width={38} height={lineHeight} fill={bgColor} />
+      </Tooltip>
       <ScheduleIcon
         x={x + 8}
         y={y + 12}
@@ -108,12 +132,134 @@ const ScheduleIndicator = ({ nextInterval, x, y }) => {
   );
 };
 
-const Timeline = ({ nextInterval, entries, width }) => {
+const StatusIndicators = ({ x, y, width, height, scale, entries }) => {
+  const containerEl = useRef();
+
+  const [mouseX, setMouseX] = useState(null);
+  const onHover = useCallback(
+    ev => {
+      const rect = containerEl.current.getBoundingClientRect();
+      const x = ev.clientX - rect.left;
+      setMouseX(x - (x % 2));
+    },
+    [containerEl],
+  );
+
+  return (
+    <svg
+      ref={containerEl}
+      x={x}
+      y={y}
+      width={width}
+      height={height + 3}
+      onMouseMove={onHover}
+    >
+      <rect x={0} y={0} width={width} height={height} fill="transparent" />
+      <Group stroke="rgba(255,255,255,0.87)">
+        {entries.map(({ ts, status }) => {
+          const x = scale(ts);
+
+          return (
+            <IndicatorLine
+              key={ts.toString()}
+              x={x}
+              width={width}
+              mouseX={mouseX}
+              ts={ts}
+              status={status}
+            />
+          );
+        })}
+      </Group>
+    </svg>
+  );
+};
+
+const IndicatorLine = ({ x, mouseX, ts, width, status }) => {
+  const theme = useTheme();
+
+  const frameW = 8;
+  const midX = x + frameW/2;
+  const mouseDst =
+    mouseX !== null ? 1 - Math.min(Math.abs(midX - mouseX) / (width / 2), 1) : 0;
+
+  const t = mouseDst ** 24 * 9;
+  const c = darken(getColor(theme.palette, status), 0.41);
+
+  return (
+    <React.Fragment>
+      <Group stroke={c} fill={c}>
+        <polygon
+          points={`${x - t / 2}, 0 ${x + t / 2}, 0 ${x}, ${t}`}
+          strokeWidth={0}
+        />
+        <line
+          x1={x}
+          x2={x}
+          y1={0}
+          y2={lineHeight}
+          strokeWidth={
+            mouseDst ** 8 *
+            1.41
+          }
+        />
+      </Group>
+      <Tooltip
+        title={
+          <RelativeDate to={new Date()} dateTime={ts} precision="seconds" />
+        }
+        aria-label={ts.toString()}
+      >
+        <rect
+          x={x - frameW / 2}
+          y={0}
+          height={lineHeight}
+          width={frameW}
+          strokeWidth={0}
+          fill="transparent"
+        />
+      </Tooltip>
+    </React.Fragment>
+  );
+};
+
+const IndicatorOrb = ({ x, mouseX, ts, width }) => {
+  const mouseDst =
+    mouseX !== null ? 1 - Math.min(Math.abs(x - mouseX) / (width / 2), 1) : 0;
+
+  let intensity = mouseDst ** 8;
+  // if (intensity < 0.15) {
+  //   intensity = 0.15;
+  // }
+
+  return (
+    <Tooltip
+      title={<RelativeDate dateTime={ts} precision="seconds" to={new Date()} />}
+    >
+      <svg x={x - 4} y={0} width={8} height={lineHeight}>
+        <Group strokeWidth={0}>
+          <circle
+            cy={lineHeight / 2}
+            cx={4}
+            r={2}
+            fill={`rgba(255,255,255,${intensity})`}
+          />
+          <rect fill="transparent" width="100%" height="100%" />
+        </Group>
+      </svg>
+    </Tooltip>
+  );
+};
+
+const Timeline = ({ name, interval, entries, width }) => {
   const [currentTime, setTime] = useState(new Date());
   useEffect(() => {
     const id = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
+
+  const splay = useMemo(() => calcSplay(name), [name]);
+  const nextInt = nextInterval(interval, splay, currentTime);
 
   const indicatorWidth = 38;
   const timelineWidth = width - indicatorWidth - 2;
@@ -188,7 +334,23 @@ const Timeline = ({ nextInterval, entries, width }) => {
       </Group>
 
       <Group key="indicator">
-        <ScheduleIndicator x={width - indicatorWidth} y={0} nextInterval={nextInterval} />
+        <ScheduleIndicator
+          nextDate={nextInt}
+          date={currentTime}
+          x={width - indicatorWidth}
+          y={0}
+        />
+      </Group>
+
+      <Group key="orbs">
+        <StatusIndicators
+          x={0}
+          y={0}
+          width={timelineWidth}
+          height={lineHeight}
+          scale={scale}
+          entries={entries}
+        />
       </Group>
     </svg>
   );
@@ -209,11 +371,6 @@ const EventDetailsCheckHistory = ({ name, interval, history = [] }) => {
 
   const sorted = Object.assign([], entries.list).reverse();
 
-  const splay = calcSplay(name);
-  const nextInt = nextInterval(interval, splay);
-
-  console.debug({ name, interval, splay, nextInt });
-
   return (
     <Card>
       <CardContent>
@@ -223,7 +380,12 @@ const EventDetailsCheckHistory = ({ name, interval, history = [] }) => {
         <div>
           <ResizeObserver onResize={useCallback(onResize, [])} />
         </div>
-        <Timeline entries={sorted} width={width} nextInterval={nextInt} />
+        <Timeline
+          entries={sorted}
+          width={width}
+          interval={interval}
+          name={name}
+        />
       </CardContent>
     </Card>
   );
