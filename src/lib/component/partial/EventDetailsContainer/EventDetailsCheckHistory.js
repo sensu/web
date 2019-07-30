@@ -23,13 +23,23 @@ import { useTheme } from "/vendor/@material-ui/styles";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import { calcSplay, nextInterval } from "/lib/util/check";
 import { RelativeDate } from "/lib/component/base";
-import { darken, emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
+import { useCurrentDate } from "/lib/component/util";
+import {
+  darken,
+  emphasize,
+} from "/vendor/@material-ui/core/styles/colorManipulator";
 // import gql from "/vendor/graphql-tag";
 
 import { SmallCheckIcon, ErrorIcon, WarnIcon } from "/lib/component/icon";
 
+/*
+ * Constants
+ */
+
 const height = 80;
 const lineHeight = 48;
+const maxItems = 128;
+const indicatorWidth = 38;
 
 const addEntry = (col, e) => {
   if (col.map[e.executed]) {
@@ -46,10 +56,7 @@ const addEntry = (col, e) => {
   const list = [...col.list.slice(0, idx), entry, ...col.list.slice(idx)];
 
   return {
-    list: list.slice(
-      0,
-      500,
-    ),
+    list: list.slice(0, maxItems),
     map: {
       ...col.map,
       [e.executed]: true,
@@ -57,15 +64,15 @@ const addEntry = (col, e) => {
   };
 };
 
-const getGrey = (palette) => emphasize(palette.background.paper, 0.083);
+const getGrey = palette => emphasize(palette.background.paper, 0.083);
 
 const getColor = (palette, status) => {
   switch (status) {
-  case 0:
-    return getGrey(palette);
-  case 1:
-    return palette.warning;
-  default:
+    case 0:
+      return getGrey(palette);
+    case 1:
+      return palette.warning;
+    default:
   }
   return palette.critical;
 };
@@ -179,9 +186,11 @@ const IndicatorLine = ({ x, mouseX, ts, width, status }) => {
   const theme = useTheme();
 
   const frameW = 8;
-  const midX = x + frameW/2;
+  const midX = x + frameW / 2;
   const mouseDst =
-    mouseX !== null ? 1 - Math.min(Math.abs(midX - mouseX) / (width / 2), 1) : 0;
+    mouseX !== null
+      ? 1 - Math.min(Math.abs(midX - mouseX) / (width / 2), 1)
+      : 0;
 
   const t = mouseDst ** 24 * 9;
   const c = darken(getColor(theme.palette, status), 0.41);
@@ -198,10 +207,7 @@ const IndicatorLine = ({ x, mouseX, ts, width, status }) => {
           x2={x}
           y1={0}
           y2={lineHeight}
-          strokeWidth={
-            mouseDst ** 8 *
-            1.41
-          }
+          strokeWidth={mouseDst ** 8 * 1.41}
         />
       </Group>
       <Tooltip
@@ -223,51 +229,9 @@ const IndicatorLine = ({ x, mouseX, ts, width, status }) => {
   );
 };
 
-const IndicatorOrb = ({ x, mouseX, ts, width }) => {
-  const mouseDst =
-    mouseX !== null ? 1 - Math.min(Math.abs(x - mouseX) / (width / 2), 1) : 0;
-
-  let intensity = mouseDst ** 8;
-  // if (intensity < 0.15) {
-  //   intensity = 0.15;
-  // }
-
-  return (
-    <Tooltip
-      title={<RelativeDate dateTime={ts} precision="seconds" to={new Date()} />}
-    >
-      <svg x={x - 4} y={0} width={8} height={lineHeight}>
-        <Group strokeWidth={0}>
-          <circle
-            cy={lineHeight / 2}
-            cx={4}
-            r={2}
-            fill={`rgba(255,255,255,${intensity})`}
-          />
-          <rect fill="transparent" width="100%" height="100%" />
-        </Group>
-      </svg>
-    </Tooltip>
-  );
-};
-
-const Timeline = ({ name, interval, entries, width }) => {
-  const [currentTime, setTime] = useState(new Date());
-  useEffect(() => {
-    const id = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  const splay = useMemo(() => calcSplay(name), [name]);
-  const nextInt = nextInterval(interval, splay, currentTime);
-
-  const indicatorWidth = 38;
+const Timeline = ({ nextInterval, currentTime, domain, entries, width }) => {
   const timelineWidth = width - indicatorWidth - 2;
 
-  const domain = [
-    entries.length > 0 ? entries[0].ts : currentTime,
-    currentTime,
-  ];
   const scale = scaleTime({
     domain,
     range: [0, timelineWidth],
@@ -335,7 +299,7 @@ const Timeline = ({ name, interval, entries, width }) => {
 
       <Group key="indicator">
         <ScheduleIndicator
-          nextDate={nextInt}
+          nextDate={nextInterval}
           date={currentTime}
           x={width - indicatorWidth}
           y={0}
@@ -357,34 +321,37 @@ const Timeline = ({ name, interval, entries, width }) => {
 };
 
 const EventDetailsCheckHistory = ({ name, interval, history = [] }) => {
+  const currentTime = useCurrentDate();
+
   const [width, setWidth] = useState(0);
-  const onResize = rect => setWidth(rect.width);
+  const onResize = useCallback(rect => setWidth(rect.width), []);
 
-  const [entries, setEntries] = useState({
-    map: {},
-    list: [],
-  });
-
+  const [entries, setEntries] = useState({ map: {}, list: [] });
   useEffect(() => {
     setEntries(prev => history.reduce((acc, e) => addEntry(acc, e), prev));
   }, [history]);
 
-  const sorted = Object.assign([], entries.list).reverse();
+  const sorted = entries.list.slice(0).reverse().slice(0,24);
+  const domain = [sorted[0] ? sorted[0].ts : currentTime, currentTime];
+
+  const splay = useMemo(() => calcSplay(name), [name]);
+  const nextInt = nextInterval(interval, splay, currentTime);
 
   return (
     <Card>
       <CardContent>
+        <ResizeObserver onResize={onResize} />
         <Typography variant="h6" paragraph>
           History
         </Typography>
-        <div>
-          <ResizeObserver onResize={useCallback(onResize, [])} />
-        </div>
         <Timeline
           entries={sorted}
           width={width}
           interval={interval}
           name={name}
+          currentTime={currentTime}
+          nextInterval={nextInt}
+          domain={domain}
         />
       </CardContent>
     </Card>
