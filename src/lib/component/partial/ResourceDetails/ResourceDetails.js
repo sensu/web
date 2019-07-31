@@ -23,7 +23,7 @@ const styles = theme => ({
     fontWeight: 600,
   },
   icon: {
-    marginRight: 24,
+    marginRight: theme.spacing(1.5),
     flex: "none",
   },
 });
