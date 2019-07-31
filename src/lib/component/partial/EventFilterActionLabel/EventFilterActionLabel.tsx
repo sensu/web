@@ -1,18 +1,16 @@
 import React from "/vendor/react";
 import classnames from "/vendor/classnames";
 import {
-  withStyles,
+  makeStyles,
+  createStyles,
   Theme,
-  StyleRulesCallback,
 } from "/vendor/@material-ui/core";
 
 interface Props {
   action: string;
-  // From withStyles
-  classes: any;
 }
 
-const styles: StyleRulesCallback = (theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     color: theme.palette.common.white,
     fontSize: "0.7rem",
@@ -26,9 +24,10 @@ const styles: StyleRulesCallback = (theme: Theme) => ({
   deny: {
     backgroundColor: theme.palette.error.main,
   },
-});
+}));
 
-const EventFilterActionLabel = ({ action, classes }: Props) => {
+const EventFilterActionLabel = ({ action }: Props) => {
+  const classes = useStyles();
   const className = classnames(classes.root, {
     [classes.allow]: action === "ALLOW",
     [classes.deny]: action === "DENY",
@@ -37,4 +36,4 @@ const EventFilterActionLabel = ({ action, classes }: Props) => {
   return <span className={className}>{action}</span>;
 };
 
-export default withStyles(styles)(EventFilterActionLabel);
+export default EventFilterActionLabel;

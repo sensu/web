@@ -1,11 +1,16 @@
-import { useState, useEffect } from "/vendor/react";
+import { useState, useEffect, useMemo } from "/vendor/react";
 
-export const useCurrentDate = (interval: number = 1000) => {
-  const [t, setT] = useState(new Date());
+export const useCurrentDate = (interval: number = 1000, percision: number = 1) => {
+  const getT = useMemo(() => () => {
+    const ts = new Date().getTime();
+    return ts - (ts % percision);
+  }, [percision]);
+  const [t, setT] = useState(getT());
+
   useEffect(() => {
-    const id = setInterval(() => setT(new Date()), interval);
+    const id = setInterval(() => setT(getT()), interval);
     return () => clearInterval(id);
-  }, [interval]);
+  }, [interval, getT]);
 
-  return t;
+  return new Date(t);
 };

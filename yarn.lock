@@ -1059,6 +1059,18 @@
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.7.tgz#fb68cc9be8487e6ea5b13700e759bfbab7e0fefd"
   integrity sha512-rzOhiQ55WzAiFgXRtitP/ZUT8iVNyllEpylJ5zHzR4vArUvMB39GTk+Zon/uAM0JxEFAWnwsxC2gH8s+tZ3Myg==
 
+"@types/d3-scale@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@types/d3-scale/-/d3-scale-2.1.1.tgz#405e58771ec6ae7b8f7b4178ee1887620759e8f7"
+  integrity sha512-kNTkbZQ+N/Ip8oX9PByXfDLoCSaZYm+VUOasbmsa6KD850/ziMdYepg/8kLg2plHzoLANdMqPoYQbvExevLUHg==
+  dependencies:
+    "@types/d3-time" "*"
+
+"@types/d3-time@*":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@types/d3-time/-/d3-time-1.0.10.tgz#d338c7feac93a98a32aac875d1100f92c7b61f4f"
+  integrity sha512-aKf62rRQafDQmSiv1NylKhIMmznsjRN+MnXRXTqHoqm0U/UZzVpdrtRnSIfdiLS616OuC1soYeX1dBg2n1u8Xw==
+
 "@types/es6-error@^4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/es6-error/-/es6-error-4.0.2.tgz#dead61232ff6b288cc6b249ffdf0ec2da58627ac"
@@ -1244,7 +1256,7 @@
   dependencies:
     d3-shape "^1.0.6"
 
-"@vx/group@0.0.190", "@vx/group@^0.0.190":
+"@vx/group@0.0.190":
   version "0.0.190"
   resolved "https://registry.yarnpkg.com/@vx/group/-/group-0.0.190.tgz#9bc1e568dbd44c04a0abad9a9a74c7364f231a35"
   integrity sha512-tyFIQS4iB987281ZWNmozdjqzyBrM4lsw4J8ObeJTeybTi1T5EgdkN/pmviCCIcT29Q1kVtFOC8FoQLXkcimcQ==
@@ -1257,14 +1269,7 @@
   resolved "https://registry.yarnpkg.com/@vx/point/-/point-0.0.189.tgz#2a52824dd3e7a1e74188c2ee9407aeee2a2a7a10"
   integrity sha512-OZW05k6Kozta1QAP3T5dEFO0OQH8ppf/dnOnF2DnTJQ4W7a+ctLVJQ0kBDbsWG2xB+sOiMjvccfMOZZKb5JnvA==
 
-"@vx/scale@^0.0.190":
-  version "0.0.190"
-  resolved "https://registry.yarnpkg.com/@vx/scale/-/scale-0.0.190.tgz#f2799a7e1b29aed9626c4f0ceab0a330469c0d90"
-  integrity sha512-oxXVIuxdjZxAftmAtT+zkveTAGUbjCS1cOZr2h14mJ7ODWUMY6RLLPA8PHfXfmRhnCLhNLGo6ijXWgu20I4ruA==
-  dependencies:
-    d3-scale "^2.2.2"
-
-"@vx/shape@0.0.190", "@vx/shape@^0.0.190":
+"@vx/shape@0.0.190":
   version "0.0.190"
   resolved "https://registry.yarnpkg.com/@vx/shape/-/shape-0.0.190.tgz#2807bb53dbea0922c9c12651a6bc33f8abe6d0e4"
   integrity sha512-insrYP7+vQCZ1Eekq0tJ7impeghnXRodakSuhGkPITjHZUYIHRYswuV5ArfoeLtR+9VWA+BaIZ/d0L1ZNwdCkg==
@@ -2791,15 +2796,10 @@ cyclist@~0.2.2:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
   integrity sha1-GzN5LhHpFKL9bW7WRHRkRE5fpkA=
 
-d3-array@^1.2.0:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.4.tgz#635ce4d5eea759f6f605863dbcfc30edc737f71f"
-  integrity sha512-KHW6M86R+FUPYGb3R5XiYjXPq7VzwxZ22buHhAEVG5ztoEcZZMLov530mmccaqA1GghZArjQV46fuc8kUqhhHw==
-
-d3-collection@1:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/d3-collection/-/d3-collection-1.0.7.tgz#349bd2aa9977db071091c13144d5e4f16b5b310e"
-  integrity sha512-ii0/r5f4sjKNTfh84Di+DpztYwqKhEyUlKoPrzUFfeSkWxjW49xU2QzO9qrPrNkpdI0XJkfzvmTu8V2Zylln6A==
+"d3-array@^1.2.0 || 2":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-2.2.0.tgz#a9e966b8f8d78f0888d98db1fb840fc8da8ac5c7"
+  integrity sha512-eE0QmSh6xToqM3sxHiJYg/QFdNn52ZEgmFE8A8abU8GsHvsIOolqH8B70/8+VGAKm5MlwaExhqR3DLIjOJMLPA==
 
 d3-color@1:
   version "1.2.8"
@@ -2823,13 +2823,12 @@ d3-path@1, d3-path@^1.0.5:
   resolved "https://registry.yarnpkg.com/d3-path/-/d3-path-1.0.7.tgz#8de7cd693a75ac0b5480d3abaccd94793e58aae8"
   integrity sha512-q0cW1RpvA5c5ma2rch62mX8AYaiLX0+bdaSM2wxSU9tXjU4DNvkx9qiUvjkuWCj3p22UO/hlPivujqMiR9PDzA==
 
-d3-scale@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-2.2.2.tgz#4e880e0b2745acaaddd3ede26a9e908a9e17b81f"
-  integrity sha512-LbeEvGgIb8UMcAa0EATLNX0lelKWGYDQiPdHj+gLblGVhGLyNbaCn3EvrJf0A3Y/uOOU5aD6MTh5ZFCdEwGiCw==
+d3-scale@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-3.0.0.tgz#ddede1278ac3ea2bf3666de6ca625e20bed9b6c9"
+  integrity sha512-ktic5HBFlAZj2CN8CCl/p/JyY8bMQluN7+fA6ICE6yyoMOnSQAZ1Bb8/5LcNpNKMBMJge+5Vv4pWJhARYlQYFw==
   dependencies:
-    d3-array "^1.2.0"
-    d3-collection "1"
+    d3-array "^1.2.0 || 2"
     d3-format "1"
     d3-interpolate "1"
     d3-time "1"

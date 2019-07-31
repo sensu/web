@@ -4,10 +4,13 @@ import { useCurrentDate } from "/lib/component/util";
 import RelativeDate from "./RelativeDate";
 
 interface RelativeToCurrentDateProps {
-  refreshInterval: number,
+  refreshInterval: number;
 }
 
-const RelativeToCurrentDate = ({ refreshInterval, ...props }: RelativeToCurrentDateProps) => {
+const RelativeToCurrentDate = ({
+  refreshInterval,
+  ...props
+}: RelativeToCurrentDateProps) => {
   const now = useCurrentDate(refreshInterval || 1000);
   return <RelativeDate to={now} {...props} />;
 };

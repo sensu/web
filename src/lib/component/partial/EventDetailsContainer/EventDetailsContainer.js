@@ -37,12 +37,7 @@ class EventDetailsContainer extends React.Component {
 
         check {
           ...EventDetailsCheckSummary_check
-          name
-          interval
-          history {
-            executed
-            status
-          }
+          ...EventDetailsCheckHistory_check
         }
 
         entity {
@@ -55,6 +50,7 @@ class EventDetailsContainer extends React.Component {
       ${CheckResult.fragments.event}
       ${CheckResult.fragments.check}
       ${CheckResult.fragments.entity}
+      ${CheckHistory.fragments.check}
       ${RelatedEntitiesCard.fragments.entity}
       ${EntitySummary.fragments.entity}
       ${Toolbar.fragments.event}
@@ -77,11 +73,7 @@ class EventDetailsContainer extends React.Component {
             </Content>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <CheckHistory
-                  name={event.check.name}
-                  interval={event.check.interval}
-                  history={event.check.history}
-                />
+                <CheckHistory check={event.check} />
               </Grid>
               <Grid item xs={12}>
                 <CheckResult

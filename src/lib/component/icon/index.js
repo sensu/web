@@ -39,6 +39,7 @@ export { default as PublishIcon } from "@material-ui/icons/Publish";
 export { default as QueueIcon } from "@material-ui/icons/Queue";
 export { default as ResetIcon } from "@material-ui/icons/SettingsBackupRestore";
 export { default as SilenceIcon } from "@material-ui/icons/VolumeOff";
+export { default as ScheduleIcon } from "@material-ui/icons/Schedule";
 export { default as UndoIcon } from "@material-ui/icons/Undo";
 export { default as UnsilenceIcon } from "@material-ui/icons/VolumeUp";
 export { default as ViewQuiltIcon } from "@material-ui/icons/ViewQuilt";
