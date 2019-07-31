@@ -48,6 +48,7 @@ export { default as WarningIcon } from "@material-ui/icons/Warning";
 
 export { default as BriefcaseIcon } from "./Briefcase";
 export { default as DonutIcon } from "./Donut";
+export { default as EmptyIcon } from "./Empty";
 export { default as ErrorHollowIcon } from "./ErrorHollow";
 export { default as ErrorIcon } from "./Error";
 export { default as EspressoIcon } from "./Espresso";

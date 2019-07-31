@@ -107,7 +107,7 @@ const CheckTimeline = ({
               />
               {width > 16 && (
                 <StatusIcon
-                  x={p1 + 8}
+                  x={(p1 === 0 ? p1 + Math.min(width, 40) - 40 : p1) + 8}
                   y={12}
                   width={24}
                   height={24}

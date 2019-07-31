@@ -12,23 +12,26 @@ class Controller extends React.PureComponent {
 
   static propTypes = {
     children: PropTypes.func.isRequired,
+    collapsed: PropTypes.bool,
     options: PropTypes.arrayOf(PropTypes.node).isRequired,
     onChange: PropTypes.func.isRequired,
     onClose: PropTypes.func,
   };
 
   static defaultProps = {
+    collapsed: false,
     onClose: () => null,
   };
 
   render() {
-    const { children, onChange, onClose, options } = this.props;
+    const { children, collapsed, onChange, onClose, options } = this.props;
 
     return (
       <MenuController
         renderMenu={({ anchorEl, close }) => (
           <Menu
             anchorEl={anchorEl}
+            orient={collapsed ? "right" : "left"}
             onChange={onChange}
             onClose={() => {
               onClose();
