@@ -202,5 +202,5 @@
     "graphql-config/**/graphql": "0.13.0",
     "graphql-import/**/graphql": "0.13.0"
   },
-  "graphQLSchemaRef": "8c6d556"
+  "graphQLSchemaRef": "80614db"
 }
