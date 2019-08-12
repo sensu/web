@@ -24,16 +24,11 @@ class AppLayout extends React.PureComponent {
 
   static query = gql`
     query AppLayoutQuery($namespace: String!) {
-      viewer {
-        ...AppBar_viewer
-      }
-
       namespace(name: $namespace) {
         ...AppBar_namespace
       }
     }
 
-    ${AppBar.fragments.viewer}
     ${AppBar.fragments.namespace}
   `;
 
@@ -60,7 +55,6 @@ class AppLayout extends React.PureComponent {
                 <AppBar
                   loading={loading || aborted}
                   namespace={data.namespace}
-                  viewer={data.viewer}
                 />
               }
               quickNav={

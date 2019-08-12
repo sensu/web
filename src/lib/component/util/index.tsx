@@ -20,6 +20,7 @@ export {
 export { default as Query } from "./Query";
 export { default as RenderCounter } from "./RenderCounter";
 export { default as SigninRedirect } from "./SigninRedirect";
+export { default as SyncNamespaces } from "./SyncNamespaces";
 export { default as Timer } from "./Timer";
 export { default as UnauthenticatedRoute } from "./UnauthenticatedRoute";
 export { default as UnmountObserver } from "./UnmountObserver";

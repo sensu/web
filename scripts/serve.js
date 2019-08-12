@@ -14,7 +14,7 @@ import "./util/exceptionHandler";
 import config from "../config/app.webpack.config";
 
 const root = fs.realpathSync(process.cwd());
-const proxyPaths = ["/auth", "/graphql"];
+const proxyPaths = ["/auth", "/graphql", "/api"];
 const port = parseInt(process.env.PORT, 10) || 3001;
 
 const compiler = webpack(config);

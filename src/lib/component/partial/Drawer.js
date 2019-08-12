@@ -70,7 +70,6 @@ class Drawer extends React.Component {
   static propTypes = {
     client: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    viewer: PropTypes.object,
     namespace: PropTypes.object,
     onToggle: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
@@ -80,22 +79,11 @@ class Drawer extends React.Component {
   static defaultProps = { loading: false, viewer: null, namespace: null };
 
   static fragments = {
-    viewer: gql`
-      fragment Drawer_viewer on Viewer {
-        ...NamespaceSelector_viewer
-      }
-
-      ${NamespaceSelector.fragments.viewer}
-      ${NamespaceSelector.fragments.namespace}
-    `,
-
     namespace: gql`
       fragment Drawer_namespace on Namespace {
         ...NamespaceIcon_namespace
-        ...NamespaceSelector_namespace
       }
 
-      ${NamespaceSelector.fragments.namespace}
       ${NamespaceIcon.fragments.namespace}
     `,
   };
@@ -105,15 +93,7 @@ class Drawer extends React.Component {
   };
 
   render() {
-    const {
-      client,
-      loading,
-      viewer,
-      namespace,
-      open,
-      onToggle,
-      classes,
-    } = this.props;
+    const { client, loading, namespace, open, onToggle, classes } = this.props;
     const { preferencesOpen } = this.state;
 
     return (
@@ -149,7 +129,6 @@ class Drawer extends React.Component {
                 </div>
                 <div className={classes.row}>
                   <NamespaceSelector
-                    viewer={viewer}
                     namespace={namespace}
                     className={classes.namespaceSelector}
                     onChange={onToggle}
