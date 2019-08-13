@@ -12,8 +12,8 @@ const styles = theme => ({
     // TODO: Replace this reference to the layout gutter width with a value
     // provided through a react context.
     // (see https://github.com/sensu/sensu-go/issues/2002)
-    marginLeft: -theme.spacing.unit,
-    marginRight: -theme.spacing.unit,
+    marginLeft: -theme.spacing(1),
+    marginRight: -theme.spacing(1),
 
     [theme.breakpoints.up("md")]: {
       marginLeft: 0,

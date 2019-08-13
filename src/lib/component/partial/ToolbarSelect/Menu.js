@@ -10,13 +10,23 @@ class Menu extends React.Component {
     children: PropTypes.node.isRequired,
     anchorEl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
+    orient: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    orient: "left",
   };
 
   render() {
-    const { anchorEl, children, onClose, onChange } = this.props;
+    const { anchorEl, children, onClose, onChange, orient } = this.props;
 
     return (
-      <BaseMenu open onClose={onClose} anchorEl={anchorEl}>
+      <BaseMenu
+        open
+        onClose={onClose}
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: orient }}
+      >
         {React.Children.map(children, child => {
           const onClick = event => {
             if (child.props.onClick) {

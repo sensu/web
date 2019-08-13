@@ -20,7 +20,7 @@ class NamespaceLabelBase extends React.Component {
     },
     label: {
       color: "inherit",
-      marginRight: theme.spacing.unit,
+      marginRight: theme.spacing(1),
       opacity: 0.88,
     },
     heavier: {

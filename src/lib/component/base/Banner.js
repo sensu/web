@@ -66,8 +66,8 @@ export const styles = theme => {
 
       maxWidth: 1224,
 
-      paddingLeft: theme.spacing.unit,
-      paddingRight: theme.spacing.unit,
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
 
       [theme.breakpoints.up("md")]: {
         paddingLeft: 80,
@@ -136,7 +136,7 @@ export const styles = theme => {
     variantIcon: {
       opacity: 0.9,
       fontSize: 20,
-      marginRight: theme.spacing.unit,
+      marginRight: theme.spacing(1),
     },
   };
 };

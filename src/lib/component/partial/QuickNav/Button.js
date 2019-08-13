@@ -1,4 +1,6 @@
-import React from "/vendor/react";
+/* eslint-disable react/display-name */
+
+import React, { forwardRef } from "/vendor/react";
 import PropTypes from "prop-types";
 import { NavLink } from "/vendor/react-router-dom";
 
@@ -26,43 +28,39 @@ const styles = theme => ({
   },
 });
 
-class QuickNavButton extends React.Component {
-  static displayName = "QuickNav.Button";
+const QuickNavButton = props => {
+  const { classes, Icon, caption, to, exact } = props;
+  const Link = forwardRef((props, ref) => (
+    <NavLink {...props} innerRef={ref} />
+  ));
 
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    Icon: PropTypes.func.isRequired,
-    caption: PropTypes.string.isRequired,
-    to: PropTypes.string.isRequired,
-    exact: PropTypes.bool,
-  };
+  return (
+    <IconButton
+      classes={{
+        root: classes.button,
+        label: classes.label,
+      }}
+      className={classes.link}
+      component={Link}
+      to={to}
+      activeClassName={classes.active}
+      exact={exact}
+    >
+      <Icon />
+      <Typography variant="caption" classes={{ root: classes.menuText }}>
+        {caption}
+      </Typography>
+    </IconButton>
+  );
+};
 
-  static defaultProps = {
-    exact: undefined,
-  };
-
-  render() {
-    const { classes, Icon, caption, to, exact } = this.props;
-
-    return (
-      <IconButton
-        classes={{
-          root: classes.button,
-          label: classes.label,
-        }}
-        className={classes.link}
-        component={NavLink}
-        to={to}
-        activeClassName={classes.active}
-        exact={exact}
-      >
-        <Icon />
-        <Typography variant="caption" classes={{ root: classes.menuText }}>
-          {caption}
-        </Typography>
-      </IconButton>
-    );
-  }
-}
+QuickNavButton.displayName = "QuickNav.Button";
+QuickNavButton.propTypes = {
+  classes: PropTypes.object.isRequired,
+  Icon: PropTypes.object.isRequired,
+  caption: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
+  exact: PropTypes.bool,
+};
 
 export default withStyles(styles)(QuickNavButton);

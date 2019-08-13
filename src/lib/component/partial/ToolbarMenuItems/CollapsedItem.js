@@ -6,6 +6,7 @@ import {
   ListItemText,
   MenuItem,
 } from "/vendor/@material-ui/core";
+import { EmptyIcon } from "/lib/component/icon";
 
 class CollapsedItem extends React.Component {
   static displayName = "ToolbarMenuItems.CollapsedItem";
@@ -23,7 +24,7 @@ class CollapsedItem extends React.Component {
   static defaultProps = {
     component: MenuItem,
     icon: null,
-    inset: false,
+    inset: true,
     ornament: null,
     secondary: null,
     title: null,
@@ -45,11 +46,11 @@ class CollapsedItem extends React.Component {
       <MenuItem button title={title} {...props}>
         {icon && <ListItemIcon>{icon}</ListItemIcon>}
         <ListItemText
-          inset={inset || !!icon}
+          inset={inset && !icon}
           primary={primary}
           secondary={secondary}
         />
-        {ornament}
+        {ornament || (inset && <EmptyIcon />)}
       </MenuItem>
     );
   }

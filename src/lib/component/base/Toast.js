@@ -112,7 +112,7 @@ export const styles = theme => {
     variantIcon: {
       opacity: 0.9,
       fontSize: 20,
-      marginRight: theme.spacing.unit,
+      marginRight: theme.spacing(1),
     },
   };
 };

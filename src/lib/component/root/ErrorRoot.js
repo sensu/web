@@ -31,7 +31,7 @@ const Pre = createStyledComponent({
 
 const ExpansionPanelWrapper = createStyledComponent({
   styles: theme => ({
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
   }),
 });
 

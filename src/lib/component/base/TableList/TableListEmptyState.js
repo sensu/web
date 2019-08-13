@@ -5,12 +5,12 @@ import { withStyles, Typography } from "/vendor/@material-ui/core";
 const styles = theme => ({
   root: {
     textAlign: "center",
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing(3),
     maxWidth: 480,
     margin: "0 auto",
     [theme.breakpoints.up("md")]: {
-      paddingTop: theme.spacing.unit * 14,
-      paddingBottom: theme.spacing.unit * 14,
+      paddingTop: theme.spacing(14),
+      paddingBottom: theme.spacing(14),
     },
   },
   icon: {
@@ -20,7 +20,7 @@ const styles = theme => ({
     fontSize: "2rem",
   },
   line: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
   },
 });
 

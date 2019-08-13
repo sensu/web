@@ -7,11 +7,11 @@ const styles = theme => ({
   root: {
     width: "40%",
     display: "table-cell",
-    paddingRight: theme.spacing.unit,
+    paddingRight: theme.spacing(1),
     textOverflow: "ellipsis",
   },
   container: {
-    minHeight: theme.spacing.unit * 3,
+    minHeight: theme.spacing(3),
   },
 });
 

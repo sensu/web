@@ -16,7 +16,7 @@ const HandlerDetailsContainer = ({ handler, loading, toolbarItems }) => (
         <Content marginBottom>
           <Toolbar toolbarItems={toolbarItems} />
         </Content>
-        <Grid container spacing={16}>
+        <Grid container spacing={2}>
           <Grid item xs={12}>
             <Configuration handler={handler} />
           </Grid>

@@ -14,7 +14,7 @@ class Button extends React.PureComponent {
 
   static propTypes = {
     color: PropTypes.string,
-    component: PropTypes.func,
+    component: PropTypes.object,
     description: PropTypes.node,
     disabled: PropTypes.bool,
     icon: PropTypes.node,

@@ -9,7 +9,7 @@ const StyledDialoagActions = createStyledComponent({
   name: "SignInForm.Actions",
   component: DialogActions,
   styles: theme => ({
-    marginTop: theme.spacing.unit * 5,
+    marginTop: theme.spacing(5),
     textAlign: "right",
   }),
 });

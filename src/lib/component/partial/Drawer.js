@@ -10,6 +10,7 @@ import {
   Divider,
   IconButton,
   Drawer as MaterialDrawer,
+  Typography,
 } from "/vendor/@material-ui/core";
 
 import compose from "/lib/util/compose";
@@ -164,7 +165,7 @@ class Drawer extends React.Component {
                     <DrawerButton
                       key={to}
                       Icon={icon}
-                      primary={caption}
+                      primary={<Typography color="textPrimary">{caption}</Typography>}
                       component={Link}
                       onClick={onToggle}
                       to={to}
@@ -184,7 +185,7 @@ class Drawer extends React.Component {
               />
               <DrawerButton
                 Icon={FeedbackIcon}
-                primary="Feedback"
+                primary={<Typography color="textPrimary">Feedback</Typography>}
                 component="a"
                 href="https://github.com/sensu/sensu-go/issues"
               />

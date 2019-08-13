@@ -10,16 +10,16 @@ const styles = theme => ({
     // This padding is set to match the "checkbox" padding of a <TableCell>
     // component to keep the header checkbox aligned with row checkboxes.
     // See: https://github.com/mui-org/material-ui/blob/3353f44/packages/material-ui/src/TableCell/TableCell.js#L50
-    paddingLeft: 12,
+    paddingLeft: 4,
     paddingRight: 12,
-    paddingTop: theme.spacing.unit / 2,
-    paddingBottom: theme.spacing.unit / 2,
+    paddingTop: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
     backgroundColor: theme.palette.primary.light,
     color: theme.palette.primary.contrastText,
     display: "flex",
     alignItems: "center",
     zIndex: theme.zIndex.appBar - 1,
-    minHeight: theme.spacing.unit * 7,
+    minHeight: theme.spacing(7),
   },
   active: {
     backgroundColor: theme.palette.primary.main,

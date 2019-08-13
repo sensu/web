@@ -11,7 +11,7 @@ const Chip = (createStyledComponent as any)({
   name: "FilterList.Chip",
   component: MUIChip,
   styles: (theme: any) => {
-    const margin = theme.spacing.unit / 2;
+    const margin = theme.spacing(0.5);
     return {
       marginRight: margin,
       marginBottom: margin,

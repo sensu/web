@@ -44,6 +44,7 @@ class Select extends React.Component {
 
           return (
             <ToolbarSelectController
+              collapsed={collapsed}
               onChange={onChange}
               onClose={close}
               options={children}

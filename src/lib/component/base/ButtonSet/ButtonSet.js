@@ -6,7 +6,7 @@ import { withStyles } from "/vendor/@material-ui/core";
 const styles = theme => ({
   root: {
     "& button": {
-      marginRight: theme.spacing.unit,
+      marginRight: theme.spacing(1),
       "&:last-child": {
         marginRight: "inherit",
       },

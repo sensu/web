@@ -73,7 +73,7 @@ class NotFound extends React.PureComponent {
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={40} className={classes.container}>
+        <Grid container spacing={6} className={classes.container}>
           <Typography
             component={Grid}
             item

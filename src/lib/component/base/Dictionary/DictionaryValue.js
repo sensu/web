@@ -13,7 +13,7 @@ const styles = theme => ({
     maxWidth: "60%",
   },
   padding: {
-    paddingLeft: theme.spacing.unit,
+    paddingLeft: theme.spacing(1),
   },
   scrollableContent: { display: "inline-grid" },
   explicitRightMargin: { paddingRight: "24px" },

@@ -26,7 +26,7 @@ const EventFilterDetailsContainer = ({
         <Content marginBottom>
           <EventFilterDetailsToolbar toolbarItems={toolbarItems} />
         </Content>
-        <Grid container spacing={16}>
+        <Grid container spacing={2}>
           <Grid item xs={12}>
             <Configuration eventFilter={eventFilter} />
           </Grid>
