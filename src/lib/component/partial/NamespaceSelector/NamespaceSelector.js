@@ -1,10 +1,9 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { Route } from "/vendor/react-router-dom";
-import gql from "/vendor/graphql-tag";
 import { withStyles, ButtonBase as Button } from "/vendor/@material-ui/core";
 
-import { NamespacesContext } from "/lib/util/NamespacesContext";
+import { WithNamespaces } from "/lib/component/util";
 import NamespaceSelectorBuilder from "./NamespaceSelectorBuilder";
 import NamespaceSelectorMenu from "./NamespaceSelectorMenu";
 
@@ -67,7 +66,7 @@ class NamespaceSelector extends React.Component {
             >
               <NamespaceSelectorBuilder namespace={namespace} />
             </Button>
-            <NamespacesContext.Consumer>
+            <WithNamespaces>
               {namespaces => (
                 <NamespaceSelectorMenu
                   anchorEl={anchorEl}
@@ -82,7 +81,7 @@ class NamespaceSelector extends React.Component {
                   }}
                 />
               )}
-            </NamespacesContext.Consumer>
+            </WithNamespaces>
           </div>
         )}
       />

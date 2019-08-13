@@ -27,7 +27,7 @@ class NamespaceSelectorMenu extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
-    namespaces: PropTypes.object,
+    namespaces: PropTypes.array,
   };
 
   static defaultProps = {

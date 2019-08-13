@@ -12,6 +12,10 @@ export { default as ErrorBoundary } from "./ErrorBoundary";
 export { default as LastNamespaceRedirect } from "./LastNamespaceRedirect";
 export { default as LastNamespaceUpdater } from "./LastNamespaceUpdater";
 export { default as NamespaceLink } from "./NamespaceLink";
+export {
+  default as NamespacesProvider,
+  WithNamespaces,
+} from "./NamespacesProvider";
 export { default as NamespaceRoute } from "./NamespaceRoute";
 export {
   default as NavigationProvider,
