@@ -23,7 +23,7 @@ class NamespaceIcon extends React.Component {
 
   render() {
     const { namespace: ns, ...props } = this.props;
-    return <Icon icon={ns.icon} colour={ns.colour} {...props} />;
+    return <Icon icon={ns.icon || "BRIEFCASE"} colour={ns.colour} {...props} />;
   }
 }
 

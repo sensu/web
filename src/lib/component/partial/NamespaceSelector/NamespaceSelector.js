@@ -1,9 +1,9 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { Route } from "/vendor/react-router-dom";
-import gql from "/vendor/graphql-tag";
 import { withStyles, ButtonBase as Button } from "/vendor/@material-ui/core";
 
+import { WithNamespaces } from "/lib/component/util";
 import NamespaceSelectorBuilder from "./NamespaceSelectorBuilder";
 import NamespaceSelectorMenu from "./NamespaceSelectorMenu";
 
@@ -29,22 +29,6 @@ class NamespaceSelector extends React.Component {
     viewer: null,
     namespace: null,
     loading: false,
-  };
-
-  static fragments = {
-    viewer: gql`
-      fragment NamespaceSelector_viewer on Viewer {
-        ...NamespaceSelectorMenu_viewer
-      }
-
-      ${NamespaceSelectorMenu.fragments.viewer}
-    `,
-
-    namespace: gql`
-      fragment NamespaceSelector_namespace on Namespace {
-        name
-      }
-    `,
   };
 
   state = {
@@ -82,18 +66,22 @@ class NamespaceSelector extends React.Component {
             >
               <NamespaceSelectorBuilder namespace={namespace} />
             </Button>
-            <NamespaceSelectorMenu
-              anchorEl={anchorEl}
-              id="drawer-selector-menu"
-              viewer={viewer}
-              org={params.organization}
-              open={Boolean(anchorEl)}
-              onClose={this.onClose}
-              onClick={ev => {
-                this.onClose();
-                onChange(ev);
-              }}
-            />
+            <WithNamespaces>
+              {namespaces => (
+                <NamespaceSelectorMenu
+                  anchorEl={anchorEl}
+                  id="drawer-selector-menu"
+                  namespaces={namespaces}
+                  org={params.organization}
+                  open={Boolean(anchorEl)}
+                  onClose={this.onClose}
+                  onClick={ev => {
+                    this.onClose();
+                    onChange(ev);
+                  }}
+                />
+              )}
+            </WithNamespaces>
           </div>
         )}
       />

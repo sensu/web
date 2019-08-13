@@ -1,6 +1,5 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import gql from "/vendor/graphql-tag";
 import { Link } from "/vendor/react-router-dom";
 
 import {
@@ -28,34 +27,17 @@ class NamespaceSelectorMenu extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
-    viewer: PropTypes.object,
+    namespaces: PropTypes.array,
   };
 
   static defaultProps = {
     viewer: null,
   };
 
-  static fragments = {
-    viewer: gql`
-      fragment NamespaceSelectorMenu_viewer on Viewer {
-        namespaces {
-          name
-          ...NamespaceIcon_namespace
-        }
-      }
-
-      ${NamespaceIcon.fragments.namespace}
-    `,
-  };
-
   render() {
-    const { viewer, classes, onClick, ...props } = this.props;
+    const { namespaces, classes, onClick, ...props } = this.props;
 
-    if (!viewer) {
-      return null;
-    }
-
-    const groups = viewer.namespaces.reduce((acc, ns) => {
+    const groups = namespaces.reduce((acc, ns) => {
       const [key] = ns.name.split("-", 1);
 
       acc[key] = acc[key] || [];
@@ -67,11 +49,11 @@ class NamespaceSelectorMenu extends React.Component {
     return (
       <Menu {...props}>
         {Object.keys(groups).map((key, i) => {
-          const namesapces = groups[key];
+          const namespaces = groups[key];
 
           return (
             <React.Fragment key={`prefix-${key}`}>
-              {namesapces.map(namespace => (
+              {namespaces.map(namespace => (
                 <Link
                   key={namespace.name}
                   to={`/${namespace.name}`}

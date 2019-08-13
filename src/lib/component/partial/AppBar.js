@@ -30,13 +30,6 @@ class AppBar extends React.Component {
   static defaultProps = { namespace: null, viewer: null };
 
   static fragments = {
-    viewer: gql`
-      fragment AppBar_viewer on Viewer {
-        ...Drawer_viewer
-      }
-      ${Drawer.fragments.viewer}
-    `,
-
     namespace: gql`
       fragment AppBar_namespace on Namespace {
         ...NamespaceLabel_namespace
@@ -81,7 +74,7 @@ class AppBar extends React.Component {
   };
 
   render() {
-    const { namespace, viewer, loading, classes } = this.props;
+    const { namespace, loading, classes } = this.props;
 
     return (
       <React.Fragment>
@@ -110,7 +103,6 @@ class AppBar extends React.Component {
         </MUIAppBar>
         <Drawer
           loading={loading}
-          viewer={viewer}
           open={this.state.drawerOpen}
           onToggle={this.handleToggleDrawer}
           namespace={namespace}
