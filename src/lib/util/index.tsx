@@ -8,6 +8,7 @@ import "./date";
 import "./error";
 import "./fetch";
 import "./filterParams";
+import "./namespaceIcon";
 import "./serviceWorker";
 import "./params";
 import "./promise";

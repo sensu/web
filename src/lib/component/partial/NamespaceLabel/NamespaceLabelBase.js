@@ -10,7 +10,6 @@ class NamespaceLabelBase extends React.Component {
     classes: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
-    colour: PropTypes.string.isRequired,
   };
 
   static styles = theme => ({
@@ -33,7 +32,7 @@ class NamespaceLabelBase extends React.Component {
   });
 
   render() {
-    const { classes, name, icon, colour } = this.props;
+    const { classes, name, icon } = this.props;
 
     return (
       <div className={classes.container}>
@@ -41,7 +40,7 @@ class NamespaceLabelBase extends React.Component {
           {name}
         </Typography>
 
-        <Icon icon={icon} colour={colour} />
+        <Icon icon={icon} />
       </div>
     );
   }
