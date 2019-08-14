@@ -4,11 +4,11 @@ import { Link } from "/vendor/react-router-dom";
 
 import {
   withStyles,
-  Menu,
-  MenuItem,
   ListItemText,
   ListItemIcon,
-  Divider,
+  Menu,
+  MenuItem,
+  Typography,
 } from "/vendor/@material-ui/core";
 
 import NamespaceIcon from "/lib/component/partial/NamespaceIcon";
@@ -48,29 +48,26 @@ class NamespaceSelectorMenu extends React.Component {
 
     return (
       <Menu {...props}>
-        {Object.keys(groups).map((key, i) => {
+        {Object.keys(groups).map(key => {
           const namespaces = groups[key];
 
-          return (
-            <React.Fragment key={`prefix-${key}`}>
-              {namespaces.map(namespace => (
-                <Link
-                  key={namespace.name}
-                  to={`/${namespace.name}`}
-                  onClick={onClick}
-                >
-                  <MenuItem>
-                    <ListItemIcon>
-                      <NamespaceIcon namespace={namespace} size={24} />
-                    </ListItemIcon>
-                    <ListItemText inset primary={namespace.name} />
-                  </MenuItem>
-                </Link>
-              ))}
-
-              {i + 1 < groups.length && <Divider />}
-            </React.Fragment>
-          );
+          return namespaces.map(namespace => (
+            <MenuItem
+              component={Link}
+              key={namespace.name}
+              to={`/${namespace.name}`}
+              onClick={onClick}
+            >
+              <ListItemIcon>
+                <NamespaceIcon namespace={namespace} size={24} />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <Typography color="textPrimary">{namespace.name}</Typography>
+                }
+              />
+            </MenuItem>
+          ));
         })}
       </Menu>
     );

@@ -29,17 +29,16 @@ const Schedule = React.memo(
     const iconSize = 24;
     const iconOpacity = getFontOpacity(theme.palette, 0);
 
-    let scheduleLabel = (<React.Fragment>Not scheduled</React.Fragment>);
+    let scheduleLabel = <React.Fragment>Not scheduled</React.Fragment>;
     if (nextDate) {
-      scheduleLabel = <RelativeDate dateTime={nextDate} precision="seconds" to={date} />;
+      scheduleLabel = (
+        <RelativeDate dateTime={nextDate} precision="seconds" to={date} />
+      );
     }
 
     return (
       <React.Fragment>
-        <Tooltip
-          title={scheduleLabel}
-          aria-label="next occurrence"
-        >
+        <Tooltip title={scheduleLabel} aria-label="next occurrence">
           <svg x={x} y={y}>
             <rect x={0} y={0} width={width} height={height} fill={bgColor} />
             <ScheduleIcon
