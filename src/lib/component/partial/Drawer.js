@@ -144,7 +144,9 @@ class Drawer extends React.Component {
                     <DrawerButton
                       key={to}
                       Icon={icon}
-                      primary={<Typography color="textPrimary">{caption}</Typography>}
+                      primary={
+                        <Typography color="textPrimary">{caption}</Typography>
+                      }
                       component={Link}
                       onClick={onToggle}
                       to={to}
