@@ -19,7 +19,6 @@ import {
   LastNamespaceRedirect,
   NamespaceRoute,
   NavigationProvider,
-  SyncNamespaces,
 } from "/lib/component/util";
 
 import {
@@ -77,108 +76,106 @@ const renderApp = () => {
             <NamespaceRoute
               path="/:namespace"
               render={props => (
-                <SyncNamespaces>
-                  <NavigationProvider
-                    links={[
-                      {
-                        to: `${props.match.url}/events`,
-                        icon: EventIcon,
-                        caption: "Events",
-                      },
-                      {
-                        to: `${props.match.url}/entities`,
-                        icon: EntityIcon,
-                        caption: "Entities",
-                      },
-                      {
-                        to: `${props.match.url}/checks`,
-                        icon: CheckIcon,
-                        caption: "Checks",
-                      },
-                      {
-                        to: `${props.match.url}/filters`,
-                        icon: EventFilterIcon,
-                        caption: "Filters",
-                      },
-                      {
-                        to: `${props.match.url}/handlers`,
-                        icon: HandlerIcon,
-                        caption: "Handlers",
-                      },
-                      {
-                        to: `${props.match.url}/mutators`,
-                        icon: MutatorIcon,
-                        caption: "Mutators",
-                      },
-                      {
-                        to: `${props.match.url}/silences`,
-                        icon: SilenceIcon,
-                        caption: "Silences",
-                      },
-                    ]}
-                  >
-                    <Switch>
-                      <Redirect
-                        exact
-                        from={props.match.path}
-                        to={`${props.match.path}/events`}
-                      />
-                      <Route
-                        path={`${props.match.path}/checks/:check`}
-                        component={CheckDetailsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/events/:entity/:check`}
-                        component={EventDetailsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/filters/:filter`}
-                        component={EventFilterDetailsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/entities/:entity`}
-                        component={EntityDetailsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/handlers/:handler`}
-                        component={HandlerDetailsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/mutators/:mutator`}
-                        component={MutatorDetailsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/checks`}
-                        component={ChecksView}
-                      />
-                      <Route
-                        path={`${props.match.path}/entities`}
-                        component={EntitiesView}
-                      />
-                      <Route
-                        path={`${props.match.path}/events`}
-                        component={EventsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/filters`}
-                        component={EventFiltersView}
-                      />
-                      <Route
-                        path={`${props.match.path}/handlers`}
-                        component={HandlersView}
-                      />
-                      <Route
-                        path={`${props.match.path}/mutators`}
-                        component={MutatorsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/silences`}
-                        component={SilencesView}
-                      />
-                      <Route render={() => "not found in namespace"} />
-                    </Switch>
-                  </NavigationProvider>
-                </SyncNamespaces>
+                <NavigationProvider
+                  links={[
+                    {
+                      to: `${props.match.url}/events`,
+                      icon: EventIcon,
+                      caption: "Events",
+                    },
+                    {
+                      to: `${props.match.url}/entities`,
+                      icon: EntityIcon,
+                      caption: "Entities",
+                    },
+                    {
+                      to: `${props.match.url}/checks`,
+                      icon: CheckIcon,
+                      caption: "Checks",
+                    },
+                    {
+                      to: `${props.match.url}/filters`,
+                      icon: EventFilterIcon,
+                      caption: "Filters",
+                    },
+                    {
+                      to: `${props.match.url}/handlers`,
+                      icon: HandlerIcon,
+                      caption: "Handlers",
+                    },
+                    {
+                      to: `${props.match.url}/mutators`,
+                      icon: MutatorIcon,
+                      caption: "Mutators",
+                    },
+                    {
+                      to: `${props.match.url}/silences`,
+                      icon: SilenceIcon,
+                      caption: "Silences",
+                    },
+                  ]}
+                >
+                  <Switch>
+                    <Redirect
+                      exact
+                      from={props.match.path}
+                      to={`${props.match.path}/events`}
+                    />
+                    <Route
+                      path={`${props.match.path}/checks/:check`}
+                      component={CheckDetailsView}
+                    />
+                    <Route
+                      path={`${props.match.path}/events/:entity/:check`}
+                      component={EventDetailsView}
+                    />
+                    <Route
+                      path={`${props.match.path}/filters/:filter`}
+                      component={EventFilterDetailsView}
+                    />
+                    <Route
+                      path={`${props.match.path}/entities/:entity`}
+                      component={EntityDetailsView}
+                    />
+                    <Route
+                      path={`${props.match.path}/handlers/:handler`}
+                      component={HandlerDetailsView}
+                    />
+                    <Route
+                      path={`${props.match.path}/mutators/:mutator`}
+                      component={MutatorDetailsView}
+                    />
+                    <Route
+                      path={`${props.match.path}/checks`}
+                      component={ChecksView}
+                    />
+                    <Route
+                      path={`${props.match.path}/entities`}
+                      component={EntitiesView}
+                    />
+                    <Route
+                      path={`${props.match.path}/events`}
+                      component={EventsView}
+                    />
+                    <Route
+                      path={`${props.match.path}/filters`}
+                      component={EventFiltersView}
+                    />
+                    <Route
+                      path={`${props.match.path}/handlers`}
+                      component={HandlersView}
+                    />
+                    <Route
+                      path={`${props.match.path}/mutators`}
+                      component={MutatorsView}
+                    />
+                    <Route
+                      path={`${props.match.path}/silences`}
+                      component={SilencesView}
+                    />
+                    <Route render={() => "not found in namespace"} />
+                  </Switch>
+                </NavigationProvider>
               )}
               fallbackComponent={NamespaceNotFoundView}
             />
