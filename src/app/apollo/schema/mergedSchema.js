@@ -1,14 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
 const fs = require("fs");
 const path = require("path");
-// eslint-disable-next-line import/no-extraneous-dependencies
 const glob = require("glob");
-// eslint-disable-next-line import/no-extraneous-dependencies
 const graphql = require("graphql");
 
 const libSchema = require("../../../lib/apollo/schema/mergedSchema");
-
 const clientSchemaPath = path.join(__dirname, "../resolvers/*.graphql");
-
 const clientSchemaFilePaths = glob.sync(clientSchemaPath);
 
 const rawClientSchema = clientSchemaFilePaths.reduce(
@@ -17,7 +15,6 @@ const rawClientSchema = clientSchemaFilePaths.reduce(
 );
 
 const clientSchemaDoc = graphql.parse(rawClientSchema);
-
-const schema = graphql.extendSchema(libSchema, clientSchemaDoc);
+const schema = graphql.extendSchema(libSchema, clientSchemaDoc, { assumeValidSDL: true });
 
 module.exports = schema;

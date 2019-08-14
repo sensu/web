@@ -121,7 +121,7 @@
     "flow-bin": "^0.84.0",
     "git-rev-sync": "^1.12.0",
     "glob": "^7.1.2",
-    "graphql": "0.13.0",
+    "graphql": "^14.4.2",
     "graphql-tag": "^2.9.2",
     "highlight.js": "^9.13.1",
     "hoist-non-react-statics": "^2.5.0",
@@ -198,9 +198,9 @@
     }
   },
   "resolutions": {
-    "graphql": "0.13.0",
-    "graphql-config/**/graphql": "0.13.0",
-    "graphql-import/**/graphql": "0.13.0"
+    "graphql": "14.4.2",
+    "graphql-config/**/graphql": "14.4.2",
+    "graphql-import/**/graphql": "14.4.2"
   },
   "graphQLSchemaRef": "80614db"
 }
