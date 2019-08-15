@@ -2,7 +2,6 @@ import React, { useState, useCallback } from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
 
-import { Route } from "/vendor/react-router-dom";
 import { ButtonBase as Button } from "/vendor/@material-ui/core";
 import { makeStyles } from "/vendor/@material-ui/styles";
 import { useQuery } from "/lib/component/util";
@@ -40,32 +39,26 @@ const NamespaceSelector = ({ namespace, onChange, ...props }) => {
   const onClose = useCallback(() => setAnchorEl(null), [setAnchorEl]);
 
   return (
-    <Route
-      path="/:namespace"
-      render={({ match: { params } }) => (
-        <div {...props}>
-          <Button
-            aria-owns="drawer-selector-menu"
-            className={classes.button}
-            onClick={handleClick}
-          >
-            <NamespaceSelectorBuilder namespace={namespace} />
-          </Button>
-          <NamespaceSelectorMenu
-            anchorEl={anchorEl}
-            id="drawer-selector-menu"
-            namespaces={namespaces}
-            org={params.organization}
-            open={Boolean(anchorEl)}
-            onClose={onClose}
-            onClick={ev => {
-              onClose();
-              onChange(ev);
-            }}
-          />
-        </div>
-      )}
-    />
+    <div {...props}>
+      <Button
+        aria-owns="drawer-selector-menu"
+        className={classes.button}
+        onClick={handleClick}
+      >
+        <NamespaceSelectorBuilder namespace={namespace} />
+      </Button>
+      <NamespaceSelectorMenu
+        anchorEl={anchorEl}
+        id="drawer-selector-menu"
+        namespaces={namespaces}
+        open={Boolean(anchorEl)}
+        onClose={onClose}
+        onClick={ev => {
+          onClose();
+          onChange(ev);
+        }}
+      />
+    </div>
   );
 };
 
