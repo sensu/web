@@ -1,92 +1,75 @@
-import React from "/vendor/react";
+import React, { useState, useCallback } from "/vendor/react";
 import PropTypes from "prop-types";
-import { Route } from "/vendor/react-router-dom";
-import { withStyles, ButtonBase as Button } from "/vendor/@material-ui/core";
+import gql from "graphql-tag";
 
-import { WithNamespaces } from "/lib/component/util";
+import { ButtonBase as Button } from "/vendor/@material-ui/core";
+import { makeStyles } from "/vendor/@material-ui/styles";
+import { useQuery } from "/lib/component/util";
+import { PollingDuration } from "/lib/constant";
+
 import NamespaceSelectorBuilder from "./NamespaceSelectorBuilder";
 import NamespaceSelectorMenu from "./NamespaceSelectorMenu";
 
-const styles = () => ({
+const query = gql`
+  query FetchCuratedNamespaces {
+    namespaces: curatedNamespaces @client {
+      name
+    }
+  }
+`;
+
+const useStyles = makeStyles(() => ({
   button: {
     width: "100%",
     padding: "8px 16px 8px 16px",
     display: "block",
     textAlign: "left",
   },
-});
+}));
 
-class NamespaceSelector extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    namespace: PropTypes.object,
-    loading: PropTypes.bool,
-    onChange: PropTypes.func.isRequired,
-    viewer: PropTypes.object,
-  };
+const NamespaceSelector = ({ namespace, onChange, ...props }) => {
+  const classes = useStyles();
+  const results = useQuery({ query, pollInterval: PollingDuration.infrequent });
+  const { namespaces = [] } = results.data || {};
 
-  static defaultProps = {
-    viewer: null,
-    namespace: null,
-    loading: false,
-  };
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = useCallback(ev => setAnchorEl(ev.currentTarget), [
+    setAnchorEl,
+  ]);
+  const onClose = useCallback(() => setAnchorEl(null), [setAnchorEl]);
 
-  state = {
-    anchorEl: null,
-  };
-
-  onClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
-  handleClick = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  render() {
-    const {
-      classes,
-      namespace,
-      loading,
-      onChange,
-      viewer,
-      ...props
-    } = this.props;
-    const { anchorEl } = this.state;
-
-    return (
-      <Route
-        path="/:namespace"
-        render={({ match: { params } }) => (
-          <div {...props}>
-            <Button
-              aria-owns="drawer-selector-menu"
-              className={classes.button}
-              onClick={this.handleClick}
-            >
-              <NamespaceSelectorBuilder namespace={namespace} />
-            </Button>
-            <WithNamespaces>
-              {namespaces => (
-                <NamespaceSelectorMenu
-                  anchorEl={anchorEl}
-                  id="drawer-selector-menu"
-                  namespaces={namespaces}
-                  org={params.organization}
-                  open={Boolean(anchorEl)}
-                  onClose={this.onClose}
-                  onClick={ev => {
-                    this.onClose();
-                    onChange(ev);
-                  }}
-                />
-              )}
-            </WithNamespaces>
-          </div>
-        )}
+  return (
+    <div {...props}>
+      <Button
+        aria-owns="drawer-selector-menu"
+        className={classes.button}
+        onClick={handleClick}
+      >
+        <NamespaceSelectorBuilder namespace={namespace} />
+      </Button>
+      <NamespaceSelectorMenu
+        anchorEl={anchorEl}
+        id="drawer-selector-menu"
+        namespaces={namespaces}
+        open={Boolean(anchorEl)}
+        onClose={onClose}
+        onClick={ev => {
+          onClose();
+          onChange(ev);
+        }}
       />
-    );
-  }
-}
+    </div>
+  );
+};
 
-export default withStyles(styles)(NamespaceSelector);
+NamespaceSelector.propTypes = {
+  namespace: PropTypes.object,
+  onChange: PropTypes.func,
+};
+
+NamespaceSelector.defaultProps = {
+  namespace: null,
+  onChange: () => null,
+};
+
+export default NamespaceSelector;

@@ -12,10 +12,6 @@ export { default as ErrorBoundary } from "./ErrorBoundary";
 export { default as LastNamespaceRedirect } from "./LastNamespaceRedirect";
 export { default as LastNamespaceUpdater } from "./LastNamespaceUpdater";
 export { default as NamespaceLink } from "./NamespaceLink";
-export {
-  default as NamespacesProvider,
-  WithNamespaces,
-} from "./NamespacesProvider";
 export { default as NamespaceRoute } from "./NamespaceRoute";
 export {
   default as NavigationProvider,
@@ -24,7 +20,6 @@ export {
 export { default as Query } from "./Query";
 export { default as RenderCounter } from "./RenderCounter";
 export { default as SigninRedirect } from "./SigninRedirect";
-export { default as SyncNamespaces } from "./SyncNamespaces";
 export { default as Timer } from "./Timer";
 export { default as UnauthenticatedRoute } from "./UnauthenticatedRoute";
 export { default as UnmountObserver } from "./UnmountObserver";

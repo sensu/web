@@ -30,10 +30,6 @@ class NamespaceSelectorMenu extends React.Component {
     namespaces: PropTypes.array,
   };
 
-  static defaultProps = {
-    viewer: null,
-  };
-
   render() {
     const { namespaces, classes, onClick, ...props } = this.props;
 
