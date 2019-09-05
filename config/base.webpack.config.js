@@ -11,6 +11,13 @@ const root = fs.realpathSync(process.cwd());
 const jsPath = path.join("static", "js");
 const mediaPath = path.join("static", "media");
 
+// const e = esm(module);
+// const macroPath = path.resolve(path.dirname(__filename), "./macroLoader");
+// const fn = e(macroPath);
+// const t = require.resolve("file-loader");
+
+// console.debug({ e, macroPath, fn, t });
+
 export default ({
   // Include a hash of each file's content in its name unless running a
   // development build. This ensures browser caches are automatically invalided
@@ -39,6 +46,7 @@ export default ({
   module: { rules = [], ...module } = {},
   target = "web",
   name,
+  omitFileLoader = false,
   ...config
 }) => ({
   name,
@@ -109,7 +117,7 @@ export default ({
             ],
             loaders: [
               {
-                loader: require.resolve("./macroLoader"),
+                loader: path.resolve(path.dirname(__filename), "./macroLoader"),
                 options: {
                   filename: path.join(mediaPath, `${fileLoaderHashName}.[ext]`),
                 },
@@ -134,13 +142,13 @@ export default ({
               cacheDirectory: process.env.NODE_ENV === "development",
             },
           },
-          {
+          ...(!omitFileLoader ? [{
             loader: require.resolve("file-loader"),
             exclude: [/\.js$/, /\.mjs$/, /\.html$/, /\.json$/],
             options: {
               name: path.join(mediaPath, `${fileLoaderHashName}.[ext]`),
             },
-          },
+          }] : []),
           {
             test: /\.html$/,
             loader: require.resolve("html-loader"),

@@ -45,7 +45,9 @@
     "test": "yarn check-version && yarn test:lint && yarn test:types && SPEC_COVERAGE=true yarn test:spec && yarn build",
     "fetch-schema": "node scripts fetch-schema",
     "upload-artifacts": "node scripts upload-artifacts",
-    "postinstall": "yarn fetch-schema"
+    "postinstall": "yarn fetch-schema",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@10xjs/date-input-controller": "0.1.6",
@@ -63,6 +65,15 @@
     "@octokit/plugin-throttling": "^2.4.0",
     "@octokit/rest": "^16.23.2",
     "@sensuapp/eslint-plugin": "link:./config/eslint-plugin",
+    "@storybook/addon-a11y": "^5.1.11",
+    "@storybook/addon-knobs": "^5.1.11",
+    "@storybook/addon-notes": "^5.1.11",
+    "@storybook/addon-viewport": "^5.1.11",
+    "@storybook/addons": "^5.1.11",
+    "@storybook/client-api": "^5.1.11",
+    "@storybook/core-events": "^5.1.11",
+    "@storybook/react": "^5.1.11",
+    "@storybook/theming": "^5.1.11",
     "@testing-library/react": "^8.0.1",
     "@types/classnames": "^2.2.7",
     "@types/d3-scale": "^2.1.1",
