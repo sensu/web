@@ -2,14 +2,12 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { withStyles, Typography } from "/vendor/@material-ui/core";
 
-// TODO: Clean up the exports of NamespaceIcon
-import Icon from "/lib/component/partial/NamespaceIcon/Icon";
+import NamespaceIcon from "/lib/component/partial/NamespaceIcon";
 
 class NamespaceLabelBase extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
-    icon: PropTypes.string.isRequired,
   };
 
   static styles = theme => ({
@@ -32,7 +30,7 @@ class NamespaceLabelBase extends React.Component {
   });
 
   render() {
-    const { classes, name, icon } = this.props;
+    const { classes, name } = this.props;
 
     return (
       <div className={classes.container}>
@@ -40,7 +38,7 @@ class NamespaceLabelBase extends React.Component {
           {name}
         </Typography>
 
-        <Icon icon={icon} />
+        <NamespaceIcon namespace={{ name }} />
       </div>
     );
   }

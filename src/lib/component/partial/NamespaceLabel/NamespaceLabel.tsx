@@ -1,7 +1,6 @@
-import React, { useMemo } from "/vendor/react";
+import React from "/vendor/react";
 import gql from "/vendor/graphql-tag";
 import Label from "./NamespaceLabelBase";
-import { findIcon } from "/lib/util/namespaceIcon";
 
 interface Props {
   namespace?: {
@@ -12,9 +11,8 @@ interface Props {
 const NamespaceLabel = (props: Props) => {
   const { namespace, ...other } = props;
   const name = namespace ? namespace.name : "";
-  const icon = useMemo(() => findIcon(name), [name]);
 
-  return <Label name={name} icon={icon} {...other} />;
+  return <Label name={name} {...other} />;
 };
 
 NamespaceLabel.fragments = {

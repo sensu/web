@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import addons from "@storybook/addons";
 
-import { ThemeProvider } from "/lib/component/base";
+import { ThemeProvider, ResetStyles, ThemeStyles } from "/lib/component/base";
 
 interface Props {
   children: (t: any) => any;
@@ -25,6 +25,8 @@ const decorator = (fn: () => any) => {
     <WithTheme>
       {(theme) => (
         <ThemeProvider theme={theme.value} dark={theme.dark}>
+          <ResetStyles />
+          <ThemeStyles />
           {fn()}
         </ThemeProvider>
       )}

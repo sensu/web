@@ -53,7 +53,16 @@ export const styles = theme => {
       [theme.breakpoints.down("sm")]: {
         flexGrow: 1,
       },
+
+      paddingTop: 0,
+      transition: theme.transitions.create("padding"),
     },
+
+    progressInset: {
+      paddingTop: theme.spacing(1/2),
+    },
+
+    /* Styles applied to the progress wrapper element. */
     progress: {
       position: "absolute",
       top: 0,
@@ -202,7 +211,7 @@ class Toast extends React.PureComponent {
         role="alertdialog"
         square
         elevation={6}
-        className={classNames(classes.root, classes[variant])}
+        className={classNames(classes.root, classes[variant], { [classes.progressInset]: !!progressBar })}
         aria-describedby={messageId}
         onMouseOver={this._handleMouseOver}
         onMouseLeave={this._handleMouseLeave}

@@ -32,12 +32,11 @@ export { default as Duration } from "./Duration";
 export { default as ErrorDialog } from "./ErrorDialog";
 export { default as FilterList } from "./FilterList";
 export { default as InlineLink } from "./InlineLink";
+export { default as KeyboardInput } from "./KeyboardInput";
 export { default as RelativeDate, RelativeToCurrentDate } from "./RelativeDate";
-export { default as SearchBox } from "./SearchBox";
 export {
   default as TableListEmptyState,
 } from "./TableList/TableListEmptyState";
-export { default as TagOrb } from "./TagOrb";
 export { default as AnimatedLogo } from "./AnimatedLogo";
 export { default as AppThemeProvider } from "./AppThemeProvider";
 export { default as CircularProgress } from "./CircularProgress";
@@ -45,6 +44,7 @@ export { default as Code } from "./Code";
 export { default as Loader } from "./Loader";
 export { default as Preferences } from "./Preferences";
 export { default as ResetStyles } from "./ResetStyles";
+export { default as SearchBox } from "./SearchBox";
 export { default as ThemeProvider } from "./ThemeProvider";
 export { default as ThemeStyles } from "./ThemeStyles";
 export { default as SensuLogo } from "./SensuLogo";
