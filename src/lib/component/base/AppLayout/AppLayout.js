@@ -13,7 +13,6 @@ const styles = theme => ({
   root: {
     flex: 1,
     display: "flex",
-    flexDirection: "column",
     alignItems: "stretch",
     paddingLeft: "env(safe-area-inset-left)",
     paddingRight: "env(safe-area-inset-right)",
@@ -50,6 +49,8 @@ const styles = theme => ({
       display: "flex",
     },
   },
+
+  drawer: { width: "280px" },
 
   topBar: {
     position: "relative",
@@ -91,10 +92,6 @@ const styles = theme => ({
     [theme.breakpoints.up("md")]: {
       // align with quick nav container
       paddingTop: 24,
-
-      // add gutters for quick nav and any floating actions.
-      paddingLeft: 80,
-      paddingRight: 80,
     },
   },
 
@@ -158,17 +155,13 @@ class AppLayout extends React.PureComponent {
       <Context.Provider value={this.state}>
         <div className={classes.root}>
           <div className={classes.topBarContainer}>
-            <ResizeObserver onResize={this.handleTopBarResize} />
+            {/* <ResizeObserver onResize={this.handleTopBarResize} /> */}
             <div className={classes.topBar}>{topBar}</div>
             <div className={classes.banner}>
               <BannerWell />
             </div>
-            {!fullWidth && (
-              <div className={classes.quickNavContainer}>
-                <div className={classes.quickNav}>{quickNav}</div>
-              </div>
-            )}
           </div>
+          <div className={classes.drawer}>{quickNav}</div>
           <div style={{ height: contentOffset }} />
           <div className={classes.contentContainer}>
             <div

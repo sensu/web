@@ -75,11 +75,16 @@ class Drawer extends React.Component {
     classes: PropTypes.object.isRequired,
     namespace: PropTypes.object,
     onToggle: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
+    open: PropTypes.bool,
     loading: PropTypes.bool,
   };
 
-  static defaultProps = { loading: false, viewer: null, namespace: null };
+  static defaultProps = {
+    loading: false,
+    open: true,
+    viewer: null,
+    namespace: null,
+  };
 
   static fragments = {
     namespace: gql`
@@ -99,11 +104,11 @@ class Drawer extends React.Component {
     const { client, loading, namespace, open, onToggle, classes } = this.props;
     const { preferencesOpen } = this.state;
 
+    // TODO: if used in top bar, temporary and open=open
     return (
       <MaterialDrawer
-        variant="temporary"
+        variant="permanent"
         className={classes.drawer}
-        open={open}
         onClose={onToggle}
       >
         <Loader passhrough loading={loading}>

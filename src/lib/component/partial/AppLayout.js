@@ -7,7 +7,7 @@ import { FailedError } from "/lib/error/FetchError";
 import { Query } from "/lib/component/util";
 import { AppLayout as BaseAppLayout, Loader } from "/lib/component/base";
 
-import QuickNav from "/lib/component/partial/QuickNav";
+import Drawer from "/lib/component/partial/Drawer";
 import AppBar from "/lib/component/partial/AppBar";
 
 class AppLayout extends React.PureComponent {
@@ -22,6 +22,8 @@ class AppLayout extends React.PureComponent {
     children: undefined,
   };
 
+  state = { showBar: false };
+
   static query = gql`
     query AppLayoutQuery($namespace: String!) {
       namespace(name: $namespace) {
@@ -31,6 +33,15 @@ class AppLayout extends React.PureComponent {
 
     ${AppBar.fragments.namespace}
   `;
+
+  componentDidMount() {
+    window.addEventListener("resize", this.resize.bind(this));
+    this.resize();
+  }
+
+  resize() {
+    this.setState({ showBar: window.innerWidth <= 400 });
+  }
 
   render() {
     const { namespace: namespaceParam, fullWidth, children } = this.props;
@@ -47,25 +58,33 @@ class AppLayout extends React.PureComponent {
           throw error;
         }}
       >
-        {({ data = {}, loading, aborted }) => (
-          <Loader loading={loading}>
-            <BaseAppLayout
-              fullWidth={fullWidth}
-              topBar={
-                <AppBar
-                  loading={loading || aborted}
-                  namespace={data.namespace}
-                />
-              }
-              quickNav={
-                <QuickNav
-                  namespace={data.namespace ? data.namespace.name : undefined}
-                />
-              }
-              content={children}
-            />
-          </Loader>
-        )}
+        {({ data = {}, loading, aborted }) => {
+          console.log(data.namespace);
+          return (
+            <Loader loading={loading}>
+              <BaseAppLayout
+                fullWidth={fullWidth}
+                topBar={
+                  this.state.showBar && (
+                    <AppBar
+                      loading={loading || aborted}
+                      namespace={data.namespace}
+                    />
+                  )
+                }
+                quickNav={
+                  <Drawer
+                    loading={loading}
+                    open={true}
+                    onToggle={() => {}}
+                    namespace={data.namespace}
+                  />
+                }
+                content={children}
+              />
+            </Loader>
+          );
+        }}
       </Query>
     );
   }
