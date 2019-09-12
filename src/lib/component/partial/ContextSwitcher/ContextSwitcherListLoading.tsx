@@ -1,80 +1,73 @@
 import React from "react";
-import { Box, List, ListSubheader } from "/vendor/@material-ui/core";
+import { List, ListSubheader } from "/vendor/@material-ui/core";
+import { Skeleton } from "/lib/component/base";
 import ContextSwitcherListItem from "./ContextSwitcherListItem";
 
-interface GlowTypographyProps {
-  children: string;
+interface Props {
+  dense: boolean;
 }
 
-const GlowTypography = ({ children }: GlowTypographyProps) => {
-  return (
-    <Box
-      clone
-      bgcolor="text.primary"
-      style={{
-        color: "transparent",
-        cursor: "progress",
-        opacity: 0.25,
-        userSelect: "none",
-      }}
-    >
-      <span>{children}</span>
-    </Box>
-  );
-};
-
-const GlowIcon = () => {
-  return (
-    <Box
-      bgcolor="text.primary"
-      style={{
-        cursor: "progress",
-        opacity: 0.25,
-        userSelect: "none",
-        width: 24,
-        height: 24,
-      }}
-    />
-  );
-};
-
-const ContextSwitcherListLoading = () => {
+const ContextSwitcherListLoading = ({ dense }: Props) => {
   return (
     <React.Fragment>
       <List
         subheader={
           <ListSubheader>
-            <GlowTypography>my-local-cluster</GlowTypography>
+            <Skeleton variant="text">my-local-cluster</Skeleton>
           </ListSubheader>
         }
       >
         <ContextSwitcherListItem
-          icon={<GlowIcon />}
-          name={<GlowTypography>namesace-xxx-yyy</GlowTypography>}
-          decoration={<GlowIcon />}
+          icon={<Skeleton variant="icon" />}
+          primary={<Skeleton variant="text">namesace-xxx-yyy</Skeleton>}
+          decoration={<Skeleton variant="icon" />}
+          dense={dense}
         />
         <ContextSwitcherListItem
-          icon={<GlowIcon />}
-          name={<GlowTypography>namesace-z</GlowTypography>}
-          decoration={<GlowIcon />}
+          icon={<Skeleton variant="icon" />}
+          primary={<Skeleton variant="text">namesace-z</Skeleton>}
+          decoration={<Skeleton variant="icon" />}
+          dense={dense}
         />
         <ContextSwitcherListItem
-          icon={<GlowIcon />}
-          name={<GlowTypography>namesace-xyz-0</GlowTypography>}
-          decoration={<GlowIcon />}
+          icon={<Skeleton variant="icon" />}
+          primary={<Skeleton variant="text">namesace-xyz-0</Skeleton>}
+          decoration={<Skeleton variant="icon" />}
+          dense={dense}
         />
       </List>
       <List
         subheader={
           <ListSubheader>
-            <GlowTypography>some-other-cluster</GlowTypography>
+            <Skeleton variant="text">some-other-cluster</Skeleton>
           </ListSubheader>
         }
       >
         <ContextSwitcherListItem
-          icon={<GlowIcon />}
-          name={<GlowTypography>namesace-xxx-yyy</GlowTypography>}
-          decoration={<GlowIcon />}
+          icon={<Skeleton variant="icon" />}
+          primary={<Skeleton variant="text">namesace-xxx-yyy</Skeleton>}
+          decoration={<Skeleton variant="icon" />}
+          dense={dense}
+        />
+      </List>
+      <List
+        subheader={
+          <ListSubheader>
+            <Skeleton variant="text">third-cluster</Skeleton>
+          </ListSubheader>
+        }
+      >
+        <ContextSwitcherListItem
+          icon={<Skeleton variant="icon" />}
+          primary={<Skeleton variant="text">namesace-z</Skeleton>}
+          decoration={<Skeleton variant="icon" />}
+          dense={dense}
+        />
+        <ContextSwitcherListItem
+          icon={<Skeleton variant="icon" />}
+          primary={<Skeleton variant="text">namesace-xyz-0</Skeleton>}
+          decoration={<Skeleton variant="icon" />}
+          dense={dense}
         />
       </List>
     </React.Fragment>

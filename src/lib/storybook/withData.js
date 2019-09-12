@@ -1638,13 +1638,13 @@ const mnemonicWords = [
   "yes",
 ];
 
-const getRandom = (min: number, max: number, seed?: string): number => {
+const getRandom = (min, max, seed) => {
   return Math.floor(random(seed)() * (max - min)) + min;
 };
 
-export const getName = (seed?: string, separator = "-") => {
+export const getName = (seed, separator = "-") => {
   const numWords = getRandom(1, 3, seed);
-  const words = times(numWords).map((i: number) => {
+  const words = times(numWords).map((i) => {
     const idx = getRandom(0, mnemonicWords.length, `${seed}.${i}`);
     return mnemonicWords[idx];
   });

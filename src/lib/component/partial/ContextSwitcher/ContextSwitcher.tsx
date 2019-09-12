@@ -11,10 +11,6 @@ import Fuse from "fuse.js";
 
 import ContextSwitcherList from "./ContextSwitcherList";
 
-interface Cluster {
-  name: string;
-}
-
 interface Namespace {
   name: string;
   clusters: string[];
@@ -24,13 +20,11 @@ interface Props {
   loading: boolean;
   dense?: boolean;
   hideKeyHints?: boolean;
-  clusters?: Cluster[];
   namespaces: Namespace[];
   onClose?: () => void;
 }
 
 const ContextSwitcher = ({
-  clusters = [],
   namespaces = [],
   dense = false,
   loading = false,
@@ -44,23 +38,6 @@ const ContextSwitcher = ({
       setFilterValue(ev.currentTarget.value),
     [setFilterValue],
   );
-
-  // Filter given collection of clusters using bitap fuzzy search. When
-  // compared to matching of namespaces, cluster matches are more stringent
-  // requiring a closer match.
-  const clusterSearchResults = useMemo(() => {
-    if (filterValue === "") {
-      return [];
-    }
-
-    const fuse = new Fuse<Cluster>(clusters, {
-      keys: ["name"],
-      shouldSort: true,
-      threshold: 0.2,
-      distance: 32,
-    });
-    return fuse.search(filterValue.slice(0, 12));
-  }, [clusters, filterValue]);
 
   // Filter given collection of namespaces.
   const namespaceSearchResults = useMemo(() => {
@@ -107,7 +84,6 @@ const ContextSwitcher = ({
 
       <Box flex="1 1 auto" overflow="auto">
         <ContextSwitcherList
-          clusters={clusterSearchResults}
           dense={dense}
           loading={loading}
           namespaces={namespaceSearchResults}

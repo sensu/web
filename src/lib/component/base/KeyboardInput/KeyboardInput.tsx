@@ -13,7 +13,7 @@ const KeyboardInput = styled("kbd")(
       border: `1px solid ${emphasize(bgColor, 0.2)}`,
       boxShadow:
         "0 1px 1px rgba(0, 0, 0, .2), 0 1px 0 0 rgba(255, 255, 255, .7) inset",
-      // tslint:disable-next-line
+      // @ts-ignore: we do not current have a type for additional properties our theme adds.
       fontFamily: theme.typography.monospace.fontFamily,
       fontWeight: 600,
       fontSize: "0.825em",

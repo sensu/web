@@ -14,13 +14,20 @@ interface Props {
 const IconValues = Object.values(Icon);
 const ColourValues = Object.values(Colour);
 
+const hashStr = (str: string) => {
+  const md5 = new Md5();
+  const result = md5
+    .start()
+    .appendStr(str)
+    .end(true);
+
+  return result as Int32Array;
+};
+
 const NamespaceIcon = (props: Props) => {
   const { namespace, ...other } = props;
   const name = namespace ? namespace.name : "";
-
-  // TODO:
-  // const hash = useMemo(() => Md5.hashStr(name, true) as Int32Array, [name]);
-  const hash = Md5.hashStr(name, true) as Int32Array;
+  const hash = useMemo(() => hashStr(name), [name]);
 
   return (
     <PureIcon

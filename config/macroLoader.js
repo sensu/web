@@ -2,7 +2,7 @@ const loaderUtils = require("loader-utils");
 const path = require("path");
 
 module.exports = {
-  default: (content) => {
+  default(content) {
     const context = this;
     const options = loaderUtils.getOptions(context);
 

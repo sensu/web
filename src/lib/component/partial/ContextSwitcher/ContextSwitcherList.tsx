@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { List } from "/vendor/@material-ui/core";
-import { ChevronIcon, ClusterIcon } from "/lib/component/icon";
+import { ChevronIcon } from "/lib/component/icon";
 import { NamespaceIcon } from "/lib/component/partial";
 
 import ContextSwitcherListHeader from "./ContextSwitcherListHeader";
@@ -15,9 +15,6 @@ interface NamespaceGroup {
 }
 
 interface Props {
-  clusters: {
-    name: string;
-  }[];
   namespaces: {
     name: string;
     clusters?: string[];
@@ -28,7 +25,6 @@ interface Props {
 }
 
 const ContextSwitcherList = ({
-  clusters,
   dense,
   loading,
   namespaces,
@@ -50,18 +46,17 @@ const ContextSwitcherList = ({
   }
 
   // Find total length of the list
-  const namespaceLen = Object.keys(groups).reduce(
+  const totalLen = Object.keys(groups).reduce(
     (acc, key) => acc + groups[key].length,
     0,
   );
-  const totalLen = namespaceLen + clusters.length;
 
   // Handle current position in the collection
   const [idx, setIdx] = useState(0);
   useEffect(() => {
     const onKeyPress = (ev: KeyboardEvent) => {
       if (ev.code === "Tab" || ev.code === "ArrowDown") {
-        setIdx(Math.min(idx, totalLen - 1) + 1);
+        setIdx(Math.min(idx + 1, totalLen));
         ev.preventDefault();
       }
 
@@ -89,10 +84,10 @@ const ContextSwitcherList = ({
   const onFocus = (i: number) => () => setIdx(i);
 
   if (loading) {
-    return <ContextSwitcherListLoading />;
+    return <ContextSwitcherListLoading dense={dense} />;
   }
 
-  if (clusters.length === 0 && namespaces.length === 0) {
+  if (namespaces.length === 0) {
     if (filtered) {
       return <ContextSwitcherListEmpty />;
     }
@@ -102,26 +97,6 @@ const ContextSwitcherList = ({
   let i = -1;
   return (
     <List disablePadding dense={dense}>
-      {clusters.length > 0 && (
-        <React.Fragment>
-          <ContextSwitcherListHeader>Clusters</ContextSwitcherListHeader>
-
-          {clusters.map(({ name }) => {
-            i++;
-
-            return (
-              <ContextSwitcherListItem
-                key={name}
-                name={name}
-                icon={<ClusterIcon />}
-                decoration={<ChevronIcon direction="right" />}
-                selected={i === selected}
-                onMouseEnter={onFocus(i)}
-              />
-            );
-          })}
-        </React.Fragment>
-      )}
       {clusterNames.map((cluster) => (
         <React.Fragment key={cluster}>
           <ContextSwitcherListHeader>{cluster}</ContextSwitcherListHeader>
@@ -133,7 +108,7 @@ const ContextSwitcherList = ({
               <ContextSwitcherListItem
                 key={name}
                 icon={<NamespaceIcon namespace={{ name }} />}
-                name={name}
+                primary={name}
                 decoration={<ChevronIcon direction="right" />}
                 selected={i === selected}
                 onMouseEnter={onFocus(i)}

@@ -3,7 +3,7 @@ import times from "lodash/times";
 
 import { storiesOf } from "@storybook/react";
 import { withKnobs, boolean, number, text } from "@storybook/addon-knobs";
-import { getName }from "/lib/storybook/withData";
+import { getName } from "/lib/storybook/withData";
 import withTheme from "/lib/storybook/withTheme";
 
 import { Dialog, Fade } from "/vendor/@material-ui/core";
@@ -14,7 +14,10 @@ const FadeIn = props => <Fade in {...props} />;
 const stories = storiesOf("lib/partial|ContextSwitcher", module)
   .addDecorator(withKnobs)
   .addDecorator(fn => {
+    const touch = boolean("touch", false);
     const fullScreen = boolean("fullscreen", false);
+    const dense = !touch;
+    const hideKeyHints = touch;
 
     return (
       <Dialog
@@ -32,18 +35,19 @@ const stories = storiesOf("lib/partial|ContextSwitcher", module)
             : {},
         }}
       >
-        {fn()}
+        {fn({ props: { dense, hideKeyHints } })}
       </Dialog>
     );
   })
   .addDecorator(withTheme);
 
-stories.add("loading", () => <ContextSwitcher loading />);
+stories.add("loading", ({ props }) => <ContextSwitcher {...props} loading />);
 
-stories.add("empty", () => <ContextSwitcher />);
+stories.add("empty", ({ props }) => <ContextSwitcher {...props} />);
 
-stories.add("no clusters", () => (
+stories.add("no clusters", ({ props }) => (
   <ContextSwitcher
+    {...props}
     namespaces={[
       { name: "sensu" },
       { name: "sensu-demo" },
@@ -54,19 +58,22 @@ stories.add("no clusters", () => (
   />
 ));
 
-stories.add("no clusters; many namespaces", () => {
+stories.add("no clusters; many namespaces", ({ props }) => {
   const num = number("number of records", 50);
   const seed = text("random number generator seed", "15158");
 
-  const names = useMemo(
-    () => times(num).map(i => getName(`${seed}${i}`)),
-    [num, seed],
+  const names = useMemo(() => times(num).map(i => getName(`${seed}${i}`)), [
+    num,
+    seed,
+  ]);
+  return (
+    <ContextSwitcher {...props} namespaces={names.map(name => ({ name }))} />
   );
-  return <ContextSwitcher namespaces={names.map(name => ({ name }))} />;
 });
 
-stories.add("one cluster", () => (
+stories.add("one cluster", ({ props }) => (
   <ContextSwitcher
+    {...props}
     clusters={[{ name: "cluster-xx-yyy-z" }]}
     namespaces={[
       { name: "sensu", clusters: ["cluster-xx-yyy-z"] },
@@ -78,8 +85,9 @@ stories.add("one cluster", () => (
   />
 ));
 
-stories.add("many clusters", () => (
+stories.add("many clusters", ({ props }) => (
   <ContextSwitcher
+    {...props}
     clusters={[
       { name: "0b1f3e8-f8e" },
       { name: "88eb1f-e33-0" },
