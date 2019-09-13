@@ -72,6 +72,11 @@ const EventsList = ({
 
   const executeCheck = events => {
     events.forEach(({ check, entity }) => {
+      // Avoid attempting to execute a keepalive
+      if (check.name === "keepalive") {
+        return;
+      }
+
       // Unless this is a proxy entity target the specific entity
       let subscriptions = [`entity:${entity.name}`];
       if (check.proxyEntityName === entity.name) {
