@@ -31,6 +31,9 @@ import DrawerButton from "/lib/component/partial/DrawerButton";
 import NamespaceIcon from "/lib/component/partial/NamespaceIcon";
 import NamespaceSelector from "/lib/component/partial/NamespaceSelector";
 
+// Forum for feedback, features, et al.
+const feedbackUrl = "https://discourse.sensu.io/c/sensu-go/l/latest";
+
 const styles = theme => ({
   paper: {
     minWidth: 264,
@@ -168,7 +171,7 @@ class Drawer extends React.Component {
                 Icon={FeedbackIcon}
                 primary={<Typography color="textPrimary">Feedback</Typography>}
                 component="a"
-                href="https://github.com/sensu/sensu-go/issues"
+                href={feedbackUrl}
               />
               <DrawerButton
                 Icon={LogoutIcon}
