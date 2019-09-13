@@ -1,21 +1,8 @@
-import React, { useState, useEffect } from "/vendor/react";
+import React from "/vendor/react";
 import gql from "/vendor/graphql-tag";
 
-import { useQuery } from "/lib/component/util";
+import { useSystemColorSchemePreference, useQuery } from "/lib/component/util";
 import ThemeProvider from "/lib/component/base/ThemeProvider";
-
-const useSystemColorSchemePreference = () => {
-  const queryList = window.matchMedia("(prefers-color-scheme: dark)");
-  const [pref, setPref] = useState(queryList.matches);
-  const toggle = (ev: MediaQueryListEvent) => setPref(ev.matches);
-
-  useEffect(() => {
-    queryList.addListener(toggle);
-    return () => queryList.removeListener(toggle);
-  });
-
-  return pref;
-};
 
 const query = gql`
   query ThemeProviderQuery {
