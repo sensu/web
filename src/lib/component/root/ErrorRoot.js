@@ -119,9 +119,24 @@ ${"```"}`
     <ErrorDialog
       open
       actions={
-        <Button onClick={() => window.location.reload()} color="primary">
-          Reload
-        </Button>
+        <React.Fragment>
+          <Button
+            color="primary"
+            onClick={() => {
+              window.localStorage && window.localStorage.clear();
+              window.location.replace("/");
+            }}
+          >
+            {`Clear State & Reload`}
+          </Button>
+          <Button
+            color="primary"
+            variant="outlined"
+            onClick={() => window.location.reload()}
+          >
+            Reload
+          </Button>
+        </React.Fragment>
       }
     >
       <Typography variant="body2">
@@ -129,7 +144,7 @@ ${"```"}`
         <br />
         <br />
         Please{" "}
-        <Link component="a" href={issueURL}>
+        <Link component="a" href={issueURL} target="_blank">
           submit an issue
         </Link>{" "}
         to help resolve this problem.
