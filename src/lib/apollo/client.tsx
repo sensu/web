@@ -132,7 +132,7 @@ const createClient = ({
     gql`
       query SyncThemeQuery {
         theme @client {
-          theme
+          value
           dark
         }
       }

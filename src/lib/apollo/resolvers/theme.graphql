@@ -1,6 +1,12 @@
+enum ThemeDarkModeValue {
+  DARK
+  LIGHT
+  UNSET
+}
+
 type Theme {
-  theme: String!
-  dark: Boolean!
+  value: String!
+  dark: ThemeDarkModeValue!
 }
 
 extend type Query {
@@ -11,5 +17,5 @@ extend type Mutation {
   #
   # Theme
   setTheme(theme: String!): Boolean
-  toggleDark: Boolean
+  enableDarkMode(value: Boolean!): Boolean
 }
