@@ -1,19 +1,9 @@
-import gql from "/vendor/graphql-tag";
-
-const query = gql`
-  query ThemeQuery {
-    theme @client {
-      dark
-    }
-  }
-`;
-
 export default {
   defaults: {
     theme: {
       __typename: "Theme",
-      dark: false,
-      theme: "sensu",
+      value: "sensu",
+      dark: "UNSET",
     },
   },
   resolvers: {
@@ -22,7 +12,7 @@ export default {
         const data = {
           theme: {
             __typename: "Theme",
-            theme,
+            value: theme,
           },
         };
         cache.writeData({ data });
@@ -30,13 +20,11 @@ export default {
         return null;
       },
 
-      toggleDark: (_, __, { cache }) => {
-        const result = cache.readQuery({ query });
-
+      enableDarkMode: (_, { value }, { cache }) => {
         const data = {
           theme: {
             __typename: "Theme",
-            dark: !result.theme.dark,
+            dark: value ? "DARK" : "LIGHT",
           },
         };
         cache.writeData({ data });
