@@ -41,6 +41,7 @@ class SilenceEntryForm extends React.PureComponent {
     values: PropTypes.object.isRequired,
     onCreateSilence: PropTypes.func.isRequired,
     onCreateSilenceSuccess: PropTypes.func.isRequired,
+    onCreateSilenceFailure: PropTypes.func.isRequired,
     onSubmitSuccess: PropTypes.func.isRequired,
     children: PropTypes.func.isRequired,
   };
@@ -48,7 +49,7 @@ class SilenceEntryForm extends React.PureComponent {
   formRef = React.createRef();
 
   _handleSubmit = values => {
-    const { onCreateSilence, onCreateSilenceSuccess } = this.props;
+    const { onCreateSilence, onCreateSilenceSuccess, onCreateSilenceFailure } = this.props;
     const { targets, ...rest } = values;
 
     // To avoid redundant logic between singular and bulk bulk creation,
@@ -61,12 +62,22 @@ class SilenceEntryForm extends React.PureComponent {
       const failedTagets = [];
       const succeededTargets = [];
       const errors = [];
+      const failures = [];
 
       // Separate the individual results into sets of failed and succeeded.
       results.forEach((targetResult, i) => {
         if (targetResult.errors) {
           errors.push(parseValidationErrors(targetResult.errors));
           failedTagets.push(currentTargets[i]);
+
+          // Find any errors returned from the GraphQL service that may not be
+          // fixed by the user changing input. Eg. Unauthorized errors.
+          failures.push(...targetResult.errors.reduce((acc, err) => {
+            if (err.code === "VALIDATION_UNIQUE_CONSTRAINT") {
+              return acc;
+            }
+            return [...acc, err];
+          }, []))
         } else {
           succeededTargets.push(targetResult);
         }
@@ -76,6 +87,11 @@ class SilenceEntryForm extends React.PureComponent {
         // The success callback may be called while other targets have failed
         // during bulk creation.
         onCreateSilenceSuccess(succeededTargets);
+      }
+
+      if (failures.length) {
+        onCreateSilenceFailure(failures[0]);
+        return;
       }
 
       if (failedTagets.length === 1) {

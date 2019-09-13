@@ -62,6 +62,25 @@ export default (client, input) =>
         };
       }
 
+      if (
+        isApolloError(error) &&
+        /request unauthorized/.test(error.message)
+      ) {
+        return {
+          data: {
+            createSilence: {
+              silence: null,
+              errors: [
+                {
+                  code: "ERR_PERMISSION_DENIED",
+                  message: error.message,
+                },
+              ],
+            },
+          },
+        };
+      }
+
       throw error.networkError || error;
     })
     .then(result => result.data.createSilence);
