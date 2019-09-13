@@ -76,6 +76,14 @@ class AppBar extends React.Component {
   render() {
     const { namespace, loading, classes } = this.props;
 
+    // If we aren't in the context of a valid namespace and not currently
+    // loading, default to having the having the drawer open so that the
+    // context switcher is available.
+    const drawerOpen = (
+      this.state.drawerOpen
+      || (!loading && namespace === null)
+    );
+
     return (
       <React.Fragment>
         <MUIAppBar className={classes.appBar} position="static">
@@ -103,7 +111,7 @@ class AppBar extends React.Component {
         </MUIAppBar>
         <Drawer
           loading={loading}
-          open={this.state.drawerOpen}
+          open={drawerOpen}
           onToggle={this.handleToggleDrawer}
           namespace={namespace}
           className={classes.drawer}
