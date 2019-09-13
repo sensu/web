@@ -81,8 +81,6 @@ const Preferences = props => {
     setAnchorEl(null);
   };
 
-  console.info({ data });
-
   return (
     <Dialog
       open={open}
