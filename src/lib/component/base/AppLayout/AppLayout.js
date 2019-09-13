@@ -50,8 +50,6 @@ const styles = theme => ({
     },
   },
 
-  drawer: { width: "280px" },
-
   topBar: {
     position: "relative",
     zIndex: 1,
@@ -119,7 +117,7 @@ class AppLayout extends React.PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     topBar: PropTypes.node,
-    quickNav: PropTypes.node,
+    drawer: PropTypes.node,
     content: PropTypes.node,
     fullWidth: PropTypes.bool,
   };
@@ -144,7 +142,7 @@ class AppLayout extends React.PureComponent {
   };
 
   render() {
-    const { classes, topBar, quickNav, content, fullWidth } = this.props;
+    const { classes, topBar, drawer, content, fullWidth } = this.props;
 
     const contentOffset =
       CSS && CSS.supports && CSS.supports("position: sticky")
@@ -161,7 +159,7 @@ class AppLayout extends React.PureComponent {
               <BannerWell />
             </div>
           </div>
-          <div className={classes.drawer}>{quickNav}</div>
+          {drawer}
           <div style={{ height: contentOffset }} />
           <div className={classes.contentContainer}>
             <div

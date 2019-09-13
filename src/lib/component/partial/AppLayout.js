@@ -22,7 +22,7 @@ class AppLayout extends React.PureComponent {
     children: undefined,
   };
 
-  state = { showBar: false };
+  state = { showBar: false, open: null };
 
   static query = gql`
     query AppLayoutQuery($namespace: String!) {
@@ -59,7 +59,6 @@ class AppLayout extends React.PureComponent {
         }}
       >
         {({ data = {}, loading, aborted }) => {
-          console.log(data.namespace);
           return (
             <Loader loading={loading}>
               <BaseAppLayout
@@ -72,11 +71,14 @@ class AppLayout extends React.PureComponent {
                     />
                   )
                 }
-                quickNav={
+                drawer={
                   <Drawer
+                    variant="large"
                     loading={loading}
-                    open={true}
-                    onToggle={() => {}}
+                    open={this.state.open}
+                    onToggle={() => {
+                      this.setState({ open: false });
+                    }}
                     namespace={data.namespace}
                   />
                 }

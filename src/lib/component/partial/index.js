@@ -18,7 +18,7 @@ export {
 export { default as ConfirmDelete } from "./ConfirmDelete";
 export { default as CronDescriptor } from "./CronDescriptor";
 export { default as Drawer } from "./Drawer";
-export { default as DrawerButton } from "./DrawerButton";
+export { default as DrawerButton } from "./Drawer/DrawerButton";
 export { default as EntitiesList, EntitiesListToolbar } from "./EntitiesList";
 export { default as EntityDetailsContainer } from "./EntityDetailsContainer";
 export { default as EntityStatusDescriptor } from "./EntityStatusDescriptor";
@@ -53,7 +53,7 @@ export { default as NamespaceLabel } from "./NamespaceLabel";
 export { default as NamespaceSelector } from "./NamespaceSelector";
 export { default as NotFound } from "./NotFound";
 export { default as Pagination } from "./Pagination";
-export { default as QuickNav } from "./QuickNav";
+export { default as QuickNav } from "./Drawer/QuickNav";
 export { default as RelatedEntitiesCard } from "./RelatedEntitiesCard";
 export { default as ResetAdornment } from "./ResetAdornment";
 export { default as ResourceDetails } from "./ResourceDetails";
