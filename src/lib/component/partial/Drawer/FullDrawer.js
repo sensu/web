@@ -98,17 +98,20 @@ class FullDrawer extends React.Component {
     preferencesOpen: false,
   };
 
+  collapse = () => {
+    this.props.onToggle(false);
+  };
+
   render() {
-    const { client, loading, namespace, open, onToggle, classes } = this.props;
+    const { client, loading, namespace, classes } = this.props;
     const { preferencesOpen } = this.state;
 
-    // TODO: if used in top bar, temporary and open=open
     return (
       <div className={classes.drawer}>
         <MaterialDrawer
           variant="permanent"
           className={classes.drawer}
-          onClose={onToggle}
+          onClose={this.collapse}
         >
           <Loader passhrough loading={loading}>
             <div className={classes.paper}>
@@ -116,7 +119,7 @@ class FullDrawer extends React.Component {
                 <div className={classes.header}>
                   <div className={classes.row}>
                     <IconButton
-                      onClick={onToggle}
+                      onClick={this.collapse}
                       className={classes.hamburgerButton}
                     >
                       <MenuIcon />
@@ -138,7 +141,7 @@ class FullDrawer extends React.Component {
                     <NamespaceSelector
                       namespace={namespace}
                       className={classes.namespaceSelector}
-                      onChange={onToggle}
+                      onChange={this.collapse}
                     />
                   </div>
                 </div>
@@ -155,7 +158,7 @@ class FullDrawer extends React.Component {
                           <Typography color="textPrimary">{caption}</Typography>
                         }
                         component={Link}
-                        onClick={onToggle}
+                        onClick={this.collapse}
                         to={to}
                       />
                     ))}
@@ -183,7 +186,7 @@ class FullDrawer extends React.Component {
                   Icon={LogoutIcon}
                   primary="Sign out"
                   onClick={() => {
-                    onToggle();
+                    this.collapse();
                     invalidateTokens(client);
                   }}
                 />

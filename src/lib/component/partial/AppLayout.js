@@ -22,7 +22,7 @@ class AppLayout extends React.PureComponent {
     children: undefined,
   };
 
-  state = { showBar: false, open: null };
+  state = { showBar: false, fullDrawer: true };
 
   static query = gql`
     query AppLayoutQuery($namespace: String!) {
@@ -40,7 +40,10 @@ class AppLayout extends React.PureComponent {
   }
 
   resize() {
-    this.setState({ showBar: window.innerWidth <= 400 });
+    this.setState({
+      showBar: window.innerWidth <= 400,
+      fullDrawer: window.innerWidth >= 700,
+    });
   }
 
   render() {
@@ -73,12 +76,8 @@ class AppLayout extends React.PureComponent {
                 }
                 drawer={
                   <Drawer
-                    variant="large"
+                    variant={this.state.fullDrawer ? "large" : "small"}
                     loading={loading}
-                    open={this.state.open}
-                    onToggle={() => {
-                      this.setState({ open: false });
-                    }}
                     namespace={data.namespace}
                   />
                 }

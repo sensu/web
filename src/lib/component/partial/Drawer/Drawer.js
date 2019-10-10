@@ -17,10 +17,10 @@ class Drawer extends React.Component {
     classes: PropTypes.object.isRequired,
     variant: PropTypes.string.isRequired,
     loading: PropTypes.bool.isRequired,
-    open: PropTypes.bool.isRequired,
-    onToggle: PropTypes.func.isRequired,
     namespace: PropTypes.object.isRequired,
   };
+
+  state = { forceExpand: null };
 
   static fragments = {
     namespace: gql`
@@ -32,20 +32,45 @@ class Drawer extends React.Component {
     `,
   };
 
-  render() {
-    const { classes, variant, loading, open, onToggle, namespace } = this.props;
+  onToggle = value => {
+    this.setState({ forceExpand: value });
+  };
 
-    return variant === "large" ? (
+  fullDrawer = () => {
+    return (
       <FullDrawer
-        className={classes.large}
-        loading={loading}
-        open={open}
-        onToggle={onToggle}
-        namespace={namespace}
+        className={this.props.classes.large}
+        loading={this.props.loading}
+        namespace={this.props.namespace}
+        onToggle={this.onToggle}
       />
-    ) : (
-      <QuickNav className={classes.small} />
     );
+  };
+
+  smallDrawer = () => {
+    return (
+      <QuickNav onToggle={this.onToggle} className={this.props.classes.small} />
+    );
+  };
+
+  render() {
+    const { variant } = this.props;
+
+    // check if the user has set a preference
+    // TODO this is lost on refresh
+    if (this.state.forceExpand === true) {
+      return this.fullDrawer();
+    }
+    if (this.state.forceExpand === false) {
+      return this.smallDrawer();
+    }
+
+    // return a drawer depending on resolution
+    if (variant === "large") {
+      return this.fullDrawer();
+    } else {
+      return this.smallDrawer();
+    }
   }
 }
 export default withStyles(styles)(Drawer);
