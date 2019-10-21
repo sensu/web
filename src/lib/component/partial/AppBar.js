@@ -70,6 +70,7 @@ class AppBar extends React.Component {
   };
 
   handleToggleDrawer = () => {
+    console.log(this.state);
     this.setState(state => ({ drawerOpen: !state.drawerOpen }));
   };
 
@@ -110,9 +111,11 @@ class AppBar extends React.Component {
           </div>
         </MUIAppBar>
         <Drawer
+          variant="large"
           loading={loading}
           open={drawerOpen}
           onToggle={this.handleToggleDrawer}
+          mobile={true}
           namespace={namespace}
           className={classes.drawer}
         />

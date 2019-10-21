@@ -74,12 +74,14 @@ class FullDrawer extends React.Component {
     namespace: PropTypes.object,
     onToggle: PropTypes.func.isRequired,
     open: PropTypes.bool,
+    mobile: PropTypes.bool,
     loading: PropTypes.bool,
   };
 
   static defaultProps = {
     loading: false,
     open: true,
+    mobile: false,
     viewer: null,
     namespace: null,
   };
@@ -103,13 +105,14 @@ class FullDrawer extends React.Component {
   };
 
   render() {
-    const { client, loading, namespace, classes } = this.props;
+    const { client, loading, namespace, open, mobile, classes } = this.props;
     const { preferencesOpen } = this.state;
 
     return (
       <div className={classes.drawer}>
         <MaterialDrawer
-          variant="permanent"
+          open={open}
+          variant={mobile ? "temporary" : "permanent"}
           className={classes.drawer}
           onClose={this.collapse}
         >

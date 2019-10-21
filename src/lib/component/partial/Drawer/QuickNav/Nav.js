@@ -2,9 +2,9 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 
 import { WithNavigation } from "/lib/component/util";
-import { ButtonIcon } from "/lib/component/base";
+import { IconButton } from "/vendor/@material-ui/core";
 
-import Expand from "@material-ui/icons/KeyboardArrowRight";
+import { MenuIcon } from "/lib/component/icon";
 import Button from "./Button";
 
 class QuickNav extends React.Component {
@@ -24,9 +24,9 @@ class QuickNav extends React.Component {
 
     return (
       <div>
-        <ButtonIcon onClick={this.expand}>
-          <Expand />
-        </ButtonIcon>
+        <IconButton aria-label="Menu" onClick={this.expand}>
+          <MenuIcon />
+        </IconButton>
         <WithNavigation>
           {links => (
             <div className={className}>

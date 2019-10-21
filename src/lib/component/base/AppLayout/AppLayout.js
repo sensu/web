@@ -11,12 +11,14 @@ import Context from "./Context";
 
 const styles = theme => ({
   root: {
-    flex: 1,
-    display: "flex",
-    alignItems: "stretch",
     paddingLeft: "env(safe-area-inset-left)",
     paddingRight: "env(safe-area-inset-right)",
+    width: "100%",
   },
+
+  mobile: { display: "block" },
+
+  desktop: { display: "flex", alignItems: "stretch", flex: 1 },
 
   topBarContainer: {
     flex: 0,
@@ -116,6 +118,7 @@ const styles = theme => ({
 class AppLayout extends React.PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    mobile: PropTypes.bool,
     topBar: PropTypes.node,
     drawer: PropTypes.node,
     content: PropTypes.node,
@@ -123,6 +126,7 @@ class AppLayout extends React.PureComponent {
   };
 
   static defaultProps = {
+    mobile: false,
     topBar: undefined,
     quickNav: undefined,
     content: undefined,
@@ -151,7 +155,12 @@ class AppLayout extends React.PureComponent {
 
     return (
       <Context.Provider value={this.state}>
-        <div className={classes.root}>
+        <div
+          className={classnames(
+            classes.root,
+            !this.props.mobile ? classes.desktop : classes.mobile,
+          )}
+        >
           <div className={classes.topBarContainer}>
             {/* <ResizeObserver onResize={this.handleTopBarResize} /> */}
             <div className={classes.topBar}>{topBar}</div>

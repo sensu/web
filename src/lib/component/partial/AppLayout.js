@@ -1,6 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
+import { withStyles } from "/vendor/@material-ui/core";
 
 import { FailedError } from "/lib/error/FetchError";
 
@@ -10,8 +11,14 @@ import { AppLayout as BaseAppLayout, Loader } from "/lib/component/base";
 import Drawer from "/lib/component/partial/Drawer";
 import AppBar from "/lib/component/partial/AppBar";
 
+const styles = () => ({
+  mobile: { display: "block" },
+  desktop: { display: "flex" },
+});
+
 class AppLayout extends React.PureComponent {
   static propTypes = {
+    classes: PropTypes.object.isRequired,
     namespace: PropTypes.string.isRequired,
     fullWidth: PropTypes.bool,
     children: PropTypes.node,
@@ -47,7 +54,12 @@ class AppLayout extends React.PureComponent {
   }
 
   render() {
-    const { namespace: namespaceParam, fullWidth, children } = this.props;
+    const {
+      classes,
+      namespace: namespaceParam,
+      fullWidth,
+      children,
+    } = this.props;
 
     return (
       <Query
@@ -66,6 +78,7 @@ class AppLayout extends React.PureComponent {
             <Loader loading={loading}>
               <BaseAppLayout
                 fullWidth={fullWidth}
+                mobile={this.state.showBar}
                 topBar={
                   this.state.showBar && (
                     <AppBar
@@ -75,11 +88,13 @@ class AppLayout extends React.PureComponent {
                   )
                 }
                 drawer={
-                  <Drawer
-                    variant={this.state.fullDrawer ? "large" : "small"}
-                    loading={loading}
-                    namespace={data.namespace}
-                  />
+                  !this.state.showBar && (
+                    <Drawer
+                      variant={this.state.fullDrawer ? "large" : "small"}
+                      loading={loading}
+                      namespace={data.namespace}
+                    />
+                  )
                 }
                 content={children}
               />
@@ -91,4 +106,4 @@ class AppLayout extends React.PureComponent {
   }
 }
 
-export default AppLayout;
+export default withStyles(styles)(AppLayout);
