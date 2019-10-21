@@ -13,12 +13,17 @@ const styles = theme => ({
   root: {
     paddingLeft: "env(safe-area-inset-left)",
     paddingRight: "env(safe-area-inset-right)",
-    width: "100%",
   },
 
-  mobile: { display: "block" },
+  mobile: {
+    display: "block",
+  },
 
-  desktop: { display: "flex", alignItems: "stretch", flex: 1 },
+  desktop: {
+    display: "flex",
+    alignItems: "stretch",
+    flex: 1,
+  },
 
   topBarContainer: {
     flex: 0,
