@@ -167,7 +167,7 @@ class AppLayout extends React.PureComponent {
           )}
         >
           <div className={classes.topBarContainer}>
-            {/* <ResizeObserver onResize={this.handleTopBarResize} /> */}
+            <ResizeObserver onResize={this.handleTopBarResize} />
             <div className={classes.topBar}>{topBar}</div>
             <div className={classes.banner}>
               <BannerWell />
