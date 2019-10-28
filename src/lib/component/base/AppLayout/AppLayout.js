@@ -4,6 +4,7 @@ import { withStyles } from "/vendor/@material-ui/core";
 import ResizeObserver from "/vendor/react-resize-observer";
 import classnames from "/vendor/classnames";
 
+import Breadcrumbs from "/lib/component/partial/Breadcrumbs";
 import ToastWell from "/lib/component/relocation/ToastWell";
 import BannerWell from "/lib/component/relocation/BannerWell";
 
@@ -72,7 +73,7 @@ const styles = theme => ({
 
   contentContainer: {
     flex: 1,
-    display: "flex",
+    // display: "flex",
     zIndex: 0,
     flexDirection: "row",
   },
@@ -181,6 +182,7 @@ class AppLayout extends React.PureComponent {
           {this.props.mobile && <div style={{ height: contentOffset }} />}
           <div className={classes.contentContainer}>
             {drawer}
+            <Breadcrumbs />
             <div
               className={classnames(classes.content, {
                 [classes.contentMaxWidth]: !fullWidth,
