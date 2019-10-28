@@ -70,7 +70,6 @@ class AppBar extends React.Component {
   };
 
   handleToggleDrawer = () => {
-    console.log(this.state);
     this.setState(state => ({ drawerOpen: !state.drawerOpen }));
   };
 
