@@ -1,24 +1,19 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
-import { withStyles } from "/vendor/@material-ui/core";
 
 import { FailedError } from "/lib/error/FetchError";
 
 import { Query } from "/lib/component/util";
 import { AppLayout as BaseAppLayout, Loader } from "/lib/component/base";
+import { withTheme } from "@material-ui/core/styles";
 
 import Drawer from "/lib/component/partial/Drawer";
 import AppBar from "/lib/component/partial/AppBar";
 
-const styles = () => ({
-  mobile: { display: "block" },
-  desktop: { display: "flex" },
-});
-
 class AppLayout extends React.PureComponent {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
     namespace: PropTypes.string.isRequired,
     fullWidth: PropTypes.bool,
     children: PropTypes.node,
@@ -48,18 +43,13 @@ class AppLayout extends React.PureComponent {
 
   resize() {
     this.setState({
-      showBar: window.innerWidth <= 400,
-      fullDrawer: window.innerWidth >= 700,
+      showBar: window.innerWidth <= this.props.theme.breakpoints.values.sm,
+      fullDrawer: window.innerWidth >= this.props.theme.breakpoints.values.md,
     });
   }
 
   render() {
-    const {
-      classes,
-      namespace: namespaceParam,
-      fullWidth,
-      children,
-    } = this.props;
+    const { namespace: namespaceParam, fullWidth, children } = this.props;
 
     return (
       <Query
@@ -106,4 +96,4 @@ class AppLayout extends React.PureComponent {
   }
 }
 
-export default withStyles(styles)(AppLayout);
+export default withTheme(AppLayout);
