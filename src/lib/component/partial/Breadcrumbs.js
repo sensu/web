@@ -19,11 +19,13 @@ class Breadcrumbs extends React.PureComponent {
     classes: PropTypes.object.isRequired,
   };
   render() {
+    console.log(window.location);
+    const location = window.location.href;
     const { classes } = this.props;
     return (
       <div className={classes.root}>
         <Typography className={classes.text} variant="body1">
-          {"Cluster > Namespace > Events"}
+          {window.location.href}
         </Typography>
       </div>
     );
