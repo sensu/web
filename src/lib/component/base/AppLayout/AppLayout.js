@@ -145,13 +145,15 @@ class AppLayout extends React.PureComponent {
       if (state.topBarHeight === rect.height) {
         return null;
       }
-
+      if (!this.props.mobile) {
+        return { topBarHeight: 0 };
+      }
       return { topBarHeight: rect.height };
     });
   };
 
   render() {
-    const { classes, topBar, drawer, content, fullWidth } = this.props;
+    const { classes, topBar, drawer, content, mobile, fullWidth } = this.props;
 
     const contentOffset =
       CSS && CSS.supports && CSS.supports("position: sticky")
