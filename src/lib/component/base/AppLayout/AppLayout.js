@@ -13,6 +13,7 @@ const styles = theme => ({
   root: {
     paddingLeft: "env(safe-area-inset-left)",
     paddingRight: "env(safe-area-inset-right)",
+    flexDirection: "column",
   },
 
   mobile: {
@@ -32,6 +33,8 @@ const styles = theme => ({
     left: 0,
     right: 0,
 
+    display: "flex",
+    flexDirection: "column",
     zIndex: 1,
 
     "@supports (position: sticky)": {
@@ -63,7 +66,7 @@ const styles = theme => ({
   },
 
   banner: {
-    position: "relative",
+    width: "100%",
     zIndex: 0,
   },
 
@@ -71,6 +74,7 @@ const styles = theme => ({
     flex: 1,
     display: "flex",
     zIndex: 0,
+    flexDirection: "row",
   },
 
   content: {
@@ -94,6 +98,7 @@ const styles = theme => ({
 
   contentMaxWidth: {
     maxWidth: 1224,
+
     [theme.breakpoints.up("md")]: {
       // align with quick nav container
       paddingTop: 24,
@@ -173,9 +178,9 @@ class AppLayout extends React.PureComponent {
               <BannerWell />
             </div>
           </div>
-          {drawer}
-          <div style={{ height: contentOffset }} />
+          {this.props.mobile && <div style={{ height: contentOffset }} />}
           <div className={classes.contentContainer}>
+            {drawer}
             <div
               className={classnames(classes.content, {
                 [classes.contentMaxWidth]: !fullWidth,
