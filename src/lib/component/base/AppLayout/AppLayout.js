@@ -150,6 +150,7 @@ class AppLayout extends React.PureComponent {
       if (state.topBarHeight === rect.height) {
         return null;
       }
+
       return { topBarHeight: rect.height };
     });
   };
