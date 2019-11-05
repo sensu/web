@@ -13,6 +13,7 @@ const styles = theme => ({
   root: {
     paddingLeft: "env(safe-area-inset-left)",
     paddingRight: "env(safe-area-inset-right)",
+    flexDirection: "column",
   },
 
   mobile: {
@@ -31,9 +32,9 @@ const styles = theme => ({
     top: 0,
     left: 0,
     right: 0,
-
+    display: "flex",
+    flexDirection: "column",
     zIndex: 1,
-
     "@supports (position: sticky)": {
       position: "sticky",
     },
@@ -63,18 +64,17 @@ const styles = theme => ({
   },
 
   banner: {
-    position: "relative",
+    width: "100%",
     zIndex: 0,
   },
 
   contentContainer: {
-    flex: 1,
     display: "flex",
-    zIndex: 0,
+    flexDirection: "row",
+    //zIndex: 0,
   },
 
   content: {
-    flex: 1,
     position: "relative",
     display: "flex",
     flexDirection: "column",
@@ -145,9 +145,9 @@ class AppLayout extends React.PureComponent {
       if (state.topBarHeight === rect.height) {
         return null;
       }
-      if (!this.props.mobile) {
+      /*if (!this.props.mobile) {
         return { topBarHeight: 0 };
-      }
+      }*/
       return { topBarHeight: rect.height };
     });
   };
@@ -157,7 +157,7 @@ class AppLayout extends React.PureComponent {
 
     const contentOffset =
       CSS && CSS.supports && CSS.supports("position: sticky")
-        ? 0
+        ? 32
         : this.state.topBarHeight;
 
     return (
@@ -175,9 +175,9 @@ class AppLayout extends React.PureComponent {
               <BannerWell />
             </div>
           </div>
-          {drawer}
-          <div style={{ height: contentOffset }} />
+          {this.props.mobile && <div style={{ height: contentOffset }} />}
           <div className={classes.contentContainer}>
+            {drawer}
             <div
               className={classnames(classes.content, {
                 [classes.contentMaxWidth]: !fullWidth,
