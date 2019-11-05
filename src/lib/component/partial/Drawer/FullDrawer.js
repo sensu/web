@@ -63,7 +63,16 @@ const styles = theme => ({
 
   drawer: {
     width: "280px",
-    display: "block",
+    display: "flex",
+  },
+  override: {
+    height: "100%",
+    position: "fixed",
+    "& > :first-child": {
+      top: 0,
+      zIndex: 0,
+      position: "unset",
+    },
   },
 });
 
@@ -113,7 +122,7 @@ class FullDrawer extends React.Component {
         <MaterialDrawer
           open={open}
           variant={mobile ? "temporary" : "permanent"}
-          className={classes.drawer}
+          className={classes.override}
           onClose={this.collapse}
         >
           <Loader passhrough loading={loading}>
