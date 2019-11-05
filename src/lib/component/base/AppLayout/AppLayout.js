@@ -32,9 +32,11 @@ const styles = theme => ({
     top: 0,
     left: 0,
     right: 0,
+
     display: "flex",
     flexDirection: "column",
     zIndex: 1,
+
     "@supports (position: sticky)": {
       position: "sticky",
     },
@@ -69,12 +71,14 @@ const styles = theme => ({
   },
 
   contentContainer: {
+    flex: 1,
     display: "flex",
+    zIndex: 0,
     flexDirection: "row",
-    //zIndex: 0,
   },
 
   content: {
+    flex: 1,
     position: "relative",
     display: "flex",
     flexDirection: "column",
@@ -94,6 +98,7 @@ const styles = theme => ({
 
   contentMaxWidth: {
     maxWidth: 1224,
+
     [theme.breakpoints.up("md")]: {
       // align with quick nav container
       paddingTop: 24,
@@ -145,9 +150,6 @@ class AppLayout extends React.PureComponent {
       if (state.topBarHeight === rect.height) {
         return null;
       }
-      /*if (!this.props.mobile) {
-        return { topBarHeight: 0 };
-      }*/
       return { topBarHeight: rect.height };
     });
   };
@@ -157,7 +159,7 @@ class AppLayout extends React.PureComponent {
 
     const contentOffset =
       CSS && CSS.supports && CSS.supports("position: sticky")
-        ? 32
+        ? 0
         : this.state.topBarHeight;
 
     return (
