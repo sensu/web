@@ -1,6 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { withApollo } from "/vendor/react-apollo";
+import { isApolloError } from "apollo-client/errors/ApolloError";
 import gql from "/vendor/graphql-tag";
 
 import {
@@ -17,7 +18,12 @@ import resolveEvent from "/lib/mutation/resolveEvent";
 
 import { Loader, TableListEmptyState } from "/lib/component/base";
 import { ListController } from "/lib/component/controller";
-import { useExecuteCheckStatusToast } from "/lib/component/toast";
+
+import { useToast } from "/lib/component/relocation";
+import {
+  useExecuteCheckStatusToast,
+  ResolveEventStatusToast,
+} from "/lib/component/toast";
 
 import Pagination from "/lib/component/partial/Pagination";
 import SilenceEntryDialog from "/lib/component/partial/SilenceEntryDialog";
@@ -41,10 +47,23 @@ const EventsList = ({
   const [silence, setSilence] = React.useState(null);
   const [unsilence, setUnsilence] = React.useState(null);
 
+  const createToast = useToast();
   const createExecuteCheckStatusToast = useExecuteCheckStatusToast();
 
   const resolveEvents = events => {
-    events.forEach(event => resolveEvent(client, { id: event.id }));
+    Promise.all(
+      events.map(event => resolveEvent(client, { id: event.id })),
+    ).catch(error => {
+      // HACK: Capture root-level query errors that vaguely match unauthorized errors
+      // and open toast.
+      if (isApolloError(error) && /request unauthorized/.test(error.message)) {
+        createToast(`events.resolve`, ({ remove }) => (
+          <ResolveEventStatusToast rejected error={error} onClose={remove} />
+        ));
+        return;
+      }
+      throw error;
+    });
   };
 
   const deleteEvents = events => {
@@ -53,6 +72,11 @@ const EventsList = ({
 
   const executeCheck = events => {
     events.forEach(({ check, entity }) => {
+      // Avoid attempting to execute a keepalive
+      if (check.name === "keepalive") {
+        return;
+      }
+
       // Unless this is a proxy entity target the specific entity
       let subscriptions = [`entity:${entity.name}`];
       if (check.proxyEntityName === entity.name) {

@@ -28,6 +28,9 @@ export { default as useQuery } from "./useQuery";
 export * from "./useCurrentDate";
 export * from "./useQuery";
 export { default as useApolloClient } from "./useApolloClient";
+export {
+  default as useSystemColorSchemePreference,
+} from "./useSystemColorSchemePreference";
 export { default as useRouter } from "./useRouter";
 export * from "./useSearchParams";
 export * from "./useFilterParams";

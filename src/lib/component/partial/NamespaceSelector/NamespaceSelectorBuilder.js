@@ -46,7 +46,7 @@ class NamespaceSelectorBuilder extends React.Component {
             className={classNames(classes.label, classes.nameLabel)}
             variant="subtitle1"
           >
-            {namespace.name}
+            {namespace ? namespace.name : "Select namespace..."}
           </Typography>
           <span className={classes.arrow}>
             <ArrowDropDownIcon />

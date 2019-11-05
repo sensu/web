@@ -11,12 +11,18 @@ import Context from "./Context";
 
 const styles = theme => ({
   root: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "stretch",
     paddingLeft: "env(safe-area-inset-left)",
     paddingRight: "env(safe-area-inset-right)",
+  },
+
+  mobile: {
+    display: "block",
+  },
+
+  desktop: {
+    display: "flex",
+    alignItems: "stretch",
+    flex: 1,
   },
 
   topBarContainer: {
@@ -91,10 +97,6 @@ const styles = theme => ({
     [theme.breakpoints.up("md")]: {
       // align with quick nav container
       paddingTop: 24,
-
-      // add gutters for quick nav and any floating actions.
-      paddingLeft: 80,
-      paddingRight: 80,
     },
   },
 
@@ -121,13 +123,15 @@ const styles = theme => ({
 class AppLayout extends React.PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    mobile: PropTypes.bool,
     topBar: PropTypes.node,
-    quickNav: PropTypes.node,
+    drawer: PropTypes.node,
     content: PropTypes.node,
     fullWidth: PropTypes.bool,
   };
 
   static defaultProps = {
+    mobile: false,
     topBar: undefined,
     quickNav: undefined,
     content: undefined,
@@ -147,7 +151,7 @@ class AppLayout extends React.PureComponent {
   };
 
   render() {
-    const { classes, topBar, quickNav, content, fullWidth } = this.props;
+    const { classes, topBar, drawer, content, fullWidth } = this.props;
 
     const contentOffset =
       CSS && CSS.supports && CSS.supports("position: sticky")
@@ -156,19 +160,20 @@ class AppLayout extends React.PureComponent {
 
     return (
       <Context.Provider value={this.state}>
-        <div className={classes.root}>
+        <div
+          className={classnames(
+            classes.root,
+            !this.props.mobile ? classes.desktop : classes.mobile,
+          )}
+        >
           <div className={classes.topBarContainer}>
             <ResizeObserver onResize={this.handleTopBarResize} />
             <div className={classes.topBar}>{topBar}</div>
             <div className={classes.banner}>
               <BannerWell />
             </div>
-            {!fullWidth && (
-              <div className={classes.quickNavContainer}>
-                <div className={classes.quickNav}>{quickNav}</div>
-              </div>
-            )}
           </div>
+          {drawer}
           <div style={{ height: contentOffset }} />
           <div className={classes.contentContainer}>
             <div
