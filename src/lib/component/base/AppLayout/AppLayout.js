@@ -182,7 +182,6 @@ class AppLayout extends React.PureComponent {
           {this.props.mobile && <div style={{ height: contentOffset }} />}
           <div className={classes.contentContainer}>
             {drawer}
-            <Breadcrumbs />
             <div
               className={classnames(classes.content, {
                 [classes.contentMaxWidth]: !fullWidth,

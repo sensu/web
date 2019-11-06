@@ -19,13 +19,28 @@ class Breadcrumbs extends React.PureComponent {
     classes: PropTypes.object.isRequired,
   };
   render() {
-    console.log(window.location);
     const location = window.location.href;
+    const links = location.split("/");
+    links.shift();
+    links.shift();
+    links.shift();
+    console.log(links);
+    const link = links.reduce((acc, currVal, i, array) => {
+      return (
+        <div>
+          <a href="https://${window.location.href}/${acc}/$">{acc}</a>
+          <a href="https://${window.location.href}/${acc}/${currVal}">
+            {currVal}
+          </a>
+        </div>
+      );
+    });
+    console.log(link);
     const { classes } = this.props;
     return (
       <div className={classes.root}>
         <Typography className={classes.text} variant="body1">
-          {window.location.href}
+          {link}
         </Typography>
       </div>
     );
