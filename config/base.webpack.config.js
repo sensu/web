@@ -39,6 +39,7 @@ export default ({
   module: { rules = [], ...module } = {},
   target = "web",
   name,
+  omitFileLoader = false,
   ...config
 }) => ({
   name,
@@ -134,13 +135,17 @@ export default ({
               cacheDirectory: process.env.NODE_ENV === "development",
             },
           },
-          {
-            loader: require.resolve("file-loader"),
-            exclude: [/\.js$/, /\.mjs$/, /\.html$/, /\.json$/],
-            options: {
-              name: path.join(mediaPath, `${fileLoaderHashName}.[ext]`),
-            },
-          },
+          ...(!omitFileLoader
+            ? [
+                {
+                  loader: require.resolve("file-loader"),
+                  exclude: [/\.js$/, /\.mjs$/, /\.html$/, /\.json$/],
+                  options: {
+                    name: path.join(mediaPath, `${fileLoaderHashName}.[ext]`),
+                  },
+                },
+              ]
+            : []),
           {
             test: /\.html$/,
             loader: require.resolve("html-loader"),

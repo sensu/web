@@ -53,7 +53,16 @@ export const styles = theme => {
       [theme.breakpoints.down("sm")]: {
         flexGrow: 1,
       },
+
+      paddingTop: 0,
+      transition: theme.transitions.create("padding"),
     },
+
+    progressInset: {
+      paddingTop: theme.spacing(1/2),
+    },
+
+    /* Styles applied to the progress wrapper element. */
     progress: {
       position: "absolute",
       top: 0,
@@ -96,15 +105,19 @@ export const styles = theme => {
 
     success: {
       backgroundColor: colors.green[600],
+      color: theme.palette.getContrastText(colors.green[600]),
     },
     error: {
       backgroundColor: theme.palette.error.dark,
+      color: theme.palette.getContrastText(theme.palette.error.dark),
     },
     info: {
-      backgroundColor: theme.palette.primary.dark,
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.getContrastText(theme.palette.primary.main),
     },
     warning: {
-      backgroundColor: colors.amber[700],
+      backgroundColor: colors.amber[800],
+      color: theme.palette.getContrastText(theme.palette.common.black),
     },
     icon: {
       fontSize: 20,
@@ -198,7 +211,7 @@ class Toast extends React.PureComponent {
         role="alertdialog"
         square
         elevation={6}
-        className={classNames(classes.root, classes[variant])}
+        className={classNames(classes.root, classes[variant], { [classes.progressInset]: !!progressBar })}
         aria-describedby={messageId}
         onMouseOver={this._handleMouseOver}
         onMouseLeave={this._handleMouseLeave}

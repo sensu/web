@@ -1,0 +1,27 @@
+export enum Icon {
+  BRIEFCASE = "BRIEFCASE",
+  CROWN = "CROWN",
+  DONUT = "DONUT",
+  EMOTICON = "EMOTICON",
+  ESPRESSO = "ESPRESSO",
+  EXPLORE = "EXPLORE",
+  FLAME = "FLAME",
+  GLASSES = "GLASSES",
+  HEART = "HEART",
+  MEETING = "MEETING",
+  MUG = "MUG",
+  POLYGON = "POLYGON",
+  SHIELD = "SHIELD",
+  TRIANGLE = "TRIANGLE",
+  VISIBILITY = "VISIBILITY",
+}
+
+export enum Colour {
+  BLUE = "BLUE",
+  GRAY = "GRAY",
+  GREEN = "GREEN",
+  ORANGE = "ORANGE",
+  PINK = "PINK",
+  PURPLE = "PURPLE",
+  YELLOW = "YELLOW",
+}
