@@ -51,6 +51,15 @@ import {
   NamespaceNotFoundView,
 } from "/lib/component/view";
 
+import {
+  ContextSwitcherKeybinding,
+  PreferencesKeybinding,
+} from "/lib/component/keybind";
+
+import {
+  ContextSwitcherDialog,
+} from "/lib/component/partial";
+
 import createClient from "/app/apollo/client";
 
 const updateServiceWorker = () => () =>
@@ -175,6 +184,9 @@ const renderApp = () => {
                     />
                     <Route render={() => "not found in namespace"} />
                   </Switch>
+                  <ContextSwitcherKeybinding />
+                  <ContextSwitcherDialog />
+                  <PreferencesKeybinding />
                 </NavigationProvider>
               )}
               fallbackComponent={NamespaceNotFoundView}

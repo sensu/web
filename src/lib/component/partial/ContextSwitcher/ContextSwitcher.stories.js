@@ -76,11 +76,11 @@ stories.add("one cluster", ({ props }) => (
     {...props}
     clusters={[{ name: "cluster-xx-yyy-z" }]}
     namespaces={[
-      { name: "sensu", clusters: ["cluster-xx-yyy-z"] },
-      { name: "sensu-demo", clusters: ["cluster-xx-yyy-z"] },
-      { name: "banana/stand", clusters: ["cluster-xx-yyy-z"] },
-      { name: "foo", clusters: ["cluster-xx-yyy-z"] },
-      { name: "baz", clusters: ["cluster-xx-yyy-z"] },
+      { name: "sensu", cluster: "cluster-xx-yyy-z" },
+      { name: "sensu-demo", cluster: "cluster-xx-yyy-z" },
+      { name: "banana/stand", cluster: "cluster-xx-yyy-z" },
+      { name: "foo", cluster: "cluster-xx-yyy-z" },
+      { name: "baz", cluster: "cluster-xx-yyy-z" },
     ]}
   />
 ));
@@ -95,18 +95,23 @@ stories.add("many clusters", ({ props }) => (
       { name: "aac31f-f17" },
     ]}
     namespaces={[
-      { name: "sensu", clusters: ["0b1f3e8-f8e", "aac31f-f17"] },
-      { name: "sensu-demo", clusters: ["0b1f3e8-f8e"] },
-      { name: "banana/stand", clusters: ["0b1f3e8-f8e", "aac31f-f17"] },
-      { name: "us-west-2", clusters: ["88eb1f-e33-0"] },
-      { name: "us-east-1", clusters: ["88eb1f-e33-1"] },
-      { name: "???", clusters: ["88eb1f-e33-0", "aac31f-f17"] },
-      { name: "acme", clusters: ["88eb1f-e33-0"] },
-      { name: "sensu-devel", clusters: ["aac31f-f17"] },
-      { name: "contoso", clusters: ["aac31f-f17"] },
-      { name: "foo", clusters: ["0b1f3e8-f8e", "88eb1f-e33-1"] },
-      { name: "bar", clusters: ["88eb1f-e33-1"] },
-      { name: "baz", clusters: ["0b1f3e8-f8e", "88eb1f-e33-1"] },
+      { name: "sensu", cluster: "0b1f3e8-f8e" },
+      { name: "sensu", cluster: "aac31f3-f17" },
+      { name: "sensu-demo", cluster: "0b1f3e8-f8e" },
+      { name: "banana/stand", cluster: "0b1f3e8-f8e" },
+      { name: "banana/stand", cluster: "aac31f3-f17" },
+      { name: "us-west-2", cluster: "88eb1f7-e33-0" },
+      { name: "us-east-1", cluster: "88eb1f7-e33-1" },
+      { name: "???", cluster: "88eb1f7-e33-0" },
+      { name: "???", cluster: "aac31f3-f17" },
+      { name: "acme", cluster: "88eb1f7-e33-0" },
+      { name: "sensu-devel", cluster: "aac31f3-f17" },
+      { name: "contoso", cluster: "aac31f3-f17" },
+      { name: "foo", cluster: "0b1f3e8-f8e" },
+      { name: "foo", cluster: "88eb1f7-e33-1" },
+      { name: "bar", cluster: "88eb1f7-e33-1" },
+      { name: "baz", cluster: "0b1f3e8-f8e" },
+      { name: "baz", cluster: "88eb1f7-e33-1" },
     ]}
   />
 ));

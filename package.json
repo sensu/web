@@ -78,6 +78,7 @@
     "@types/classnames": "^2.2.7",
     "@types/d3-scale": "^2.1.1",
     "@types/es6-error": "^4.0.2",
+    "@types/lodash": "^4.14.145",
     "@types/mousetrap": "^1.6.3",
     "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",

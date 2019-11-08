@@ -103,6 +103,11 @@ class FullDrawer extends React.Component {
 
       ${NamespaceIcon.fragments.namespace}
     `,
+    openSwitcher: gql`
+      mutation OpenSwitcher {
+        toggleModal(modal: CONTEXT_SWITCHER_MODAL) @client
+      }
+    `,
   };
 
   state = {
@@ -111,6 +116,10 @@ class FullDrawer extends React.Component {
 
   collapse = () => {
     this.props.onToggle(false);
+  };
+
+  onClickSelector = () => {
+    this.props.client.mutate({ mutation: FullDrawer.fragments.openSwitcher });
   };
 
   render() {
@@ -153,7 +162,7 @@ class FullDrawer extends React.Component {
                     <NamespaceSelector
                       namespace={namespace}
                       className={classes.namespaceSelector}
-                      onChange={this.collapse}
+                      onClick={this.onClickSelector}
                     />
                   </div>
                 </div>

@@ -15,6 +15,7 @@ interface Props {
   dense?: boolean;
   selected?: boolean;
   onMouseEnter?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onClick?: () => void;
 }
 
 const ContextSwitcherListItem = ({
