@@ -1,4 +1,4 @@
-import React from "react";
+import React from "/vendor/react";
 import { CardContent, Typography } from "/vendor/@material-ui/core";
 
 const ContextSwitcherListEmpty = () => {

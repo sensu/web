@@ -1,5 +1,5 @@
-import React from "react";
-import classnames from "classnames";
+import React from "/vendor/react";
+import classnames from "/vendor/classnames";
 import { Box, Theme, makeStyles } from "/vendor/@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) => ({

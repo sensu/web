@@ -1,4 +1,4 @@
-import React from "react";
+import React from "/vendor/react";
 import { List, ListSubheader } from "/vendor/@material-ui/core";
 import { Skeleton } from "/lib/component/base";
 import ContextSwitcherListItem from "./ContextSwitcherListItem";

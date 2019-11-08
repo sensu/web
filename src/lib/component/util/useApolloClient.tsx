@@ -1,8 +1,7 @@
-import * as React from "react";
+import * as React from "/vendor/react";
 
-import { ApolloContext } from "react-apollo";
-
-import { ApolloClient } from "apollo-client";
+import { ApolloContext } from "/vendor/react-apollo";
+import { ApolloClient } from "/vendor/apollo-client";
 
 type NotNull<T> = T extends null ? never : T;
 

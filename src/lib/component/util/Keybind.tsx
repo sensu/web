@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "/vendor/react";
 import mousetrap from "mousetrap";
 
 interface Binding {

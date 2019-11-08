@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo, useEffect, useState } from "/vendor/react";
 import times from "lodash/times";
 
 import { List } from "/vendor/@material-ui/core";
