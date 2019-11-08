@@ -27,7 +27,6 @@ const createManager = (target?: Element) => {
 const addBinding = (manager: Manager, binding: Binding) => {
   manager.bindings.push(binding);
   manager.trap.bind(binding.keys, () => {
-    console.debug("manager", { manager });
     const firstBinding = manager.bindings
       .reverse()
       .find((el) => el.keys === binding.keys);
