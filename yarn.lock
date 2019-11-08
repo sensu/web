@@ -1639,9 +1639,10 @@
     react-lifecycles-compat "^3.0.4"
     warning "^3.0.0"
 
-"@sensuapp/eslint-plugin@link:./config/eslint-plugin":
-  version "0.0.0"
-  uid ""
+"@sensuapp/eslint-plugin@^1.0.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@sensuapp/eslint-plugin/-/eslint-plugin-1.5.0.tgz#26e08c96b4a3bbdb626812313590a54cf785829e"
+  integrity sha512-ooc+GdJXdCarISHBx0J2J1+nsf8UawerNnenz56NtJgrghCsz8wYZSfK0r5gO8GaFYfezNPSosnzc3frsFjZEA==
 
 "@sheerun/mutationobserver-shim@^0.3.2":
   version "0.3.2"
@@ -8242,10 +8243,10 @@ material-colors@^1.2.1:
   resolved "https://registry.yarnpkg.com/material-colors/-/material-colors-1.2.6.tgz#6d1958871126992ceecc72f4bcc4d8f010865f46"
   integrity sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==
 
-material-ui-chip-input@^1.0.0-beta.17:
-  version "1.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/material-ui-chip-input/-/material-ui-chip-input-1.0.0-beta.17.tgz#a6d31c89e495a3d5f608f6d155670d682e08f744"
-  integrity sha512-P/1mofZ9JtuCepxn1E2o3DH+Jf/dwqi/trQ4KsWZkXxk8KFQsDg7GZTmx/mX+4mbllnpyRz5la+8WIBeKuvU4Q==
+material-ui-chip-input@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/material-ui-chip-input/-/material-ui-chip-input-1.0.0.tgz#96df9d655d2c16c63afd73828aa3f98c778016b1"
+  integrity sha512-GJ9xkGB+n1SODvflOca4YanHaV8hWkKKBIMrM0YVjo5Jnm+gIom2915CwT86FiDWyoIS6BQOMIof48/l85hZxQ==
   dependencies:
     classnames "^2.2.5"
     prop-types "^15.6.1"
