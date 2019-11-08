@@ -6,7 +6,7 @@ import { FailedError } from "/lib/error/FetchError";
 
 import { Query } from "/lib/component/util";
 import { AppLayout as BaseAppLayout, Loader } from "/lib/component/base";
-import { withTheme } from "@material-ui/core/styles";
+import { withTheme } from "/vendor/@material-ui/styles";
 
 import Drawer from "/lib/component/partial/Drawer";
 import AppBar from "/lib/component/partial/AppBar";
