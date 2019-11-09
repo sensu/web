@@ -73,7 +73,7 @@ const styles = theme => ({
 
   contentContainer: {
     flex: 1,
-    // display: "flex",
+    display: "flex",
     zIndex: 0,
     flexDirection: "row",
   },
@@ -187,6 +187,7 @@ class AppLayout extends React.PureComponent {
                 [classes.contentMaxWidth]: !fullWidth,
               })}
             >
+              <Breadcrumbs />
               {content}
             </div>
           </div>

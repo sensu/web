@@ -1,6 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { withStyles, Typography } from "/vendor/@material-ui/core";
+import classNames from "/vendor/classnames";
 
 const styles = theme => ({
   root: {
@@ -12,6 +13,17 @@ const styles = theme => ({
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
   },
+  list: {
+    width: "100%",
+    textDecoration: "none",
+  },
+  listItem: {
+    display: "inline",
+    marginRight: "16px",
+  },
+  link: {
+    color: theme.palette.text.primary,
+  },
 });
 
 class Breadcrumbs extends React.PureComponent {
@@ -19,28 +31,28 @@ class Breadcrumbs extends React.PureComponent {
     classes: PropTypes.object.isRequired,
   };
   render() {
+    const { classes } = this.props;
     const location = window.location.href;
     const links = location.split("/");
     links.shift();
     links.shift();
     links.shift();
-    console.log(links);
-    const link = links.reduce((acc, currVal, i, array) => {
+    const link = links.map((acc, currVal, i, array) => {
       return (
-        <div>
-          <a href="https://${window.location.href}/${acc}/$">{acc}</a>
-          <a href="https://${window.location.href}/${acc}/${currVal}">
-            {currVal}
+        <li key={i} className={classes.listItem}>
+          <a
+            className={classes.link}
+            href={`https://${window.location.host}/${acc}/`}
+          >
+            {acc}
           </a>
-        </div>
+        </li>
       );
     });
-    console.log(link);
-    const { classes } = this.props;
     return (
       <div className={classes.root}>
         <Typography className={classes.text} variant="body1">
-          {link}
+          <ul>{link}</ul>
         </Typography>
       </div>
     );
