@@ -1,0 +1,8 @@
+# extend type Query {
+#   myField: Boolean!
+# }
+
+# enum VehicleType {
+#   CAR
+#   TRUCK
+# }

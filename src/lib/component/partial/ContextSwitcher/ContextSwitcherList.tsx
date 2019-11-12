@@ -62,10 +62,10 @@ const ContextSwitcherList = ({
           return [
             ...acc,
             { ...last, range: [last.range[0], idx] },
-            { name, range: [idx, idx + 1] },
+            { name, range: [idx] },
           ];
         }
-        return [last, ...acc];
+        return [...acc, last];
       }, []),
     [items],
   );

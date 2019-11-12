@@ -1,4 +1,0 @@
-extend type Query {
-  "Returns names of all available namespaces."
-  curatedNamespaces: [Namespace!]!
-}
