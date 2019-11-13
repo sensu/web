@@ -37,6 +37,7 @@ interface Variables extends ChecksListVariables {
 export const checksViewFragments = {
   namespace: gql`
     fragment ChecksView_namespace on Namespace {
+      id
       ...ChecksList_namespace
     }
 
@@ -53,6 +54,7 @@ export const ChecksViewQuery = gql`
     $filters: [String!]
   ) {
     namespace(name: $namespace) {
+      id
       ...ChecksView_namespace
     }
   }

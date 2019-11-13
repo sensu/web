@@ -1,6 +1,5 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withApollo } from "/vendor/react-apollo";
 import { isApolloError } from "apollo-client/errors/ApolloError";
 import gql from "/vendor/graphql-tag";
 
@@ -239,7 +238,9 @@ const EventsList = ({
               limit={limit}
               offset={offset}
               pageInfo={namespace && namespace.events.pageInfo}
-              onChangeQuery={onChangeQuery}
+              onChangeQuery={(update) =>
+                onChangeQuery((params) => ({ ...params, ...update }))
+              }
             />
 
             <ClearSilencedEntriesDialog
@@ -355,4 +356,4 @@ EventsList.fragments = {
   `,
 };
 
-export default withApollo(EventsList);
+export default EventsList;

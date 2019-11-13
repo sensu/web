@@ -40,6 +40,7 @@ interface Variables extends EventFiltersListVariables {
 export const eventFiltersViewFragments = {
   namespace: gql`
     fragment eventFiltersView_namespace on Namespace {
+      id
       ...EventFiltersList_namespace
     }
 
@@ -56,6 +57,7 @@ const EventFiltersViewQuery = gql`
     $filters: [String!]
   ) {
     namespace(name: $namespace) {
+      id
       ...eventFiltersView_namespace
     }
   }

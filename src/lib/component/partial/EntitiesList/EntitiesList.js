@@ -222,7 +222,9 @@ class EntitiesList extends React.PureComponent {
                 limit={limit}
                 offset={offset}
                 pageInfo={namespace && namespace.entities.pageInfo}
-                onChangeQuery={onChangeQuery}
+                onChangeQuery={(update) =>
+                  onChangeQuery((params) => ({ ...params, ...update }))
+                }
               />
 
               <ClearSilencedEntriesDialog
