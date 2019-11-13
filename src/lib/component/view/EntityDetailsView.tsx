@@ -20,6 +20,7 @@ export const entityDetailsViewFragments = {
   record: gql`
     fragment EntityDetailsView_record on Entity {
       id
+      deleted @client
       ...EntityDetailsContainer_entity
     }
 
@@ -28,11 +29,10 @@ export const entityDetailsViewFragments = {
 };
 
 const entityDetailsViewQuery = gql`
-  query EntityDetailsViewQuery($namespace: String!, $entity: String!) {
+  query EntityDetailsContentQuery($namespace: String!, $entity: String!) {
     entity(namespace: $namespace, name: $entity) {
       id
-      deleted @client
-      ...EntityDetailsViewFragments_entity
+      ...EntityDetailsView_record
     }
   }
 
@@ -66,11 +66,11 @@ export const EntityDetailsViewContent = ({
   variables,
 }: EntityDetailsViewContentProps) => {
   const { aborted, data = {}, networkStatus, refetch } = query;
-  const { check } = data;
+  const { entity } = data;
   // see: https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
   const loading = networkStatus < 6;
 
-  if (!loading && !aborted && (!check || check.deleted)) {
+  if (!loading && !aborted && (!entity || entity.deleted)) {
     return (
       <AppLayout namespace={variables.namespace}>
         <NotFound />

@@ -21,6 +21,7 @@ export const checkDetailsViewFragments = {
   record: gql`
     fragment CheckDetailsView_record on CheckConfig {
       id
+      deleted @client
       ...CheckDetailsContainer_check
     }
 
@@ -31,6 +32,7 @@ export const checkDetailsViewFragments = {
 const checkDetailsViewQuery = gql`
   query CheckDetailsContentQuery($namespace: String!, $check: String!) {
     check(namespace: $namespace, name: $check) {
+      id
       ...CheckDetailsView_record
     }
   }
