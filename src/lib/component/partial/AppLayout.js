@@ -29,6 +29,7 @@ class AppLayout extends React.PureComponent {
   static query = gql`
     query AppLayoutQuery($namespace: String!) {
       namespace(name: $namespace) {
+        id
         ...AppBar_namespace
       }
     }

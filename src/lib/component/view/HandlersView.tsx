@@ -1,8 +1,8 @@
 import React, { useCallback } from "/vendor/react";
 import gql from "/vendor/graphql-tag";
 
-import { ApolloError } from "/vendor/apollo-client";
 import { FailedError } from "/lib/error/FetchError";
+import { ApolloError } from "/vendor/apollo-client";
 import { PollingDuration } from "/lib/constant";
 
 import {
@@ -10,8 +10,16 @@ import {
   parseStringParam,
   parseArrayParam,
 } from "/lib/util/params";
+
+import { Content, MobileFullWidthContent } from "/lib/component/base";
 import {
-  useApolloClient,
+  AppLayout,
+  BoundFilterList,
+  HandlersList,
+  HandlersListToolbar,
+  NotFound,
+} from "/lib/component/partial";
+import {
   useFilterParams,
   useSearchParams,
   useQuery,
@@ -19,14 +27,6 @@ import {
   UseQueryResult,
   WithWidth,
 } from "/lib/component/util";
-import { MobileFullWidthContent, Content } from "/lib/component/base";
-import {
-  AppLayout,
-  BoundFilterList,
-  EventsList,
-  EventsListToolbar,
-  NotFound,
-} from "/lib/component/partial";
 
 interface Variables {
   namespace: string;
@@ -43,11 +43,11 @@ interface Props {
   variables: Variables;
 }
 
-export const useEventsViewQueryVariables = (): Variables => {
+export const useHandlersViewQueryVariables = (): Variables => {
   const [params] = useSearchParams();
   const limit = parseIntParam(params.limit, 25);
   const offset = parseIntParam(params.offset, 0);
-  const order = parseStringParam(params.order, "LASTOK");
+  const order = parseStringParam(params.order, "NAME");
   const filters = parseArrayParam(params.filters);
 
   const router = useRouter();
@@ -65,45 +65,44 @@ export const useEventsViewQueryVariables = (): Variables => {
   };
 };
 
-export const eventsViewFragments = {
+export const handlersViewFragments = {
   namespace: gql`
-    fragment EventsView_namespace on Namespace {
+    fragment HandlersView_namespace on Namespace {
       id
-      ...EventsList_namespace
+      ...HandlersList_namespace
     }
 
-    ${EventsList.fragments.namespace}
+    ${HandlersList.fragments.namespace}
   `,
 };
 
-const eventsViewQuery = gql`
-  query EventsViewQuery(
+const handlersViewQuery = gql`
+  query HandlersViewQuery(
     $namespace: String!
-    $filters: [String!]
-    $order: EventsListOrder
     $limit: Int
     $offset: Int
+    $order: HandlerListOrder
+    $filters: [String!]
   ) {
     namespace(name: $namespace) {
       id
-      ...EventsView_namespace
+      ...HandlersView_namespace
     }
   }
 
-  ${eventsViewFragments.namespace}
+  ${handlersViewFragments.namespace}
 `;
 
-export const EventsViewContent = ({
+export const HandlersViewContent = ({
   query,
   toolbarContent,
   toolbarItems,
   variables,
 }: Props) => {
-  const client = useApolloClient();
   const [, setQueryParams] = useSearchParams();
   const [, setFilters] = useFilterParams();
 
-  const { data = {}, networkStatus, aborted, refetch } = query;
+  const { aborted, data = {}, networkStatus } = query;
   const { namespace } = data;
 
   // see: https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
@@ -131,26 +130,26 @@ export const EventsViewContent = ({
     <AppLayout namespace={variables.namespace}>
       <div>
         <Content marginBottom>
-          <EventsListToolbar
+          <HandlersListToolbar
             onClickReset={onClickReset}
             toolbarContent={toolbarContent}
             toolbarItems={toolbarItems}
           />
         </Content>
+
         <MobileFullWidthContent>
           <WithWidth>
             {({ width }) => (
-              <EventsList
-                client={client}
+              <HandlersList
                 editable={width !== "xs"}
                 limit={variables.limit}
-                offset={variables.offset}
                 filters={variables.filters}
+                offset={variables.offset}
                 onChangeQuery={setQueryParams}
                 onChangeFilters={setFilters}
                 namespace={namespace}
                 loading={(loading && !namespace) || aborted}
-                refetch={refetch}
+                order={variables.order}
               />
             )}
           </WithWidth>
@@ -160,14 +159,14 @@ export const EventsViewContent = ({
   );
 };
 
-EventsViewContent.defaultProps = {
+HandlersViewContent.defaultProps = {
   toolbarContent: <BoundFilterList />,
 };
 
-export const EventsView = () => {
-  const variables = useEventsViewQueryVariables();
+export const HandlersView = () => {
+  const variables = useHandlersViewQueryVariables();
   const query = useQuery({
-    query: eventsViewQuery,
+    query: handlersViewQuery,
     fetchPolicy: "cache-and-network",
     pollInterval: PollingDuration.short,
     variables,
@@ -179,6 +178,5 @@ export const EventsView = () => {
       throw error;
     },
   });
-
-  return <EventsViewContent query={query} variables={variables} />;
+  return <HandlersViewContent query={query} variables={variables} />;
 };
