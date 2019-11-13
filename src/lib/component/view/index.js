@@ -8,7 +8,7 @@ export { default as HandlerDetailsView } from "./HandlerDetailsView";
 export * from "./MutatorDetailsView";
 export * from "./EventsView";
 export * from "./EventFiltersView";
-export { default as HandlersView } from "./HandlersView";
+export * from "./HandlersView";
 export { default as MutatorsView } from "./MutatorsView";
 export { default as NamespaceNotFoundView } from "./NamespaceNotFoundView";
 export { default as NotFoundView } from "./NotFoundView";

@@ -42,6 +42,7 @@ export interface ChecksListVariables {
 export const checksListFragments = {
   namespace: gql`
     fragment ChecksList_namespace on Namespace {
+      id
       checks(
         limit: $limit
         offset: $offset

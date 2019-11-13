@@ -32,6 +32,7 @@ class AppBar extends React.Component {
   static fragments = {
     namespace: gql`
       fragment AppBar_namespace on Namespace {
+        id
         ...NamespaceLabel_namespace
         ...Drawer_namespace
       }
