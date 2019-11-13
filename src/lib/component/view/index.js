@@ -1,4 +1,4 @@
-export { default as CheckDetailsView } from "./CheckDetailsView";
+export * from "./CheckDetailsView";
 export * from "./ChecksView";
 export { default as EntitiesView } from "./EntitiesView";
 export { default as EntityDetailsView } from "./EntityDetailsView";

@@ -219,11 +219,13 @@ class EventDetailsCheckSummary extends React.PureComponent {
                   <DictionaryKey>Check</DictionaryKey>
                   <DictionaryValue>
                     {check.name !== "keepalive" ? (
-                      <InlineLink
-                        to={`/${entity.namespace}/checks/${check.name}`}
+                      <NamespaceLink
+                        component={InlineLink}
+                        namespace={entity.namespace}
+                        to={`/checks/${check.name}`}
                       >
                         {check.name}
-                      </InlineLink>
+                      </NamespaceLink>
                     ) : (
                       check.name
                     )}
@@ -298,11 +300,13 @@ class EventDetailsCheckSummary extends React.PureComponent {
                       <DictionaryKey>Check</DictionaryKey>
                       <DictionaryValue>
                         {check.name !== "keepalive" ? (
-                          <InlineLink
-                            to={`/${entity.namespace}/checks/${check.name}`}
+                          <NamespaceLink
+                            component={InlineLink}
+                            namespace={entity.namespace}
+                            to={`/checks/${check.name}`}
                           >
                             {check.name}
-                          </InlineLink>
+                          </NamespaceLink>
                         ) : (
                           check.name
                         )}

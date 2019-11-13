@@ -56,9 +56,7 @@ import {
   PreferencesKeybinding,
 } from "/lib/component/keybind";
 
-import {
-  ContextSwitcherDialog,
-} from "/lib/component/partial";
+import { ContextSwitcherDialog } from "/lib/component/partial";
 
 import createClient from "/app/apollo/client";
 
@@ -83,7 +81,7 @@ const renderApp = () => {
           <Switch>
             <Route exact path="/" component={LastNamespaceRedirect} />
             <NamespaceRoute
-              path="/:namespace"
+              path="/n/:namespace"
               render={props => (
                 <NavigationProvider
                   links={[
@@ -184,15 +182,25 @@ const renderApp = () => {
                     />
                     <Route render={() => "not found in namespace"} />
                   </Switch>
-                  <ContextSwitcherKeybinding />
-                  <ContextSwitcherDialog />
-                  <PreferencesKeybinding />
                 </NavigationProvider>
               )}
               fallbackComponent={NamespaceNotFoundView}
             />
+            {/* backward compat */}
+            <Redirect exact from="/:namespace/home" to="/n/:namespace/home" />
+            <Redirect from="/:namespace/checks" to="/n/:namespace/checks" />
+            <Redirect from="/:namespace/entities" to="/n/:namespace/entities" />
+            <Redirect from="/:namespace/events" to="/n/:namespace/events" />
+            <Redirect from="/:namespace/filters" to="/n/:namespace/filters" />
+            <Redirect from="/:namespace/handlers" to="/n/:namespace/handlers" />
+            <Redirect from="/:namespace/mutators" to="/n/:namespace/mutators" />
+            <Redirect from="/:namespace/silences" to="/n/:namespace/silences" />
+            <Redirect from="/:namespace" to="/n/:namespace/events" />
             <Route component={NotFoundView} />
           </Switch>
+          <ContextSwitcherKeybinding />
+          <ContextSwitcherDialog />
+          <PreferencesKeybinding />
         </AppRoot>
       </BrowserRouter>
     </ErrorBoundary>,

@@ -24,7 +24,7 @@ import {
   CheckStatusIcon,
   RelativeToCurrentDate,
 } from "/lib/component/base";
-import { Maybe } from "/lib/component/util";
+import { Maybe, NamespaceLink } from "/lib/component/util";
 import { SilenceIcon, ExpandMoreIcon } from "/lib/component/icon";
 import { statusCodeToId } from "/lib/util/checkStatus";
 
@@ -115,9 +115,13 @@ class EventDetailsEntitySummary extends React.Component {
                     Entity
                   </DictionaryKey>
                   <DictionaryValue className={classes.fullWidth}>
-                    <InlineLink to={`/${namespace}/entities/${entity.name}`}>
+                    <NamespaceLink
+                      namespace={namespace}
+                      component={InlineLink}
+                      to={`/entities/${entity.name}`}
+                    >
                       {entity.name}
-                    </InlineLink>
+                    </NamespaceLink>
                   </DictionaryValue>
                 </DictionaryEntry>
                 <DictionaryEntry>

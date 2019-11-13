@@ -1,41 +1,51 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { Link, Route } from "/vendor/react-router-dom";
+import useRouter from "./useRouter";
+import { Link } from "/vendor/react-router-dom";
 
-class NamespaceLink extends React.PureComponent {
-  static propTypes = {
-    ...Link.PropTypes,
-    component: PropTypes.func,
-    to: PropTypes.string.isRequired,
-    namespace: PropTypes.string,
-  };
-
-  static defaultProps = {
-    namespace: undefined,
-    component: Link,
-  };
-
-  renderLink = (namespace, props) => {
-    const { component: Component, to, ...other } = props;
-    return <Component {...other} to={`/${namespace}${to}`} />;
-  };
-
-  render() {
-    const { namespace, ...props } = this.props;
-
-    if (namespace) {
-      return this.renderLink(namespace, props);
-    }
-
-    return (
-      <Route
-        path="/:namespace"
-        render={({ match: { params } }) =>
-          this.renderLink(params.namespace, props)
-        }
-      />
-    );
+const createPath = ({ cluster, namespace, to }) => {
+  if (cluster) {
+    return `/c/${cluster}/n/${namespace}${to}`;
   }
+  return `/n/${namespace}${to}`;
 }
 
-export default NamespaceLink;
+const NamespaceLink = (props) => {
+    const { component: Component, namespace, cluster, to, ...other } = props;
+    const path = createPath({ namespace, cluster, to });
+    return <Component {...other} to={path} />;
+}
+
+const NamespaceLinkContainer = ({ namespace: namespaceProp, cluster: clusterProp, ...props }) => {
+  const router = useRouter();
+  const params = router.match.params;
+  const context = {
+    namespace: namespaceProp ? namespaceProp : params.namespace,
+    cluster: clusterProp ? clusterProp : params.cluster,
+  };
+
+  return (
+    <NamespaceLink {...props} {...context} />
+  );
+}
+
+NamespaceLinkContainer.propTypes = {
+  namespace: PropTypes.string,
+  cluster: PropTypes.string,
+}
+
+NamespaceLinkContainer.defaultProps = {
+  namespace: undefined,
+  cluster: undefined,
+  component: Link,
+};
+
+NamespaceLink.propTypes = {
+  ...Link.PropTypes,
+  component: PropTypes.func.isRequired,
+  to: PropTypes.string.isRequired,
+  namespace: PropTypes.string.isRequired,
+  cluster: PropTypes.string,
+};
+
+export default NamespaceLinkContainer;

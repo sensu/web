@@ -1,8 +1,9 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
-import { Card, CardContent, Typography, List } from "/vendor/@material-ui/core";
 
+import { Card, CardContent, Typography, List } from "/vendor/@material-ui/core";
+import { NamespaceLink } from "/lib/component/util";
 import {
   DetailedListItem,
   DetailedListItemTitle,
@@ -64,9 +65,13 @@ class EntityDetailsEvents extends React.PureComponent {
               small
             />
           </Typography>
-          <InlineLink to={`/${namespace}/events/${entity.name}/${check.name}`}>
+          <NamespaceLink
+            component={InlineLink}
+            namespace={namespace}
+            to={`/events/${entity.name}/${check.name}`}
+          >
             {check.name}
-          </InlineLink>
+          </NamespaceLink>
         </DetailedListItemTitle>
         <DetailedListItemSubtitle inset>
           <EventStatusDescriptor compact event={event} check={check} />

@@ -38,7 +38,7 @@ interface Variables extends ChecksListVariables {
   namespace: string;
 }
 
-export const checksViewFramgents = {
+export const checksViewFragments = {
   namespace: gql`
     fragment ChecksView_namespace on Namespace {
       ...ChecksList_namespace
@@ -61,7 +61,7 @@ export const ChecksViewQuery = gql`
     }
   }
 
-  ${checksViewFramgents.namespace}
+  ${checksViewFragments.namespace}
 `;
 
 export function useChecksViewQueryVariables(): Variables {
@@ -106,7 +106,11 @@ export const ChecksViewContent = ({
   const [, setParams] = useSearchParams();
 
   if (!data.namespace && !loading && !aborted) {
-    return <NotFound />;
+    return (
+      <AppLayout namespace={variables.namespace}>
+        <NotFound />
+      </AppLayout>
+    );
   }
 
   return (
