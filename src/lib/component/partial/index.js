@@ -104,3 +104,4 @@ export {
 export { default as GlobalAlert } from "./GlobalAlert";
 export { default as ContextSwitcher } from "./ContextSwitcher";
 export { default as ContextSwitcherDialog } from "./ContextSwitcherDialog";
+export { default as BoundFilterList } from "./BoundFilterList";

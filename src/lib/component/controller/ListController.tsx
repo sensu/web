@@ -3,7 +3,7 @@ import React from "/vendor/react";
 const arrayIntersect = <T extends any>(a: T[], b: T[]) =>
   a.filter((val) => b.includes(val));
 
-interface RenderItemProps<T> {
+export interface ListControllerRenderItemProps<T> {
   key: string;
   item: T;
   selected: boolean;
@@ -27,7 +27,7 @@ interface RenderProps<T> {
 }
 
 interface Props<T> {
-  renderItem(props: RenderItemProps<T>): JSX.Element | null;
+  renderItem(props: ListControllerRenderItemProps<T>): JSX.Element | null;
   renderEmptyState(): JSX.Element | null;
   children(props: RenderProps<T>): JSX.Element | null;
   getItemKey(item: T): string;
@@ -80,7 +80,7 @@ const setSelectedKeys = <T extends any>(selectedKeys: string[]) => (
   selectedKeys: arrayIntersect(state.keys, selectedKeys),
 });
 
-class ListController<T> extends React.PureComponent<Props<T>, State<T>> {
+export class ListController<T> extends React.PureComponent<Props<T>, State<T>> {
   public static defaultProps = { initialSelectedKeys: [], items: [] };
 
   public state: State<T> = {
@@ -210,5 +210,3 @@ class ListController<T> extends React.PureComponent<Props<T>, State<T>> {
     });
   }
 }
-
-export default ListController;
