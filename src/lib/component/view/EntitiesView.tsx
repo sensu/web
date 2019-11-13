@@ -11,6 +11,8 @@ import {
   parseArrayParam,
 } from "/lib/util/params";
 import {
+  useApolloClient,
+  useFilterParams,
   useSearchParams,
   useQuery,
   UseQueryResult,
@@ -44,6 +46,10 @@ const entitiesViewQuery = gql`
 
 interface Variables {
   namespace: string;
+  limit: number;
+  offset: number;
+  order: string;
+  filters: string[];
 }
 
 export const useEntitiesViewQueryVariables = (): Variables => {
@@ -81,6 +87,7 @@ export const EntitiesViewContent = ({
   toolbarItems,
   variables,
 }: EntitiesViewContentProps) => {
+  const client = useApolloClient();
   // const { queryParams, match, setQueryParams } = this.props;
   // const { limit, offset, order } = queryParams;
   // const variables = { ...match.params, ...queryParams };
@@ -91,7 +98,8 @@ export const EntitiesViewContent = ({
   //   setQueryParams({ filters: buildFilterParams(next) });
   // };
   const { data = {}, networkStatus, aborted, refetch } = query;
-  const [, setParams] = useSearchParams();
+  const [, setQueryParams] = useSearchParams();
+  const [, setFilters] = useFilterParams();
 
   // see: https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
   const loading = networkStatus < 6;
@@ -110,7 +118,7 @@ export const EntitiesViewContent = ({
         <Content marginBottom>
           <EntitiesListToolbar
             onClickReset={() =>
-              setParams((params) => ({
+              setQueryParams((params) => ({
                 ...params,
                 filters: undefined,
                 order: undefined,
@@ -125,6 +133,7 @@ export const EntitiesViewContent = ({
           <WithWidth>
             {({ width }) => (
               <EntitiesList
+                client={client}
                 editable={width !== "xs"}
                 limit={variables.limit}
                 offset={variables.offset}

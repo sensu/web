@@ -1,6 +1,6 @@
 export * from "./CheckDetailsView";
 export * from "./ChecksView";
-export { default as EntitiesView } from "./EntitiesView";
+export * from "./EntitiesView";
 export { default as EntityDetailsView } from "./EntityDetailsView";
 export { default as EventDetailsView } from "./EventDetailsView";
 export * from "./EventFilterDetailsView";
