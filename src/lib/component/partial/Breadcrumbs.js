@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { withStyles, Typography } from "/vendor/@material-ui/core";
 import classNames from "/vendor/classnames";
 
+import { NamespaceLink } from "/lib/component/util";
+
 const styles = theme => ({
   root: {
     paddingTop: "32px",
@@ -37,15 +39,19 @@ class Breadcrumbs extends React.PureComponent {
     links.shift();
     links.shift();
     links.shift();
-    const link = links.map((acc, currVal, i, array) => {
+    let url = "";
+    const namespace = links[0];
+    const link = links.map((currVal, i) => {
+      url += `/${currVal}`;
       return (
         <li key={i} className={classes.listItem}>
-          <a
+          <NamespaceLink
+            namespace={namespace}
             className={classes.link}
-            href={`https://${window.location.host}/${acc}/`}
+            to={`https://${window.location.host}${url}`}
           >
-            {acc}
-          </a>
+            {currVal}
+          </NamespaceLink>
         </li>
       );
     });
