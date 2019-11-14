@@ -1,7 +1,6 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
-import { withApollo } from "/vendor/react-apollo";
 
 import {
   Paper,
@@ -225,4 +224,4 @@ class SilencesList extends React.Component {
   }
 }
 
-export default withApollo(SilencesList);
+export default SilencesList;
