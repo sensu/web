@@ -1,9 +1,14 @@
 import React, { useCallback, useMemo } from "/vendor/react";
 import gql from "/vendor/graphql-tag";
-import { useApolloClient, useQuery, useRouter } from "/lib/component/util";
 import { Dialog, Fade } from "/vendor/@material-ui/core";
 import ContextSwitcher from "/lib/component/partial/ContextSwitcher";
 import { PollingDuration } from "/lib/constant";
+import {
+  useApolloClient,
+  useBreakpoint,
+  useQuery,
+  useRouter,
+} from "/lib/component/util";
 
 const openQuery = gql`
   query SwitcherIsOpenQuery {
@@ -32,17 +37,17 @@ interface Namespace {
   cluster: string;
 }
 
-const FadeIn = (props: object) => <Fade in {...props} />;
-
-const Switcher = () => {
+const Switcher = React.forwardRef((_, ref) => {
   const client = useApolloClient();
   const router = useRouter();
-  const { data, loading } = useQuery({
+
+  const { data, networkStatus } = useQuery({
     query: namespacesQuery,
     pollInterval: PollingDuration.infrequent,
     fetchPolicy: "cache-and-network",
   });
 
+  const loading = networkStatus < 6;
   const namespaces = useMemo(() => {
     if (data && data.viewer) {
       const namespaces = data.viewer.namespaces as Namespace[];
@@ -68,23 +73,24 @@ const Switcher = () => {
 
   return (
     <ContextSwitcher
+      ref={ref}
       namespaces={namespaces}
       loading={loading}
       onClose={onClose}
       onSelect={onSelect}
     />
   );
-};
+});
 
 const ContextSwitcherDialog = () => {
   const queryResult = useQuery({ query: openQuery });
   const open = queryResult.data.modalStack.includes("CONTEXT_SWITCHER_MODAL");
-  const fullScreen = false;
+  const fullScreen = !useBreakpoint("sm", "gt");
 
   return (
     <Dialog
       open={open}
-      TransitionComponent={FadeIn}
+      TransitionComponent={Fade}
       fullScreen={fullScreen}
       fullWidth={fullScreen}
       PaperProps={{

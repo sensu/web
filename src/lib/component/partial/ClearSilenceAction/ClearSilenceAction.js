@@ -8,6 +8,7 @@ class ClearSilenceAction extends React.PureComponent {
   static propTypes = {
     record: PropTypes.object,
     children: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
     onDone: PropTypes.func.isRequired,
   };
 
@@ -42,7 +43,8 @@ class ClearSilenceAction extends React.PureComponent {
         <ClearSilencedEntriesDialog
           silences={record.silences}
           open={isOpen}
-          close={() => {
+          onSave={this.props.onDelete}
+          onClose={() => {
             this.props.onDone();
             this.setState({ isOpen: false });
           }}

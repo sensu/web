@@ -15,7 +15,6 @@ import { ListController } from "/lib/component/controller";
 
 import ClearSilencedEntriesDialog from "/lib/component/partial/ClearSilencedEntriesDialog";
 import Pagination from "/lib/component/partial/Pagination";
-import SilenceEntryDialog from "/lib/component/partial/SilenceEntryDialog";
 
 import ListHeader from "./SilencesListHeader";
 import ListItem from "./SilencesListItem";
@@ -23,7 +22,7 @@ import ListItem from "./SilencesListItem";
 class SilencesList extends React.Component {
   static propTypes = {
     editable: PropTypes.bool,
-    filters: PropTypes.object,
+    filters: PropTypes.array,
     loading: PropTypes.bool,
     limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     namespace: PropTypes.shape({
@@ -34,6 +33,7 @@ class SilencesList extends React.Component {
     offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChangeFilters: PropTypes.func,
     onChangeQuery: PropTypes.func.isRequired,
+    onDeleteSilence: PropTypes.func.isRequired,
     order: PropTypes.string.isRequired,
   };
 
@@ -79,7 +79,6 @@ class SilencesList extends React.Component {
   };
 
   state = {
-    silence: null,
     openClearDialog: false,
     selectedItems: [],
   };
@@ -156,6 +155,7 @@ class SilencesList extends React.Component {
       order,
       onChangeFilters,
       onChangeQuery,
+      onDeleteSilence,
     } = this.props;
 
     const items = namespace
@@ -198,23 +198,17 @@ class SilencesList extends React.Component {
                   pageInfo={namespace && namespace.silences.pageInfo}
                   onChangeQuery={onChangeQuery}
                 />
-
-                {this.state.silence && (
-                  <SilenceEntryDialog
-                    values={this.state.silence}
-                    onClose={() => this.setState({ silence: null })}
-                  />
-                )}
               </Loader>
             </Paper>
             <ClearSilencedEntriesDialog
+              confirmed
               silences={this.state.selectedItems}
               open={this.state.openClearDialog}
-              close={() => {
+              onClose={() => {
                 this.setState({ openClearDialog: false });
                 toggleSelectedItems();
               }}
-              confirmed
+              onSave={onDeleteSilence}
               scrollable
             />
           </React.Fragment>

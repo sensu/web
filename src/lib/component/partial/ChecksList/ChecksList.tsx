@@ -9,7 +9,6 @@ import {
   TableRow,
 } from "/vendor/@material-ui/core";
 
-import executeCheck from "/lib/mutation/executeCheck";
 import setCheckPublish from "/lib/mutation/setCheckPublish";
 
 import {
@@ -105,6 +104,9 @@ interface Props {
   offset?: number;
   order?: string;
   refetch(): void;
+  onCreateSilence: (_: any) => void;
+  onDeleteSilence: (_: any) => void;
+  onExecute: (_: any) => Promise<any>;
 }
 
 const ChecksList = ({
@@ -115,6 +117,9 @@ const ChecksList = ({
   offset,
   order,
   refetch,
+  onCreateSilence,
+  onDeleteSilence,
+  onExecute,
 }: Props) => {
   const client = useApolloClient();
 
@@ -167,7 +172,7 @@ const ChecksList = ({
 
   const executeChecks = (checks: Check[]) => {
     checks.forEach(({ id, name, namespace: checkNamespace }) => {
-      const promise = executeCheck(client, { id });
+      const promise = onExecute({ id });
 
       createExecuteCheckStatusToast(promise, {
         checkName: name,
@@ -268,6 +273,7 @@ const ChecksList = ({
             {silence && (
               <SilenceEntryDialog
                 values={silence}
+                onSave={onCreateSilence}
                 onClose={() => {
                   setSilence(null);
                   setSelectedItems([]);
@@ -279,7 +285,8 @@ const ChecksList = ({
             <ClearSilencedEntriesDialog
               silences={unsilence}
               open={!!unsilence}
-              close={() => {
+              onSave={onDeleteSilence}
+              onClose={() => {
                 setUnsilence(null);
                 setSelectedItems([]);
                 refetch();

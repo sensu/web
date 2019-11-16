@@ -4,11 +4,7 @@ import gql from "/vendor/graphql-tag";
 import { PollingDuration } from "../../constant";
 import { ApolloError } from "/vendor/apollo-client";
 import { FailedError } from "/lib/error/FetchError";
-import {
-  useQuery,
-  useRouter,
-  UseQueryResult,
-} from "/lib/component/util";
+import { useQuery, useRouter, UseQueryResult } from "/lib/component/util";
 import { parseStringParam } from "/lib/util/params";
 import {
   AppLayout,
@@ -87,7 +83,7 @@ export const HandlerDetailsViewContent = ({
   );
 };
 
-export const CheckDetailsView = () => {
+export const HandlerDetailsView = () => {
   const variables = useHandlerDetailsViewQueryVariables();
   const query = useQuery({
     query: handlerDetailsViewQuery,

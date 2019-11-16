@@ -11,17 +11,15 @@ import {
   parseArrayParam,
 } from "/lib/util/params";
 import {
+  useApolloClient,
+  useBreakpoint,
   useFilterParams,
   useSearchParams,
   useQuery,
   useRouter,
   UseQueryResult,
-  WithWidth,
 } from "/lib/component/util";
-import {
-  Content,
-  MobileFullWidthContent,
-} from "/lib/component/base";
+import { Content, MobileFullWidthContent } from "/lib/component/base";
 import {
   AppLayout,
   BoundFilterList,
@@ -30,6 +28,8 @@ import {
   SilencesListToolbar,
   SilenceEntryDialog,
 } from "/lib/component/partial";
+import createSilence from "/lib/mutation/createSilence";
+import deleteSilence from "/lib/mutation/deleteSilence";
 
 interface Variables {
   namespace: string;
@@ -44,13 +44,15 @@ interface Props {
   toolbarItems?: React.ReactNode;
   query: UseQueryResult<any, any>;
   variables: Variables;
+  onCreateSilence: (vars: any) => void;
+  onDeleteSilence: (vars: any) => void;
 }
 
 export function useSilencesViewQueryVariables(): Variables {
   const [params] = useSearchParams();
   const limit = parseIntParam(params.limit, 25);
   const offset = parseIntParam(params.offset, 0);
-  const order = parseStringParam(params.order, "NAME");
+  const order = parseStringParam(params.order, "ID");
   const filters = parseArrayParam(params.filters);
 
   const router = useRouter();
@@ -70,7 +72,7 @@ export function useSilencesViewQueryVariables(): Variables {
 
 export const silencesViewFragments = {
   namespace: gql`
-    fragment SilencesView_namespame on Namespace {
+    fragment SilencesView_namespace on Namespace {
       id
       ...SilencesList_namespace
     }
@@ -88,25 +90,24 @@ export const silencesViewQuery = gql`
     $filters: [String!]
   ) {
     namespace(name: $namespace) {
-      ...SilencesList_namespace
+      ...SilencesView_namespace
     }
   }
 
   ${silencesViewFragments.namespace}
 `;
 
-interface WithDialogProps {
-  children: (_: any) => JSX.Element;
-}
-
-const WithDialogState = ({ children }: WithDialogProps) => {
+const useDialogState = () => {
   const [isOpen, setOpen] = React.useState(false);
 
-  return children({
-    isOpen,
-    open: () => setOpen(true),
-    close: () => setOpen(false),
-  });
+  return React.useMemo(
+    () => ({
+      isOpen,
+      open: () => setOpen(true),
+      close: () => setOpen(false),
+    }),
+    [isOpen, setOpen],
+  );
 };
 
 export const SilencesViewContent = ({
@@ -114,9 +115,12 @@ export const SilencesViewContent = ({
   toolbarItems,
   query,
   variables,
+  onCreateSilence,
+  onDeleteSilence,
 }: Props) => {
-  const [, setQueryParams] = useSearchParams();
   const [, setFilters] = useFilterParams();
+  const [, setParams] = useSearchParams();
+  const isSmViewport = !useBreakpoint("sm", "gt");
 
   const { data = {}, networkStatus, aborted, refetch } = query;
   const { namespace } = data;
@@ -126,13 +130,24 @@ export const SilencesViewContent = ({
 
   const onClickReset = React.useCallback(
     () =>
-      setQueryParams((params) => ({
+      setParams((params) => ({
         ...params,
         filters: undefined,
         order: undefined,
       })),
-    [setQueryParams],
+    [setParams],
   );
+
+  const newDialog = useDialogState();
+  const newDialogDefaults = React.useMemo(
+    () => ({ namespace: variables.namespace, props: {} }),
+    [variables.namespace],
+  );
+  const onCloseNewDialog = React.useCallback(() => {
+    // TODO: Only refetch / poison list on success
+    refetch();
+    newDialog.close();
+  }, [newDialog, refetch]);
 
   if (!data.namespace && !loading && !aborted) {
     return (
@@ -145,51 +160,38 @@ export const SilencesViewContent = ({
   return (
     <AppLayout namespace={variables.namespace}>
       <div>
-        <WithDialogState>
-          {(newDialog) => (
-            <React.Fragment>
-              <Content marginBottom>
-                <SilencesListToolbar
-                  onClickCreate={newDialog.open}
-                  onClickReset={onClickReset}
-                  toolbarContent={toolbarContent}
-                  toolbarItems={toolbarItems}
-                />
-              </Content>
+        <React.Fragment>
+          <Content marginBottom>
+            <SilencesListToolbar
+              onClickCreate={newDialog.open}
+              onClickReset={onClickReset}
+              toolbarContent={toolbarContent}
+              toolbarItems={toolbarItems}
+            />
+          </Content>
 
-              {newDialog.isOpen && (
-                <SilenceEntryDialog
-                  values={{
-                    namespace: namespace,
-                    props: {},
-                  }}
-                  onClose={() => {
-                    // TODO: Only refetch / poison list on success
-                    refetch();
-                    newDialog.close();
-                  }}
-                />
-              )}
-            </React.Fragment>
+          {newDialog.isOpen && (
+            <SilenceEntryDialog
+              values={newDialogDefaults}
+              onSave={onCreateSilence}
+              onClose={onCloseNewDialog}
+            />
           )}
-        </WithDialogState>
+        </React.Fragment>
         <MobileFullWidthContent>
-          <WithWidth>
-            {({ width }) => (
-              <SilencesList
-                editable={width !== "xs"}
-                limit={variables.limit}
-                offset={variables.offset}
-                order={variables.order}
-                filters={variables.filters}
-                onChangeFilters={setFilters}
-                onChangeQuery={setQueryParams}
-                namespace={namespace}
-                loading={(loading && !namespace) || aborted}
-                refetch={refetch}
-              />
-            )}
-          </WithWidth>
+          <SilencesList
+            editable={!isSmViewport}
+            limit={variables.limit}
+            offset={variables.offset}
+            order={variables.order}
+            filters={variables.filters}
+            onChangeFilters={setFilters}
+            onChangeQuery={setParams}
+            onDeleteSilence={onDeleteSilence}
+            namespace={namespace}
+            loading={(loading && !namespace) || aborted}
+            refetch={refetch}
+          />
         </MobileFullWidthContent>
       </div>
     </AppLayout>
@@ -201,6 +203,16 @@ SilencesViewContent.defaultProps = {
 };
 
 export const SilencesView = () => {
+  const client = useApolloClient();
+  const onCreate = React.useCallback(
+    (vars: any) => createSilence(client, vars),
+    [client],
+  );
+  const onDelete = React.useCallback(
+    (vars: any) => deleteSilence(client, vars),
+    [client],
+  );
+
   const variables = useSilencesViewQueryVariables();
   const query = useQuery({
     query: silencesViewQuery,
@@ -216,5 +228,12 @@ export const SilencesView = () => {
     },
   });
 
-  return <SilencesViewContent query={query} variables={variables} />;
+  return (
+    <SilencesViewContent
+      query={query}
+      variables={variables}
+      onCreateSilence={onCreate}
+      onDeleteSilence={onDelete}
+    />
+  );
 };

@@ -30,14 +30,17 @@ interface Props {
   onSelect?: (selection: Namespace) => void;
 }
 
-const ContextSwitcher = ({
-  namespaces = [],
-  dense = false,
-  loading = false,
-  hideKeyHints = false,
-  onClose = () => {},
-  onSelect = () => {},
-}: Props) => {
+const ContextSwitcher = (
+  {
+    namespaces = [],
+    dense = false,
+    loading = false,
+    hideKeyHints = false,
+    onClose = () => {},
+    onSelect = () => {},
+  }: Props,
+  ref: React.Ref<any>,
+) => {
   const theme = useTheme();
 
   const [filterValue, setFilterValue] = useState("");
@@ -77,7 +80,7 @@ const ContextSwitcher = ({
   }, [onClose]);
 
   return (
-    <React.Fragment>
+    <div ref={ref}>
       <Box
         pr={1 / 2}
         pl={1 / 2}
@@ -131,8 +134,8 @@ const ContextSwitcher = ({
           </Typography>
         </Box>
       )}
-    </React.Fragment>
+    </div>
   );
 };
 
-export default ContextSwitcher;
+export default React.forwardRef(ContextSwitcher);

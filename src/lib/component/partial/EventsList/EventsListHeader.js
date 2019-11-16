@@ -24,7 +24,7 @@ import StatusMenu from "./StatusMenu";
 class EventsListHeader extends React.Component {
   static propTypes = {
     editable: PropTypes.bool.isRequired,
-    filters: PropTypes.object.isRequired,
+    filters: PropTypes.array.isRequired,
     onClickClearSilences: PropTypes.func.isRequired,
     onClickSelect: PropTypes.func.isRequired,
     onClickSilence: PropTypes.func.isRequired,

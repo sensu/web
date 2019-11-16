@@ -2,10 +2,10 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 
 import { WithNavigation } from "/lib/component/util";
-import { IconButton } from "/vendor/@material-ui/core";
-
 import { MenuIcon } from "/lib/component/icon";
+
 import Button from "./Button";
+import UnlabelledButton from "./UnlabelledButton";
 
 class QuickNav extends React.Component {
   static propTypes = {
@@ -24,9 +24,9 @@ class QuickNav extends React.Component {
 
     return (
       <div>
-        <IconButton aria-label="Menu" onClick={this.expand}>
+        <UnlabelledButton aria-label="Menu" onClick={this.expand}>
           <MenuIcon />
-        </IconButton>
+        </UnlabelledButton>
         <WithNavigation>
           {links => (
             <div className={className}>

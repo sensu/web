@@ -20,12 +20,12 @@ import {
   NotFound,
 } from "/lib/component/partial";
 import {
+  useBreakpoint,
   useFilterParams,
   useSearchParams,
   useQuery,
   useRouter,
   UseQueryResult,
-  WithWidth,
 } from "/lib/component/util";
 
 interface Variables {
@@ -99,8 +99,9 @@ export const HandlersViewContent = ({
   toolbarItems,
   variables,
 }: Props) => {
-  const [, setQueryParams] = useSearchParams();
   const [, setFilters] = useFilterParams();
+  const [, setParams] = useSearchParams();
+  const isSmViewport = !useBreakpoint("sm", "gt");
 
   const { aborted, data = {}, networkStatus } = query;
   const { namespace } = data;
@@ -110,12 +111,12 @@ export const HandlersViewContent = ({
 
   const onClickReset = useCallback(
     () =>
-      setQueryParams((params) => ({
+      setParams((params) => ({
         ...params,
         filters: undefined,
         order: undefined,
       })),
-    [setQueryParams],
+    [setParams],
   );
 
   if (!data.namespace && !loading && !aborted) {
@@ -138,21 +139,17 @@ export const HandlersViewContent = ({
         </Content>
 
         <MobileFullWidthContent>
-          <WithWidth>
-            {({ width }) => (
-              <HandlersList
-                editable={width !== "xs"}
-                limit={variables.limit}
-                filters={variables.filters}
-                offset={variables.offset}
-                onChangeQuery={setQueryParams}
-                onChangeFilters={setFilters}
-                namespace={namespace}
-                loading={(loading && !namespace) || aborted}
-                order={variables.order}
-              />
-            )}
-          </WithWidth>
+          <HandlersList
+            editable={!isSmViewport}
+            limit={variables.limit}
+            filters={variables.filters}
+            offset={variables.offset}
+            onChangeQuery={setParams}
+            onChangeFilters={setFilters}
+            namespace={namespace}
+            loading={(loading && !namespace) || aborted}
+            order={variables.order}
+          />
         </MobileFullWidthContent>
       </div>
     </AppLayout>

@@ -3,7 +3,12 @@ import gql from "/vendor/graphql-tag";
 
 import { FailedError } from "/lib/error/FetchError";
 import { ApolloError } from "/vendor/apollo-client";
-import { useQuery, useRouter, UseQueryResult } from "/lib/component/util";
+import {
+  useApolloClient,
+  useQuery,
+  UseQueryResult,
+  useRouter,
+} from "/lib/component/util";
 import {
   AppLayout,
   NotFound,
@@ -11,6 +16,12 @@ import {
 } from "/lib/component/partial";
 import { parseStringParam } from "/lib/util/params";
 import { PollingDuration } from "../../constant";
+
+import createSilence from "/lib/mutation/createSilence";
+import deleteSilence from "/lib/mutation/deleteSilence";
+import resolveEvent from "/lib/mutation/resolveEvent";
+import executeCheck from "/lib/mutation/executeCheck";
+import deleteEvent from "/lib/mutation/deleteEvent";
 
 export const eventDetailsViewFragments = {
   record: gql`
@@ -36,11 +47,11 @@ const eventDetailsViewQuery = gql`
     }
   }
 
-  ${EventDetailsContainer.fragments.event}
+  ${eventDetailsViewFragments.record}
 `;
 
 interface Variables {
-  event: string;
+  check: string;
   namespace: string;
   entity: string;
 }
@@ -49,6 +60,11 @@ interface EventDetailsViewContentProps {
   toolbarItems?: React.ReactNode;
   query: UseQueryResult<any, any>;
   variables: Variables;
+  onCreateSilence: (_: any) => void;
+  onDeleteSilence: (_: any) => void;
+  onResolve: (_: any) => Promise<any>;
+  onExecute: (_: any) => Promise<any>;
+  onDelete: (_: any) => Promise<any>;
 }
 
 export function useEventDetailsViewQueryVariables(): Variables {
@@ -57,18 +73,19 @@ export function useEventDetailsViewQueryVariables(): Variables {
 
   return {
     namespace: parseStringParam(params.namespace, ""),
-    event: parseStringParam(params.event, ""),
+    check: parseStringParam(params.check, ""),
     entity: parseStringParam(params.entity, ""),
   };
 }
 
 export const EventDetailsViewContent = ({
   query,
-  toolbarItems,
   variables,
+  ...props
 }: EventDetailsViewContentProps) => {
   const { aborted, data = {}, networkStatus, refetch } = query;
   const { event } = data;
+
   // see: https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
   const loading = networkStatus < 6;
 
@@ -83,16 +100,35 @@ export const EventDetailsViewContent = ({
   return (
     <AppLayout namespace={variables.namespace}>
       <EventDetailsContainer
-        toolbarItems={toolbarItems}
         event={event}
         loading={loading || !!aborted}
         refetch={refetch}
+        {...props}
       />
     </AppLayout>
   );
 };
 
 export const EventDetailsView = () => {
+  const client = useApolloClient();
+  const onCreateSilence = React.useCallback(
+    (vars) => createSilence(client, vars),
+    [client],
+  );
+  const onDeleteSilence = React.useCallback(
+    (vars) => deleteSilence(client, vars),
+    [client],
+  );
+  const onResolve = React.useCallback((vars) => resolveEvent(client, vars), [
+    client,
+  ]);
+  const onExecute = React.useCallback((vars) => executeCheck(client, vars), [
+    client,
+  ]);
+  const onDelete = React.useCallback((vars) => deleteEvent(client, vars), [
+    client,
+  ]);
+
   const variables = useEventDetailsViewQueryVariables();
   const query = useQuery({
     query: eventDetailsViewQuery,
@@ -108,5 +144,15 @@ export const EventDetailsView = () => {
     },
   });
 
-  return <EventDetailsViewContent query={query} variables={variables} />;
+  return (
+    <EventDetailsViewContent
+      query={query}
+      variables={variables}
+      onCreateSilence={onCreateSilence}
+      onDeleteSilence={onDeleteSilence}
+      onResolve={onResolve}
+      onExecute={onExecute}
+      onDelete={onDelete}
+    />
+  );
 };

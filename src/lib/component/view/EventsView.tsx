@@ -12,12 +12,12 @@ import {
 } from "/lib/util/params";
 import {
   useApolloClient,
+  useBreakpoint,
   useFilterParams,
   useSearchParams,
   useQuery,
   useRouter,
   UseQueryResult,
-  WithWidth,
 } from "/lib/component/util";
 import { MobileFullWidthContent, Content } from "/lib/component/base";
 import {
@@ -27,6 +27,12 @@ import {
   EventsListToolbar,
   NotFound,
 } from "/lib/component/partial";
+
+import createSilence from "/lib/mutation/createSilence";
+import deleteSilence from "/lib/mutation/deleteSilence";
+import resolveEvent from "/lib/mutation/resolveEvent";
+import executeCheck from "/lib/mutation/executeCheck";
+import deleteEvent from "/lib/mutation/deleteEvent";
 
 interface Variables {
   namespace: string;
@@ -41,6 +47,11 @@ interface Props {
   toolbarItems?: React.ReactNode;
   query: UseQueryResult<any, any>;
   variables: Variables;
+  onCreateSilence: (_: any) => void;
+  onDeleteSilence: (_: any) => void;
+  onResolve: (_: any) => Promise<any>;
+  onExecute: (_: any) => Promise<any>;
+  onDelete: (_: any) => Promise<any>;
 }
 
 export const useEventsViewQueryVariables = (): Variables => {
@@ -98,10 +109,12 @@ export const EventsViewContent = ({
   toolbarContent,
   toolbarItems,
   variables,
+  ...props
 }: Props) => {
   const client = useApolloClient();
-  const [, setQueryParams] = useSearchParams();
   const [, setFilters] = useFilterParams();
+  const [, setParams] = useSearchParams();
+  const isSmViewport = !useBreakpoint("sm", "gt");
 
   const { data = {}, networkStatus, aborted, refetch } = query;
   const { namespace } = data;
@@ -111,12 +124,12 @@ export const EventsViewContent = ({
 
   const onClickReset = useCallback(
     () =>
-      setQueryParams((params) => ({
+      setParams((params) => ({
         ...params,
         filters: undefined,
         order: undefined,
       })),
-    [setQueryParams],
+    [setParams],
   );
 
   if (!data.namespace && !loading && !aborted) {
@@ -138,22 +151,19 @@ export const EventsViewContent = ({
           />
         </Content>
         <MobileFullWidthContent>
-          <WithWidth>
-            {({ width }) => (
-              <EventsList
-                client={client}
-                editable={width !== "xs"}
-                limit={variables.limit}
-                offset={variables.offset}
-                filters={variables.filters}
-                onChangeQuery={setQueryParams}
-                onChangeFilters={setFilters}
-                namespace={namespace}
-                loading={(loading && !namespace) || aborted}
-                refetch={refetch}
-              />
-            )}
-          </WithWidth>
+          <EventsList
+            client={client}
+            editable={!isSmViewport}
+            limit={variables.limit}
+            offset={variables.offset}
+            filters={variables.filters}
+            onChangeQuery={setParams}
+            onChangeFilters={setFilters}
+            namespace={namespace}
+            loading={(loading && !namespace) || aborted}
+            refetch={refetch}
+            {...props}
+          />
         </MobileFullWidthContent>
       </div>
     </AppLayout>
@@ -165,6 +175,25 @@ EventsViewContent.defaultProps = {
 };
 
 export const EventsView = () => {
+  const client = useApolloClient();
+  const onCreateSilence = React.useCallback(
+    (vars) => createSilence(client, vars),
+    [client],
+  );
+  const onDeleteSilence = React.useCallback(
+    (vars) => deleteSilence(client, vars),
+    [client],
+  );
+  const onResolve = React.useCallback((vars) => resolveEvent(client, vars), [
+    client,
+  ]);
+  const onExecute = React.useCallback((vars) => executeCheck(client, vars), [
+    client,
+  ]);
+  const onDelete = React.useCallback((vars) => deleteEvent(client, vars), [
+    client,
+  ]);
+
   const variables = useEventsViewQueryVariables();
   const query = useQuery({
     query: eventsViewQuery,
@@ -180,5 +209,15 @@ export const EventsView = () => {
     },
   });
 
-  return <EventsViewContent query={query} variables={variables} />;
+  return (
+    <EventsViewContent
+      query={query}
+      variables={variables}
+      onCreateSilence={onCreateSilence}
+      onDeleteSilence={onDeleteSilence}
+      onResolve={onResolve}
+      onExecute={onExecute}
+      onDelete={onDelete}
+    />
+  );
 };

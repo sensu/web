@@ -17,12 +17,18 @@ import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 
 class EntityDetailsToolbar extends React.Component {
   static propTypes = {
-    entity: PropTypes.object.isRequired,
+    entity: PropTypes.object,
+    loading: PropTypes.bool,
     refetch: PropTypes.func.isRequired,
     toolbarItems: PropTypes.func,
+    onCreateSilence: PropTypes.func.isRequired,
+    onDeleteSilence: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    entity: {},
+    loading: false,
     toolbarItems: ({ items }) => items,
   };
 
@@ -43,7 +49,15 @@ class EntityDetailsToolbar extends React.Component {
   };
 
   render() {
-    const { entity, refetch, toolbarItems } = this.props;
+    const {
+      entity,
+      loading,
+      refetch,
+      toolbarItems,
+      onCreateSilence,
+      onDeleteSilence,
+      onDelete,
+    } = this.props;
 
     return (
       <Toolbar
@@ -55,10 +69,14 @@ class EntityDetailsToolbar extends React.Component {
                   key="silence"
                   visible={entity.isSilenced ? "never" : "if-room"}
                 >
-                  <SilenceAction entity={entity} onDone={refetch}>
+                  <SilenceAction
+                    entity={entity}
+                    onCreate={onCreateSilence}
+                    onDone={refetch}
+                  >
                     {dialog => (
                       <SilenceMenuItem
-                        disabled={dialog.canOpen}
+                        disabled={loading || dialog.canOpen}
                         onClick={dialog.open}
                       />
                     )}
@@ -69,10 +87,14 @@ class EntityDetailsToolbar extends React.Component {
                   key="unsilence"
                   visible={entity.isSilenced ? "if-room" : "never"}
                 >
-                  <ClearSilenceAction record={entity} onDone={refetch}>
+                  <ClearSilenceAction
+                    record={entity}
+                    onDelete={onDeleteSilence}
+                    onDone={refetch}
+                  >
                     {dialog => (
                       <UnsilenceMenuItem
-                        disabled={!dialog.canOpen}
+                        disabled={loading || !dialog.canOpen}
                         onClick={dialog.open}
                       />
                     )}
@@ -80,8 +102,13 @@ class EntityDetailsToolbar extends React.Component {
                 </ToolbarMenu.Item>,
 
                 <ToolbarMenu.Item key="delete" visible="if-room">
-                  <DeleteAction entity={entity}>
-                    {handler => <DeleteMenuItem onClick={handler} />}
+                  <DeleteAction entity={entity} onDelete={onDelete}>
+                    {handler => (
+                      <DeleteMenuItem
+                        disabled={loading}
+                        onClick={handler.open}
+                      />
+                    )}
                   </DeleteAction>
                 </ToolbarMenu.Item>,
               ],

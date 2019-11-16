@@ -1,6 +1,5 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withApollo } from "/vendor/react-apollo";
 
 import {
   withStyles,
@@ -10,13 +9,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  withMobileDialog,
 } from "/vendor/@material-ui/core";
 
 import { useCreateSilenceStatusToast } from "/lib/component/toast";
-import compose from "/lib/util/compose";
-import createSilence from "/lib/mutation/createSilence";
 import { Loader } from "/lib/component/base";
+import { useBreakpoint } from "/lib/component/util";
 import {
   SilenceEntryForm,
   SilenceEntryFormFields,
@@ -27,14 +24,15 @@ const StyledDialogContentText = withStyles(() => ({
 }))(DialogContentText);
 
 const SilenceEntryDialog = (props) => {
-  const { fullScreen, onClose, values, client } = props;
+  const { onClose, values, onSave } = props;
+  const fullScreen = !useBreakpoint("sm", "gt");
   const createToast = useCreateSilenceStatusToast();
 
   return (
     <SilenceEntryForm
       values={values}
       onSubmitSuccess={onClose}
-      onCreateSilence={input => createSilence(client, input)}
+      onCreateSilence={onSave}
       onCreateSilenceSuccess={() => {
         createToast({ namespace: values.namespace });
       }}
@@ -76,13 +74,11 @@ const SilenceEntryDialog = (props) => {
                   Cancel
                 </Button>
                 <Button
-                  onClick={() => {
-                    submit();
-                  }}
-                  color="primary"
-                  variant="contained"
                   autoFocus
+                  color="primary"
                   disabled={hasErrors || submitting}
+                  onClick={submit}
+                  variant="contained"
                 >
                   Create
                 </Button>
@@ -96,11 +92,9 @@ const SilenceEntryDialog = (props) => {
 }
 
 SilenceEntryDialog.propTypes = {
-  // fullScreen prop is controlled by the `withMobileDialog` enhancer.
-  fullScreen: PropTypes.bool.isRequired,
   onClose: PropTypes.func,
+  onSave: PropTypes.func.isRequired,
   values: PropTypes.object,
-  client: PropTypes.object.isRequired,
 };
 
 SilenceEntryDialog.defaultProps = {
@@ -108,7 +102,4 @@ SilenceEntryDialog.defaultProps = {
   values: {},
 };
 
-export default compose(
-  withApollo,
-  withMobileDialog({ breakpoint: "xs" }),
-)(SilenceEntryDialog);
+export default SilenceEntryDialog;

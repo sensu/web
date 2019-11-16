@@ -10,24 +10,28 @@ import {
   QueueExecutionMenuItem,
 } from "/lib/component/partial/ToolbarMenuItems";
 
-import ClearSilenceAction from "/lib/component/partial/ClearSilenceAction";
 import Toolbar from "/lib/component/partial/Toolbar";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 
+import ClearSilenceAction from "/lib/component/partial/ClearSilenceAction";
 import ExecuteAction from "./CheckDetailsExecuteAction";
-import PublishAction from "./CheckDetailsPublishAction";
-import UnpublishAction from "./CheckDetailsUnpublishAction";
+import ChangePublishStateAction from "./CheckDetailsChangePublishAction";
 import SilenceAction from "./CheckDetailsSilenceAction";
 
 class CheckDetailsToolbar extends React.Component {
   static propTypes = {
     check: PropTypes.object,
+    loading: PropTypes.bool,
     refetch: PropTypes.func,
     toolbarItems: PropTypes.func,
+    onCreateSilence: PropTypes.func.isRequired,
+    onDeleteSilence: PropTypes.func.isRequired,
+    onExecute: PropTypes.func.isRequired,
+    onPublish: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    check: null,
+    check: undefined,
     refetch: () => null,
     toolbarItems: ({ items }) => items,
   };
@@ -49,7 +53,17 @@ class CheckDetailsToolbar extends React.Component {
   };
 
   render() {
-    const { check, refetch, toolbarItems } = this.props;
+    const {
+      check: checkProp,
+      loading,
+      refetch,
+      toolbarItems,
+      onCreateSilence,
+      onDeleteSilence,
+      onExecute,
+      onPublish,
+    } = this.props;
+    const check = checkProp || {};
 
     return (
       <Toolbar
@@ -58,19 +72,28 @@ class CheckDetailsToolbar extends React.Component {
             {toolbarItems({
               items: [
                 <ToolbarMenu.Item key="execute " visible="always">
-                  <ExecuteAction check={check}>
-                    {handler => <QueueExecutionMenuItem onClick={handler} />}
+                  <ExecuteAction check={check} onExecute={onExecute}>
+                    {handler => (
+                      <QueueExecutionMenuItem
+                        disable={loading}
+                        onClick={handler}
+                      />
+                    )}
                   </ExecuteAction>
                 </ToolbarMenu.Item>,
                 <ToolbarMenu.Item
                   key="silence"
                   visible={check.isSilenced ? "never" : "if-room"}
                 >
-                  <SilenceAction check={check} onDone={refetch}>
+                  <SilenceAction
+                    check={check}
+                    onDone={refetch}
+                    onCreate={onCreateSilence}
+                  >
                     {dialog => (
                       <SilenceMenuItem
+                        disabled={loading || dialog.canOpen}
                         onClick={dialog.open}
-                        disabled={dialog.canOpen}
                       />
                     )}
                   </SilenceAction>
@@ -79,11 +102,15 @@ class CheckDetailsToolbar extends React.Component {
                   key="unsilence"
                   visible={check.isSilenced ? "if-room" : "never"}
                 >
-                  <ClearSilenceAction record={check} onDone={refetch}>
+                  <ClearSilenceAction
+                    record={check}
+                    onDone={refetch}
+                    onDelete={onDeleteSilence}
+                  >
                     {dialog => (
                       <UnsilenceMenuItem
+                        disabled={loading || !dialog.canOpen}
                         onClick={dialog.open}
-                        disabled={!dialog.canOpen}
                       />
                     )}
                   </ClearSilenceAction>
@@ -92,15 +119,22 @@ class CheckDetailsToolbar extends React.Component {
                   key={check.publish ? "unpublish" : "publish"}
                   visible="if-room"
                 >
-                  {check.publish ? (
-                    <UnpublishAction check={check}>
-                      {handler => <UnpublishMenuItem onClick={handler} />}
-                    </UnpublishAction>
-                  ) : (
-                    <PublishAction check={check}>
-                      {handler => <PublishMenuItem onClick={handler} />}
-                    </PublishAction>
-                  )}
+                  <ChangePublishStateAction
+                    publish={!check.publish}
+                    check={check}
+                    onChange={onPublish}
+                  >
+                    {handler =>
+                      check.publish ? (
+                        <UnpublishMenuItem
+                          disabled={loading}
+                          onClick={handler}
+                        />
+                      ) : (
+                        <PublishMenuItem disabled={loading} onClick={handler} />
+                      )
+                    }
+                  </ChangePublishStateAction>
                 </ToolbarMenu.Item>,
               ],
             })}

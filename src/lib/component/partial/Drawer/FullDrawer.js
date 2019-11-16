@@ -31,10 +31,10 @@ import DrawerButton from "./DrawerButton";
 import NamespaceIcon from "/lib/component/partial/NamespaceIcon";
 import NamespaceSelector from "/lib/component/partial/NamespaceSelector";
 
+const width = 256;
 const styles = theme => ({
   paper: {
-    minWidth: 264,
-    maxWidth: 400,
+    width,
     backgroundColor: theme.palette.background.paper,
   },
   headerContainer: {
@@ -62,9 +62,10 @@ const styles = theme => ({
   },
 
   drawer: {
-    width: "280px",
+    width,
     display: "flex",
   },
+
   override: {
     height: "100%",
     position: "fixed",
@@ -81,6 +82,7 @@ class FullDrawer extends React.Component {
     client: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     namespace: PropTypes.object,
+    onClose: PropTypes.func.isRequired,
     onToggle: PropTypes.func.isRequired,
     open: PropTypes.bool,
     mobile: PropTypes.bool,
@@ -115,7 +117,7 @@ class FullDrawer extends React.Component {
   };
 
   collapse = () => {
-    this.props.onToggle(false);
+    this.props.onClose();
   };
 
   onClickSelector = () => {
@@ -127,11 +129,10 @@ class FullDrawer extends React.Component {
     const { preferencesOpen } = this.state;
 
     return (
-      <div className={classes.drawer}>
+      <div className={!mobile && classes.drawer}>
         <MaterialDrawer
           open={open}
           variant={mobile ? "temporary" : "permanent"}
-          className={classes.override}
           onClose={this.collapse}
         >
           <Loader passhrough loading={loading}>
@@ -140,7 +141,7 @@ class FullDrawer extends React.Component {
                 <div className={classes.header}>
                   <div className={classes.row}>
                     <IconButton
-                      onClick={this.collapse}
+                      onClick={this.props.onToggle}
                       className={classes.hamburgerButton}
                     >
                       <MenuIcon />

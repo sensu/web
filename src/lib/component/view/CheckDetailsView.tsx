@@ -17,6 +17,11 @@ import {
   CheckDetailsContainer,
 } from "/lib/component/partial";
 
+import createSilence from "/lib/mutation/createSilence";
+import deleteSilence from "/lib/mutation/deleteSilence";
+import executeCheck from "/lib/mutation/executeCheck";
+import setPublish from "/lib/mutation/setCheckPublish";
+
 export const checkDetailsViewFragments = {
   record: gql`
     fragment CheckDetailsView_record on CheckConfig {
@@ -49,6 +54,10 @@ interface CheckDetailsViewContentProps {
   toolbarItems?: React.ReactNode;
   query: UseQueryResult<any, any>;
   variables: Variables;
+  onCreateSilence: (vars: any) => void;
+  onDeleteSilence: (vars: any) => void;
+  onExecute: (vars: any) => Promise<any>;
+  onPublish: (_: any) => Promise<void>;
 }
 
 export function useCheckDetailsViewQueryVariables(): Variables {
@@ -63,12 +72,12 @@ export function useCheckDetailsViewQueryVariables(): Variables {
 
 export const CheckDetailsViewContent = ({
   query,
-  toolbarItems,
   variables,
+  ...props
 }: CheckDetailsViewContentProps) => {
-  const client = useApolloClient();
   const { aborted, data = {}, networkStatus, refetch } = query;
   const { check } = data;
+
   // see: https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
   const loading = networkStatus < 6;
 
@@ -83,17 +92,32 @@ export const CheckDetailsViewContent = ({
   return (
     <AppLayout namespace={variables.namespace}>
       <CheckDetailsContainer
-        toolbarItems={toolbarItems}
-        client={client}
         check={check}
         loading={loading || aborted}
         refetch={refetch}
+        {...props}
       />
     </AppLayout>
   );
 };
 
 export const CheckDetailsView = () => {
+  const client = useApolloClient();
+  const onCreateSilence = React.useCallback(
+    (vars) => createSilence(client, vars),
+    [client],
+  );
+  const onDeleteSilence = React.useCallback(
+    (vars) => deleteSilence(client, vars),
+    [client],
+  );
+  const onExecute = React.useCallback((vars) => executeCheck(client, vars), [
+    client,
+  ]);
+  const onPublish = React.useCallback((vars) => setPublish(client, vars), [
+    client,
+  ]);
+
   const variables = useCheckDetailsViewQueryVariables();
   const query = useQuery({
     query: checkDetailsViewQuery,
@@ -109,5 +133,14 @@ export const CheckDetailsView = () => {
     },
   });
 
-  return <CheckDetailsViewContent query={query} variables={variables} />;
+  return (
+    <CheckDetailsViewContent
+      query={query}
+      variables={variables}
+      onCreateSilence={onCreateSilence}
+      onDeleteSilence={onDeleteSilence}
+      onExecute={onExecute}
+      onPublish={onPublish}
+    />
+  );
 };

@@ -17,19 +17,14 @@ class Drawer extends React.Component {
     classes: PropTypes.object.isRequired,
     variant: PropTypes.string.isRequired,
     loading: PropTypes.bool.isRequired,
-    mobile: PropTypes.bool,
-    namespace: PropTypes.object.isRequired,
-    onToggle: PropTypes.func,
-    open: PropTypes.bool,
+    namespace: PropTypes.object,
   };
 
   static defaultProps = {
-    mobile: false,
-    open: true,
-    onToggle: null,
+    namespace: null,
   };
 
-  state = { forceExpand: null };
+  state = { forced: null };
 
   static fragments = {
     namespace: gql`
@@ -41,53 +36,68 @@ class Drawer extends React.Component {
     `,
   };
 
-  onToggle = value => {
-    this.setState({ forceExpand: value, open: false });
+  onToggle = () => {
+    this.setState(state => ({ forced: !state.forced }));
+  };
+
+  onClose = () => {
+    if (!this.state.forced) {
+      return;
+    }
+    this.onToggle();
   };
 
   fullDrawer = () => {
+    const { classes, loading, namespace, variant } = this.props;
+
     return (
       <FullDrawer
-        open={this.props.open}
-        mobile={this.props.mobile}
-        className={this.props.classes.large}
-        loading={this.props.loading}
-        namespace={this.props.namespace}
-        onToggle={this.props.onToggle ? this.props.onToggle : this.onToggle}
+        open
+        mobile={variant !== "large"}
+        className={classes.large}
+        loading={loading}
+        namespace={namespace}
+        onToggle={this.onToggle}
+        onClose={this.onClose}
       />
     );
   };
 
   smallDrawer = () => {
+    const { classes, loading, namespace, variant } = this.props;
+    const { forced } = this.state;
+
     return (
-      <QuickNav
-        open={this.props.open}
-        onToggle={this.onToggle}
-        className={this.props.classes.small}
-      />
+      <React.Fragment>
+        <FullDrawer
+          mobile
+          open={forced && variant !== "large"}
+          className={classes.large}
+          loading={loading}
+          namespace={namespace}
+          onToggle={this.onToggle}
+          onClose={this.onClose}
+        />
+        <QuickNav
+          open
+          onToggle={this.onToggle}
+          className={classes.small}
+        />
+      </React.Fragment>
     );
   };
 
   render() {
-    const { mobile, variant } = this.props;
+    const { variant } = this.props;
+    const { forced } = this.state;
 
-    if (!mobile) {
-      // check if the user has set a preference
-      // TODO this is lost on refresh
-      if (this.state.forceExpand === true) {
-        return this.fullDrawer();
-      }
-      if (this.state.forceExpand === false) {
-        return this.smallDrawer();
-      }
-    }
-
-    // return a drawer depending on resolution
-    if (variant === "large") {
+    // TODO this is lost on refresh
+    // check if the user has set a preference
+    if (!forced && variant === "large") {
       return this.fullDrawer();
-    } else {
-      return this.smallDrawer();
     }
+    return this.smallDrawer();
   }
 }
+
 export default withStyles(styles)(Drawer);

@@ -13,8 +13,6 @@ import {
 import { TableListEmptyState, Loader } from "/lib/component/base";
 import { ListController } from "/lib/component/controller";
 
-import deleteEntity from "/lib/mutation/deleteEntity";
-
 import Pagination from "/lib/component/partial/Pagination";
 import SilenceEntryDialog from "/lib/component/partial/SilenceEntryDialog";
 import ClearSilencedEntriesDialog from "/lib/component/partial/ClearSilencedEntriesDialog";
@@ -24,15 +22,16 @@ import EntitiesListItem from "./EntitiesListItem";
 
 class EntitiesList extends React.PureComponent {
   static propTypes = {
-    // from withApollo HOC
-    client: PropTypes.object.isRequired,
     editable: PropTypes.bool,
     loading: PropTypes.bool,
     namespace: PropTypes.object,
     order: PropTypes.string.isRequired,
-    filters: PropTypes.object.isRequired,
+    filters: PropTypes.array.isRequired,
     onChangeFilters: PropTypes.func.isRequired,
     onChangeQuery: PropTypes.func.isRequired,
+    onCreateSilence: PropTypes.func.isRequired,
+    onDeleteSilence: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
     limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     refetch: PropTypes.func,
@@ -88,9 +87,7 @@ class EntitiesList extends React.PureComponent {
   };
 
   deleteEntities = entities => {
-    entities.forEach(entity =>
-      deleteEntity(this.props.client, { id: entity.id }),
-    );
+    entities.forEach(({ id }) => this.props.onDelete({ id }));
   };
 
   silenceItems = entities => {
@@ -222,15 +219,16 @@ class EntitiesList extends React.PureComponent {
                 limit={limit}
                 offset={offset}
                 pageInfo={namespace && namespace.entities.pageInfo}
-                onChangeQuery={(update) =>
-                  onChangeQuery((params) => ({ ...params, ...update }))
+                onChangeQuery={update =>
+                  onChangeQuery(params => ({ ...params, ...update }))
                 }
               />
 
               <ClearSilencedEntriesDialog
                 silences={unsilence}
                 open={!!unsilence}
-                close={() => {
+                onSave={this.props.onDeleteSilence}
+                onClose={() => {
                   this.setState({ unsilence: null });
                   setSelectedItems([]);
                   refetch();
@@ -240,6 +238,7 @@ class EntitiesList extends React.PureComponent {
               {silence && (
                 <SilenceEntryDialog
                   values={silence}
+                  onSave={this.props.onCreateSilence}
                   onClose={() => {
                     this.setState({ silence: null });
                     setSelectedItems([]);

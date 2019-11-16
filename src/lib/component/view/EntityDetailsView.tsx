@@ -5,6 +5,7 @@ import { PollingDuration } from "../../constant";
 import { ApolloError } from "/vendor/apollo-client";
 import { FailedError } from "/lib/error/FetchError";
 import {
+  useApolloClient,
   useQuery,
   useRouter,
   UseQueryResult,
@@ -15,6 +16,10 @@ import {
   EntityDetailsContainer,
   NotFound,
 } from "/lib/component/partial";
+
+import createSilence from "/lib/mutation/createSilence";
+import deleteSilence from "/lib/mutation/deleteSilence";
+import deleteEntity from "/lib/mutation/deleteEntity";
 
 export const entityDetailsViewFragments = {
   record: gql`
@@ -48,6 +53,9 @@ interface EntityDetailsViewContentProps {
   toolbarItems?: React.ReactNode;
   query: UseQueryResult<any, any>;
   variables: Variables;
+  onCreateSilence: (_: any) => void;
+  onDeleteSilence: (_: any) => void;
+  onDelete: (_: any) => Promise<any>;
 }
 
 export function useEntityDetailsViewQueryVariables(): Variables {
@@ -62,14 +70,14 @@ export function useEntityDetailsViewQueryVariables(): Variables {
 
 export const EntityDetailsViewContent = ({
   query,
-  toolbarItems,
   variables,
+  ...props
 }: EntityDetailsViewContentProps) => {
   const { aborted, data = {}, networkStatus, refetch } = query;
   const { entity } = data;
+
   // see: https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
   const loading = networkStatus < 6;
-
   if (!loading && !aborted && (!entity || entity.deleted)) {
     return (
       <AppLayout namespace={variables.namespace}>
@@ -80,18 +88,30 @@ export const EntityDetailsViewContent = ({
 
   return (
     <AppLayout namespace={variables.namespace}>
-      {variables.entity && (
-        <EntityDetailsContainer
-          toolbarItems={toolbarItems}
-          entity={variables.entity}
-          refetch={refetch}
-        />
-      )}
+      <EntityDetailsContainer
+        entity={entity}
+        refetch={refetch}
+        loading={loading}
+        {...props}
+      />
     </AppLayout>
   );
 };
 
 export const EntityDetailsView = () => {
+  const client = useApolloClient();
+  const onCreateSilence = React.useCallback(
+    (vars) => createSilence(client, vars),
+    [client],
+  );
+  const onDeleteSilence = React.useCallback(
+    (vars) => deleteSilence(client, vars),
+    [client],
+  );
+  const onDelete = React.useCallback((vars) => deleteEntity(client, vars), [
+    client,
+  ]);
+
   const variables = useEntityDetailsViewQueryVariables();
   const query = useQuery({
     query: entityDetailsViewQuery,
@@ -107,5 +127,13 @@ export const EntityDetailsView = () => {
     },
   });
 
-  return <EntityDetailsViewContent query={query} variables={variables} />;
+  return (
+    <EntityDetailsViewContent
+      query={query}
+      variables={variables}
+      onCreateSilence={onCreateSilence}
+      onDeleteSilence={onDeleteSilence}
+      onDelete={onDelete}
+    />
+  );
 };

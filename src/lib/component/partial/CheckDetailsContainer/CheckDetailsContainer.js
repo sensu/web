@@ -2,9 +2,9 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
+import { Content } from "/lib/component/base";
 import { Grid } from "/vendor/@material-ui/core";
-
-import { Content, Loader } from "/lib/component/base";
+import LoadingCard from "/lib/component/partial/LoadingCard";
 
 import Configuration from "./CheckDetailsConfiguration";
 import Toolbar from "./CheckDetailsToolbar";
@@ -15,6 +15,10 @@ class CheckDetailsContainer extends React.PureComponent {
     loading: PropTypes.bool.isRequired,
     refetch: PropTypes.func,
     toolbarItems: PropTypes.func,
+    onCreateSilence: PropTypes.func.isRequired,
+    onDeleteSilence: PropTypes.func.isRequired,
+    onExecute: PropTypes.func.isRequired,
+    onPublish: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -39,28 +43,38 @@ class CheckDetailsContainer extends React.PureComponent {
   };
 
   render() {
-    const { check, loading, refetch, toolbarItems } = this.props;
+    const {
+      check,
+      loading: loadingProp,
+      refetch,
+      toolbarItems,
+      onCreateSilence,
+      onDeleteSilence,
+      onExecute,
+      onPublish,
+    } = this.props;
+    const loading = !check && loadingProp;
 
     return (
-      <Loader loading={loading} passthrough>
-        {check && (
-          <React.Fragment>
-            <Content marginBottom>
-              <Toolbar
-                toolbarItems={toolbarItems}
-                check={check}
-                refetch={refetch}
-              />
-            </Content>
+      <React.Fragment>
+        <Content marginBottom>
+          <Toolbar
+            toolbarItems={toolbarItems}
+            check={check}
+            refetch={refetch}
+            onCreateSilence={onCreateSilence}
+            onDeleteSilence={onDeleteSilence}
+            onExecute={onExecute}
+            onPublish={onPublish}
+          />
+        </Content>
 
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Configuration check={check} />
-              </Grid>
-            </Grid>
-          </React.Fragment>
-        )}
-      </Loader>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            {loading ? <LoadingCard /> : <Configuration check={check} />}
+          </Grid>
+        </Grid>
+      </React.Fragment>
     );
   }
 }

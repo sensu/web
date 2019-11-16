@@ -12,12 +12,12 @@ import {
 } from "/lib/util/params";
 import {
   useApolloClient,
+  useBreakpoint,
   useFilterParams,
   useSearchParams,
   useQuery,
   UseQueryResult,
   useRouter,
-  WithWidth,
 } from "/lib/component/util";
 import { MobileFullWidthContent, Content } from "/lib/component/base";
 import {
@@ -27,6 +27,10 @@ import {
   EntitiesListToolbar,
   NotFound,
 } from "/lib/component/partial";
+
+import createSilence from "/lib/mutation/createSilence";
+import deleteSilence from "/lib/mutation/deleteSilence";
+import deleteEntity from "/lib/mutation/deleteEntity";
 
 export const entitiesViewFragments = {
   namespace: gql`
@@ -91,6 +95,9 @@ interface EntitiesViewContentProps {
   toolbarItems?: React.ReactNode;
   query: UseQueryResult<any, any>;
   variables: Variables;
+  onCreateSilence: (_: any) => void;
+  onDeleteSilence: (_: any) => void;
+  onDelete: (_: any) => Promise<any>;
 }
 
 export const EntitiesViewContent = ({
@@ -98,10 +105,11 @@ export const EntitiesViewContent = ({
   toolbarContent,
   toolbarItems,
   variables,
+  ...props
 }: EntitiesViewContentProps) => {
-  const client = useApolloClient();
-  const [, setQueryParams] = useSearchParams();
   const [, setFilters] = useFilterParams();
+  const [, setParams] = useSearchParams();
+  const isSmViewport = !useBreakpoint("sm", "gt");
 
   const { data = {}, networkStatus, aborted, refetch } = query;
 
@@ -122,7 +130,7 @@ export const EntitiesViewContent = ({
         <Content marginBottom>
           <EntitiesListToolbar
             onClickReset={() =>
-              setQueryParams((params) => ({
+              setParams((params) => ({
                 ...params,
                 filters: undefined,
                 order: undefined,
@@ -134,23 +142,19 @@ export const EntitiesViewContent = ({
         </Content>
 
         <MobileFullWidthContent>
-          <WithWidth>
-            {({ width }) => (
-              <EntitiesList
-                client={client}
-                editable={width !== "xs"}
-                limit={variables.limit}
-                offset={variables.offset}
-                loading={(loading && !data.namespace) || aborted}
-                filters={variables.filters}
-                onChangeFilters={setFilters}
-                onChangeQuery={setQueryParams}
-                namespace={data.namespace}
-                refetch={refetch}
-                order={variables.order}
-              />
-            )}
-          </WithWidth>
+          <EntitiesList
+            editable={!isSmViewport}
+            limit={variables.limit}
+            offset={variables.offset}
+            loading={(loading && !data.namespace) || aborted}
+            filters={variables.filters}
+            onChangeFilters={setFilters}
+            onChangeQuery={setParams}
+            namespace={data.namespace}
+            refetch={refetch}
+            order={variables.order}
+            {...props}
+          />
         </MobileFullWidthContent>
       </div>
     </AppLayout>
@@ -162,6 +166,19 @@ EntitiesViewContent.defaultProps = {
 };
 
 export const EntitiesView = () => {
+  const client = useApolloClient();
+  const onCreateSilence = React.useCallback(
+    (vars) => createSilence(client, vars),
+    [client],
+  );
+  const onDeleteSilence = React.useCallback(
+    (vars) => deleteSilence(client, vars),
+    [client],
+  );
+  const onDelete = React.useCallback((vars) => deleteEntity(client, vars), [
+    client,
+  ]);
+
   const variables = useEntitiesViewQueryVariables();
   const query = useQuery({
     query: entitiesViewQuery,
@@ -177,5 +194,13 @@ export const EntitiesView = () => {
     },
   });
 
-  return <EntitiesViewContent query={query} variables={variables} />;
+  return (
+    <EntitiesViewContent
+      query={query}
+      variables={variables}
+      onCreateSilence={onCreateSilence}
+      onDeleteSilence={onDeleteSilence}
+      onDelete={onDelete}
+    />
+  );
 };
