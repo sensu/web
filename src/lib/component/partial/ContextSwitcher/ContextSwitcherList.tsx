@@ -126,7 +126,7 @@ const ContextSwitcherList = ({
                 <ContextSwitcherListItem
                   key={record.name}
                   icon={<NamespaceIcon namespace={record} />}
-                  primary={record.name}
+                  primary={record.name === "~" ? "local-cluster" : record.name}
                   decoration={<ChevronIcon direction="right" />}
                   selected={j === selected}
                   onMouseEnter={onFocus(j)}
