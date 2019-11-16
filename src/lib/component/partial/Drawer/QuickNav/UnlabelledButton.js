@@ -1,9 +1,7 @@
 /* eslint-disable react/display-name */
 
-import React, { forwardRef } from "/vendor/react";
+import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { NavLink } from "/vendor/react-router-dom";
-
 import { withStyles, IconButton } from "/vendor/@material-ui/core";
 
 const styles = theme => ({
@@ -16,16 +14,12 @@ const styles = theme => ({
 
 const QuickNavUnlabelledButton = props => {
   const { classes, children, onClick } = props;
-  const Link = forwardRef((props, ref) => (
-    <NavLink {...props} innerRef={ref} />
-  ));
 
   return (
     <IconButton
       classes={{
         root: classes.button,
       }}
-      component={Link}
       onClick={onClick}
     >
       {children}

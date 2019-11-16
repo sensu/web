@@ -129,7 +129,7 @@ class FullDrawer extends React.Component {
     const { preferencesOpen } = this.state;
 
     return (
-      <div className={!mobile && classes.drawer}>
+      <div className={!mobile ? classes.drawer : ""}>
         <MaterialDrawer
           open={open}
           variant={mobile ? "temporary" : "permanent"}

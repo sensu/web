@@ -64,7 +64,7 @@ const HandlersListHeader = ({
 
 HandlersListHeader.propTypes = {
   editable: PropTypes.bool,
-  filters: PropTypes.object,
+  filters: PropTypes.array.isRequired,
   selectedItems: PropTypes.array.isRequired,
   rowCount: PropTypes.number.isRequired,
   onChangeQuery: PropTypes.func.isRequired,
@@ -74,7 +74,6 @@ HandlersListHeader.propTypes = {
 
 HandlersListHeader.defaultProps = {
   editable: false,
-  filters: {},
 };
 
 export default HandlersListHeader;

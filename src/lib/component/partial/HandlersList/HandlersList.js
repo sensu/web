@@ -91,7 +91,7 @@ HandlersList.propTypes = {
     }),
   }),
   loading: PropTypes.bool,
-  filters: PropTypes.object,
+  filters: PropTypes.array,
   onChangeFilters: PropTypes.func,
   onChangeQuery: PropTypes.func.isRequired,
   limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

@@ -24,7 +24,7 @@ class Drawer extends React.Component {
     namespace: null,
   };
 
-  state = { forced: null };
+  state = { forced: false };
 
   static fragments = {
     namespace: gql`
