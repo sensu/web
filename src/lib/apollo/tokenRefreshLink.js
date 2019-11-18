@@ -7,7 +7,7 @@ import QueryAbortedError from "/lib/error/QueryAbortedError";
 import flagTokens from "/lib/mutation/flagTokens";
 import refreshTokens from "/lib/mutation/refreshTokens";
 
-const EXPIRY_THRESHOLD_MS = 13 * 60 * 1000;
+const EXPIRY_THRESHOLD_MS = 60 * 1000;
 const MAX_REFRESHES = 3;
 
 const tokenRefreshLink = new ApolloLink((operation, forward) => {
