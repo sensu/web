@@ -9,13 +9,7 @@ import {
   TableRow,
 } from "/vendor/@material-ui/core";
 
-import setCheckPublish from "/lib/mutation/setCheckPublish";
-
-import {
-  useSearchParams,
-  useFilterParams,
-  useApolloClient,
-} from "/lib/component/util";
+import { useSearchParams, useFilterParams } from "/lib/component/util";
 import { ListController } from "/lib/component/controller";
 import { Loader, TableListEmptyState } from "/lib/component/base";
 
@@ -107,6 +101,7 @@ interface Props {
   onCreateSilence: (_: any) => void;
   onDeleteSilence: (_: any) => void;
   onExecute: (_: any) => Promise<any>;
+  onPublish: (_: any) => Promise<any>;
 }
 
 const ChecksList = ({
@@ -120,9 +115,8 @@ const ChecksList = ({
   onCreateSilence,
   onDeleteSilence,
   onExecute,
+  onPublish,
 }: Props) => {
-  const client = useApolloClient();
-
   const [, setParams] = useSearchParams();
   const [filters, setFilters] = useFilterParams();
 
@@ -134,7 +128,7 @@ const ChecksList = ({
 
   const setChecksPublish = (checks: Check[], publish: boolean = true) => {
     checks.forEach((check) => {
-      const promise = setCheckPublish(client, {
+      const promise = onPublish({
         id: check.id,
         publish,
       });
