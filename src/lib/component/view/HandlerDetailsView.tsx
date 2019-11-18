@@ -19,6 +19,8 @@ export const handlerDetailsViewFragments = {
       deleted @client
       ...HandlerDetailsContainer_handler
     }
+
+    ${HandlerDetailsContainer.fragments.handler}
   `,
 };
 
