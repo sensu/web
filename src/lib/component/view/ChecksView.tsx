@@ -45,9 +45,11 @@ export const checksViewFragments = {
     fragment ChecksView_namespace on Namespace {
       id
       ...ChecksList_namespace
+      ...AppLayout_namespace
     }
 
     ${checksListFragments.namespace}
+    ${AppLayout.fragments.namespace}
   `,
 };
 
@@ -124,7 +126,7 @@ export const ChecksViewContent = ({
   }
 
   return (
-    <AppLayout namespace={variables.namespace}>
+    <AppLayout loading={aborted || loading} namespace={variables.namespace}>
       <div>
         <Content marginBottom>
           <ChecksListToolbar

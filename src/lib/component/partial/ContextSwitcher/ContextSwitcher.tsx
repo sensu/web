@@ -80,7 +80,7 @@ const ContextSwitcher = (
   }, [onClose]);
 
   return (
-    <div ref={ref}>
+    <React.Fragment>
       <Box
         pr={1 / 2}
         pl={1 / 2}
@@ -90,6 +90,7 @@ const ContextSwitcher = (
         <Box display="flex">
           <Box flexGrow="1">
             <SearchBox
+              ref={ref}
               variant="search"
               placeholder="Find namespaces..."
               value={filterValue}
@@ -134,7 +135,7 @@ const ContextSwitcher = (
           </Typography>
         </Box>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 

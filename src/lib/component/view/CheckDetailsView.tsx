@@ -23,8 +23,8 @@ import executeCheck from "/lib/mutation/executeCheck";
 import setPublish from "/lib/mutation/setCheckPublish";
 
 export const checkDetailsViewFragments = {
-  record: gql`
-    fragment CheckDetailsView_record on CheckConfig {
+  check: gql`
+    fragment CheckDetailsView_check on CheckConfig {
       id
       deleted @client
       ...CheckDetailsContainer_check
@@ -32,17 +32,30 @@ export const checkDetailsViewFragments = {
 
     ${CheckDetailsContainer.fragments.check}
   `,
+  namespace: gql`
+    fragment CheckDetailsView_namespace on Namespace {
+      id
+      ...AppLayout_namespace
+    }
+
+    ${AppLayout.fragments.namespace}
+  `,
 };
 
 const checkDetailsViewQuery = gql`
   query CheckDetailsContentQuery($namespace: String!, $check: String!) {
     check(namespace: $namespace, name: $check) {
       id
-      ...CheckDetailsView_record
+      ...CheckDetailsView_check
+    }
+
+    namespace(name: $namespace) {
+      ...CheckDetailsView_namespace
     }
   }
 
-  ${checkDetailsViewFragments.record}
+  ${checkDetailsViewFragments.check}
+  ${checkDetailsViewFragments.namespace}
 `;
 
 interface Variables {
@@ -90,7 +103,7 @@ export const CheckDetailsViewContent = ({
   }
 
   return (
-    <AppLayout namespace={variables.namespace}>
+    <AppLayout loading={loading} namespace={variables.namespace}>
       <CheckDetailsContainer
         check={check}
         loading={loading || aborted}

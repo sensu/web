@@ -6,8 +6,8 @@ import { Icon, Colour } from "./types";
 import PureIcon from "./Icon";
 
 interface Props {
-  namespace?: {
-    name: string;
+  namespace: {
+    name?: string;
   };
 }
 
@@ -26,7 +26,7 @@ const hashStr = (str: string) => {
 
 const NamespaceIcon = (props: Props) => {
   const { namespace, ...other } = props;
-  const name = namespace ? namespace.name : "";
+  const name = namespace.name || "";
   const hash = useMemo(() => hashStr(name), [name]);
 
   return (
@@ -44,6 +44,10 @@ NamespaceIcon.fragments = {
       name
     }
   `,
+};
+
+NamespaceIcon.defaultProps = {
+  namespace: {},
 };
 
 export default NamespaceIcon;
