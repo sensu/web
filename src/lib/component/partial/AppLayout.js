@@ -2,98 +2,69 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
-import { FailedError } from "/lib/error/FetchError";
-
-import { Query } from "/lib/component/util";
+import { useBreakpoint } from "/lib/component/util";
 import { AppLayout as BaseAppLayout, Loader } from "/lib/component/base";
-import { withTheme } from "@material-ui/core/styles";
 
 import Drawer from "/lib/component/partial/Drawer";
 import AppBar from "/lib/component/partial/AppBar";
 
-class AppLayout extends React.PureComponent {
-  static propTypes = {
-    theme: PropTypes.object.isRequired,
-    namespace: PropTypes.string.isRequired,
-    fullWidth: PropTypes.bool,
-    children: PropTypes.node,
-  };
+const AppLayout = ({ namespace: namespaceProp, loading, fullWidth, children }) => {
+  const isSmViewport = useBreakpoint("xs", "lt");
+  const isLgViewport = useBreakpoint("md", "gt");
 
-  static defaultProps = {
-    fullWidth: false,
-    children: undefined,
-  };
+  // TODO: Query data from cache
+  const namespace = namespaceProp ? { name: namespaceProp } : null;
 
-  state = { showBar: false, fullDrawer: true };
+  return (
+    <Loader loading={loading}>
+      <BaseAppLayout
+        fullWidth={fullWidth}
+        mobile={isSmViewport}
+        topBar={
+          isSmViewport && (
+            <AppBar loading={loading} namespace={namespace} />
+          )
+        }
+        drawer={
+          !isSmViewport && (
+            <Drawer
+              variant={isLgViewport ? "large" : "small"}
+              loading={loading}
+              namespace={namespace}
+            />
+          )
+        }
+        content={children}
+      />
+    </Loader>
+  );
+};
 
-  static query = gql`
-    query AppLayoutQuery($namespace: String!) {
-      namespace(name: $namespace) {
-        ...AppBar_namespace
-      }
+AppLayout.fragments = {
+  namespace: gql`
+    fragment AppLayout_namespace on Namespace {
+      id
+      ...AppBar_namespace
+      ...Drawer_namespace
     }
 
     ${AppBar.fragments.namespace}
-  `;
+    ${Drawer.fragments.namespace}
+  `,
+};
 
-  componentDidMount() {
-    window.addEventListener("resize", this.resize.bind(this));
-    this.resize();
-  }
+AppLayout.propTypes = {
+  children: PropTypes.node,
+  fullWidth: PropTypes.bool,
+  loading: PropTypes.bool,
+  namespace: PropTypes.string,
+};
 
-  resize() {
-    this.setState({
-      showBar: window.innerWidth <= this.props.theme.breakpoints.values.sm,
-      fullDrawer: window.innerWidth >= this.props.theme.breakpoints.values.md,
-    });
-  }
+AppLayout.defaultProps = {
+  fullWidth: false,
+  children: undefined,
+  loading: false,
+  namespace: null,
+};
 
-  render() {
-    const { namespace: namespaceParam, fullWidth, children } = this.props;
-
-    return (
-      <Query
-        query={AppLayout.query}
-        variables={{ namespace: namespaceParam }}
-        onError={error => {
-          if (error.networkError instanceof FailedError) {
-            return;
-          }
-
-          throw error;
-        }}
-      >
-        {({ data = {}, loading, aborted }) => {
-          return (
-            <Loader loading={loading}>
-              <BaseAppLayout
-                fullWidth={fullWidth}
-                mobile={this.state.showBar}
-                topBar={
-                  this.state.showBar && (
-                    <AppBar
-                      loading={loading || aborted}
-                      namespace={data.namespace}
-                    />
-                  )
-                }
-                drawer={
-                  !this.state.showBar && (
-                    <Drawer
-                      variant={this.state.fullDrawer ? "large" : "small"}
-                      loading={loading}
-                      namespace={data.namespace}
-                    />
-                  )
-                }
-                content={children}
-              />
-            </Loader>
-          );
-        }}
-      </Query>
-    );
-  }
-}
-
-export default withTheme(AppLayout);
+export default AppLayout;

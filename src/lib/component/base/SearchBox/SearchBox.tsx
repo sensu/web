@@ -28,12 +28,13 @@ const icons = {
   filter: FilterIcon,
 };
 
-interface Props {
+interface Props
+  extends React.DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {
   variant?: "search" | "filter";
-  value?: string;
-  placeholder?: string;
   onChange?: (ev: React.ChangeEvent<HTMLInputElement>) => void;
-  tabIndex?: number;
 }
 
 const SearchBox = ({

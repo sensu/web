@@ -34,3 +34,5 @@ export {
 export { default as useRouter } from "./useRouter";
 export * from "./useSearchParams";
 export * from "./useFilterParams";
+export { Provider as KeybindProvider, default as useKeybind } from "./Keybind";
+export { default as useBreakpoint } from "./useBreakpoint";

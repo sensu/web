@@ -17,6 +17,7 @@ import {
   AuthInvalidRoute,
   LastNamespaceRedirect,
   SigninRedirect,
+  KeybindProvider,
 } from "/lib/component/util";
 
 import { RelocationProvider } from "/lib/component/relocation";
@@ -37,28 +38,30 @@ class AppRoot extends React.PureComponent {
     return (
       <RelocationProvider>
         <ApolloProvider client={apolloClient}>
-          <AppThemeProvider>
-            <Switch>
-              <UnauthenticatedRoute
-                exact
-                path="/signin"
-                component={SignInView}
-                fallbackComponent={LastNamespaceRedirect}
-              />
+          <KeybindProvider>
+            <AppThemeProvider>
+              <Switch>
+                <UnauthenticatedRoute
+                  exact
+                  path="/signin"
+                  component={SignInView}
+                  fallbackComponent={LastNamespaceRedirect}
+                />
 
-              <AuthenticatedRoute
-                render={() => children}
-                fallbackComponent={SigninRedirect}
-              />
-            </Switch>
-            <Switch>
-              <UnauthenticatedRoute exact path="/signin" />
-              <AuthInvalidRoute component={AuthInvalidDialog} />
-            </Switch>
-            <ResetStyles />
-            <ThemeStyles />
-            <GlobalAlert />
-          </AppThemeProvider>
+                <AuthenticatedRoute
+                  render={() => children}
+                  fallbackComponent={SigninRedirect}
+                />
+              </Switch>
+              <Switch>
+                <UnauthenticatedRoute exact path="/signin" />
+                <AuthInvalidRoute component={AuthInvalidDialog} />
+              </Switch>
+              <ResetStyles />
+              <ThemeStyles />
+              <GlobalAlert />
+            </AppThemeProvider>
+          </KeybindProvider>
         </ApolloProvider>
       </RelocationProvider>
     );

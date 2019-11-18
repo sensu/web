@@ -20,7 +20,7 @@ import { toggleParam } from "/lib/util/filterParams";
 class EntitiesListHeader extends React.PureComponent {
   static propTypes = {
     editable: PropTypes.bool.isRequired,
-    filters: PropTypes.object.isRequired,
+    filters: PropTypes.array.isRequired,
     namespace: PropTypes.object,
     onChangeFilters: PropTypes.func.isRequired,
     onChangeQuery: PropTypes.func.isRequired,

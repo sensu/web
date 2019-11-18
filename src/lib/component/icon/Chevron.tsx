@@ -1,4 +1,4 @@
-import React from "react";
+import React from "/vendor/react";
 import Left from "@material-ui/icons/ChevronLeft";
 import Right from "@material-ui/icons/ChevronRight";
 

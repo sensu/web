@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
 import { Card, CardContent, Typography, List } from "/vendor/@material-ui/core";
-
+import { NamespaceLink } from "/lib/component/util";
 import {
   CheckStatusIcon,
   InlineLink,
@@ -48,9 +48,13 @@ class RelatedEntitiesCard extends React.Component {
           >
             <CheckStatusIcon statusCode={entity.status} inline mutedOK small />
           </Typography>
-          <InlineLink to={`/${namespace}/entities/${entity.name}`}>
+          <NamespaceLink
+            namespace={namespace}
+            component={InlineLink}
+            to={`/entities/${entity.name}`}
+          >
             {entity.name}
-          </InlineLink>
+          </NamespaceLink>
         </DetailedListItemTitle>
         <DetailedListItemSubtitle inset>
           <EntityStatusDescriptor entity={entity} />

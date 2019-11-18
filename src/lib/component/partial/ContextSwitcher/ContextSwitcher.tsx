@@ -1,4 +1,9 @@
-import React, { useCallback, useMemo, useState } from "/vendor/react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "/vendor/react";
 import {
   useTheme,
   Box,
@@ -13,7 +18,7 @@ import ContextSwitcherList from "./ContextSwitcherList";
 
 interface Namespace {
   name: string;
-  clusters: string[];
+  cluster: string;
 }
 
 interface Props {
@@ -22,14 +27,20 @@ interface Props {
   hideKeyHints?: boolean;
   namespaces: Namespace[];
   onClose?: () => void;
+  onSelect?: (selection: Namespace) => void;
 }
 
-const ContextSwitcher = ({
-  namespaces = [],
-  dense = false,
-  loading = false,
-  hideKeyHints = false,
-}: Props) => {
+const ContextSwitcher = (
+  {
+    namespaces = [],
+    dense = false,
+    loading = false,
+    hideKeyHints = false,
+    onClose = () => {},
+    onSelect = () => {},
+  }: Props,
+  ref: React.Ref<any>,
+) => {
   const theme = useTheme();
 
   const [filterValue, setFilterValue] = useState("");
@@ -56,6 +67,18 @@ const ContextSwitcher = ({
     return fuse.search(filterValue.slice(0, 12));
   }, [namespaces, filterValue]);
 
+  useEffect(() => {
+    const onKeyPress = (ev: KeyboardEvent) => {
+      if (ev.code === "Escape") {
+        onClose();
+        ev.preventDefault();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyPress, false);
+    return () => window.removeEventListener("keydown", onKeyPress);
+  }, [onClose]);
+
   return (
     <React.Fragment>
       <Box
@@ -67,15 +90,17 @@ const ContextSwitcher = ({
         <Box display="flex">
           <Box flexGrow="1">
             <SearchBox
+              ref={ref}
               variant="search"
               placeholder="Find namespaces..."
               value={filterValue}
               onChange={onFilterChange}
               tabIndex={0}
+              autoFocus
             />
           </Box>
           <Box flexGrow="0">
-            <IconButton color="inherit">
+            <IconButton color="inherit" onClick={onClose}>
               <CloseIcon />
             </IconButton>
           </Box>
@@ -88,6 +113,7 @@ const ContextSwitcher = ({
           loading={loading}
           namespaces={namespaceSearchResults}
           filtered={filterValue !== ""}
+          onSelect={onSelect}
         />
       </Box>
 
@@ -113,4 +139,4 @@ const ContextSwitcher = ({
   );
 };
 
-export default ContextSwitcher;
+export default React.forwardRef(ContextSwitcher);

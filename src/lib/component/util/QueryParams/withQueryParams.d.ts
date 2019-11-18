@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "/vendor/react";
 
 import { SetQueryParams, QueryParamsMap } from "./QueryParams";
 

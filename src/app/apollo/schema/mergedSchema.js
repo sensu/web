@@ -14,7 +14,12 @@ const rawClientSchema = clientSchemaFilePaths.reduce(
   "",
 );
 
-const clientSchemaDoc = graphql.parse(rawClientSchema);
-const schema = graphql.extendSchema(libSchema, clientSchemaDoc, { assumeValidSDL: true });
+let schema = libSchema;
+try {
+  const clientSchemaDoc = graphql.parse(rawClientSchema);
+  schema = graphql.extendSchema(libSchema, clientSchemaDoc, { assumeValidSDL: true });
+} catch (err) {
+  console.error("error while parsing schema", err); // eslint-disable-line no-console
+}
 
 module.exports = schema;

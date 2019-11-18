@@ -1,7 +1,6 @@
-import React from "/vendor/react";
+import React, { useState, useCallback } from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
-import { withApollo } from "/vendor/react-apollo";
 
 import {
   darken,
@@ -21,15 +20,10 @@ import {
   TableBody,
   TableCell,
   Typography,
-  withMobileDialog,
 } from "/vendor/@material-ui/core";
 
-import compose from "/lib/util/compose";
-
-import deleteSilence from "/lib/mutation/deleteSilence";
-
 import { DialogContentParagraph, Loader } from "/lib/component/base";
-import { Maybe } from "/lib/component/util";
+import { useBreakpoint, Maybe } from "/lib/component/util";
 import { ListController } from "/lib/component/controller";
 
 import ResourceDetails from "/lib/component/partial/ResourceDetails";
@@ -48,52 +42,22 @@ const StyledTable = withStyles(theme => ({
   },
 }))(Table);
 
-class ClearSilencedEntriesDialog extends React.PureComponent {
-  static propTypes = {
-    client: PropTypes.object.isRequired,
-    close: PropTypes.func.isRequired,
-    fullScreen: PropTypes.bool.isRequired,
-    open: PropTypes.bool,
-    silences: PropTypes.array,
-  };
+const ClearSilencedEntriesDialog = ({ onClose, onSave, open, silences: silencesProp }) => {
+  const [submitting, setSubmitting] = useState(false);
+  const fullScreen = !useBreakpoint("sm", "gt");
 
-  static defaultProps = {
-    open: false,
-    silences: null,
-  };
+  const clearItems = useCallback(items => {
+    const done = () => setSubmitting(false);
+    const clear = ({ id }) => onSave({ id });
 
-  static fragments = {
-    silence: gql`
-      fragment ClearSilencedEntriesDialog_silence on Silenced {
-        ...SilenceExpiration_silence
-
-        id
-        deleted @client
-        name
-        creator
-      }
-
-      ${SilenceExpiration.fragments.silence}
-    `,
-  };
-
-  state = {
-    submitting: false,
-  };
-
-  clearItems = items => {
-    const { client, close } = this.props;
-    const done = () => this.setState({ submitting: false });
-    const clear = ({ id }) => deleteSilence(client, { id });
-
-    this.setState({ submitting: true });
+    setSubmitting(true);
     Promise.all(items.map(clear))
       .then(done)
-      .then(close)
+      .then(onClose)
       .catch(done);
-  };
+  }, [onClose, onSave, setSubmitting]);
 
-  renderListItem = ({ key, item: silence, selected, setSelected }) => (
+  const renderListItem = useCallback(({ key, item: silence, selected, setSelected }) => (
     <TableSelectableRow
       selected={selected}
       key={key}
@@ -119,20 +83,16 @@ class ClearSilencedEntriesDialog extends React.PureComponent {
         />
       </TableCell>
     </TableSelectableRow>
-  );
+  ), []);
 
-  renderEmpty = () => (
+  const renderEmpty = useCallback(() => (
     <DialogContent>
       <DialogContentParagraph>
         {`There doesn't seem to be anything here. This may occur when
         the silence(s) have already been cleared or have expired.`}
       </DialogContentParagraph>
     </DialogContent>
-  );
-
-  render() {
-    const { open, close, fullScreen, silences: silencesProp } = this.props;
-    const { submitting } = this.state;
+  ), []);
 
     // omit duplicates
     const silences = Object.values(
@@ -142,13 +102,13 @@ class ClearSilencedEntriesDialog extends React.PureComponent {
     );
 
     return (
-      <Dialog fullWidth fullScreen={fullScreen} open={open} onClose={close}>
+      <Dialog fullWidth fullScreen={fullScreen} open={open} onClose={onClose}>
         <ListController
           items={silences}
           initialSelectedKeys={silences.map(silence => silence.name)}
           getItemKey={node => node.name}
-          renderEmptyState={this.renderEmpty}
-          renderItem={this.renderListItem}
+          renderEmptyState={renderEmpty}
+          renderItem={renderListItem}
         >
           {({ children, selectedItems }) => (
             <Loader loading={submitting} passthrough>
@@ -162,11 +122,11 @@ class ClearSilencedEntriesDialog extends React.PureComponent {
                 </StyledTable>
               </DialogContent>
               <DialogActions>
-                <Button onClick={close} color="default">
+                <Button onClick={onClose} color="default">
                   Cancel
                 </Button>
                 <Button
-                  onClick={() => this.clearItems(selectedItems)}
+                  onClick={() => clearItems(selectedItems)}
                   color="primary"
                   variant="contained"
                   autoFocus
@@ -180,17 +140,33 @@ class ClearSilencedEntriesDialog extends React.PureComponent {
         </ListController>
       </Dialog>
     );
-  }
 }
 
-const enhancer = compose(
-  withApollo,
-  withMobileDialog({ breakpoint: "xs" }),
-);
-const result = enhancer(ClearSilencedEntriesDialog);
+ClearSilencedEntriesDialog.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  open: PropTypes.bool,
+  silences: PropTypes.array,
+};
 
-// Manually hoist static fragments property, this is messy bu can eventually
-// be removed once more HOC utilities move to React hooks.
-result.fragments = ClearSilencedEntriesDialog.fragments;
+ClearSilencedEntriesDialog.defaultProps = {
+  open: false,
+  silences: null,
+};
 
-export default result;
+ClearSilencedEntriesDialog.fragments = {
+  silence: gql`
+    fragment ClearSilencedEntriesDialog_silence on Silenced {
+      ...SilenceExpiration_silence
+
+      id
+      deleted @client
+      name
+      creator
+    }
+
+    ${SilenceExpiration.fragments.silence}
+  `,
+};
+
+export default ClearSilencedEntriesDialog;

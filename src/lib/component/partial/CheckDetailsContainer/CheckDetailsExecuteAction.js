@@ -1,20 +1,11 @@
 import gql from "/vendor/graphql-tag";
-import { withRouter } from "/vendor/react-router-dom";
-import { withApollo } from "/vendor/react-apollo";
-
-import compose from "/lib/util/compose";
-
-import executeCheck from "/lib/mutation/executeCheck";
-
 import { useExecuteCheckStatusToast } from "/lib/component/toast";
 
-const CheckDetailsExecuteAction = ({ children, client, check }) => {
+const CheckDetailsExecuteAction = ({ children, check, onExecute }) => {
   const createExecuteCheckStatusToast = useExecuteCheckStatusToast();
 
   return children(() => {
-    const promise = executeCheck(client, {
-      id: check.id,
-    });
+    const promise = onExecute({ id: check.id });
 
     createExecuteCheckStatusToast(promise, {
       checkName: check.name,
@@ -33,8 +24,4 @@ CheckDetailsExecuteAction.fragments = {
   `,
 };
 
-const enhancer = compose(
-  withApollo,
-  withRouter,
-);
-export default enhancer(CheckDetailsExecuteAction);
+export default CheckDetailsExecuteAction;

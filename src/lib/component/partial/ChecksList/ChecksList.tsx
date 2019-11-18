@@ -9,14 +9,7 @@ import {
   TableRow,
 } from "/vendor/@material-ui/core";
 
-import executeCheck from "/lib/mutation/executeCheck";
-import setCheckPublish from "/lib/mutation/setCheckPublish";
-
-import {
-  useSearchParams,
-  useFilterParams,
-  useApolloClient,
-} from "/lib/component/util";
+import { useSearchParams, useFilterParams } from "/lib/component/util";
 import { ListController } from "/lib/component/controller";
 import { Loader, TableListEmptyState } from "/lib/component/base";
 
@@ -42,6 +35,7 @@ export interface ChecksListVariables {
 export const checksListFragments = {
   namespace: gql`
     fragment ChecksList_namespace on Namespace {
+      id
       checks(
         limit: $limit
         offset: $offset
@@ -104,6 +98,10 @@ interface Props {
   offset?: number;
   order?: string;
   refetch(): void;
+  onCreateSilence: (_: any) => void;
+  onDeleteSilence: (_: any) => void;
+  onExecute: (_: any) => Promise<any>;
+  onPublish: (_: any) => Promise<any>;
 }
 
 const ChecksList = ({
@@ -114,9 +112,11 @@ const ChecksList = ({
   offset,
   order,
   refetch,
+  onCreateSilence,
+  onDeleteSilence,
+  onExecute,
+  onPublish,
 }: Props) => {
-  const client = useApolloClient();
-
   const [, setParams] = useSearchParams();
   const [filters, setFilters] = useFilterParams();
 
@@ -128,7 +128,7 @@ const ChecksList = ({
 
   const setChecksPublish = (checks: Check[], publish: boolean = true) => {
     checks.forEach((check) => {
-      const promise = setCheckPublish(client, {
+      const promise = onPublish({
         id: check.id,
         publish,
       });
@@ -166,7 +166,7 @@ const ChecksList = ({
 
   const executeChecks = (checks: Check[]) => {
     checks.forEach(({ id, name, namespace: checkNamespace }) => {
-      const promise = executeCheck(client, { id });
+      const promise = onExecute({ id });
 
       createExecuteCheckStatusToast(promise, {
         checkName: name,
@@ -267,6 +267,7 @@ const ChecksList = ({
             {silence && (
               <SilenceEntryDialog
                 values={silence}
+                onSave={onCreateSilence}
                 onClose={() => {
                   setSilence(null);
                   setSelectedItems([]);
@@ -278,7 +279,8 @@ const ChecksList = ({
             <ClearSilencedEntriesDialog
               silences={unsilence}
               open={!!unsilence}
-              close={() => {
+              onSave={onDeleteSilence}
+              onClose={() => {
                 setUnsilence(null);
                 setSelectedItems([]);
                 refetch();

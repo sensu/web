@@ -16,7 +16,7 @@ import { toggleParam } from "/lib/util/filterParams";
 class SilencesListHeader extends React.PureComponent {
   static propTypes = {
     editable: PropTypes.bool.isRequired,
-    filters: PropTypes.object.isRequired,
+    filters: PropTypes.array.isRequired,
     onClickClearSilences: PropTypes.func.isRequired,
     onClickSelect: PropTypes.func.isRequired,
     onChangeQuery: PropTypes.func.isRequired,

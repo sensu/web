@@ -1,6 +1,5 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withApollo } from "/vendor/react-apollo";
 import { isApolloError } from "apollo-client/errors/ApolloError";
 import gql from "/vendor/graphql-tag";
 
@@ -11,10 +10,6 @@ import {
   TableCell,
   TableRow,
 } from "/vendor/@material-ui/core";
-
-import deleteEvent from "/lib/mutation/deleteEvent";
-import executeCheckMutation from "/lib/mutation/executeCheck";
-import resolveEvent from "/lib/mutation/resolveEvent";
 
 import { Loader, TableListEmptyState } from "/lib/component/base";
 import { ListController } from "/lib/component/controller";
@@ -33,7 +28,6 @@ import EventsListHeader from "./EventsListHeader";
 import EventsListItem from "./EventsListItem";
 
 const EventsList = ({
-  client,
   editable,
   loading,
   limit,
@@ -42,6 +36,11 @@ const EventsList = ({
   filters,
   onChangeFilters,
   onChangeQuery,
+  onCreateSilence,
+  onDeleteSilence,
+  onResolve,
+  onExecute,
+  onDelete,
   refetch,
 }) => {
   const [silence, setSilence] = React.useState(null);
@@ -52,7 +51,7 @@ const EventsList = ({
 
   const resolveEvents = events => {
     Promise.all(
-      events.map(event => resolveEvent(client, { id: event.id })),
+      events.map(event => onResolve({ id: event.id })),
     ).catch(error => {
       // HACK: Capture root-level query errors that vaguely match unauthorized errors
       // and open toast.
@@ -67,7 +66,7 @@ const EventsList = ({
   };
 
   const deleteEvents = events => {
-    events.forEach(event => deleteEvent(client, { id: event.id }));
+    events.forEach(event => onDelete({ id: event.id }));
   };
 
   const executeCheck = events => {
@@ -83,7 +82,7 @@ const EventsList = ({
         subscriptions = [];
       }
 
-      const promise = executeCheckMutation(client, {
+      const promise = onExecute({
         id: check.nodeId,
         subscriptions,
       });
@@ -239,13 +238,16 @@ const EventsList = ({
               limit={limit}
               offset={offset}
               pageInfo={namespace && namespace.events.pageInfo}
-              onChangeQuery={onChangeQuery}
+              onChangeQuery={(update) =>
+                onChangeQuery((params) => ({ ...params, ...update }))
+              }
             />
 
             <ClearSilencedEntriesDialog
               silences={unsilence}
               open={!!unsilence}
-              close={() => {
+              onSave={onDeleteSilence}
+              onClose={() => {
                 setUnsilence(null);
                 setSelectedItems([]);
                 refetch();
@@ -255,6 +257,7 @@ const EventsList = ({
             {silence && (
               <SilenceEntryDialog
                 values={silence}
+                onSave={onCreateSilence}
                 onClose={() => {
                   setSilence(null);
                   setSelectedItems([]);
@@ -272,13 +275,18 @@ const EventsList = ({
 EventsList.propTypes = {
   client: PropTypes.object.isRequired,
   editable: PropTypes.bool,
-  filters: PropTypes.object,
+  filters: PropTypes.array,
   namespace: PropTypes.shape({
     checks: PropTypes.object,
     entities: PropTypes.object,
   }),
   onChangeFilters: PropTypes.func,
   onChangeQuery: PropTypes.func.isRequired,
+  onCreateSilence: PropTypes.func.isRequired,
+  onDeleteSilence: PropTypes.func.isRequired,
+  onResolve: PropTypes.func.isRequired,
+  onExecute: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
   limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   offset: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   loading: PropTypes.bool,
@@ -288,7 +296,7 @@ EventsList.propTypes = {
 EventsList.defaultProps = {
   loading: false,
   editable: true,
-  filters: {},
+  filters: [],
   namespace: null,
   limit: undefined,
   offset: undefined,
@@ -355,4 +363,4 @@ EventsList.fragments = {
   `,
 };
 
-export default withApollo(EventsList);
+export default EventsList;

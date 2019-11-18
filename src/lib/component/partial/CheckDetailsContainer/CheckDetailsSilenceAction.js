@@ -8,6 +8,7 @@ class CheckDetailsSilenceAction extends React.Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     check: PropTypes.object.isRequired,
+    onCreate: PropTypes.func.isRequired,
     onDone: PropTypes.func,
   };
 
@@ -44,6 +45,7 @@ class CheckDetailsSilenceAction extends React.Component {
               check: check.name,
               subscription: "*",
             }}
+            onSave={this.props.onCreate}
             onClose={() => {
               this.props.onDone();
               this.setState({ isOpen: false });

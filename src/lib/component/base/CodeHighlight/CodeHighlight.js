@@ -28,7 +28,7 @@ class CodeHighlight extends React.Component {
     language: PropTypes.oneOf(["javascript", "json", "bash", "properties"])
       .isRequired,
     code: PropTypes.string.isRequired,
-    component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    component: PropTypes.any,
   };
 
   static defaultProps = {

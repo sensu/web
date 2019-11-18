@@ -24,7 +24,7 @@ class Disclosure extends React.Component {
 
     return (
       <MenuItem
-        inset={false}
+        inset="false"
         collapsed={collapsed}
         ornament={collapsed ? menuIcon : buttonIcon}
         {...props}

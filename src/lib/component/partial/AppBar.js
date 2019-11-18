@@ -12,7 +12,7 @@ import { MenuIcon } from "/lib/component/icon";
 
 import { SensuWordmark } from "/lib/component/base";
 
-import Drawer from "/lib/component/partial/Drawer";
+import Drawer from "/lib/component/partial/Drawer/FullDrawer";
 import NamespaceLabel from "/lib/component/partial/NamespaceLabel";
 
 class AppBar extends React.Component {
@@ -32,8 +32,9 @@ class AppBar extends React.Component {
   static fragments = {
     namespace: gql`
       fragment AppBar_namespace on Namespace {
+        id
         ...NamespaceLabel_namespace
-        ...Drawer_namespace
+        ...FullDrawer_namespace
       }
 
       ${NamespaceLabel.fragments.namespace}
@@ -113,6 +114,7 @@ class AppBar extends React.Component {
           variant="large"
           loading={loading}
           open={drawerOpen}
+          onClose={this.handleToggleDrawer}
           onToggle={this.handleToggleDrawer}
           mobile={true}
           namespace={namespace}

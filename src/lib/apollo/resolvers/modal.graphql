@@ -1,0 +1,20 @@
+extend type Query {
+  "Describes stack of modals presented."
+  modalStack: [Modal!]!
+}
+
+extend type Mutation {
+  "If present the given modal is remove, otherwise it is added to the stack."
+  toggleModal(modal: Modal): Boolean!
+
+  "Given modal is presented."
+  presentModal(modal: Modal): Boolean!
+
+  "Clears given modal and any descendents from stack."
+  clearModal(modal: Modal): Boolean!
+}
+
+enum Modal {
+  PREFERENCES_MODAL
+  CONTEXT_SWITCHER_MODAL
+}

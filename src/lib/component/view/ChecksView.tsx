@@ -12,21 +12,18 @@ import {
 } from "/lib/util/params";
 
 import {
+  useApolloClient,
+  useBreakpoint,
   useSearchParams,
   SearchParamsMap,
   useQuery,
-  useFilterParams,
   UseQueryResult,
-  WithWidth,
   useRouter,
 } from "/lib/component/util";
-import {
-  MobileFullWidthContent,
-  Content,
-  FilterList,
-} from "/lib/component/base";
+import { MobileFullWidthContent, Content } from "/lib/component/base";
 import {
   AppLayout,
+  BoundFilterList,
   ChecksList,
   checksListFragments,
   ChecksListToolbar,
@@ -34,17 +31,25 @@ import {
 } from "/lib/component/partial";
 import { ChecksListVariables } from "/lib/component/partial/ChecksList/ChecksList";
 
+import createSilence from "/lib/mutation/createSilence";
+import deleteSilence from "/lib/mutation/deleteSilence";
+import executeCheck from "/lib/mutation/executeCheck";
+import setPublish from "/lib/mutation/setCheckPublish";
+
 interface Variables extends ChecksListVariables {
   namespace: string;
 }
 
-export const checksViewFramgents = {
+export const checksViewFragments = {
   namespace: gql`
     fragment ChecksView_namespace on Namespace {
+      id
       ...ChecksList_namespace
+      ...AppLayout_namespace
     }
 
     ${checksListFragments.namespace}
+    ${AppLayout.fragments.namespace}
   `,
 };
 
@@ -57,11 +62,12 @@ export const ChecksViewQuery = gql`
     $filters: [String!]
   ) {
     namespace(name: $namespace) {
+      id
       ...ChecksView_namespace
     }
   }
 
-  ${checksViewFramgents.namespace}
+  ${checksViewFragments.namespace}
 `;
 
 export function useChecksViewQueryVariables(): Variables {
@@ -91,6 +97,10 @@ interface ChecksViewContentProps {
   toolbarItems?: React.ReactNode;
   query: UseQueryResult<any, any>;
   variables: Variables;
+  onCreateSilence: (_: any) => void;
+  onDeleteSilence: (_: any) => void;
+  onExecute: (_: any) => Promise<void>;
+  onPublish: (_: any) => Promise<void>;
 }
 
 export const ChecksViewContent = ({
@@ -98,19 +108,25 @@ export const ChecksViewContent = ({
   toolbarItems,
   query,
   variables,
+  ...props
 }: ChecksViewContentProps) => {
+  const [, setParams] = useSearchParams();
+  const isSmViewport = !useBreakpoint("sm", "gt");
+
   const { aborted, data = {}, networkStatus, refetch } = query;
+
   // see: https://github.com/apollographql/apollo-client/blob/master/packages/apollo-client/src/core/networkStatus.ts
   const loading = networkStatus < 6;
-
-  const [, setParams] = useSearchParams();
-
   if (!data.namespace && !loading && !aborted) {
-    return <NotFound />;
+    return (
+      <AppLayout namespace={variables.namespace}>
+        <NotFound />
+      </AppLayout>
+    );
   }
 
   return (
-    <AppLayout namespace={variables.namespace}>
+    <AppLayout loading={aborted || loading} namespace={variables.namespace}>
       <div>
         <Content marginBottom>
           <ChecksListToolbar
@@ -128,28 +144,20 @@ export const ChecksViewContent = ({
           />
         </Content>
         <MobileFullWidthContent>
-          <WithWidth>
-            {({ width }) => (
-              <ChecksList
-                editable={width !== "xs"}
-                limit={variables.limit}
-                offset={variables.offset}
-                namespace={(data || {}).namespace}
-                loading={(loading && !data.namespace) || aborted}
-                refetch={refetch}
-                order={variables.order}
-              />
-            )}
-          </WithWidth>
+          <ChecksList
+            editable={!isSmViewport}
+            limit={variables.limit}
+            offset={variables.offset}
+            namespace={(data || {}).namespace}
+            loading={(loading && !data.namespace) || aborted}
+            refetch={refetch}
+            order={variables.order}
+            {...props}
+          />
         </MobileFullWidthContent>
       </div>
     </AppLayout>
   );
-};
-
-const BoundFilterList = () => {
-  const [filters, setFilters] = useFilterParams();
-  return <FilterList filters={filters} onChange={setFilters} />;
 };
 
 ChecksViewContent.defaultProps = {
@@ -157,8 +165,23 @@ ChecksViewContent.defaultProps = {
 };
 
 export const ChecksView = () => {
-  const variables = useChecksViewQueryVariables();
+  const client = useApolloClient();
+  const onCreateSilence = React.useCallback(
+    (vars) => createSilence(client, vars),
+    [client],
+  );
+  const onDeleteSilence = React.useCallback(
+    (vars) => deleteSilence(client, vars),
+    [client],
+  );
+  const onExecute = React.useCallback((vars) => executeCheck(client, vars), [
+    client,
+  ]);
+  const onPublish = React.useCallback((vars) => setPublish(client, vars), [
+    client,
+  ]);
 
+  const variables = useChecksViewQueryVariables();
   const query = useQuery({
     query: ChecksViewQuery,
     variables,
@@ -173,5 +196,14 @@ export const ChecksView = () => {
     },
   });
 
-  return <ChecksViewContent query={query} variables={variables} />;
+  return (
+    <ChecksViewContent
+      query={query}
+      variables={variables}
+      onCreateSilence={onCreateSilence}
+      onDeleteSilence={onDeleteSilence}
+      onExecute={onExecute}
+      onPublish={onPublish}
+    />
+  );
 };

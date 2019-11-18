@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "/vendor/react";
 import {
   ListItem,
   ListItemIcon,
@@ -15,6 +15,7 @@ interface Props {
   dense?: boolean;
   selected?: boolean;
   onMouseEnter?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onClick?: () => void;
 }
 
 const ContextSwitcherListItem = ({

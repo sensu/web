@@ -45,6 +45,7 @@ HandlerDetailsContainer.fragments = {
 
       ...HandlerDetailsConfiguration_handler
     }
+
     ${Configuration.fragments.handler}
   `,
 };

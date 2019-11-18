@@ -1,21 +1,19 @@
 import React, { useCallback } from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
-import { withApollo } from "/vendor/react-apollo";
-import { isApolloError } from "apollo-client/errors/ApolloError";
 
+import { isApolloError } from "apollo-client/errors/ApolloError";
 import { useToast } from "/lib/component/relocation";
 import { ResolveEventStatusToast } from "/lib/component/toast";
-import resolveEvent from "/lib/mutation/resolveEvent";
 
-const EventDetailsResolveAction = ({ children, client, event }) => {
+const EventDetailsResolveAction = ({ children, event, onResolve }) => {
   const createToast = useToast();
   const resolve = useCallback(() => {
     if (event.check.status === 0) {
       return;
     }
 
-    resolveEvent(client, event).catch(error => {
+    onResolve(event).catch(error => {
       // HACK: Capture root-level query errors that vaguely match unauthorized errors
       // and open toast.
       if (isApolloError(error) && /request unauthorized/.test(error.message)) {
@@ -26,7 +24,7 @@ const EventDetailsResolveAction = ({ children, client, event }) => {
       }
       throw error;
     });
-  }, [createToast, client, event]);
+  }, [createToast, event, onResolve]);
 
   const canResolve = event && event.check.status > 0;
   const childProps = {
@@ -38,9 +36,9 @@ const EventDetailsResolveAction = ({ children, client, event }) => {
 };
 
 EventDetailsResolveAction.propTypes = {
-  client: PropTypes.object.isRequired,
   children: PropTypes.func.isRequired,
   event: PropTypes.object,
+  onResolve: PropTypes.func.isRequired,
 };
 
 EventDetailsResolveAction.defaultProps = {
@@ -58,4 +56,4 @@ EventDetailsResolveAction.fragments = {
   `,
 };
 
-export default withApollo(EventDetailsResolveAction);
+export default EventDetailsResolveAction;

@@ -8,6 +8,7 @@ class EntityDetailsSilenceAction extends React.Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     entity: PropTypes.object.isRequired,
+    onCreate: PropTypes.func.isRequired,
     onDone: PropTypes.func,
   };
 
@@ -44,6 +45,7 @@ class EntityDetailsSilenceAction extends React.Component {
               namespace: entity.namespace,
               subscription: `entity:${entity.name}`,
             }}
+            onSave={this.props.onCreate}
             onClose={() => {
               this.props.onDone();
               this.setState({ isOpen: false });

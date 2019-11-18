@@ -1,7 +1,6 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
-import { withApollo } from "/vendor/react-apollo";
 
 import {
   Paper,
@@ -10,12 +9,9 @@ import {
   TableCell,
   TableRow,
 } from "/vendor/@material-ui/core";
-
 import { ListController } from "/lib/component/controller";
 import { Loader, TableListEmptyState } from "/lib/component/base";
-
 import Pagination from "/lib/component/partial/Pagination";
-
 import HandlersListHeader from "./HandlersListHeader";
 import HandlersListItem from "./HandlersListItem";
 
@@ -95,7 +91,7 @@ HandlersList.propTypes = {
     }),
   }),
   loading: PropTypes.bool,
-  filters: PropTypes.object,
+  filters: PropTypes.array,
   onChangeFilters: PropTypes.func,
   onChangeQuery: PropTypes.func.isRequired,
   limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -138,4 +134,4 @@ HandlersList.fragments = {
   `,
 };
 
-export default withApollo(HandlersList);
+export default HandlersList;

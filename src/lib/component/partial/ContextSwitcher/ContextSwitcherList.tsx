@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useEffect, useState } from "/vendor/react";
+import times from "lodash/times";
 
 import { List } from "/vendor/@material-ui/core";
 import { ChevronIcon } from "/lib/component/icon";
-import { NamespaceIcon } from "/lib/component/partial";
+import NamespaceIcon from "/lib/component/partial/NamespaceIcon";
 
 import ContextSwitcherListHeader from "./ContextSwitcherListHeader";
 import ContextSwitcherListItem from "./ContextSwitcherListItem";
@@ -10,18 +11,22 @@ import ContextSwitcherListLoading from "./ContextSwitcherListLoading";
 import ContextSwitcherListEmpty from "./ContextSwitcherListEmpty";
 import ContextSwitcherListNoData from "./ContextSwitcherListNoData";
 
-interface NamespaceGroup {
-  [cluster: string]: string[];
+interface Namespace {
+  name: string;
+  cluster: string;
+}
+
+interface ClusterRange {
+  name: string;
+  range: [number, number?];
 }
 
 interface Props {
-  namespaces: {
-    name: string;
-    clusters?: string[];
-  }[];
+  namespaces: Namespace[];
   dense: boolean;
   loading: boolean;
   filtered: boolean;
+  onSelect: (selected: Namespace) => void;
 }
 
 const ContextSwitcherList = ({
@@ -29,26 +34,40 @@ const ContextSwitcherList = ({
   loading,
   namespaces,
   filtered,
+  onSelect,
 }: Props) => {
-  // Group namespaces by cluster
-  let groups = namespaces.reduce<NamespaceGroup>((acc, namespace) => {
-    return (namespace.clusters || []).reduce((acc, cluster) => {
-      return { ...acc, [cluster]: [...(acc[cluster] || []), namespace.name] };
-    }, acc);
-  }, {});
+  const items = useMemo(
+    () =>
+      namespaces.sort((a, b) => {
+        if (a.cluster === b.cluster) {
+          return 0;
+        }
+        if (a.cluster > b.cluster) {
+          return 1;
+        }
+        return -1;
+      }),
+    [namespaces],
+  );
 
-  // Account for un-clustered environments by referring namespaces as being in
-  // the "local cluster".
-  if (Object.keys(groups).length === 0 && namespaces.length > 0) {
-    groups = {
-      "local-cluster": namespaces.map((namespace) => namespace.name),
-    };
-  }
-
-  // Find total length of the list
-  const totalLen = Object.keys(groups).reduce(
-    (acc, key) => acc + groups[key].length,
-    0,
+  const clusters = useMemo(
+    () =>
+      items.reduce<ClusterRange[]>((acc, item, idx) => {
+        const last = acc.pop();
+        const name = item.cluster || "local-cluster";
+        if (!last) {
+          return [{ name, range: [idx] }];
+        }
+        if (last.name !== item.cluster) {
+          return [
+            ...acc,
+            { ...last, range: [last.range[0], idx] },
+            { name, range: [idx] },
+          ];
+        }
+        return [...acc, last];
+      }, []),
+    [items],
   );
 
   // Handle current position in the collection
@@ -56,7 +75,7 @@ const ContextSwitcherList = ({
   useEffect(() => {
     const onKeyPress = (ev: KeyboardEvent) => {
       if (ev.code === "Tab" || ev.code === "ArrowDown") {
-        setIdx(Math.min(idx + 1, totalLen));
+        setIdx(Math.min(idx + 1, items.length));
         ev.preventDefault();
       }
 
@@ -64,21 +83,19 @@ const ContextSwitcherList = ({
         setIdx(Math.max(idx - 1, 0));
         ev.preventDefault();
       }
+
+      if (ev.code === "Enter") {
+        onSelect(items[idx]); // TODO
+        ev.preventDefault();
+      }
     };
 
     window.addEventListener("keydown", onKeyPress, false);
     return () => window.removeEventListener("keydown", onKeyPress);
-  }, [idx, setIdx, totalLen]);
+  }, [idx, setIdx, onSelect, items]);
 
   // Find currently selected index
-  const selected = Math.min(Math.max(idx, 0), totalLen - 1);
-
-  // If the order of namespaces isn't important, sort of the cluster names
-  // alphabetically.
-  let clusterNames = Object.keys(groups);
-  if (!filtered) {
-    clusterNames = clusterNames.sort();
-  }
+  const selected = Math.min(Math.max(idx, 0), items.length - 1);
 
   // Select entries when hovered.
   const onFocus = (i: number) => () => setIdx(i);
@@ -94,27 +111,30 @@ const ContextSwitcherList = ({
     return <ContextSwitcherListNoData />;
   }
 
-  let i = -1;
   return (
     <List disablePadding dense={dense}>
-      {clusterNames.map((cluster) => (
-        <React.Fragment key={cluster}>
-          <ContextSwitcherListHeader>{cluster}</ContextSwitcherListHeader>
+      {clusters.map((cluster) => (
+        <React.Fragment key={cluster.name}>
+          <ContextSwitcherListHeader>{cluster.name}</ContextSwitcherListHeader>
 
-          {groups[cluster].map((name) => {
-            i++;
+          {times((cluster.range[1] || items.length) - cluster.range[0]).map(
+            (i: number) => {
+              const j = i + cluster.range[0];
+              const record = items[j];
 
-            return (
-              <ContextSwitcherListItem
-                key={name}
-                icon={<NamespaceIcon namespace={{ name }} />}
-                primary={name}
-                decoration={<ChevronIcon direction="right" />}
-                selected={i === selected}
-                onMouseEnter={onFocus(i)}
-              />
-            );
-          })}
+              return (
+                <ContextSwitcherListItem
+                  key={record.name}
+                  icon={<NamespaceIcon namespace={record} />}
+                  primary={record.name === "~" ? "local-cluster" : record.name}
+                  decoration={<ChevronIcon direction="right" />}
+                  selected={j === selected}
+                  onMouseEnter={onFocus(j)}
+                  onClick={() => onSelect(record)}
+                />
+              );
+            },
+          )}
         </React.Fragment>
       ))}
     </List>
