@@ -66,7 +66,11 @@ export const EventFilterDetailsViewContent = ({
   const loading = networkStatus < 6;
 
   if (!loading && !aborted && (!data.eventFilter || data.eventFilter.deleted)) {
-    return <NotFound />;
+    return (
+      <AppLayout namespace={variables.namespace}>
+        <NotFound />
+      </AppLayout>
+    );
   }
 
   return (
