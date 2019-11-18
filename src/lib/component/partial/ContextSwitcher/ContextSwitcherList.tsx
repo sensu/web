@@ -115,7 +115,9 @@ const ContextSwitcherList = ({
     <List disablePadding dense={dense}>
       {clusters.map((cluster) => (
         <React.Fragment key={cluster.name}>
-          <ContextSwitcherListHeader>{cluster.name}</ContextSwitcherListHeader>
+          <ContextSwitcherListHeader>
+            {cluster.name === "~" ? "local-cluster" : cluster.name}
+          </ContextSwitcherListHeader>
 
           {times((cluster.range[1] || items.length) - cluster.range[0]).map(
             (i: number) => {
@@ -126,7 +128,7 @@ const ContextSwitcherList = ({
                 <ContextSwitcherListItem
                   key={record.name}
                   icon={<NamespaceIcon namespace={record} />}
-                  primary={record.name === "~" ? "local-cluster" : record.name}
+                  primary={record.name}
                   decoration={<ChevronIcon direction="right" />}
                   selected={j === selected}
                   onMouseEnter={onFocus(j)}
