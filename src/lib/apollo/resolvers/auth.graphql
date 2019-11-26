@@ -32,7 +32,7 @@ extend type Mutation {
   refreshTokens(notBefore: DateTime): RefreshTokensPayload!
 
   "Set authorization tokens."
-  setTokens(accessToken: String!, refreshToken: String!, expiresAt: Integer!): Boolean
+  setTokens(accessToken: String!, refreshToken: String!, expiresAt: Int!): Boolean
 
   "Invalidates authorization tokens."
   invalidateTokens: Boolean
