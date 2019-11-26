@@ -5,7 +5,6 @@ import {
   createStyles,
   Typography,
 } from "/vendor/@material-ui/core";
-import classNames from "/vendor/classnames";
 import useReqContext from "/lib/component/util/useReqContext";
 
 import { useRouter, NamespaceLink } from "/lib/component/util";
@@ -43,6 +42,7 @@ const Breadcrumbs = () => {
   const links = router.location.pathname.split("/");
   const placement = links.indexOf(namespace) + 1;
   const url = `/${links[placement]}`;
+
   return (
     <div className={classes.root}>
       <Typography className={classes.text} variant="body1">
@@ -51,6 +51,7 @@ const Breadcrumbs = () => {
             <li className={classes.listItem}>
               <NamespaceLink
                 cluster={cluster}
+                namespace={namespace}
                 className={classes.link}
                 to={"/"}
               >
