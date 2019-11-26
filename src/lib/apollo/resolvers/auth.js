@@ -72,6 +72,21 @@ export default {
           handleError(cache, "CreateTokensMutation"),
         ),
 
+      setTokens: (_, { accessToken, refreshToken, expiresAt: expiresArg }, { cache }) => {
+        const expiresAt = new Date(expiresArg).toDateString();
+        const data = {
+          auth: {
+            __typename: "Auth",
+            invalid: false,
+            accessToken,
+            refreshToken,
+            expiresAt,
+          },
+        };
+
+        cache.writeData({ data });
+      },
+
       refreshTokens: (_, { notBefore = null }, { cache }) => {
         const result = cache.readQuery({ query });
 
