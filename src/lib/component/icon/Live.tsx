@@ -1,13 +1,12 @@
 import React from "/vendor/react";
-import PropTypes from "prop-types";
 import classnames from "/vendor/classnames";
-import { withStyles, SvgIcon } from "/vendor/@material-ui/core";
+import { makeStyles, SvgIcon } from "/vendor/@material-ui/core";
 
 // https://material.io/design/iconography/animated-icons.html#transitions
 const duration = 500;
 const outDuration = 100;
 
-const styles = () => ({
+const useStyles = makeStyles(() => ({
   root: {},
   inactive: {
     "& $radio": {
@@ -35,19 +34,19 @@ const styles = () => ({
     "& path": {
       opacity: 1,
       transition: `opacity ${duration}ms ease-out`,
-      transitionDelay: duration * (9 / 16),
+      transitionDelay: `${duration * (9 / 16)}ms`,
       fillOpacity: 0.5,
       animation: "10s ease-in-out 2s normal infinite ic-live-gentle-ripple",
     },
     // stagger transition & animations to give an impression of a ripple
     "& path:last-child": {
-      transitionDelay: duration * (13 / 16),
+      transitionDelay: `${duration * (13 / 16)}ms`,
       animationDelay: "3s",
     },
   },
   antenna: {
     transition: `opacity ${duration}ms`,
-    transitionDelay: duration * (3 / 8),
+    transitionDelay: `${duration * (3 / 8)}ms`,
   },
   radio: {
     opacity: 0,
@@ -70,22 +69,16 @@ const styles = () => ({
       fillOpacity: 0.5,
     },
   },
-});
+}));
 
-class Icon extends React.PureComponent {
-  static propTypes = {
-    active: PropTypes.bool,
-    classes: PropTypes.object.isRequired,
-    className: PropTypes.string,
-  };
+interface Props {
+  active?: boolean;
+  className?: string;
+}
 
-  static defaultProps = {
-    active: true,
-    className: undefined,
-  };
-
-  render() {
-    const { classes, className: classNameProp, active, ...props } = this.props;
+const Icon = React.memo(
+  ({ className: classNameProp, active = true, ...props }: Props) => {
+    const classes = useStyles();
     const className = classnames(classNameProp, {
       [classes.inactive]: !active,
     });
@@ -111,7 +104,8 @@ class Icon extends React.PureComponent {
         </g>
       </SvgIcon>
     );
-  }
-}
+  },
+);
+Icon.displayName = "LiveIcon";
 
-export default withStyles(styles)(Icon);
+export default Icon;

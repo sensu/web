@@ -73,7 +73,7 @@ export default {
         ),
 
       setTokens: (_, { accessToken, refreshToken, expiresAt: expiresArg }, { cache }) => {
-        const expiresAt = new Date(expiresArg).toDateString();
+        const expiresAt = new Date(expiresArg).toString();
         const data = {
           auth: {
             __typename: "Auth",

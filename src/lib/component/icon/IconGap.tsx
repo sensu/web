@@ -3,7 +3,18 @@ import PropTypes from "prop-types";
 
 import uniqueId from "/lib/util/uniqueId";
 
-class IconGap extends React.PureComponent {
+interface ChildArgs {
+  maskId: string;
+}
+
+interface Props {
+  disabled: boolean;
+  children: (_: ChildArgs) => React.ReactElement;
+}
+
+class IconGap extends React.PureComponent<Props> {
+  _id: string = "";
+
   static propTypes = {
     children: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
