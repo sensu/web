@@ -5,6 +5,7 @@ import {
   createStyles,
   Typography,
 } from "/vendor/@material-ui/core";
+import { KeyboardArrowRightIcon } from "/lib/component/icon";
 import useReqContext from "/lib/component/util/useReqContext";
 
 import { useRouter, NamespaceLink } from "/lib/component/util";
@@ -12,7 +13,7 @@ import { useRouter, NamespaceLink } from "/lib/component/util";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      paddingTop: "32px",
+      paddingBottom: "16px",
       maxWidth: "950px",
     },
     text: {
@@ -28,6 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "inline",
       marginRight: "16px",
       color: theme.palette.text.primary,
+    },
+    iconOffset: {
+      marginBottom: "-7px",
     },
     link: {
       color: theme.palette.text.primary,
@@ -60,7 +64,7 @@ const Breadcrumbs = () => {
             </li>
           )}
 
-          <li className={classes.listItem}>></li>
+          <li className={classes.listItem}><KeyboardArrowRightIcon className={classes.iconOffset} /></li>
 
           <li className={classes.listItem}>
             <NamespaceLink
@@ -72,7 +76,7 @@ const Breadcrumbs = () => {
             </NamespaceLink>
           </li>
 
-          <li className={classes.listItem}>></li>
+          <li className={classes.listItem}><KeyboardArrowRightIcon className={classes.iconOffset} /></li>
 
           <li className={classes.listItem}>
             <NamespaceLink
