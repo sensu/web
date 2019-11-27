@@ -36,6 +36,11 @@ export const styles = theme => {
   const emphasis = theme.palette.type === "light" ? 0.8 : 0.98;
   const backgroundColor = emphasize(theme.palette.background.default, emphasis);
 
+  const successColor = colors.green[600];
+  const warnColor = colors.amber[800];
+  const infoColor = theme.palette.primary.dark;
+  const errColor = theme.palette.error.dark;
+
   return {
     root: {
       position: "relative",
@@ -76,7 +81,6 @@ export const styles = theme => {
     },
 
     message: {
-      color: theme.palette.getContrastText(backgroundColor),
 
       paddingTop: 14,
       paddingBottom: 14,
@@ -107,27 +111,31 @@ export const styles = theme => {
     },
 
     success: {
-      backgroundColor: colors.green[600],
+      color: theme.palette.getContrastText(successColor),
+      backgroundColor: successColor,
       "&::before": {
-        backgroundColor: colors.green[600],
+        backgroundColor: successColor,
       },
     },
     error: {
-      backgroundColor: theme.palette.error.dark,
+      color: theme.palette.getContrastText(errColor),
+      backgroundColor: errColor,
       "&::before": {
-        backgroundColor: theme.palette.error.dark,
+        backgroundColor: errColor,
       },
     },
     info: {
+      color: theme.palette.getContrastText(infoColor),
       backgroundColor: theme.palette.primary.dark,
       "&::before": {
         backgroundColor: theme.palette.primary.dark,
       },
     },
     warning: {
-      backgroundColor: colors.amber[700],
+      color: theme.palette.getContrastText(theme.palette.common.black),
+      backgroundColor: warnColor,
       "&::before": {
-        backgroundColor: colors.amber[700],
+        backgroundColor: warnColor,
       },
     },
     icon: {
