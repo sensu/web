@@ -52,19 +52,23 @@ const Breadcrumbs = () => {
       <Typography className={classes.text} variant="body1">
         <ul>
           {cluster && (
-            <li className={classes.listItem}>
-              <NamespaceLink
-                cluster={cluster}
-                namespace={namespace}
-                className={classes.link}
-                to={"/"}
-              >
-                {cluster}
-              </NamespaceLink>
-            </li>
-          )}
+            <React.Fragment>
+              <li className={classes.listItem}>
+                <NamespaceLink
+                  cluster={cluster}
+                  namespace={namespace}
+                  className={classes.link}
+                  to={"/"}
+                >
+                  {cluster === "~" ? "local-cluster" : cluster}
+                </NamespaceLink>
+              </li>
 
-          <li className={classes.listItem}><KeyboardArrowRightIcon className={classes.iconOffset} /></li>
+              <li className={classes.listItem}>
+                <KeyboardArrowRightIcon className={classes.iconOffset} />
+              </li>
+            </React.Fragment>
+          )}
 
           <li className={classes.listItem}>
             <NamespaceLink
@@ -76,7 +80,9 @@ const Breadcrumbs = () => {
             </NamespaceLink>
           </li>
 
-          <li className={classes.listItem}><KeyboardArrowRightIcon className={classes.iconOffset} /></li>
+          <li className={classes.listItem}>
+            <KeyboardArrowRightIcon className={classes.iconOffset} />
+          </li>
 
           <li className={classes.listItem}>
             <NamespaceLink
