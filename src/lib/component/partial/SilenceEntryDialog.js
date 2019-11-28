@@ -13,7 +13,7 @@ import {
 
 import { useCreateSilenceStatusToast } from "/lib/component/toast";
 import { Loader } from "/lib/component/base";
-import { useBreakpoint } from "/lib/component/util";
+import { useBreakpoint, DocumentationLink } from "/lib/component/util";
 import {
   SilenceEntryForm,
   SilenceEntryFormFields,
@@ -23,7 +23,7 @@ const StyledDialogContentText = withStyles(() => ({
   root: { marginBottom: "2rem" },
 }))(DialogContentText);
 
-const SilenceEntryDialog = (props) => {
+const SilenceEntryDialog = props => {
   const { onClose, values, onSave } = props;
   const fullScreen = !useBreakpoint("sm", "gt");
   const createToast = useCreateSilenceStatusToast();
@@ -58,12 +58,9 @@ const SilenceEntryDialog = (props) => {
                   handlers from being triggered. A full reference to check
                   silencing is available on the Sensu docs site.
                   <br />
-                  <a
-                    href="https://docs.sensu.io/sensu-core/2.0/reference/silencing/"
-                    target="_docs"
-                  >
+                  <DocumentationLink path="/reference/silencing/">
                     Learn more
-                  </a>
+                  </DocumentationLink>
                 </StyledDialogContentText>
                 <div>
                   <SilenceEntryFormFields />
@@ -89,7 +86,7 @@ const SilenceEntryDialog = (props) => {
       }}
     </SilenceEntryForm>
   );
-}
+};
 
 SilenceEntryDialog.propTypes = {
   onClose: PropTypes.func,
