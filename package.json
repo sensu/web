@@ -221,5 +221,5 @@
     "graphql-config/**/graphql": "14.4.2",
     "graphql-import/**/graphql": "14.4.2"
   },
-  "graphQLSchemaRef": "80614db"
+  "graphQLSchemaRef": "4a0d6ac"
 }
