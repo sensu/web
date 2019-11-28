@@ -1,5 +1,5 @@
 import gql from "/vendor/graphql-tag";
-import { useQuery } from "./useQuery";
+import useQuery from "./useQuery";
 
 const query = gql`
   query SensuVersion {
