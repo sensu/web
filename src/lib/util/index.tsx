@@ -9,6 +9,7 @@ import "./error";
 import "./fetch";
 import "./filterParams";
 import "./serviceWorker";
+import "./makeDocsLink";
 import "./params";
 import "./promise";
 import "./uniqueId";
