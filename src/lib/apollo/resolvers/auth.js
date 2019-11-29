@@ -11,6 +11,7 @@ import { UnauthorizedError } from "/lib/error/FetchError";
 const query = gql`
   query AuthQuery {
     auth @client {
+      invalid
       accessToken
       refreshToken
       expiresAt
@@ -79,6 +80,16 @@ export default {
           throw new TypeError(
             "invalid `notBefore` variable. Expected DateTime",
           );
+        }
+
+        if (result.auth.invalid || !result.auth.refreshToken) {
+          return {
+            __typename: "RefreshTokensMutation",
+            auth: {
+              ...result,
+              accessToken: null,
+            },
+          };
         }
 
         const expired =
