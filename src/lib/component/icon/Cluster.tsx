@@ -1,7 +1,7 @@
 import React from "/vendor/react";
 import { SvgIcon } from "/vendor/@material-ui/core";
 
-const SmallCheckIcon = React.memo((props) => {
+const Icon = React.memo((props) => {
   return (
     <SvgIcon {...props}>
       <g fill="currentColor">
@@ -11,6 +11,6 @@ const SmallCheckIcon = React.memo((props) => {
     </SvgIcon>
   );
 });
-SmallCheckIcon.displayName = "SmallCheckIcon";
+Icon.displayName = "SmallCheckIcon";
 
-export default SmallCheckIcon;
+export default Icon;

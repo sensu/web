@@ -13,34 +13,34 @@ storiesOf("lib/base|Banner", module)
   .add("no variant", () => (
     <Banner
       message={text("message", "This is my story")}
-      actions={<Button variant="inherit">OK</Button>}
+      actions={<Button color="inherit">OK</Button>}
     />
   ))
   .add("info", () => (
     <Banner
       message={text("message", "This is my story")}
-      actions={<Button variant="inherit">OK</Button>}
+      actions={<Button color="inherit">OK</Button>}
       variant="info"
     />
   ))
   .add("success", () => (
     <Banner
       message={text("message", "This is my story")}
-      actions={<Button variant="inherit">OK</Button>}
+      actions={<Button color="inherit">OK</Button>}
       variant="success"
     />
   ))
   .add("warning", () => (
     <Banner
       message={text("message", "Warning: contents may explode.")}
-      actions={<Button variant="inherit">OK</Button>}
+      actions={<Button color="inherit">OK</Button>}
       variant="warning"
     />
   ))
   .add("error", () => (
     <Banner
       message={text("message", "This is my story")}
-      actions={<Button variant="inherit">OK</Button>}
+      actions={<Button color="inherit">OK</Button>}
       variant="error"
     />
   ));

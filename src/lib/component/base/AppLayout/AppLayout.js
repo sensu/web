@@ -4,6 +4,7 @@ import { withStyles } from "/vendor/@material-ui/core";
 import ResizeObserver from "/vendor/react-resize-observer";
 import classnames from "/vendor/classnames";
 
+import Breadcrumbs from "/lib/component/partial/Breadcrumbs";
 import ToastWell from "/lib/component/relocation/ToastWell";
 import BannerWell from "/lib/component/relocation/BannerWell";
 
@@ -186,6 +187,7 @@ class AppLayout extends React.PureComponent {
                 [classes.contentMaxWidth]: !fullWidth,
               })}
             >
+              <Breadcrumbs />
               {content}
             </div>
           </div>
