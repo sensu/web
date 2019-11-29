@@ -3,7 +3,11 @@ import PropTypes from "prop-types";
 import { SvgIcon } from "/vendor/@material-ui/core";
 import IconGap from "./IconGap";
 
-class Icon extends React.PureComponent {
+interface Props {
+  withGap?: boolean;
+}
+
+class Icon extends React.PureComponent<Props> {
   static propTypes = {
     withGap: PropTypes.bool,
   };
