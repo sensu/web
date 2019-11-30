@@ -129,6 +129,7 @@ const styles = theme => ({
 class AppLayout extends React.PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    disableBreadcrumbs: PropTypes.bool,
     mobile: PropTypes.bool,
     topBar: PropTypes.node,
     drawer: PropTypes.node,
@@ -137,11 +138,12 @@ class AppLayout extends React.PureComponent {
   };
 
   static defaultProps = {
-    mobile: false,
-    topBar: undefined,
-    quickNav: undefined,
     content: undefined,
+    disableBreadcrumbs: false,
     fullWidth: false,
+    mobile: false,
+    quickNav: undefined,
+    topBar: undefined,
   };
 
   state = { topBarHeight: 0 };
@@ -187,7 +189,7 @@ class AppLayout extends React.PureComponent {
                 [classes.contentMaxWidth]: !fullWidth,
               })}
             >
-              <Breadcrumbs />
+              {!this.props.disableBreadcrumbs && <Breadcrumbs />}
               {content}
             </div>
           </div>
