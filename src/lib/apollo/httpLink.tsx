@@ -1,7 +1,7 @@
 import { BatchHttpLink } from "/vendor/apollo-link-batch-http";
 import { ApolloLink } from "apollo-link";
 
-import { FailedError } from "/lib/error/FetchError";
+import { FailedError, ServerError } from "/lib/error/FetchError";
 import fetch from "/lib/util/fetch";
 
 import { setOffline } from "./resolvers/localNetwork";
@@ -26,7 +26,10 @@ export default new ApolloLink((operation) => {
   observable.subscribe(
     () => setOffline(cache, false),
     (error) => {
-      if (error instanceof FailedError) {
+      if (
+        error instanceof FailedError ||
+        (error instanceof ServerError && error.statusCode >= 502)
+      ) {
         setOffline(cache, true);
       }
     },
