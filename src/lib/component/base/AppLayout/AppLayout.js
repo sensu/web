@@ -4,7 +4,6 @@ import { withStyles } from "/vendor/@material-ui/core";
 import ResizeObserver from "/vendor/react-resize-observer";
 import classnames from "/vendor/classnames";
 
-import Breadcrumbs from "/lib/component/partial/Breadcrumbs";
 import ToastWell from "/lib/component/relocation/ToastWell";
 import BannerWell from "/lib/component/relocation/BannerWell";
 
@@ -129,7 +128,6 @@ const styles = theme => ({
 class AppLayout extends React.PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    disableBreadcrumbs: PropTypes.bool,
     mobile: PropTypes.bool,
     topBar: PropTypes.node,
     drawer: PropTypes.node,
@@ -139,7 +137,6 @@ class AppLayout extends React.PureComponent {
 
   static defaultProps = {
     content: undefined,
-    disableBreadcrumbs: false,
     fullWidth: false,
     mobile: false,
     quickNav: undefined,
@@ -189,7 +186,6 @@ class AppLayout extends React.PureComponent {
                 [classes.contentMaxWidth]: !fullWidth,
               })}
             >
-              {!this.props.disableBreadcrumbs && <Breadcrumbs />}
               {content}
             </div>
           </div>
