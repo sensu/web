@@ -38,6 +38,7 @@ import {
 } from "/lib/component/base";
 import { Maybe, NamespaceLink } from "/lib/component/util";
 import { SilenceIcon, ExpandMoreIcon } from "/lib/component/icon";
+import LabelsAnnotationsCell from "/lib/component/partial/LabelsAnnotationsCell";
 
 import CronDescriptor from "/lib/component/partial/CronDescriptor";
 
@@ -47,6 +48,9 @@ const styles = theme => ({
   },
   fullWidth: {
     width: "100%",
+  },
+  break: {
+    margin: "16px 0",
   },
   expand: { color: theme.palette.text.secondary },
 });
@@ -102,7 +106,11 @@ class EventDetailsCheckSummary extends React.PureComponent {
         outputMetricHandlers {
           name
         }
+        metadata {
+          ...LabelsAnnotationsCell_objectmeta
+        }
       }
+      ${LabelsAnnotationsCell.fragments.objectmeta}
     `,
     entity: gql`
       fragment EventDetailsCheckSummary_entity on Entity {
@@ -464,6 +472,12 @@ class EventDetailsCheckSummary extends React.PureComponent {
                   </Dictionary>
                 </Grid>
               </Grid>
+            </CardContent>
+
+            <Divider />
+
+            <CardContent>
+              <LabelsAnnotationsCell resource={check} />
             </CardContent>
           </ExpansionPanelDetails>
         </ExpansionPanel>
