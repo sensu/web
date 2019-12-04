@@ -24,6 +24,7 @@ import {
   CheckStatusIcon,
   RelativeToCurrentDate,
 } from "/lib/component/base";
+import LabelsAnnotationsCell from "/lib/component/partial/LabelsAnnotationsCell";
 import { Maybe, NamespaceLink } from "/lib/component/util";
 import { SilenceIcon, ExpandMoreIcon } from "/lib/component/icon";
 import { statusCodeToId } from "/lib/util/checkStatus";
@@ -82,7 +83,11 @@ class EventDetailsEntitySummary extends React.Component {
             }
           }
         }
+        metadata {
+          ...LabelsAnnotationsCell_objectmeta
+        }
       }
+      ${LabelsAnnotationsCell.fragments.objectmeta}
     `,
   };
 
@@ -301,6 +306,11 @@ class EventDetailsEntitySummary extends React.Component {
               </Grid>
             </Grid>
             <Divider />
+          </ExpansionPanelDetails>
+
+          <Divider />
+          <ExpansionPanelDetails>
+            <LabelsAnnotationsCell resource={entity} />
           </ExpansionPanelDetails>
         </ExpansionPanel>
       </Card>
