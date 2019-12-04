@@ -1,7 +1,7 @@
 import React, { useCallback } from "/vendor/react";
 import gql from "/vendor/graphql-tag";
 
-import { FailedError } from "/lib/error/FetchError";
+import { isUnreachable } from "/lib/util/fetchError";
 import { ApolloError } from "/vendor/apollo-client";
 import { PollingDuration } from "/lib/constant";
 
@@ -168,7 +168,7 @@ export const HandlersView = () => {
     pollInterval: PollingDuration.short,
     variables,
     onError: (error: Error) => {
-      if ((error as ApolloError).networkError instanceof FailedError) {
+      if (isUnreachable((error as ApolloError).networkError)) {
         return;
       }
 

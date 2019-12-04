@@ -3,7 +3,7 @@ import gql from "/vendor/graphql-tag";
 
 import { PollingDuration } from "/lib/constant";
 import { ApolloError } from "/vendor/apollo-client";
-import { FailedError } from "/lib/error/FetchError";
+import { isUnreachable } from "/lib/util/fetchError";
 import {
   useApolloClient,
   useQuery,
@@ -138,7 +138,7 @@ export const CheckDetailsView = () => {
     fetchPolicy: "cache-and-network",
     variables,
     onError: (error: Error): void => {
-      if ((error as ApolloError).networkError instanceof FailedError) {
+      if (isUnreachable((error as ApolloError).networkError)) {
         return;
       }
 
