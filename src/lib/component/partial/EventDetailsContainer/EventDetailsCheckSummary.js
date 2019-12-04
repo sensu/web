@@ -46,12 +46,6 @@ const styles = theme => ({
   alignmentFix: {
     boxSizing: "border-box",
   },
-  fullWidth: {
-    width: "100%",
-  },
-  break: {
-    margin: "16px 0",
-  },
   expand: { color: theme.palette.text.secondary },
 });
 
@@ -300,185 +294,177 @@ class EventDetailsCheckSummary extends React.PureComponent {
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <CardContent className={classes.fullWidth}>
-              <Grid container spacing={0}>
-                <Grid item xs={12} sm={6}>
-                  <Dictionary>
-                    <DictionaryEntry>
-                      <DictionaryKey>Check</DictionaryKey>
-                      <DictionaryValue>
-                        {check.name !== "keepalive" ? (
-                          <NamespaceLink
-                            component={InlineLink}
-                            namespace={entity.namespace}
-                            to={`/checks/${check.name}`}
-                          >
-                            {check.name}
-                          </NamespaceLink>
-                        ) : (
-                          check.name
-                        )}
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>STDIN</DictionaryKey>
-                      <DictionaryValue>
-                        <CodeHighlight
-                          language="bash"
-                          component={Code}
-                          code={check.stdin || "false"}
-                        />
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>Subscriptions</DictionaryKey>
-                      <DictionaryValue>
-                        {check.subscriptions.length > 0 ? (
-                          <List disablePadding>
-                            {check.subscriptions.map(subscription => (
-                              <DetailedListItem key={subscription}>
-                                <DetailedListItemTitle>
-                                  {subscription}
-                                </DetailedListItemTitle>
-                              </DetailedListItem>
-                            ))}
-                          </List>
-                        ) : (
-                          "—"
-                        )}
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>Timeout</DictionaryKey>
-                      <DictionaryValue>
-                        <Maybe value={check.timeout} fallback="Never">
-                          {timeout => `${timeout}s`}
-                        </Maybe>
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>TTL</DictionaryKey>
-                      <DictionaryValue>
-                        <Maybe value={check.ttl} fallback="Forever">
-                          {ttl => `${ttl}s`}
-                        </Maybe>
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>Handlers</DictionaryKey>
-                      <DictionaryValue>
-                        {check.handlers.length > 0 ? (
-                          <List disablePadding>
-                            {check.handlers.map(handler => (
-                              <DetailedListItem key={handler.name}>
-                                <DetailedListItemTitle>
-                                  {handler.name}
-                                </DetailedListItemTitle>
-                              </DetailedListItem>
-                            ))}
-                          </List>
-                        ) : (
-                          "—"
-                        )}
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>Hooks</DictionaryKey>
-                      <DictionaryValue>{this.renderHooks()}</DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>Assets</DictionaryKey>
-                      <DictionaryValue>{this.renderAssets()}</DictionaryValue>
-                    </DictionaryEntry>
-                  </Dictionary>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Dictionary>
-                    <DictionaryEntry>
-                      <DictionaryKey>Command</DictionaryKey>
-                      <DictionaryValue scrollableContent>
-                        {check.command ? (
-                          <CodeBlock>
-                            <CodeHighlight
-                              language="bash"
-                              code={check.command}
-                              component="code"
-                            />
-                          </CodeBlock>
-                        ) : (
-                          "—"
-                        )}
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>Schedule</DictionaryKey>
-                      <DictionaryValue>
-                        <Maybe
-                          value={check.cron}
-                          fallback={`${check.interval}s`}
+            <Grid container spacing={0}>
+              <Grid item xs={12} sm={6}>
+                <Dictionary>
+                  <DictionaryEntry>
+                    <DictionaryKey>Check</DictionaryKey>
+                    <DictionaryValue>
+                      {check.name !== "keepalive" ? (
+                        <NamespaceLink
+                          component={InlineLink}
+                          namespace={entity.namespace}
+                          to={`/checks/${check.name}`}
                         >
-                          {cron => (
-                            <CronDescriptor capitalize expression={cron} />
-                          )}
-                        </Maybe>
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>Round Robin</DictionaryKey>
-                      <DictionaryValue>
-                        {check.roundRobin ? "Yes" : "No"}
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>Flap Threshold</DictionaryKey>
-                      <DictionaryValue>
-                        High: {check.highFlapThreshold} Low:{" "}
-                        {check.lowFlapThreshold}
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>Accepts STDIN?</DictionaryKey>
-                      <DictionaryValue>
-                        {check.stdin ? "Yes" : "No"}
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>Metric Format</DictionaryKey>
-                      <DictionaryValue>
-                        <Maybe
-                          value={check.outputMetricFormat}
-                          fallback="None"
-                        />
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                    <DictionaryEntry>
-                      <DictionaryKey>Metric Handlers</DictionaryKey>
-                      <DictionaryValue>
-                        {check.outputMetricHandlers.length > 0 ? (
-                          <List disablePadding>
-                            {check.outputMetricHandlers.map(handler => (
-                              <DetailedListItem key={handler.name}>
-                                <DetailedListItemTitle>
-                                  {handler.name}
-                                </DetailedListItemTitle>
-                              </DetailedListItem>
-                            ))}
-                          </List>
-                        ) : (
-                          "—"
-                        )}
-                      </DictionaryValue>
-                    </DictionaryEntry>
-                  </Dictionary>
-                </Grid>
+                          {check.name}
+                        </NamespaceLink>
+                      ) : (
+                        check.name
+                      )}
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>STDIN</DictionaryKey>
+                    <DictionaryValue>
+                      <CodeHighlight
+                        language="bash"
+                        component={Code}
+                        code={check.stdin || "false"}
+                      />
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>Subscriptions</DictionaryKey>
+                    <DictionaryValue>
+                      {check.subscriptions.length > 0 ? (
+                        <List disablePadding>
+                          {check.subscriptions.map(subscription => (
+                            <DetailedListItem key={subscription}>
+                              <DetailedListItemTitle>
+                                {subscription}
+                              </DetailedListItemTitle>
+                            </DetailedListItem>
+                          ))}
+                        </List>
+                      ) : (
+                        "—"
+                      )}
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>Timeout</DictionaryKey>
+                    <DictionaryValue>
+                      <Maybe value={check.timeout} fallback="Never">
+                        {timeout => `${timeout}s`}
+                      </Maybe>
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>TTL</DictionaryKey>
+                    <DictionaryValue>
+                      <Maybe value={check.ttl} fallback="Forever">
+                        {ttl => `${ttl}s`}
+                      </Maybe>
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>Handlers</DictionaryKey>
+                    <DictionaryValue>
+                      {check.handlers.length > 0 ? (
+                        <List disablePadding>
+                          {check.handlers.map(handler => (
+                            <DetailedListItem key={handler.name}>
+                              <DetailedListItemTitle>
+                                {handler.name}
+                              </DetailedListItemTitle>
+                            </DetailedListItem>
+                          ))}
+                        </List>
+                      ) : (
+                        "—"
+                      )}
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>Hooks</DictionaryKey>
+                    <DictionaryValue>{this.renderHooks()}</DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>Assets</DictionaryKey>
+                    <DictionaryValue>{this.renderAssets()}</DictionaryValue>
+                  </DictionaryEntry>
+                </Dictionary>
               </Grid>
-            </CardContent>
+              <Grid item xs={12} sm={6}>
+                <Dictionary>
+                  <DictionaryEntry>
+                    <DictionaryKey>Command</DictionaryKey>
+                    <DictionaryValue scrollableContent>
+                      {check.command ? (
+                        <CodeBlock>
+                          <CodeHighlight
+                            language="bash"
+                            code={check.command}
+                            component="code"
+                          />
+                        </CodeBlock>
+                      ) : (
+                        "—"
+                      )}
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>Schedule</DictionaryKey>
+                    <DictionaryValue>
+                      <Maybe value={check.cron} fallback={`${check.interval}s`}>
+                        {cron => (
+                          <CronDescriptor capitalize expression={cron} />
+                        )}
+                      </Maybe>
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>Round Robin</DictionaryKey>
+                    <DictionaryValue>
+                      {check.roundRobin ? "Yes" : "No"}
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>Flap Threshold</DictionaryKey>
+                    <DictionaryValue>
+                      High: {check.highFlapThreshold} Low:{" "}
+                      {check.lowFlapThreshold}
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>Accepts STDIN?</DictionaryKey>
+                    <DictionaryValue>
+                      {check.stdin ? "Yes" : "No"}
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>Metric Format</DictionaryKey>
+                    <DictionaryValue>
+                      <Maybe value={check.outputMetricFormat} fallback="None" />
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                  <DictionaryEntry>
+                    <DictionaryKey>Metric Handlers</DictionaryKey>
+                    <DictionaryValue>
+                      {check.outputMetricHandlers.length > 0 ? (
+                        <List disablePadding>
+                          {check.outputMetricHandlers.map(handler => (
+                            <DetailedListItem key={handler.name}>
+                              <DetailedListItemTitle>
+                                {handler.name}
+                              </DetailedListItemTitle>
+                            </DetailedListItem>
+                          ))}
+                        </List>
+                      ) : (
+                        "—"
+                      )}
+                    </DictionaryValue>
+                  </DictionaryEntry>
+                </Dictionary>
+              </Grid>
+            </Grid>
+          </ExpansionPanelDetails>
 
-            <Divider />
+          <Divider />
 
-            <CardContent>
-              <LabelsAnnotationsCell resource={check} />
-            </CardContent>
+          <ExpansionPanelDetails>
+            <LabelsAnnotationsCell resource={check} />
           </ExpansionPanelDetails>
         </ExpansionPanel>
       </Card>
