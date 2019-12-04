@@ -101,7 +101,7 @@ export default {
           return {
             __typename: "RefreshTokensMutation",
             auth: {
-              ...result,
+              ...result.auth,
               accessToken: null,
             },
           };

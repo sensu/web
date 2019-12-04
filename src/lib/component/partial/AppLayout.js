@@ -5,10 +5,17 @@ import gql from "/vendor/graphql-tag";
 import { useBreakpoint } from "/lib/component/util";
 import { AppLayout as BaseAppLayout, Loader } from "/lib/component/base";
 
+import Breadcrumbs from "/lib/component/partial/Breadcrumbs";
 import Drawer from "/lib/component/partial/Drawer";
 import AppBar from "/lib/component/partial/AppBar";
 
-const AppLayout = ({ namespace: namespaceProp, loading, fullWidth, children }) => {
+const AppLayout = ({
+  disableBreadcrumbs,
+  namespace: namespaceProp,
+  loading,
+  fullWidth,
+  children,
+}) => {
   const isSmViewport = useBreakpoint("xs", "lt");
   const isLgViewport = useBreakpoint("md", "gt");
 
@@ -21,9 +28,7 @@ const AppLayout = ({ namespace: namespaceProp, loading, fullWidth, children }) =
         fullWidth={fullWidth}
         mobile={isSmViewport}
         topBar={
-          isSmViewport && (
-            <AppBar loading={loading} namespace={namespace} />
-          )
+          isSmViewport && <AppBar loading={loading} namespace={namespace} />
         }
         drawer={
           !isSmViewport && (
@@ -34,7 +39,11 @@ const AppLayout = ({ namespace: namespaceProp, loading, fullWidth, children }) =
             />
           )
         }
-        content={children}
+        content={<React.Fragment>
+              {!disableBreadcrumbs && <Breadcrumbs />}
+          {children}
+        </React.Fragment>
+        }
       />
     </Loader>
   );
@@ -55,14 +64,16 @@ AppLayout.fragments = {
 
 AppLayout.propTypes = {
   children: PropTypes.node,
+  disableBreadcrumbs: PropTypes.bool,
   fullWidth: PropTypes.bool,
   loading: PropTypes.bool,
   namespace: PropTypes.string,
 };
 
 AppLayout.defaultProps = {
-  fullWidth: false,
+  disableBreadcrumbs: false,
   children: undefined,
+  fullWidth: false,
   loading: false,
   namespace: null,
 };
