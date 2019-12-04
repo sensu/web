@@ -194,7 +194,9 @@ const HandlerDetailsConfiguration = ({ handler }) => (
       </Grid>
     </CardContent>
     <Divider />
-    <LabelsAnnotationsCell resource={handler} />
+    <CardContent>
+      <LabelsAnnotationsCell resource={handler} />
+    </CardContent>
   </Card>
 );
 

@@ -111,7 +111,9 @@ const MutatorDetailsConfiguration = ({
       </Grid>
     </CardContent>
     <Divider />
-    <LabelsAnnotationsCell resource={mutator} />
+    <CardContent>
+      <LabelsAnnotationsCell resource={mutator} />
+    </CardContent>
   </Card>
 );
 
