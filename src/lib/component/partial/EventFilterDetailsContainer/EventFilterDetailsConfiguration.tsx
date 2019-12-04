@@ -87,7 +87,9 @@ const EventFilterDetailsConfiguration = ({
       <Divider />
       <RuntimeAssetsCell runtimeAssets={runtimeAssets} />
       <Divider />
-      <LabelsAnnotationsCell resource={eventFilter} />
+      <CardContent>
+        <LabelsAnnotationsCell resource={eventFilter} />
+      </CardContent>
     </Card>
   );
 };

@@ -2,7 +2,7 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
-import { Grid, CardContent } from "/vendor/@material-ui/core";
+import { Grid } from "/vendor/@material-ui/core";
 
 import {
   Dictionary,
@@ -70,51 +70,45 @@ class LabelsAnnotationsCell extends React.PureComponent {
     }, {});
 
     return (
-      <CardContent>
-        <Grid container spacing={0}>
-          <Grid item xs={12} sm={12}>
-            <Dictionary>
-              <DictionaryEntry>
-                <Key>Labels</Key>
-                <Value explicitRightMargin>
-                  <Maybe value={resource.metadata.labels} fallback="None">
-                    {val =>
-                      val.map(pair => [
-                        <Label
-                          key={pair.key}
-                          name={pair.key}
-                          value={pair.val}
-                        />,
-                        " ",
-                      ])
-                    }
-                  </Maybe>
-                </Value>
-              </DictionaryEntry>
-            </Dictionary>
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <Dictionary>
-              <DictionaryEntry>
-                <Key>Annotations</Key>
-                <Value explicitRightMargin>
-                  {resource.metadata.annotations.length > 0 ? (
-                    <CodeBlock>
-                      <CodeHighlight
-                        language="json"
-                        code={JSON.stringify(annotations, null, "\t")}
-                        component="code"
-                      />
-                    </CodeBlock>
-                  ) : (
-                    "None"
-                  )}
-                </Value>
-              </DictionaryEntry>
-            </Dictionary>
-          </Grid>
+      <Grid container spacing={0}>
+        <Grid item xs={12} sm={12}>
+          <Dictionary>
+            <DictionaryEntry>
+              <Key>Labels</Key>
+              <Value explicitRightMargin>
+                <Maybe value={resource.metadata.labels} fallback="None">
+                  {val =>
+                    val.map(pair => [
+                      <Label key={pair.key} name={pair.key} value={pair.val} />,
+                      " ",
+                    ])
+                  }
+                </Maybe>
+              </Value>
+            </DictionaryEntry>
+          </Dictionary>
         </Grid>
-      </CardContent>
+        <Grid item xs={12} sm={12}>
+          <Dictionary>
+            <DictionaryEntry>
+              <Key>Annotations</Key>
+              <Value explicitRightMargin>
+                {resource.metadata.annotations.length > 0 ? (
+                  <CodeBlock>
+                    <CodeHighlight
+                      language="json"
+                      code={JSON.stringify(annotations, null, "\t")}
+                      component="code"
+                    />
+                  </CodeBlock>
+                ) : (
+                  "None"
+                )}
+              </Value>
+            </DictionaryEntry>
+          </Dictionary>
+        </Grid>
+      </Grid>
     );
   }
 }

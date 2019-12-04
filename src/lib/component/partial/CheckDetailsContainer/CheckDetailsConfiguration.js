@@ -397,7 +397,10 @@ class CheckDetailsConfiguration extends React.PureComponent {
         </CardContent>
 
         <Divider />
-        <LabelsAnnotationsCell resource={check} />
+
+        <CardContent>
+          <LabelsAnnotationsCell resource={check} />
+        </CardContent>
       </Card>
     );
   }
