@@ -7,11 +7,14 @@ export { default as CheckCircleIcon } from "@material-ui/icons/CheckCircle";
 export { default as CheckIcon } from "@material-ui/icons/AssignmentTurnedIn";
 export { default as ClearIcon } from "@material-ui/icons/Clear";
 export { default as CloseIcon } from "@material-ui/icons/Close";
+export {
+  default as ConfigIcon,
+} from "@material-ui/icons/SettingsInputComponentOutlined";
 export { default as DeleteIcon } from "@material-ui/icons/Delete";
 export { default as DonutSmallIcon } from "@material-ui/icons/DonutSmall";
 export { default as EmoticonIcon } from "@material-ui/icons/InsertEmoticon";
-export { default as EntityIcon } from "@material-ui/icons/DesktopMac";
-export { default as EventIcon } from "@material-ui/icons/Notifications";
+export { default as EntityIcon } from "@material-ui/icons/DesktopMacOutlined";
+export { default as EventIcon } from "@material-ui/icons/NotificationsOutlined";
 export { default as EventFilterIcon } from "@material-ui/icons/FilterList";
 export { default as FilterIcon } from "@material-ui/icons/FilterList";
 export { default as ExpandMoreIcon } from "@material-ui/icons/ExpandMore";
@@ -29,6 +32,10 @@ export { default as KebabIcon } from "@material-ui/icons/MoreVert";
 export {
   default as KeyboardArrowRightIcon,
 } from "@material-ui/icons/KeyboardArrowRight";
+export {
+  default as KeyboardArrowDownIcon,
+} from "@material-ui/icons/KeyboardArrowDown";
+export { default as SelectIcon } from "./Select";
 export { default as LaunchIcon } from "@material-ui/icons/Launch";
 export { default as LogoutIcon } from "@material-ui/icons/ExitToApp";
 export { default as MenuIcon } from "@material-ui/icons/Menu";
@@ -37,10 +44,11 @@ export { default as NewIcon } from "@material-ui/icons/Add";
 export { default as NewReleasesIcon } from "@material-ui/icons/NewReleases";
 export { default as NotesIcon } from "@material-ui/icons/Notes";
 export { default as PublishIcon } from "@material-ui/icons/Publish";
+export { default as PreferencesIcon } from "@material-ui/icons/TuneOutlined";
 export { default as QueueIcon } from "@material-ui/icons/Queue";
 export { default as SearchIcon } from "@material-ui/icons/Search";
 export { default as ResetIcon } from "@material-ui/icons/SettingsBackupRestore";
-export { default as SilenceIcon } from "@material-ui/icons/VolumeOff";
+export { default as SilenceIcon } from "@material-ui/icons/VolumeOffOutlined";
 export { default as ScheduleIcon } from "@material-ui/icons/Schedule";
 export { default as UndoIcon } from "@material-ui/icons/Undo";
 export { default as UnsilenceIcon } from "@material-ui/icons/VolumeUp";

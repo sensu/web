@@ -1,5 +1,5 @@
 // Overrides defaults provided by Material-UI (material-ui/src/styles)
-const defaults = {
+const common = {
   direction: "ltr",
   palette: {
     success: "rgb(151, 198, 115)",
@@ -44,4 +44,35 @@ const defaults = {
   },
 };
 
-export default defaults;
+const makeDefaults = type => {
+  if (type === "light") {
+    return {
+      ...common,
+      palette: {
+        ...common.palette,
+        text: {
+          ...common.palette.text,
+          primary: "#2D3555",
+        },
+      },
+    };
+  }
+
+  return {
+    ...common,
+    palette: {
+      type,
+      background: {
+        default: "#151928",
+        //paper: "rgba(45, 53, 85, 0.5)",
+      },
+      text: {
+        ...common.palette.text,
+        primary: "#D5D6DD",
+      },
+      ...common.palette,
+    },
+  };
+};
+
+export default makeDefaults;
