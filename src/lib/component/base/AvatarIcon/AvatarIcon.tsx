@@ -38,12 +38,13 @@ export enum Avatar {
 }
 
 export enum AvatarColor {
-  BLUE = "#B2CEFE",
-  GREEN = "#BAED91",
-  RED = "#FEA3AA",
-  ORANGE = "#F8B88B",
-  YELLOW = "#FAF884",
-  CYAN = "#F2A2E8",
+  BLUE = "#b3e7db",
+  GREEN = "#b9e7b3",
+  RED = "#e7bdb3",
+  ORANGE = "#e7d8b3",
+  PURPLE = "#c7b3e7",
+  YELLOW = "#e7e4b3",
+  CYAN = "#e7b3d3",
 }
 
 interface Props {
