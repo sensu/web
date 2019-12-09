@@ -2,7 +2,7 @@ import * as React from "/vendor/react";
 import gql from "/vendor/graphql-tag";
 
 import { ApolloError } from "/vendor/apollo-client";
-import { FailedError } from "/lib/error/FetchError";
+import { isUnreachable } from "/lib/util/fetchError";
 import { PollingDuration } from "../../constant";
 
 import {
@@ -220,7 +220,7 @@ export const SilencesView = () => {
     pollInterval: PollingDuration.short,
     variables,
     onError: (error: Error) => {
-      if ((error as ApolloError).networkError instanceof FailedError) {
+      if (isUnreachable((error as ApolloError).networkError)) {
         return;
       }
 

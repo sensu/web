@@ -7,6 +7,7 @@ import "./cron";
 import "./date";
 import "./error";
 import "./fetch";
+import "./fetchError";
 import "./filterParams";
 import "./serviceWorker";
 import "./makeDocsLink";

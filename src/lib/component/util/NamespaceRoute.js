@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 import { Route } from "/vendor/react-router-dom";
 
-import { FailedError } from "/lib/error/FetchError";
+import { isUnreachable } from "/lib/util/fetchError";
 
 import Query from "/lib/component/util/Query";
 import LastNamespaceUpdater from "/lib/component/util/LastNamespaceUpdater";
@@ -76,7 +76,7 @@ class NamespaceRoute extends React.PureComponent {
                 namespace: routeProps.match.params.namespace,
               }}
               onError={error => {
-                if (error.networkError instanceof FailedError) {
+                if (isUnreachable(error.networkError)) {
                   return;
                 }
 
