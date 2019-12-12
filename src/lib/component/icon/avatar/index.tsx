@@ -1,0 +1,16 @@
+export { default as BearAvatar } from "./Bear";
+export { default as BirdAvatar } from "./Bird";
+export { default as ButterflyAvatar } from "./Butterfly";
+export { default as CatAvatar } from "./Cat";
+export { default as CrocAvatar } from "./Croc";
+export { default as DeerAvatar } from "./Deer";
+export { default as DogAvatar } from "./Dog";
+export { default as FishAvatar } from "./Fish";
+export { default as LionAvatar } from "./Lion";
+export { default as MonkeyAvatar } from "./Monkey";
+export { default as PenguinAvatar } from "./Penguin";
+export { default as RabbitAvatar } from "./Rabbit";
+export { default as RedPandaAvatar } from "./RedPanda";
+export { default as SealAvatar } from "./Seal";
+export { default as SnakeAvatar } from "./Snake";
+export { default as WolfAvatar } from "./Wolf";
