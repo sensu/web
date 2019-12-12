@@ -219,7 +219,8 @@
   "resolutions": {
     "graphql": "14.4.2",
     "graphql-config/**/graphql": "14.4.2",
-    "graphql-import/**/graphql": "14.4.2"
+    "graphql-import/**/graphql": "14.4.2",
+    "serialize-javascript": "2.1.1"
   },
   "graphQLSchemaRef": "4a0d6ac"
 }
