@@ -39,16 +39,17 @@ class Label extends React.PureComponent {
   };
 
   parseLink = value => {
-    const regex = /\w+:(\/?\/?)[^\s]+/;
-    if (regex.test(value)) {
-      return (
-        <Link href={value}>
-          {value}
-          <LinkIcon className={this.props.classes.icon} />
-        </Link>
-      );
+    try {
+      new URL(value);
+    } catch (e) {
+      return value;
     }
-    return value;
+    return (
+      <Link href={value}>
+        {value}
+        <LinkIcon className={this.props.classes.icon} />
+      </Link>
+    );
   };
 
   render() {
