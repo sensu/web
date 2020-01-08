@@ -56,7 +56,7 @@ export { default as ErrorHollowIcon } from "./ErrorHollow";
 export { default as ErrorIcon } from "./Error";
 export { default as HeartIcon } from "./Heart";
 export { default as IconGapIcon } from "./IconGap";
-export { default as Link } from "@material-ui/icons/Link";
+export { default as LinkIcon } from "@material-ui/icons/Link";
 export { default as LiveIcon } from "./Live";
 export { default as OKIcon } from "./OK";
 export { default as PolyIcon } from "./Poly";

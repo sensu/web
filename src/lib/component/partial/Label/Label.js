@@ -2,7 +2,7 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { withStyles, Typography, Link } from "/vendor/@material-ui/core";
 import { emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
-import { Link as LinkIcon } from "/lib/component/icon";
+import { LinkIcon } from "/lib/component/icon";
 
 const styles = theme => ({
   root: {
