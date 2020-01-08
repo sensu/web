@@ -25,8 +25,9 @@ const styles = theme => ({
     borderRadius: `0 ${theme.spacing(0.5)}px ${theme.spacing(0.5)}px 0`,
   },
   icon: {
-    paddingLeft: theme.spacing(0.5),
-    verticalAlign: "top",
+    paddingLeft: theme.spacing(0.3),
+    verticalAlign: "middle",
+    fontSize: "18px",
   },
 });
 
