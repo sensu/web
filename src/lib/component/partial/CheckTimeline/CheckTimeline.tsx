@@ -64,17 +64,19 @@ const CheckTimeline = ({
   const segments = useMemo(
     () =>
       entries.reduce((acc: Segment[], entry: Entry) => {
+        const status = entry.status > 2 ? 2 : entry.status;
+
         if (acc.length === 0) {
-          return [{ status: entry.status, begin: entry.ts }];
+          return [{ status, begin: entry.ts }];
         }
 
         const last = acc[acc.length - 1];
-        if (last.status !== entry.status) {
+        if (last.status !== status) {
           const rest = acc.slice(0, -1);
           return [
             ...rest,
             { ...last, end: entry.ts },
-            { status: entry.status, begin: entry.ts },
+            { status, begin: entry.ts },
           ];
         }
 
