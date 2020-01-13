@@ -202,7 +202,7 @@
       "<rootDir>/src/setupTests.tsx"
     ],
     "transform": {
-      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.tsx?$": "babel-jest",
       "^.+\\.jsx?$": "babel-jest",
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
