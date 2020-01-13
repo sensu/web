@@ -149,7 +149,6 @@
     "jest-circus": "^24.8.0",
     "jest-dom": "^3.4.0",
     "jest-junit": "^6.4.0",
-    "jsbi": "^3.0.0",
     "killable": "^1.0.0",
     "loader-utils": "^1.2.3",
     "lodash": "^4.17.13",
@@ -202,7 +201,7 @@
       "<rootDir>/src/setupTests.tsx"
     ],
     "transform": {
-      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.tsx?$": "babel-jest",
       "^.+\\.jsx?$": "babel-jest",
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"

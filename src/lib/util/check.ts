@@ -1,5 +1,5 @@
 import { Md5 } from "ts-md5";
-import JSBI from "jsbi";
+import JSBI from "/vendor/jsbi";
 
 const maxInt = JSBI.BigInt(2 ** 31 -1);
 const nextInt = JSBI.add(maxInt, JSBI.BigInt(1));
