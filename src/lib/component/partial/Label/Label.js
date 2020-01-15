@@ -1,7 +1,10 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { withStyles, Typography, Link } from "/vendor/@material-ui/core";
-import { emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
+import {
+  darken,
+  emphasize,
+} from "/vendor/@material-ui/core/styles/colorManipulator";
 import { LinkIcon } from "/lib/component/icon";
 
 const styles = theme => ({
@@ -19,7 +22,7 @@ const styles = theme => ({
     border: `1px solid ${theme.palette.primary.main}`,
   },
   value: {
-    color: theme.palette.text.primary,
+    color: darken(theme.palette.primary.main, 0.7),
     background: emphasize(theme.palette.primary.main, 0.7),
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
