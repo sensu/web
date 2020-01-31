@@ -67,15 +67,15 @@
     "@octokit/plugin-throttling": "^2.4.0",
     "@octokit/rest": "^16.23.2",
     "@sensuapp/eslint-plugin": "^1.0.0",
-    "@storybook/addon-a11y": "^5.1.11",
-    "@storybook/addon-knobs": "^5.1.11",
-    "@storybook/addon-notes": "^5.1.11",
-    "@storybook/addon-viewport": "^5.1.11",
-    "@storybook/addons": "^5.1.11",
-    "@storybook/client-api": "^5.1.11",
-    "@storybook/core-events": "^5.1.11",
-    "@storybook/react": "^5.1.11",
-    "@storybook/theming": "^5.1.11",
+    "@storybook/addon-a11y": "^5.3.8",
+    "@storybook/addon-knobs": "^5.3.8",
+    "@storybook/addon-notes": "^5.3.8",
+    "@storybook/addon-viewport": "^5.3.8",
+    "@storybook/addons": "^5.3.8",
+    "@storybook/client-api": "^5.3.8",
+    "@storybook/core-events": "^5.3.8",
+    "@storybook/react": "^5.3.8",
+    "@storybook/theming": "^5.3.8",
     "@testing-library/react": "^8.0.1",
     "@types/classnames": "^2.2.7",
     "@types/d3-scale": "^2.1.1",
@@ -219,7 +219,7 @@
     "graphql": "14.4.2",
     "graphql-config/**/graphql": "14.4.2",
     "graphql-import/**/graphql": "14.4.2",
-    "serialize-javascript": "2.1.1"
+    "serialize-javascript": "2.1.2"
   },
   "graphQLSchemaRef": "4a0d6ac"
 }
