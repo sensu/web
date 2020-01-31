@@ -68,7 +68,7 @@ class EventsListHeader extends React.Component {
   };
 
   updateSort = newValue => {
-    this.props.onChangeQuery({ order: newValue });
+    this.props.onChangeQuery(params => ({ order: newValue, ...params }));
   };
 
   renderBulkActions = () => {
