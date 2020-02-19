@@ -27,7 +27,7 @@ const styles = theme => ({
   wrap: { whiteSpace: "pre-wrap" },
 });
 
-class CodeBlock extends React.Component {
+class Annotation extends React.Component {
   static propTypes = {
     background: PropTypes.bool,
     classes: PropTypes.object.isRequired,
@@ -67,4 +67,4 @@ class CodeBlock extends React.Component {
   }
 }
 
-export default withStyles(styles)(CodeBlock);
+export default withStyles(styles)(Annotation);
