@@ -1,8 +1,11 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withStyles, Typography, Link } from "/vendor/@material-ui/core";
-import { emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
-import { LinkIcon } from "/lib/component/icon";
+import { withStyles, Typography } from "/vendor/@material-ui/core";
+import {
+  darken,
+  emphasize,
+} from "/vendor/@material-ui/core/styles/colorManipulator";
+import { parseLink } from "/lib/component/util";
 
 const styles = theme => ({
   root: {
@@ -16,13 +19,15 @@ const styles = theme => ({
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     borderRadius: `${theme.spacing(0.5)}px 0 0 ${theme.spacing(0.5)}px`,
+    border: `1px solid ${theme.palette.primary.main}`,
   },
   value: {
-    color: theme.palette.text.primary,
+    color: darken(theme.palette.primary.main, 0.7),
     background: emphasize(theme.palette.primary.main, 0.7),
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     borderRadius: `0 ${theme.spacing(0.5)}px ${theme.spacing(0.5)}px 0`,
+    border: `1px solid ${emphasize(theme.palette.primary.main, 0.7)}`,
   },
   icon: {
     paddingLeft: theme.spacing(0.3),
@@ -38,26 +43,12 @@ class Label extends React.PureComponent {
     value: PropTypes.string.isRequired,
   };
 
-  parseLink = value => {
-    try {
-      new URL(value);
-    } catch (e) {
-      return value;
-    }
-    return (
-      <Link href={value}>
-        {value}
-        <LinkIcon className={this.props.classes.icon} />
-      </Link>
-    );
-  };
-
   render() {
     const { classes, name, value } = this.props;
     return (
       <Typography component="span" className={classes.root}>
         <span className={classes.key}>{name}</span>
-        <span className={classes.value}>{this.parseLink(value)}</span>
+        <span className={classes.value}>{parseLink(value)}</span>
       </Typography>
     );
   }

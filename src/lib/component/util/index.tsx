@@ -17,6 +17,7 @@ export {
   default as NavigationProvider,
   WithNavigation,
 } from "./NavigationProvider";
+export { default as parseLink } from "./parseLink";
 export { default as Query } from "./Query";
 export { default as RenderCounter } from "./RenderCounter";
 export { default as SigninRedirect } from "./SigninRedirect";
