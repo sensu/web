@@ -63,8 +63,8 @@ const makeDefaults = type => {
     palette: {
       type,
       background: {
-        default: "#151928",
-        //paper: "rgba(45, 53, 85, 0.5)",
+        // default: "#151928",
+        // paper: "rgba(45, 53, 85, 0.5)",
       },
       text: {
         ...common.palette.text,

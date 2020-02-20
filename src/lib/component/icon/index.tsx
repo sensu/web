@@ -35,6 +35,9 @@ export {
 export {
   default as KeyboardArrowDownIcon,
 } from "@material-ui/icons/KeyboardArrowDown";
+export {
+  default as KeyboardArrowUpIcon,
+} from "@material-ui/icons/KeyboardArrowUp";
 export { default as SelectIcon } from "./Select";
 export { default as LaunchIcon } from "@material-ui/icons/Launch";
 export { default as LogoutIcon } from "@material-ui/icons/ExitToApp";

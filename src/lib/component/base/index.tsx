@@ -3,6 +3,7 @@ export {
   AppLayoutContext,
   MobileFullWidthContent,
 } from "./AppLayout";
+export { default as AvatarIcon } from "./AvatarIcon";
 export { default as ButtonIcon } from "./ButtonIcon";
 export { default as ButtonSet } from "./ButtonSet";
 export { default as CardHighlight } from "./CardHighlight";

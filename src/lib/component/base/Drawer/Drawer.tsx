@@ -1,133 +1,91 @@
-import React from "/vendor/react";
-import {
-  useTheme,
-  Box,
-  IconButton,
-  ListItem,
-  Typography,
-} from "/vendor/@material-ui/core";
+import React, { useState, useCallback } from "/vendor/react";
+import { useTheme, Box, IconButton, Modal } from "/vendor/@material-ui/core";
 import { animated, useSpring } from "/vendor/react-spring";
-import { fade } from "/vendor/@material-ui/core/styles/colorManipulator";
-import { FaceIcon, MenuIcon, PreferencesIcon } from "/lib/component/icon";
 import { SensuWordmark } from "/lib/component/base";
+import { MenuIcon } from "/lib/component/icon";
+
+import { widths, heights } from "./constants";
+import { MenuItem as MenuItemType } from "./types";
+
+import Footer from "./Footer";
+import HorizontalRule from "./HorizontalRule";
+import MenuItem from "./MenuItem";
+
+// TODO: Move into the theme somewhere?
+const silver = "rgb(213, 214, 221)";
 
 interface Props {
-  userAvatar: React.ReactElement;
-  userId: string | React.ReactElement;
-  title: React.ReactElement;
-  variant: "full" | "collapsed";
-  links: {
-    id: string;
-    icon: React.ReactElement;
-    contents: React.ReactElement;
-    adornment?: React.ReactElement;
-    onClick?: () => void;
-    href?: string;
-  }[];
+  // Unique identifier for the account that is currently authenticated.
+  accountId: string;
+
+  // Contents of the title toolbar
+  title?: React.ReactElement;
+
+  // Drawer may be one of three variants.
+  //   Full: has width of 224dp; has no expanded state
+  //   Mini: has width of 64dp; can be expanded into 224dp state, appears over top of content.
+  //   Hidden: has no width; can be expanded into 224dp state, appears over top of content.
+  variant: "full" | "mini" | "hidden";
+
+  // When true and used with mini and hidden variants, full drawer is rendered.
+  expanded: boolean;
+
+  // List of links and groups of links that will appear in the drawer.
+  links: MenuItemType[];
+
+  // Is triggered when the user presses the menu icon or clicks a folder from collapsed state.
   onToggle: () => void;
+
+  // Is triggered when the user explicitly closes the drawer from expanded state.
+  onClose: () => void;
 }
-
-const HorizontalRule = () => {
-  const theme = useTheme();
-  const color = fade(theme.palette.text.primary, 0.5);
-
-  return (
-    <Box
-      component="hr"
-      border="0"
-      margin="0"
-      marginTop="-1px"
-      height="1px"
-      style={{
-        background: `linear-gradient(
-          to right,
-          rgba(0, 0, 0, 0),
-          ${color} 2rem,
-          ${color},
-          ${color} calc(100% - 2rem),
-          rgba(0, 0, 0, 0)
-        )`,
-      }}
-    />
-  );
-};
-
-const IconContainer = ({ icon }) => {
-  return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      flexShrink={0}
-      width={48}
-      height={48}
-    >
-      {icon}
-    </Box>
-  );
-};
-
-const Link = ({ icon, contents, adornment }) => {
-  return (
-    <Box clone display="flex" justifyContent="left" height={48}>
-      <ListItem button disableGutters dense>
-        <IconContainer icon={icon} />
-        <Box
-          clone
-          display="flex"
-          alignItems="center"
-          marginLeft={1}
-          flexGrow="1"
-        >
-          <Typography variant="body1" color="inherit" noWrap>
-            {contents}
-          </Typography>
-        </Box>
-        {adornment && (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            width={48}
-            height={48}
-          >
-            {adornment}
-          </Box>
-        )}
-      </ListItem>
-    </Box>
-  );
-};
-
-// TODO: Move into the theme?
-const silver = "rgb(213, 214, 221)";
 
 const Drawer = ({
   title,
   links,
-  userId,
-  userAvatar,
+  accountId,
   variant,
+  expanded,
+  onClose,
   onToggle,
 }: Props) => {
+  const isOpen = !!expanded || variant === "full";
+
+  const [openIdx, setOpenIdxState] = useState<string | null>(null);
+  const setOpenIdx = useCallback(
+    (val) => {
+      if (!isOpen) {
+        onToggle();
+        setOpenIdxState(val);
+      } else {
+        setOpenIdxState(openIdx !== val ? val : null);
+      }
+    },
+    [setOpenIdxState, onToggle, openIdx, isOpen],
+  );
+
   const theme = useTheme();
+  const color = isOpen ? theme.palette.text.primary : silver;
+  const width = isOpen ? widths.full : variant === "mini" ? widths.mini : 0;
   const styles = useSpring({
-    width: variant === "full" ? 224 : 64,
-    color: variant === "full" ? theme.palette.text.primary : silver,
-    backgroundColor: variant === "full" ? "rgba(0,0,0,0)" : "#2D3555",
+    color,
+    width,
+    backgroundColor: isOpen ? theme.palette.background.default : "#2D3555",
+    outline: 0,
   });
 
-  return (
+  const drawer = (
     <Box
       component={animated.div}
       height="100vh"
+      position="fixed"
       style={styles}
       flexDirection="column"
       padding={1}
       display="flex"
       overflow="hidden"
     >
-      <Box display="flex" alignItems="center" height={56}>
+      <Box display="flex" alignItems="center" height={heights.toolbar}>
         <IconButton color="inherit" onClick={onToggle}>
           <MenuIcon />
         </IconButton>{" "}
@@ -135,7 +93,9 @@ const Drawer = ({
           {title || <SensuWordmark fontSize="inherit" />}
         </Box>
       </Box>
-      <HorizontalRule />
+
+      <HorizontalRule color={color} />
+
       <Box
         component="ul"
         display="flex"
@@ -146,37 +106,53 @@ const Drawer = ({
           overflowX: "hidden",
         }}
       >
-        {links.map(({ id, ...rest }) => (
-          <Link key={id} {...rest} />
+        {links.map((linkProps) => (
+          <MenuItem
+            {...linkProps}
+            key={linkProps.id}
+            collapsed={!isOpen}
+            expanded={isOpen && openIdx === linkProps.id}
+            onExpand={() => setOpenIdx(linkProps.id) /* TODO: move to child? */}
+            onClick={() => {
+              if (linkProps.onClick) {
+                linkProps.onClick();
+              }
+              onClose();
+            }}
+          />
         ))}
       </Box>
-      <HorizontalRule />
-      <Box
-        display="flex"
-        alignItems="center"
-        flexDirection={variant === "full" ? "row" : "column"}
-      >
-        <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          flexGrow="1"
-          width={variant === "full" ? undefined : 48}
-        >
-          <IconContainer
-            icon={<Box style={{ color: "#BAED91" }}>{userAvatar}</Box>}
-          />
-          <Box flexGrow="1" marginLeft={1}>
-            <Typography variant="body1" color="inherit" noWrap>
-              {userId}
-            </Typography>
-          </Box>
-        </Box>
-        <IconButton color="inherit">
-          <PreferencesIcon />
-        </IconButton>
-      </Box>
+
+      <HorizontalRule color={color} />
+
+      <Footer accountId={accountId} isOpen={isOpen} />
     </Box>
+  );
+
+  if (variant === "mini" && expanded) {
+    return (
+      <React.Fragment>
+        <Box width={widths.mini} flex="0 0 auto" />
+        <Modal disableAutoFocus onClose={onClose} open>
+          {drawer}
+        </Modal>
+      </React.Fragment>
+    );
+  }
+
+  if (variant === "hidden") {
+    return (
+      <Modal disableAutoFocus keepMounted onClose={onClose} open={expanded}>
+        {drawer}
+      </Modal>
+    );
+  }
+
+  return (
+    <React.Fragment>
+      <Box component={animated.div} style={{ width }} flex="0 0 auto" />
+      {drawer}
+    </React.Fragment>
   );
 };
 

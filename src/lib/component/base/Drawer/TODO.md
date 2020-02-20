@@ -1,0 +1,16 @@
+- [x] implement as modal / popover for expanded states
+- [x] collapse expanded menu items when drawer is minified
+- [x] fade rest of screen when expanded
+- [x] alt text for buttons in mini variant
+- [x] animate expand / collapsing of grouped links
+- [x] margin on bottom container
+- [x] fixup long usernames pushing content out of container
+- [x] ensure that the drawer can be scrolled with viewport is small
+- [x] close when item is clicked
+- [ ] types!
+- [ ] replace placeholder avatar w/ @dabria's avatar component
+- [ ] use react-router link
+- [ ] fixup font colour when using non-default themes
+- [!] move some of the magic numbers into the theme
+- [!] vertical divider
+- [!] maybe swap the menu icon to signify collapse
