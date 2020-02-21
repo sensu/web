@@ -26,6 +26,7 @@ export { default as Timer } from "./Timer";
 export { default as UnauthenticatedRoute } from "./UnauthenticatedRoute";
 export { default as UnmountObserver } from "./UnmountObserver";
 export { default as useBuildInfo } from "./useBuildInfo";
+export { default as useIdentity } from "./useIdentity";
 export { default as useQuery } from "./useQuery";
 export * from "./useCurrentDate";
 export * from "./useQuery";

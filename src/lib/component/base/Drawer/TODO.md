@@ -10,14 +10,15 @@
 - [x] types!
 - [x] use react-router link
 - [x] implement into the app
-- [ ] why is drawer rendered underneath the controller
-- [ ] global state for minified drawer preference
-- [ ] style app bar
-- [ ] fixup breadcrumbs
+- [x] global state for minified drawer preference
+- [x] remove hardcoded account id
+- [ ] reimplement preferences
 - [ ] fixup broken types
 - [ ] replace placeholder avatar w/ @dabria's avatar component
 - [ ] fixup font colour when using non-default themes
-- [ ] remove hardcoded account id
+- [ ] why is drawer rendered underneath the controller
+- [ ] style app bar
+- [ ] fixup breadcrumbs
 - [!] move some of the magic numbers into the theme
 - [!] vertical divider
 - [!] maybe swap the menu icon to signify collapse

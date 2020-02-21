@@ -38,6 +38,9 @@ interface Props {
 
   // Is triggered when the user explicitly closes the drawer from expanded state.
   onClose: () => void;
+
+  // Is triggered when the drawer is in it's mini variant and a folder is expanded.
+  onTempExpand: () => void;
 }
 
 const Drawer = ({
@@ -48,6 +51,7 @@ const Drawer = ({
   expanded,
   onClose,
   onToggle,
+  onTempExpand,
 }: Props) => {
   const isOpen = !!expanded || variant === "full";
 
@@ -55,13 +59,13 @@ const Drawer = ({
   const setOpenIdx = useCallback(
     (val) => {
       if (!isOpen) {
-        onToggle();
+        onTempExpand();
         setOpenIdxState(val);
       } else {
         setOpenIdxState(openIdx !== val ? val : null);
       }
     },
-    [setOpenIdxState, onToggle, openIdx, isOpen],
+    [setOpenIdxState, onTempExpand, openIdx, isOpen],
   );
 
   const theme = useTheme();

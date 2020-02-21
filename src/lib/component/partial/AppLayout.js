@@ -6,6 +6,7 @@ import {
   useBreakpoint,
   NavigationContext,
   useDrawerPreference,
+  useIdentity,
 } from "/lib/component/util";
 import { AppLayout as BaseAppLayout, Loader } from "/lib/component/base";
 
@@ -13,9 +14,57 @@ import Breadcrumbs from "/lib/component/partial/Breadcrumbs";
 import Drawer from "/lib/component/base/Drawer";
 import AppBar from "/lib/component/partial/AppBar";
 
+const DrawerContainer = React.memo(({ isLgViewport, isSmViewport, accountId }) => {
+  const { links } = React.useContext(NavigationContext);
+
+  const [minified, setMinified] = useDrawerPreference();
+  const [expanded, setExpanded] = React.useState(false);
+
+  let variant = "mini";
+  if (isLgViewport && (!minified || expanded)) {
+    variant = "full";
+  } else if (isSmViewport) {
+    variant = "hidden";
+  }
+
+  const handleToggle = React.useCallback(
+    () => {
+      if ((minified && expanded) || !isLgViewport) {
+        setExpanded(!expanded);
+      } else {
+        setMinified(!minified);
+      }
+    },
+    [isLgViewport, minified, expanded, setMinified, setExpanded],
+  );
+
+  const handleTempExpand = React.useCallback(
+    () => variant !== "full" && setExpanded(true),
+    [variant, setExpanded],
+  );
+
+  const handleClose = React.useCallback(
+    () => setExpanded(false),
+    [setExpanded],
+  );
+
+  return (
+    <Drawer
+      accountId={accountId}
+      variant={variant}
+      expanded={expanded}
+      onToggle={handleToggle}
+      onClose={handleClose}
+      onTempExpand={handleTempExpand}
+      links={links}
+    />
+  );
+});
+
+DrawerContainer.displayName = "DrawerContainer";
+
 const AppLayout = ({
   disableBreadcrumbs,
-  namespace: namespaceProp,
   loading,
   fullWidth,
   children,
@@ -23,27 +72,7 @@ const AppLayout = ({
   const isSmViewport = useBreakpoint("xs", "lt");
   const isLgViewport = useBreakpoint("md", "gt");
 
-  // TODO: Query data from cache
-  const namespace = namespaceProp ? { name: namespaceProp } : null;
-  const { links } = React.useContext(NavigationContext);
-
-  const [minified, setMinified] = useDrawerPreference();
-  const [drawerExpanded, setDrawerExpanded] = React.useState(false);
-  const toggleDrawerState = React.useCallback(() => {
-    console.debug({ isLgViewport, minified })
-    if (isLgViewport) {
-      setMinified(!minified);
-    } else {
-      setDrawerExpanded(!drawerExpanded);
-    }
-  }, [isLgViewport, minified, drawerExpanded, setMinified, setDrawerExpanded]);
-
-  let drawerVariant = "mini";
-  if (isLgViewport && !minified) {
-    drawerVariant = "full";
-  } else if (isSmViewport) {
-    drawerVariant = "hidden";
-  }
+  const identity = useIdentity();
 
   return (
     <Loader loading={loading}>
@@ -51,16 +80,13 @@ const AppLayout = ({
         fullWidth={fullWidth}
         mobile={isSmViewport}
         topBar={
-          isSmViewport && <AppBar loading={loading} namespace={namespace} />
+          isSmViewport && <AppBar loading={loading} />
         }
         drawer={
-          <Drawer
-            accountId="jamesdphillips"
-            variant={drawerVariant}
-            expanded={drawerExpanded}
-            onToggle={toggleDrawerState}
-            onClose={() => setDrawerExpanded(false)}
-            links={links}
+          <DrawerContainer
+            accountId={identity.sub}
+            isLgViewport={isLgViewport}
+            isSmViewport={isSmViewport}
           />
         }
         content={
