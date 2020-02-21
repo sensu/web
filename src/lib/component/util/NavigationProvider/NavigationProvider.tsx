@@ -1,20 +1,19 @@
 import * as React from "/vendor/react";
 
-import Context, { LinkConfig } from "./context";
+import Context, { LinkConfig, ToolbarItemConfig } from "./context";
 
 interface Props {
   links: LinkConfig[];
+  toolbarItems: ToolbarItemConfig[];
   children: React.ReactNode;
 }
 
-class NavigationProvider extends React.PureComponent<Props> {
-  public render(): React.ReactElement {
-    return (
-      <Context.Provider value={this.props.links}>
-        {this.props.children}
-      </Context.Provider>
-    );
-  }
-}
+const NavigationProvider = ({ children, links, toolbarItems }: Props) => {
+  return (
+    <Context.Provider value={{ links, toolbarItems }}>
+      {children}
+    </Context.Provider>
+  );
+};
 
 export default NavigationProvider;

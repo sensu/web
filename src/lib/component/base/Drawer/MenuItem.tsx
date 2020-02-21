@@ -8,6 +8,7 @@ import {
 } from "/vendor/@material-ui/core";
 import { animated, useSpring } from "/vendor/react-spring";
 import { KeyboardArrowDownIcon } from "/lib/component/icon";
+import { Link as RouterLink } from "/vendor/react-router-dom";
 
 import IconContainer from "./IconContainer";
 import { Link as LinkType } from "./types";
@@ -24,10 +25,6 @@ interface LinkProps {
   onClick?: () => void;
 }
 
-function ListItemLink(props: ListItemProps<"a", { button?: true }>) {
-  return <ListItem button component="a" {...props} />;
-}
-
 const Link = ({
   adornment,
   collapsed = false,
@@ -40,11 +37,13 @@ const Link = ({
 }: LinkProps) => {
   const link = (
     <Box display="flex" justifyContent="left" height={heights.menuitem}>
-      <ListItemLink
+      <ListItem
+        button
+        component={RouterLink}
         disabled={disabled || (!href && !onClick)}
         disableGutters
         dense
-        href={href}
+        to={href}
         onClick={onClick}
       >
         <IconContainer icon={icon} />
@@ -70,7 +69,7 @@ const Link = ({
             {adornment}
           </Box>
         )}
-      </ListItemLink>
+      </ListItem>
     </Box>
   );
 
@@ -135,7 +134,7 @@ const Folder = ({
       />
       <Box component={animated.ul} overflow="hidden" style={childStyles}>
         {links.map(({ id, ...rest }) => (
-          <Link key={id} disabled={!expanded} {...rest} />
+          <Link key={id} disabled={!expanded} {...rest} icon={undefined} />
         ))}
       </Box>
     </React.Fragment>

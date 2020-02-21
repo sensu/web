@@ -1,4 +1,4 @@
-export interface Link {
+export interface LinkConfig {
   id: string;
   icon?: React.ReactElement;
   contents: React.ReactElement;
@@ -8,16 +8,16 @@ export interface Link {
   hint?: React.ReactElement;
 }
 
-export interface Folder {
+export interface FolderConfig {
   id: string;
   icon: React.ReactElement;
   contents: React.ReactElement;
-  links: Link[];
+  links: LinkConfig[];
 }
 
-export type MenuItem = Link | Folder;
+export type MenuItemConfig = LinkConfig | FolderConfig;
 
-export interface ToolbarItem {
+export interface ToolbarItemConfig {
   id: string;
   icon?: React.ReactElement;
   onClick?: () => void;

@@ -2,11 +2,15 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
-import { useBreakpoint } from "/lib/component/util";
+import {
+  useBreakpoint,
+  NavigationContext,
+  useDrawerPreference,
+} from "/lib/component/util";
 import { AppLayout as BaseAppLayout, Loader } from "/lib/component/base";
 
 import Breadcrumbs from "/lib/component/partial/Breadcrumbs";
-import Drawer from "/lib/component/partial/Drawer";
+import Drawer from "/lib/component/base/Drawer";
 import AppBar from "/lib/component/partial/AppBar";
 
 const AppLayout = ({
@@ -21,6 +25,25 @@ const AppLayout = ({
 
   // TODO: Query data from cache
   const namespace = namespaceProp ? { name: namespaceProp } : null;
+  const { links } = React.useContext(NavigationContext);
+
+  const [minified, setMinified] = useDrawerPreference();
+  const [drawerExpanded, setDrawerExpanded] = React.useState(false);
+  const toggleDrawerState = React.useCallback(() => {
+    console.debug({ isLgViewport, minified })
+    if (isLgViewport) {
+      setMinified(!minified);
+    } else {
+      setDrawerExpanded(!drawerExpanded);
+    }
+  }, [isLgViewport, minified, drawerExpanded, setMinified, setDrawerExpanded]);
+
+  let drawerVariant = "mini";
+  if (isLgViewport && !minified) {
+    drawerVariant = "full";
+  } else if (isSmViewport) {
+    drawerVariant = "hidden";
+  }
 
   return (
     <Loader loading={loading}>
@@ -31,18 +54,20 @@ const AppLayout = ({
           isSmViewport && <AppBar loading={loading} namespace={namespace} />
         }
         drawer={
-          !isSmViewport && (
-            <Drawer
-              variant={isLgViewport ? "large" : "small"}
-              loading={loading}
-              namespace={namespace}
-            />
-          )
+          <Drawer
+            accountId="jamesdphillips"
+            variant={drawerVariant}
+            expanded={drawerExpanded}
+            onToggle={toggleDrawerState}
+            onClose={() => setDrawerExpanded(false)}
+            links={links}
+          />
         }
-        content={<React.Fragment>
-              {!disableBreadcrumbs && <Breadcrumbs />}
-          {children}
-        </React.Fragment>
+        content={
+          <React.Fragment>
+            {!disableBreadcrumbs && <Breadcrumbs />}
+            {children}
+          </React.Fragment>
         }
       />
     </Loader>
@@ -54,11 +79,9 @@ AppLayout.fragments = {
     fragment AppLayout_namespace on Namespace {
       id
       ...AppBar_namespace
-      ...Drawer_namespace
     }
 
     ${AppBar.fragments.namespace}
-    ${Drawer.fragments.namespace}
   `,
 };
 

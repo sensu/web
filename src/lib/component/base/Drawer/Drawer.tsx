@@ -67,10 +67,11 @@ const Drawer = ({
   const theme = useTheme();
   const color = isOpen ? theme.palette.text.primary : silver;
   const width = isOpen ? widths.full : variant === "mini" ? widths.mini : 0;
+  const bgColor = isOpen ? theme.palette.background.default : "#2D3555"; // ???
   const styles = useSpring({
     color,
     width,
-    backgroundColor: isOpen ? theme.palette.background.default : "#2D3555",
+    backgroundColor: bgColor,
     outline: 0,
   });
 

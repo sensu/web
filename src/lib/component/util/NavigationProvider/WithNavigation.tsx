@@ -1,9 +1,14 @@
 import React from "/vendor/react";
 
-import Context, { LinkConfig } from "./context";
+import Context, { LinkConfig, ToolbarItemConfig } from "./context";
+
+interface State {
+  links: LinkConfig[];
+  toolbarItems: ToolbarItemConfig[];
+}
 
 interface Props {
-  children(links: LinkConfig[]): React.ReactNode;
+  children(_: State): React.ReactNode;
 }
 
 class WithNavigation extends React.PureComponent<Props> {

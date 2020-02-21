@@ -130,11 +130,12 @@ const createClient = ({
   localStorageSync(
     client,
     gql`
-      query SyncThemeQuery {
+      query SyncPreferencesQuery {
         theme @client {
           value
           dark
         }
+        preferMinDrawer @client
       }
     `,
   );

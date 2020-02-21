@@ -7,10 +7,17 @@
 - [x] fixup long usernames pushing content out of container
 - [x] ensure that the drawer can be scrolled with viewport is small
 - [x] close when item is clicked
-- [ ] types!
+- [x] types!
+- [x] use react-router link
+- [x] implement into the app
+- [ ] why is drawer rendered underneath the controller
+- [ ] global state for minified drawer preference
+- [ ] style app bar
+- [ ] fixup breadcrumbs
+- [ ] fixup broken types
 - [ ] replace placeholder avatar w/ @dabria's avatar component
-- [ ] use react-router link
 - [ ] fixup font colour when using non-default themes
+- [ ] remove hardcoded account id
 - [!] move some of the magic numbers into the theme
 - [!] vertical divider
 - [!] maybe swap the menu icon to signify collapse

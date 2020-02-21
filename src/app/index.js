@@ -8,6 +8,7 @@ import {
   Route,
   Redirect,
 } from "/vendor/react-router-dom";
+import gql from "/vendor/graphql-tag";
 
 import "typeface-roboto";
 
@@ -22,12 +23,10 @@ import {
 } from "/lib/component/util";
 
 import {
-  CheckIcon,
+  ConfigIcon,
   EntityIcon,
   EventIcon,
-  EventFilterIcon,
-  HandlerIcon,
-  MutatorIcon,
+  SelectIcon,
   SilenceIcon,
 } from "/lib/component/icon";
 
@@ -56,7 +55,7 @@ import {
   PreferencesKeybinding,
 } from "/lib/component/keybind";
 
-import { ContextSwitcherDialog } from "/lib/component/partial";
+import { ContextSwitcherDialog, NamespaceIcon } from "/lib/component/partial";
 
 import createClient from "/app/apollo/client";
 
@@ -69,6 +68,12 @@ const updateServiceWorker = () => () =>
     // eslint-disable-next-line no-console
     console.warn(error);
   });
+
+const openSwitcher = gql`
+  mutation OpenSwitcher {
+    toggleModal(modal: CONTEXT_SWITCHER_MODAL) @client
+  }
+`;
 
 const renderApp = () => {
   const client = createClient();
@@ -86,39 +91,63 @@ const renderApp = () => {
                 <NavigationProvider
                   links={[
                     {
-                      to: `${props.match.url}/events`,
-                      icon: EventIcon,
-                      caption: "Events",
+                      id: "switcher",
+                      icon: (
+                        <NamespaceIcon
+                          namespace={{ name: props.match.params.namespace }}
+                        />
+                      ),
+                      contents: props.match.params.namespace,
+                      adornment: <SelectIcon />,
+                      hint: "Switch Namespace",
+                      onClick: () => {
+                        client.mutate({ mutation: openSwitcher });
+                      },
                     },
                     {
-                      to: `${props.match.url}/entities`,
-                      icon: EntityIcon,
-                      caption: "Entities",
+                      id: "events",
+                      href: `${props.match.url}/events`,
+                      icon: <EventIcon />,
+                      contents: "Events",
                     },
                     {
-                      to: `${props.match.url}/checks`,
-                      icon: CheckIcon,
-                      caption: "Checks",
+                      id: "entities",
+                      href: `${props.match.url}/entities`,
+                      icon: <EntityIcon />,
+                      contents: "Entities",
                     },
                     {
-                      to: `${props.match.url}/filters`,
-                      icon: EventFilterIcon,
-                      caption: "Filters",
+                      id: "silences",
+                      href: `${props.match.url}/silences`,
+                      icon: <SilenceIcon />,
+                      contents: "Silences",
                     },
                     {
-                      to: `${props.match.url}/handlers`,
-                      icon: HandlerIcon,
-                      caption: "Handlers",
-                    },
-                    {
-                      to: `${props.match.url}/mutators`,
-                      icon: MutatorIcon,
-                      caption: "Mutators",
-                    },
-                    {
-                      to: `${props.match.url}/silences`,
-                      icon: SilenceIcon,
-                      caption: "Silences",
+                      id: "config",
+                      contents: "Configuration",
+                      icon: <ConfigIcon />,
+                      links: [
+                        {
+                          id: "checks",
+                          href: `${props.match.url}/checks`,
+                          contents: "Checks",
+                        },
+                        {
+                          id: "filters",
+                          href: `${props.match.url}/filters`,
+                          contents: "Filters",
+                        },
+                        {
+                          id: "handlers",
+                          href: `${props.match.url}/handlers`,
+                          contents: "Handlers",
+                        },
+                        {
+                          id: "mutators",
+                          href: `${props.match.url}/mutators`,
+                          contents: "Mutators",
+                        },
+                      ],
                     },
                   ]}
                 >

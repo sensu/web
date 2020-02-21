@@ -23,7 +23,6 @@ import {
   SelectIcon,
   SilenceIcon,
 } from "/lib/component/icon";
-import { MonkeyAvatar } from "/lib/component/icon/avatar";
 
 import Drawer from "./Drawer";
 
