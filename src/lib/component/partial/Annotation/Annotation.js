@@ -1,6 +1,6 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { CodeBlock } from "/lib/component/base/CodeBlock";
+import { CodeBlock } from "/lib/component/base";
 import { parseLink } from "/lib/component/util";
 
 class Annotation extends React.Component {
