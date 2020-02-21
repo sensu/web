@@ -46,6 +46,7 @@ interface Props {
 const Drawer = ({
   title,
   links,
+  toolbarItems,
   accountId,
   variant,
   expanded,
@@ -130,7 +131,11 @@ const Drawer = ({
 
       <HorizontalRule color={color} />
 
-      <Footer accountId={accountId} isOpen={isOpen} />
+      <Footer
+        accountId={accountId}
+        isOpen={isOpen}
+        toolbarItems={toolbarItems}
+      />
     </Box>
   );
 

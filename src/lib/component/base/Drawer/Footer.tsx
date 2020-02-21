@@ -2,20 +2,19 @@ import React, { memo } from "/vendor/react";
 import { Box, IconButton, Typography } from "/vendor/@material-ui/core";
 import { animated, useSpring } from "/vendor/react-spring";
 import { AvatarIcon } from "/lib/component/base";
-import { PreferencesIcon } from "/lib/component/icon";
 
 import { heights } from "./constants";
-import { ToolbarItem } from "./types";
+import { ToolbarItemConfig } from "./types";
 
 import IconContainer from "./IconContainer";
 
 interface Props {
   accountId?: string;
   isOpen: boolean;
-  toolbarItems?: ToolbarItem[];
+  toolbarItems?: ToolbarItemConfig[];
 }
 
-const Footer = ({ accountId, isOpen }: Props) => {
+const Footer = ({ accountId, toolbarItems = [], isOpen }: Props) => {
   const labelStyles = useSpring({
     height: isOpen ? heights.toolbar : 0,
     opacity: isOpen ? 1 : 0,
@@ -48,9 +47,11 @@ const Footer = ({ accountId, isOpen }: Props) => {
           {accountId}
         </Typography>
       </Box>
-      <IconButton color="inherit">
-        <PreferencesIcon />
-      </IconButton>
+      {toolbarItems.map(({ id, icon, onClick }) => (
+        <IconButton key={id} color="inherit" onClick={onClick}>
+          {icon}
+        </IconButton>
+      ))}
     </Box>
   );
 };

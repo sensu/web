@@ -26,6 +26,7 @@ import {
   ConfigIcon,
   EntityIcon,
   EventIcon,
+  PreferencesIcon,
   SelectIcon,
   SilenceIcon,
 } from "/lib/component/icon";
@@ -55,7 +56,11 @@ import {
   PreferencesKeybinding,
 } from "/lib/component/keybind";
 
-import { ContextSwitcherDialog, NamespaceIcon } from "/lib/component/partial";
+import {
+  ContextSwitcherDialog,
+  PreferencesDialog,
+  NamespaceIcon,
+} from "/lib/component/partial";
 
 import createClient from "/app/apollo/client";
 
@@ -72,6 +77,12 @@ const updateServiceWorker = () => () =>
 const openSwitcher = gql`
   mutation OpenSwitcher {
     toggleModal(modal: CONTEXT_SWITCHER_MODAL) @client
+  }
+`;
+
+const openPreferences = gql`
+  mutation OpenPreferences {
+    toggleModal(modal: PREFERENCES_MODAL) @client
   }
 `;
 
@@ -148,6 +159,14 @@ const renderApp = () => {
                           contents: "Mutators",
                         },
                       ],
+                    },
+                  ]}
+                  toolbarItems={[
+                    {
+                      id: "preferences",
+                      icon: <PreferencesIcon />,
+                      onClick: () =>
+                        client.mutate({ mutation: openPreferences }),
                     },
                   ]}
                 >
@@ -230,6 +249,7 @@ const renderApp = () => {
           <ContextSwitcherKeybinding />
           <ContextSwitcherDialog />
           <PreferencesKeybinding />
+          <PreferencesDialog />
         </AppRoot>
       </BrowserRouter>
     </ErrorBoundary>,

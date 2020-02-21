@@ -12,7 +12,7 @@
 - [x] implement into the app
 - [x] global state for minified drawer preference
 - [x] remove hardcoded account id
-- [ ] reimplement preferences
+- [x] reimplement preferences
 - [ ] fixup broken types
 - [ ] replace placeholder avatar w/ @dabria's avatar component
 - [ ] fixup font colour when using non-default themes

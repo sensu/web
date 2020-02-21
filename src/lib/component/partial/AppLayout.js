@@ -14,65 +14,61 @@ import Breadcrumbs from "/lib/component/partial/Breadcrumbs";
 import Drawer from "/lib/component/base/Drawer";
 import AppBar from "/lib/component/partial/AppBar";
 
-const DrawerContainer = React.memo(({ isLgViewport, isSmViewport, accountId }) => {
-  const { links } = React.useContext(NavigationContext);
+const DrawerContainer = React.memo(
+  ({ isLgViewport, isSmViewport, accountId, expanded, onExpand }) => {
+    const { links, toolbarItems } = React.useContext(NavigationContext);
 
-  const [minified, setMinified] = useDrawerPreference();
-  const [expanded, setExpanded] = React.useState(false);
+    const [minified, setMinified] = useDrawerPreference();
 
-  let variant = "mini";
-  if (isLgViewport && (!minified || expanded)) {
-    variant = "full";
-  } else if (isSmViewport) {
-    variant = "hidden";
-  }
+    let variant = "mini";
+    if (isLgViewport && (!minified || expanded)) {
+      variant = "full";
+    } else if (isSmViewport) {
+      variant = "hidden";
+    }
 
-  const handleToggle = React.useCallback(
-    () => {
+    const handleToggle = React.useCallback(() => {
       if ((minified && expanded) || !isLgViewport) {
-        setExpanded(!expanded);
+        onExpand(!expanded);
       } else {
         setMinified(!minified);
       }
-    },
-    [isLgViewport, minified, expanded, setMinified, setExpanded],
-  );
+    }, [isLgViewport, minified, expanded, setMinified, onExpand]);
 
-  const handleTempExpand = React.useCallback(
-    () => variant !== "full" && setExpanded(true),
-    [variant, setExpanded],
-  );
+    const handleTempExpand = React.useCallback(
+      () => variant !== "full" && onExpand(true),
+      [variant, onExpand],
+    );
 
-  const handleClose = React.useCallback(
-    () => setExpanded(false),
-    [setExpanded],
-  );
+    const handleClose = React.useCallback(() => onExpand(false), [
+      onExpand,
+    ]);
 
-  return (
-    <Drawer
-      accountId={accountId}
-      variant={variant}
-      expanded={expanded}
-      onToggle={handleToggle}
-      onClose={handleClose}
-      onTempExpand={handleTempExpand}
-      links={links}
-    />
-  );
-});
+    return (
+      <Drawer
+        accountId={accountId}
+        variant={variant}
+        expanded={expanded}
+        onToggle={handleToggle}
+        onClose={handleClose}
+        onTempExpand={handleTempExpand}
+        links={links}
+        toolbarItems={toolbarItems}
+      />
+    );
+  },
+);
 
 DrawerContainer.displayName = "DrawerContainer";
 
-const AppLayout = ({
-  disableBreadcrumbs,
-  loading,
-  fullWidth,
-  children,
-}) => {
+const AppLayout = ({ disableBreadcrumbs, loading, fullWidth, children }) => {
+  const identity = useIdentity();
+
   const isSmViewport = useBreakpoint("xs", "lt");
   const isLgViewport = useBreakpoint("md", "gt");
 
-  const identity = useIdentity();
+  const [expanded, setExpanded] = React.useState(false);
+  const openMenu = React.useCallback(() => setExpanded(true), [setExpanded]);
 
   return (
     <Loader loading={loading}>
@@ -80,18 +76,22 @@ const AppLayout = ({
         fullWidth={fullWidth}
         mobile={isSmViewport}
         topBar={
-          isSmViewport && <AppBar loading={loading} />
+          isSmViewport && (
+            <AppBar accountId={identity.sub} onRequestMenu={openMenu} />
+          )
         }
         drawer={
           <DrawerContainer
             accountId={identity.sub}
             isLgViewport={isLgViewport}
             isSmViewport={isSmViewport}
+            expanded={expanded}
+            onExpand={setExpanded}
           />
         }
         content={
           <React.Fragment>
-            {!disableBreadcrumbs && <Breadcrumbs />}
+            {!disableBreadcrumbs && !isSmViewport && <Breadcrumbs />}
             {children}
           </React.Fragment>
         }
@@ -103,11 +103,9 @@ const AppLayout = ({
 AppLayout.fragments = {
   namespace: gql`
     fragment AppLayout_namespace on Namespace {
+      # TODO
       id
-      ...AppBar_namespace
     }
-
-    ${AppBar.fragments.namespace}
   `,
 };
 

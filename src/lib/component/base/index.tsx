@@ -43,7 +43,6 @@ export { default as AppThemeProvider } from "./AppThemeProvider";
 export { default as CircularProgress } from "./CircularProgress";
 export { default as Code } from "./Code";
 export { default as Loader } from "./Loader";
-export { default as Preferences } from "./Preferences";
 export { default as ResetStyles } from "./ResetStyles";
 export { default as SearchBox } from "./SearchBox";
 export { default as SensuLogo } from "./SensuLogo";
