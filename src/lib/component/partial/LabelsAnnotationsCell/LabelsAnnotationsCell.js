@@ -9,12 +9,12 @@ import {
   DictionaryKey,
   DictionaryValue,
   DictionaryEntry,
-  CodeBlock,
   CodeHighlight,
 } from "/lib/component/base";
 import { createStyledComponent, Maybe } from "/lib/component/util";
 
 import Label from "/lib/component/partial/Label";
+import Annotation from "/lib/component/partial/Annotation";
 
 const Key = createStyledComponent({
   name: "LabelsAnnotationsCell.Key",
@@ -94,13 +94,13 @@ class LabelsAnnotationsCell extends React.PureComponent {
               <Key>Annotations</Key>
               <Value explicitRightMargin>
                 {resource.metadata.annotations.length > 0 ? (
-                  <CodeBlock>
+                  <Annotation>
                     <CodeHighlight
                       language="json"
                       code={JSON.stringify(annotations, null, "\t")}
                       component="code"
                     />
-                  </CodeBlock>
+                  </Annotation>
                 ) : (
                   "None"
                 )}
