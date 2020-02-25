@@ -76,13 +76,14 @@ class ToastWell extends React.PureComponent {
           return (
             <Transition
               native
-              keys={visibleElements.map(element => element.id)}
+              keys={element => element.id}
+              items={visibleElements}
               from={{ opacity: 1, height: 0 }}
-              update={id => ({ opacity: 1, height: heights[id] || 0 })}
+              update={({ id }) => ({ opacity: 1, height: heights[id] || 0 })}
               leave={{ opacity: 0, height: 0 }}
               config={{ tension: 210, friction: 20 }}
             >
-              {visibleElements.map(({ id, props, remove }) => style => (
+              {({ id, props, remove }) => style => (
                 <animated.div style={style} className={classes.toast}>
                   <div style={{ position: "relative" }}>
                     <ResizeObserver
@@ -96,7 +97,7 @@ class ToastWell extends React.PureComponent {
                     </div>
                   </div>
                 </animated.div>
-              ))}
+              )}
             </Transition>
           );
         }}
