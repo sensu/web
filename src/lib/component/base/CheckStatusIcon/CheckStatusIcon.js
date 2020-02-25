@@ -23,16 +23,16 @@ const styles = theme => ({
     verticalAlign: "middle",
   },
   success: {
-    color: theme.palette.success,
+    color: theme.palette.success.main,
   },
   warning: {
-    color: theme.palette.warning,
+    color: theme.palette.warning.main,
   },
   critical: {
-    color: theme.palette.critical,
+    color: theme.palette.critical.main,
   },
   unknown: {
-    color: theme.palette.unknown,
+    color: theme.palette.unknown.main,
   },
   muted: {
     color: theme.palette.grey[500],

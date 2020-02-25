@@ -53,12 +53,8 @@ const AppLayout = ({
           onExpand={setExpanded}
         />
       }
-      content={
-        <React.Fragment>
-          {!disableBreadcrumbs && !isSmViewport && <Breadcrumbs />}
-          {children}
-        </React.Fragment>
-      }
+      crumbs={!disableBreadcrumbs && !isSmViewport && <Breadcrumbs />}
+      content={<React.Fragment>{children}</React.Fragment>}
     />
   );
 };

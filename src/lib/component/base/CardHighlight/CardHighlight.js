@@ -17,16 +17,16 @@ const styles = theme => ({
     backgroundColor: theme.palette.secondary.main,
   },
   success: {
-    backgroundColor: theme.palette.success,
+    backgroundColor: theme.palette.success.main,
   },
   warning: {
-    backgroundColor: theme.palette.warning,
+    backgroundColor: theme.palette.warning.main,
   },
   critical: {
-    backgroundColor: theme.palette.critical,
+    backgroundColor: theme.palette.critical.main,
   },
   unknown: {
-    backgroundColor: theme.palette.unknown,
+    backgroundColor: theme.palette.unknown.main,
   },
 });
 

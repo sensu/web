@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { storiesOf } from "@storybook/react";
 import { withKnobs, text, select } from "@storybook/addon-knobs";
 import { action } from "@storybook/addon-actions";
+import { BrowserRouter } from "/vendor/react-router-dom";
 import withTheme from "/lib/storybook/withTheme";
 
 import {
@@ -26,7 +27,7 @@ import {
 
 import Drawer from "./Drawer";
 
-const ExampleCard = () => {
+const Card = () => {
   return (
     <Paper>
       <Box
@@ -41,55 +42,57 @@ const ExampleCard = () => {
   );
 };
 
-const ExampleGrid = ({ drawer }) => {
+const Layout = ({ drawer }) => {
   return (
+    <BrowserRouter>
     <Box display="flex" flexDirection="row" flexGrow="1">
       {drawer}
       <Box margin={2}>
         <Grid container spacing={3}>
           <Grid item xs="12">
-            <ExampleCard />
+            <Card />
           </Grid>
           <Grid item xs="12" sm="6">
-            <ExampleCard />
+            <Card />
           </Grid>
           <Grid item xs="12" sm="6">
-            <ExampleCard />
+            <Card />
           </Grid>
           <Grid item xs="12" sm="6">
-            <ExampleCard />
+            <Card />
           </Grid>
           <Grid item xs="12" sm="6">
-            <ExampleCard />
+            <Card />
           </Grid>
           <Grid item xs="12" sm="4">
-            <ExampleCard />
+            <Card />
           </Grid>
           <Grid item xs="12" sm="4">
-            <ExampleCard />
+            <Card />
           </Grid>
           <Grid item xs="12" sm="4">
-            <ExampleCard />
+            <Card />
           </Grid>
           <Grid item xs="12" sm="3">
-            <ExampleCard />
+            <Card />
           </Grid>
           <Grid item xs="12" sm="3">
-            <ExampleCard />
+            <Card />
           </Grid>
           <Grid item xs="12" sm="3">
-            <ExampleCard />
+            <Card />
           </Grid>
           <Grid item xs="12" sm="3">
-            <ExampleCard />
+            <Card />
           </Grid>
         </Grid>
       </Box>
     </Box>
+    </BrowserRouter>
   );
 };
 
-ExampleGrid.propTypes = {
+Layout.propTypes = {
   drawer: PropTypes.node,
 };
 
@@ -98,7 +101,7 @@ storiesOf("lib/base|Drawer", module)
   .addDecorator(withTheme)
   .add("playground", () => {
     return (
-      <ExampleGrid
+      <Layout
         drawer={
           <Drawer
             links={[
@@ -172,7 +175,7 @@ storiesOf("lib/base|Drawer", module)
     }, [onToggleNotifier, open, setOpen]);
 
     return (
-      <ExampleGrid
+      <Layout
         drawer={
           <Drawer
             links={[
@@ -243,7 +246,7 @@ storiesOf("lib/base|Drawer", module)
     const namespace = text("namespace", "sensu-staging");
 
     return (
-      <ExampleGrid
+      <Layout
         drawer={
           <Drawer
             links={[
@@ -337,7 +340,7 @@ storiesOf("lib/base|Drawer", module)
           </Toolbar>
         </AppBar>
 
-        <ExampleGrid
+        <Layout
           drawer={
             <Drawer
               links={[

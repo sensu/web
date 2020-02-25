@@ -14,12 +14,14 @@
 - [x] remove hardcoded account id
 - [x] reimplement preferences
 - [x] style app bar
-- [ ] remove top & bottom margin from drawer; make header / footer 56px tall
-- [ ] fixup breadcrumbs; font & height 56
-- [ ] fixup broken types
+- [x] fixup broken types
+- [x] fixup font colour when using non-default themes
+- [x] remove top & bottom margin from drawer; make header / footer 56px tall
+- [x] fixup breadcrumbs; font & height 56
+- [ ] determine why react-spring is broken
+- [ ] fixup positioning of drawer when banner is present
 - [ ] replace placeholder avatar w/ @dabria's avatar component
-- [ ] fixup font colour when using non-default themes
-- [ ] why is drawer rendered underneath the controller
+- [!] why is drawer rendered underneath the controller
 - [!] move some of the magic numbers into the theme
 - [!] vertical divider
 - [!] maybe swap the menu icon to signify collapse

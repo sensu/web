@@ -1,101 +1,128 @@
 import React from "/vendor/react";
+import cx from "/vendor/classnames";
+
 import {
-  Theme,
   makeStyles,
   createStyles,
+  Theme,
   Typography,
 } from "/vendor/@material-ui/core";
-import { KeyboardArrowRightIcon } from "/lib/component/icon";
-import useReqContext from "/lib/component/util/useReqContext";
 
+import useReqContext from "/lib/component/util/useReqContext";
+import { InlineLink } from "/lib/component/base";
 import { useRouter, NamespaceLink } from "/lib/component/util";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      paddingBottom: "16px",
-      maxWidth: "950px",
-    },
-    text: {
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-    },
-    list: {
-      width: "100%",
-      textDecoration: "none",
-    },
-    listItem: {
-      display: "inline",
-      marginRight: "16px",
-      color: theme.palette.text.primary,
-    },
-    iconOffset: {
-      marginBottom: "-7px",
-    },
-    link: {
-      color: theme.palette.text.primary,
-    },
-  }),
+const useStyles = makeStyles(
+  (theme: Theme) =>
+    createStyles({
+      root: {},
+      list: {
+        width: "100%",
+        textDecoration: "none",
+      },
+      listItem: {
+        display: "inline",
+        opacity: 0.71,
+        marginRight: theme.spacing(1.5),
+      },
+      active: {
+        opacity: 1,
+      },
+      separator: {
+        opacity: 0.5,
+      },
+    }),
+  { name: "Breadcrumbs" },
 );
+
+const Separator = () => {
+  const classes = useStyles();
+
+  return <li className={cx(classes.listItem, classes.separator)}>›</li>;
+};
+
+interface CrumbProps {
+  children: React.ReactElement | string;
+  active?: boolean;
+}
+
+const Crumb = ({ children, active = false }: CrumbProps) => {
+  const classes = useStyles();
+
+  return (
+    <li className={cx(classes.listItem, { [classes.active]: active })}>
+      {children}
+    </li>
+  );
+};
 
 const Breadcrumbs = () => {
   const classes = useStyles();
-  const router = useRouter();
+
   const { namespace, cluster } = useReqContext();
-  const links = router.location.pathname.split("/");
-  const placement = links.indexOf(namespace) + 1;
-  const url = `/${links[placement]}`;
+
+  const router = useRouter();
+  const paths = router.location.pathname.split("/");
+  const resource = paths[paths.indexOf(namespace) + 1] || "";
+  const resourceNames = paths.slice(paths.indexOf(namespace) + 2);
 
   return (
-    <div className={classes.root}>
-      <Typography className={classes.text} variant="body1">
-        <ul>
-          {cluster && (
-            <React.Fragment>
-              <li className={classes.listItem}>
-                <NamespaceLink
-                  cluster={cluster}
-                  namespace={namespace}
-                  className={classes.link}
-                  to={"/"}
-                >
-                  {cluster === "~" ? "local-cluster" : cluster}
-                </NamespaceLink>
-              </li>
+    <Typography
+      component="div"
+      className={classes.root}
+      noWrap
+      color="textPrimary"
+      variant="body2"
+    >
+      <ul className={classes.list}>
+        {cluster && (
+          <React.Fragment>
+            <Crumb>
+              <NamespaceLink
+                component={InlineLink}
+                cluster={cluster}
+                namespace={namespace}
+                to={"/"}
+              >
+                {cluster === "~" ? "local-cluster" : cluster}
+              </NamespaceLink>
+            </Crumb>
 
-              <li className={classes.listItem}>
-                <KeyboardArrowRightIcon className={classes.iconOffset} />
-              </li>
-            </React.Fragment>
+            <Separator />
+          </React.Fragment>
+        )}
+
+        <Crumb>
+          <NamespaceLink component={InlineLink} namespace={namespace} to={"/"}>
+            {namespace}
+          </NamespaceLink>
+        </Crumb>
+
+        <Separator />
+
+        <Crumb active={resourceNames.length === 0}>
+          {resourceNames.length > 0 ? (
+            <NamespaceLink
+              component={InlineLink}
+              namespace={namespace}
+              to={`/${resource}`}
+            >
+              {resource}
+            </NamespaceLink>
+          ) : (
+            resource
           )}
+        </Crumb>
 
-          <li className={classes.listItem}>
-            <NamespaceLink
-              namespace={namespace}
-              className={classes.link}
-              to={"/"}
-            >
-              {namespace}
-            </NamespaceLink>
-          </li>
+        {resourceNames.map((name) => (
+          <React.Fragment key={name}>
+            <Separator />
 
-          <li className={classes.listItem}>
-            <KeyboardArrowRightIcon className={classes.iconOffset} />
-          </li>
-
-          <li className={classes.listItem}>
-            <NamespaceLink
-              namespace={namespace}
-              className={classes.link}
-              to={url}
-            >
-              {links[placement]}
-            </NamespaceLink>
-          </li>
-        </ul>
-      </Typography>
-    </div>
+            <Crumb active>{name}</Crumb>
+          </React.Fragment>
+        ))}
+      </ul>
+    </Typography>
   );
 };
 

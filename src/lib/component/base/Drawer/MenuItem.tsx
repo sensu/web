@@ -19,6 +19,35 @@ interface LinkProps {
   onClick?: () => void;
 }
 
+interface ListItemButtonProps {
+  children: (React.ReactElement | undefined)[];
+  disabled: boolean;
+  to?: string;
+  onClick?: () => void;
+}
+
+const ListItemButton = ({
+  children,
+  disabled,
+  to,
+  onClick,
+}: ListItemButtonProps) => {
+  return (
+    // @ts-ignore
+    <ListItem
+      button
+      component={RouterLink}
+      disabled={disabled}
+      disableGutters
+      dense
+      to={to}
+      onClick={onClick}
+    >
+      {children}
+    </ListItem>
+  );
+};
+
 const Link = ({
   adornment,
   collapsed = false,
@@ -31,12 +60,8 @@ const Link = ({
 }: LinkProps) => {
   const link = (
     <Box display="flex" justifyContent="left" height={heights.menuitem}>
-      <ListItem
-        button
-        component={RouterLink}
+      <ListItemButton
         disabled={disabled || (!href && !onClick)}
-        disableGutters
-        dense
         to={href}
         onClick={onClick}
       >
@@ -63,7 +88,7 @@ const Link = ({
             {adornment}
           </Box>
         )}
-      </ListItem>
+      </ListItemButton>
     </Box>
   );
 

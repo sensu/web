@@ -20,6 +20,12 @@ const styles = theme => ({
     display: "block",
   },
 
+  crumbs: {
+    display: "flex",
+    height: 56,
+    alignItems: "center",
+  },
+
   desktop: {
     display: "flex",
     alignItems: "stretch",
@@ -42,24 +48,6 @@ const styles = theme => ({
     },
   },
 
-  quickNavContainer: {
-    position: "relative",
-  },
-
-  quickNav: {
-    position: "absolute",
-    flexDirection: "column",
-    alignItems: "stretch",
-    width: 72,
-    display: "none",
-
-    paddingTop: 12,
-
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
-    },
-  },
-
   topBar: {
     position: "relative",
     zIndex: 1,
@@ -70,7 +58,7 @@ const styles = theme => ({
     zIndex: 0,
   },
 
-  contentContainer: {
+  cols: {
     flex: 1,
     display: "flex",
     zIndex: 0,
@@ -91,18 +79,19 @@ const styles = theme => ({
 
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
+    paddingTop: theme.spacing(2),
 
-    paddingTop: 16,
+    [theme.breakpoints.up("sm")]: {
+      paddingTop: 0,
+    },
+  },
+
+  contentContainer: {
     paddingBottom: 24,
   },
 
   contentMaxWidth: {
     maxWidth: 1224,
-
-    [theme.breakpoints.up("md")]: {
-      // align with quick nav container
-      paddingTop: 24,
-    },
   },
 
   toastContainer: {
@@ -128,6 +117,7 @@ const styles = theme => ({
 class AppLayout extends React.PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    crumbs: PropTypes.node,
     mobile: PropTypes.bool,
     topBar: PropTypes.node,
     drawer: PropTypes.node,
@@ -179,14 +169,17 @@ class AppLayout extends React.PureComponent {
             </div>
           </div>
           {this.props.mobile && <div style={{ height: contentOffset }} />}
-          <div className={classes.contentContainer}>
+          <div className={classes.cols}>
             {drawer}
             <div
               className={classnames(classes.content, {
                 [classes.contentMaxWidth]: !fullWidth,
               })}
             >
-              {content}
+              {this.props.crumbs && (
+                <div className={classes.crumbs}>{this.props.crumbs}</div>
+              )}
+              <div className={classes.contentContainer}>{content}</div>
             </div>
           </div>
           <div className={classes.toastContainer}>

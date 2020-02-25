@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from "/vendor/react";
 import { useTheme, Box, IconButton, Modal } from "/vendor/@material-ui/core";
 import { animated, useSpring } from "/vendor/react-spring";
-import { SensuWordmark } from "/lib/component/base";
 import { MenuIcon } from "/lib/component/icon";
 
 import { widths, heights } from "./constants";
@@ -10,6 +9,7 @@ import { MenuItemConfig, LinkConfig, ToolbarItemConfig } from "./types";
 import Footer from "./Footer";
 import HorizontalRule from "./HorizontalRule";
 import MenuItem from "./MenuItem";
+import SensuWordmark from "../SensuWordmark";
 
 // TODO: Move into the theme somewhere?
 const silver = "rgb(213, 214, 221)";
@@ -90,7 +90,8 @@ const Drawer = ({
       position="fixed"
       style={styles}
       flexDirection="column"
-      padding={1}
+      paddingLeft={1}
+      paddingRight={1}
       display="flex"
       overflow="hidden"
     >
