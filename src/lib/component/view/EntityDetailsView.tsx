@@ -80,14 +80,14 @@ export const EntityDetailsViewContent = ({
   const loading = networkStatus < 6;
   if (!loading && !aborted && (!entity || entity.deleted)) {
     return (
-      <AppLayout namespace={variables.namespace}>
+      <AppLayout>
         <NotFound />
       </AppLayout>
     );
   }
 
   return (
-    <AppLayout namespace={variables.namespace}>
+    <AppLayout>
       <EntityDetailsContainer
         entity={entity}
         refetch={refetch}

@@ -91,14 +91,14 @@ export const EventDetailsViewContent = ({
 
   if (!loading && !aborted && (!event || event.deleted)) {
     return (
-      <AppLayout namespace={variables.namespace}>
+      <AppLayout>
         <NotFound />
       </AppLayout>
     );
   }
 
   return (
-    <AppLayout namespace={variables.namespace}>
+    <AppLayout>
       <EventDetailsContainer
         event={event}
         loading={loading || !!aborted}

@@ -96,14 +96,14 @@ export const CheckDetailsViewContent = ({
 
   if (!loading && !aborted && (!check || check.deleted)) {
     return (
-      <AppLayout namespace={variables.namespace}>
+      <AppLayout>
         <NotFound />
       </AppLayout>
     );
   }
 
   return (
-    <AppLayout loading={loading} namespace={variables.namespace}>
+    <AppLayout loading={loading}>
       <CheckDetailsContainer
         check={check}
         loading={loading || aborted}

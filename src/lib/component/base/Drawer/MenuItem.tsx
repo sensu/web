@@ -1,17 +1,11 @@
 import React from "/vendor/react";
-import {
-  Box,
-  ListItem,
-  ListItemProps,
-  Tooltip,
-  Typography,
-} from "/vendor/@material-ui/core";
+import { Box, ListItem, Tooltip, Typography } from "/vendor/@material-ui/core";
 import { animated, useSpring } from "/vendor/react-spring";
 import { KeyboardArrowDownIcon } from "/lib/component/icon";
 import { Link as RouterLink } from "/vendor/react-router-dom";
 
 import IconContainer from "./IconContainer";
-import { Link as LinkType } from "./types";
+import { LinkConfig } from "./types";
 import { heights } from "./constants";
 
 interface LinkProps {
@@ -90,7 +84,7 @@ interface FolderProps {
   expanded: boolean;
   hint?: React.ReactElement;
   icon?: React.ReactElement;
-  links: LinkType[];
+  links: LinkConfig[];
   onExpand: () => void;
 }
 

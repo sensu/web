@@ -13,12 +13,13 @@
 - [x] global state for minified drawer preference
 - [x] remove hardcoded account id
 - [x] reimplement preferences
+- [x] style app bar
+- [ ] remove top & bottom margin from drawer; make header / footer 56px tall
+- [ ] fixup breadcrumbs; font & height 56
 - [ ] fixup broken types
 - [ ] replace placeholder avatar w/ @dabria's avatar component
 - [ ] fixup font colour when using non-default themes
 - [ ] why is drawer rendered underneath the controller
-- [ ] style app bar
-- [ ] fixup breadcrumbs
 - [!] move some of the magic numbers into the theme
 - [!] vertical divider
 - [!] maybe swap the menu icon to signify collapse

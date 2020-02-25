@@ -12,7 +12,7 @@ class NamespaceNotFoundView extends React.PureComponent {
     const { namespace } = this.props.match.params;
 
     return (
-      <AppLayout namespace={namespace}>
+      <AppLayout>
         <NotFound>
           The namespace <strong>{namespace}</strong> could not be loaded.
         </NotFound>

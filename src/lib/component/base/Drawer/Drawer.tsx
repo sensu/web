@@ -5,7 +5,7 @@ import { SensuWordmark } from "/lib/component/base";
 import { MenuIcon } from "/lib/component/icon";
 
 import { widths, heights } from "./constants";
-import { MenuItem as MenuItemType } from "./types";
+import { MenuItemConfig, LinkConfig, ToolbarItemConfig } from "./types";
 
 import Footer from "./Footer";
 import HorizontalRule from "./HorizontalRule";
@@ -31,7 +31,10 @@ interface Props {
   expanded: boolean;
 
   // List of links and groups of links that will appear in the drawer.
-  links: MenuItemType[];
+  links: MenuItemConfig[];
+
+  // List of actions that will appear in toolbar.
+  toolbarItems: ToolbarItemConfig[];
 
   // Is triggered when the user presses the menu icon or clicks a folder from collapsed state.
   onToggle: () => void;
@@ -120,8 +123,9 @@ const Drawer = ({
             expanded={isOpen && openIdx === linkProps.id}
             onExpand={() => setOpenIdx(linkProps.id) /* TODO: move to child? */}
             onClick={() => {
-              if (linkProps.onClick) {
-                linkProps.onClick();
+              const handler = (linkProps as LinkConfig).onClick;
+              if (handler !== undefined) {
+                handler();
               }
               onClose();
             }}

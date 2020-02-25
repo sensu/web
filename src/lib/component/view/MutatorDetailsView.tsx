@@ -59,7 +59,6 @@ interface MutatorDetailsViewContentProps {
 export const MutatorDetailsViewContent = ({
   toolbarItems,
   query,
-  variables,
 }: MutatorDetailsViewContentProps) => {
   const { aborted, data = {}, networkStatus } = query;
 
@@ -67,11 +66,15 @@ export const MutatorDetailsViewContent = ({
   const loading = networkStatus < 6;
 
   if (!loading && !aborted && (!data.mutator || data.mutator.deleted)) {
-    return <NotFound />;
+    return (
+      <AppLayout>
+        <NotFound />
+      </AppLayout>
+    );
   }
 
   return (
-    <AppLayout namespace={variables.namespace}>
+    <AppLayout>
       <MutatorDetailsContainer
         toolbarItems={toolbarItems}
         mutator={data.mutator}

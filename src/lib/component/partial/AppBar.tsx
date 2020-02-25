@@ -10,14 +10,15 @@ import {
 } from "/vendor/@material-ui/core";
 
 import { MenuIcon } from "/lib/component/icon";
-import { SensuWordmark, AvatarIcon } from "/lib/component/base";
+import { SensuWordmark } from "/lib/component/base";
+import AvatarIcon, { Avatar } from "/lib/component/base/AvatarIcon";
 
 interface Props {
   // account id of the current authenticated user.
   accountId: string;
 
   // use flag if some required data is currently loading.
-  loading: boolean;
+  loading?: boolean;
 
   // fired when the user clicks the menu button.
   onRequestMenu: () => void;
@@ -77,7 +78,7 @@ const AppBar = ({ accountId, title, onRequestMenu }: Props) => {
           <div className={classes.grow} />
 
           {/* TODO: use account avatar */}
-          {accountId && <AvatarIcon variant="MONKEY" />}
+          {accountId && <AvatarIcon variant={Avatar.MONKEY} />}
         </MaterialToolbar>
       </div>
     </MUIAppBar>

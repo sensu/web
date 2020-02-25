@@ -107,11 +107,15 @@ export const EventFiltersViewContent = ({
   const [, setParams] = useSearchParams();
 
   if (!data.namespace && !loading && !aborted) {
-    return <NotFound />;
+    return (
+      <AppLayout>
+        <NotFound />
+      </AppLayout>
+    );
   }
 
   return (
-    <AppLayout namespace={variables.namespace}>
+    <AppLayout>
       <div>
         <Content marginBottom>
           <EventFiltersListToolbar

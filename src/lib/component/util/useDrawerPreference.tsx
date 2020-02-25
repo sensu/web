@@ -19,7 +19,7 @@ const mutation = gql`
   }
 `;
 
-const useDrawerPreference = () => {
+const useDrawerPreference = (): [boolean, (_: boolean) => void] => {
   const client = useClient();
   const setter = React.useCallback(
     (min) => {

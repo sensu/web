@@ -58,7 +58,6 @@ interface EventFilterDetailsViewContentProps {
 export const EventFilterDetailsViewContent = ({
   toolbarItems,
   query,
-  variables,
 }: EventFilterDetailsViewContentProps) => {
   const { aborted, data = {}, networkStatus } = query;
 
@@ -67,14 +66,14 @@ export const EventFilterDetailsViewContent = ({
 
   if (!loading && !aborted && (!data.eventFilter || data.eventFilter.deleted)) {
     return (
-      <AppLayout namespace={variables.namespace}>
+      <AppLayout>
         <NotFound />
       </AppLayout>
     );
   }
 
   return (
-    <AppLayout namespace={variables.namespace}>
+    <AppLayout>
       <EventFilterDetailsContainer
         toolbarItems={toolbarItems}
         eventFilter={data.eventFilter}

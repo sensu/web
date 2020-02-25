@@ -151,14 +151,14 @@ export const SilencesViewContent = ({
 
   if (!data.namespace && !loading && !aborted) {
     return (
-      <AppLayout namespace={variables.namespace}>
+      <AppLayout>
         <NotFound />
       </AppLayout>
     );
   }
 
   return (
-    <AppLayout namespace={variables.namespace}>
+    <AppLayout>
       <div>
         <React.Fragment>
           <Content marginBottom>
