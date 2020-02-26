@@ -11,7 +11,7 @@ import {
   TableRow,
   TableCell,
 } from "/vendor/@material-ui/core";
-import Icon, { Avatar, AvatarColor } from "./AvatarIcon";
+import Icon, { Animal, AvatarColor } from "./AvatarIcon";
 
 const stories = storiesOf("lib/base|AvatarIcon", module)
   .addDecorator(withKnobs)
@@ -27,10 +27,10 @@ const stories = storiesOf("lib/base|AvatarIcon", module)
 stories.add("table", () => {
   return (
     <Table>
-      {Object.keys(Avatar).map(variant => (
+      {Object.keys(Animal).map(variant => (
         <TableRow key={variant}>
           <TableCell>
-            <Typography color="textPrimary">{Avatar[variant]}</Typography>
+            <Typography color="textPrimary">{Animal[variant]}</Typography>
           </TableCell>
           <TableCell>
             <Typography color="textPrimary">
