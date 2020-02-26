@@ -18,7 +18,7 @@ import {
   Tooltip,
 } from "/vendor/@material-ui/core";
 
-import { FaceIcon, NotesIcon } from "/lib/component/icon";
+import { NotesIcon } from "/lib/component/icon";
 
 import { Maybe } from "/lib/component/util";
 import { ModalController, HoverController } from "/lib/component/controller";
@@ -32,6 +32,7 @@ import TableOverflowCell from "/lib/component/partial/TableOverflowCell";
 import TableSelectableRow from "/lib/component/partial/TableSelectableRow";
 import { FloatingTableToolbarCell } from "/lib/component/partial/TableToolbarCell";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
+import UserAvatar from "/lib/component/partial/UserAvatar";
 
 const SlideUp = props => <Slide {...props} direction="up" />;
 
@@ -124,7 +125,7 @@ class SilencesListItem extends React.Component {
                   <Chip
                     avatar={
                       <Avatar>
-                        <FaceIcon />
+                        <UserAvatar username={creator} />
                       </Avatar>
                     }
                     label={creator}

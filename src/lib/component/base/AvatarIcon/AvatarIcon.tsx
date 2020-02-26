@@ -18,7 +18,7 @@ import {
   WolfAvatar,
 } from "/lib/component/icon/avatar";
 
-export enum Avatar {
+export enum Animal {
   BEAR = "BEAR",
   BIRD = "BIRD",
   BUTTERFLY = "BUTTERFLY",
@@ -48,27 +48,27 @@ export enum AvatarColor {
 }
 
 interface Props {
-  variant: Avatar;
+  variant: Animal;
   color: AvatarColor;
 }
 
 const mapping = {
-  [Avatar.BEAR]: BearAvatar,
-  [Avatar.BIRD]: BirdAvatar,
-  [Avatar.BUTTERFLY]: ButterflyAvatar,
-  [Avatar.CAT]: CatAvatar,
-  [Avatar.CROC]: CrocAvatar,
-  [Avatar.DEER]: DeerAvatar,
-  [Avatar.DOG]: DogAvatar,
-  [Avatar.FISH]: FishAvatar,
-  [Avatar.LION]: LionAvatar,
-  [Avatar.MONKEY]: MonkeyAvatar,
-  [Avatar.PENGUIN]: PenguinAvatar,
-  [Avatar.SEAL]: SealAvatar,
-  [Avatar.SNAKE]: SnakeAvatar,
-  [Avatar.RABBIT]: RabbitAvatar,
-  [Avatar.REDPANDA]: RedPandaAvatar,
-  [Avatar.WOLF]: WolfAvatar,
+  [Animal.BEAR]: BearAvatar,
+  [Animal.BIRD]: BirdAvatar,
+  [Animal.BUTTERFLY]: ButterflyAvatar,
+  [Animal.CAT]: CatAvatar,
+  [Animal.CROC]: CrocAvatar,
+  [Animal.DEER]: DeerAvatar,
+  [Animal.DOG]: DogAvatar,
+  [Animal.FISH]: FishAvatar,
+  [Animal.LION]: LionAvatar,
+  [Animal.MONKEY]: MonkeyAvatar,
+  [Animal.PENGUIN]: PenguinAvatar,
+  [Animal.SEAL]: SealAvatar,
+  [Animal.SNAKE]: SnakeAvatar,
+  [Animal.RABBIT]: RabbitAvatar,
+  [Animal.REDPANDA]: RedPandaAvatar,
+  [Animal.WOLF]: WolfAvatar,
 };
 
 const AvatarIcon = ({ variant, color, ...props }: Props) => {
