@@ -2,7 +2,6 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 import {
-  Avatar,
   Button,
   Checkbox,
   Chip,
@@ -18,7 +17,7 @@ import {
   Tooltip,
 } from "/vendor/@material-ui/core";
 
-import { FaceIcon, NotesIcon } from "/lib/component/icon";
+import { NotesIcon } from "/lib/component/icon";
 
 import { Maybe } from "/lib/component/util";
 import { ModalController, HoverController } from "/lib/component/controller";
@@ -32,6 +31,7 @@ import TableOverflowCell from "/lib/component/partial/TableOverflowCell";
 import TableSelectableRow from "/lib/component/partial/TableSelectableRow";
 import { FloatingTableToolbarCell } from "/lib/component/partial/TableToolbarCell";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
+import UserAvatar from "/lib/component/partial/UserAvatar";
 
 const SlideUp = props => <Slide {...props} direction="up" />;
 
@@ -122,11 +122,7 @@ class SilencesListItem extends React.Component {
               <Maybe value={silence.creator}>
                 {creator => (
                   <Chip
-                    avatar={
-                      <Avatar>
-                        <FaceIcon />
-                      </Avatar>
-                    }
+                    avatar={<UserAvatar username={creator} />}
                     label={creator}
                     style={{
                       // TODO: ideally have Chip scale to current fontSize(?)
