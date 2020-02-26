@@ -1,11 +1,11 @@
 import React from "react";
 
 import { storiesOf } from "@storybook/react";
-import { withKnobs } from "@storybook/addon-knobs";
+import { text, withKnobs } from "@storybook/addon-knobs";
 import withTheme from "/lib/storybook/withTheme";
 
 import { Box } from "/vendor/@material-ui/core";
-import { UserAvatar } from "/lib/component/partial/UserAvatar/UserAvatar";
+import { UserAvatar } from "/lib/component/partial";
 
 const stories = storiesOf("lib/partial|UserAvatar", module)
   .addDecorator(withKnobs)
@@ -19,5 +19,5 @@ const stories = storiesOf("lib/partial|UserAvatar", module)
   .addDecorator(withTheme);
 
 stories.add("UserAvatar", () => {
-  return <UserAvatar username="dabria" />;
+  return <UserAvatar username={text("username", "dabria")} />;
 });
