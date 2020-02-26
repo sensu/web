@@ -11,7 +11,7 @@ import {
 
 import { MenuIcon } from "/lib/component/icon";
 import { SensuWordmark } from "/lib/component/base";
-import AvatarIcon, { Avatar } from "/lib/component/base/AvatarIcon";
+import UserAvatar from "./UserAvatar";
 
 interface Props {
   // account id of the current authenticated user.
@@ -77,8 +77,7 @@ const AppBar = ({ accountId, title, onRequestMenu }: Props) => {
 
           <div className={classes.grow} />
 
-          {/* TODO: use account avatar */}
-          {accountId && <AvatarIcon variant={Avatar.MONKEY} />}
+          {accountId && <UserAvatar username={accountId} />}
         </MaterialToolbar>
       </div>
     </MUIAppBar>

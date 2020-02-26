@@ -1,7 +1,7 @@
 import React, { memo } from "/vendor/react";
 import { Box, IconButton, Typography } from "/vendor/@material-ui/core";
 import { animated, useSpring } from "/vendor/react-spring";
-import AvatarIcon, { Avatar } from "../AvatarIcon";
+import { UserAvatar } from "/lib/component/partial";
 
 import { heights } from "./constants";
 import { ToolbarItemConfig } from "./types";
@@ -33,8 +33,7 @@ const Footer = ({ accountId, toolbarItems = [], isOpen }: Props) => {
         alignItems="center"
         width={isOpen ? undefined : heights.button}
       >
-        {/* TODO: Replace w/ @dabria's avatar component */}
-        <IconContainer icon={<AvatarIcon variant={Avatar.MONKEY} />} />
+        <IconContainer icon={<UserAvatar username={accountId} />} />
       </Box>
       <Box clone display="flex" flexGrow="1" alignItems="center">
         <Typography
