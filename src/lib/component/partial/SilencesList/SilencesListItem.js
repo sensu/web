@@ -2,6 +2,7 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 import {
+  Avatar,
   Button,
   Checkbox,
   Chip,
@@ -122,7 +123,11 @@ class SilencesListItem extends React.Component {
               <Maybe value={silence.creator}>
                 {creator => (
                   <Chip
-                    avatar={<UserAvatar username={creator} />}
+                    avatar={
+                      <Avatar>
+                        <UserAvatar username={creator} />
+                      </Avatar>
+                    }
                     label={creator}
                     style={{
                       // TODO: ideally have Chip scale to current fontSize(?)
