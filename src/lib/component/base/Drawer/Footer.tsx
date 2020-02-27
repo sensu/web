@@ -1,5 +1,10 @@
 import React, { memo } from "/vendor/react";
-import { Box, IconButton, Typography } from "/vendor/@material-ui/core";
+import {
+  Box,
+  IconButton,
+  Typography,
+  Tooltip,
+} from "/vendor/@material-ui/core";
 import { animated, useSpring } from "/vendor/react-spring";
 import { UserAvatar } from "/lib/component/partial";
 
@@ -27,14 +32,24 @@ const Footer = ({ accountId, toolbarItems = [], isOpen }: Props) => {
       height={isOpen ? heights.toolbar : "auto"}
       flexDirection={isOpen ? "row" : "column"}
     >
-      <Box
-        display={accountId ? "flex" : "none"}
-        flexDirection="row"
-        alignItems="center"
-        width={isOpen ? undefined : heights.button}
+      <Tooltip
+        title={
+          <span>
+            Authenticated as <em>{accountId}</em>
+          </span>
+        }
+        open={isOpen ? false : undefined}
+        placement="right"
       >
-        <IconContainer icon={<UserAvatar username={accountId} />} />
-      </Box>
+        <Box
+          display={accountId ? "flex" : "none"}
+          flexDirection="row"
+          alignItems="center"
+          width={isOpen ? undefined : heights.button}
+        >
+          <IconContainer icon={<UserAvatar username={accountId || ""} />} />
+        </Box>
+      </Tooltip>
       <Box clone display="flex" flexGrow="1" alignItems="center">
         <Typography
           component={animated.p}
@@ -46,10 +61,17 @@ const Footer = ({ accountId, toolbarItems = [], isOpen }: Props) => {
           {accountId}
         </Typography>
       </Box>
-      {toolbarItems.map(({ id, icon, onClick }) => (
-        <IconButton key={id} color="inherit" onClick={onClick}>
-          {icon}
-        </IconButton>
+      {toolbarItems.map(({ id, hint, icon, onClick }) => (
+        <Tooltip
+          key={id}
+          title={hint}
+          open={!hint ? false : undefined}
+          placement="right"
+        >
+          <IconButton color="inherit" onClick={onClick}>
+            {icon}
+          </IconButton>
+        </Tooltip>
       ))}
     </Box>
   );

@@ -26,6 +26,7 @@ import {
   ConfigIcon,
   EntityIcon,
   EventIcon,
+  LogoutIcon,
   PreferencesIcon,
   SelectIcon,
   SilenceIcon,
@@ -63,6 +64,7 @@ import {
 } from "/lib/component/partial";
 
 import createClient from "/app/apollo/client";
+import invalidateTokens from "/lib/mutation/invalidateTokens";
 
 const updateServiceWorker = () => () =>
   // Unregister previous service worker scripts since the app does not
@@ -165,9 +167,16 @@ const renderApp = () => {
                     {
                       id: "preferences",
                       icon: <PreferencesIcon />,
+                      hint: "Preferences",
                       onClick: () =>
                         client.mutate({ mutation: openPreferences }),
                     },
+                    {
+                      id: "sign-out",
+                      icon: <LogoutIcon />,
+                      hint: "Sign-out",
+                      onClick: () => invalidateTokens(client),
+                    }
                   ]}
                 >
                   <Switch>

@@ -29,8 +29,9 @@ const useIdentity = () => {
   const result = useQuery({ query });
   const data = result.data as QueryResp;
 
-  const token = data.auth.accessToken.split(".")[1] || "";
-  const identity = JSON.parse(window.atob(token) || "{}") as Identity;
+  const token = data.auth.accessToken || "";
+  const info = token.split(".")[1] || "";
+  const identity = JSON.parse(window.atob(info) || "{}") as Identity;
 
   return identity;
 };
