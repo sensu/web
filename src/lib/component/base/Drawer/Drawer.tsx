@@ -112,7 +112,7 @@ const Drawer = ({
         flexGrow={1}
         flexDirection="column"
         style={{
-          overflowY: "scroll",
+          overflowY: "auto",
           overflowX: "hidden",
         }}
       >
