@@ -6,11 +6,11 @@ import {
   Tooltip,
 } from "/vendor/@material-ui/core";
 import { animated, useSpring } from "/vendor/react-spring";
-import { UserAvatar } from "/lib/component/partial";
 
 import { heights } from "./constants";
 import { ToolbarItemConfig } from "./types";
 
+import UserAvatar from "/lib/component/partial/UserAvatar";
 import IconContainer from "./IconContainer";
 
 interface Props {

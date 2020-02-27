@@ -26,7 +26,6 @@ import {
   ConfigIcon,
   EntityIcon,
   EventIcon,
-  LogoutIcon,
   PreferencesIcon,
   SelectIcon,
   SilenceIcon,
@@ -64,7 +63,6 @@ import {
 } from "/lib/component/partial";
 
 import createClient from "/app/apollo/client";
-import invalidateTokens from "/lib/mutation/invalidateTokens";
 
 const updateServiceWorker = () => () =>
   // Unregister previous service worker scripts since the app does not

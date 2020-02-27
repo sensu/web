@@ -21,13 +21,6 @@ import {
   Tooltip,
   Typography,
 } from "/vendor/@material-ui/core";
-import {
-  BulbIcon,
-  CloseIcon,
-  EyeIcon,
-  MoonIcon,
-  LogoutIcon,
-} from "/lib/component/icon";
 
 import {
   useApolloClient,
@@ -35,6 +28,13 @@ import {
   useSystemColorSchemePreference,
   useQuery,
 } from "/lib/component/util";
+import {
+  BulbIcon,
+  CloseIcon,
+  EyeIcon,
+  MoonIcon,
+  LogoutIcon,
+} from "/lib/component/icon";
 
 import UserAvatar from "./UserAvatar";
 import invalidateTokens from "/lib/mutation/invalidateTokens";
