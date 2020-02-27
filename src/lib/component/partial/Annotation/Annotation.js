@@ -1,7 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { CodeBlock } from "/lib/component/base";
-import { parseLink } from "/lib/component/util";
+import { AutoLink } from "/lib/component/util";
 
 class Annotation extends React.Component {
   static propTypes = {
@@ -9,7 +9,7 @@ class Annotation extends React.Component {
   };
 
   render() {
-    return <CodeBlock>{parseLink(this.props.children)}</CodeBlock>;
+    return <CodeBlock><AutoLink value={this.props.children} /></CodeBlock>;
   }
 }
 
