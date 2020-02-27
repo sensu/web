@@ -31,7 +31,12 @@ class DictionaryKey extends React.Component {
     const className = classnames(classes.root, classNameProp);
 
     return (
-      <Typography component="td" color="textSecondary" className={className}>
+      <Typography
+        component="td"
+        color="textSecondary"
+        className={className}
+        variant="body2"
+      >
         <div className={classes.container}>{children}</div>
       </Typography>
     );
