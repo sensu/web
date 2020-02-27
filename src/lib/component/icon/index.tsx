@@ -46,6 +46,7 @@ export { default as MutatorIcon } from "@material-ui/icons/Transform";
 export { default as NewIcon } from "@material-ui/icons/Add";
 export { default as NewReleasesIcon } from "@material-ui/icons/NewReleases";
 export { default as NotesIcon } from "@material-ui/icons/Notes";
+export { default as MoonIcon } from "@material-ui/icons/Brightness3";
 export { default as PublishIcon } from "@material-ui/icons/Publish";
 export { default as PreferencesIcon } from "@material-ui/icons/TuneOutlined";
 export { default as QueueIcon } from "@material-ui/icons/Queue";

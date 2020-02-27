@@ -4,9 +4,11 @@ import gql from "/vendor/graphql-tag";
 
 import {
   AppBar,
+  Box,
   IconButton,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
@@ -16,15 +18,26 @@ import {
   MenuList,
   Switch,
   Toolbar,
+  Tooltip,
   Typography,
 } from "/vendor/@material-ui/core";
-import { BulbIcon, CloseIcon, EyeIcon } from "/lib/component/icon";
+import {
+  BulbIcon,
+  CloseIcon,
+  EyeIcon,
+  MoonIcon,
+  LogoutIcon,
+} from "/lib/component/icon";
 
 import {
   useApolloClient,
+  useIdentity,
   useSystemColorSchemePreference,
   useQuery,
 } from "/lib/component/util";
+
+import UserAvatar from "./UserAvatar";
+import invalidateTokens from "/lib/mutation/invalidateTokens";
 
 const query = gql`
   query PreferencesQuery {
@@ -42,8 +55,8 @@ const setThemeMutation = gql`
 `;
 
 const setDarkModeMutation = gql`
-  mutation ToggleDarkMutation($value: Boolean!) {
-    enableDarkMode(value: $value) @client
+  mutation ToggleDarkMutation($value: ThemeDarkModeValue!) {
+    setDarkMode(value: $value) @client
   }
 `;
 
@@ -51,18 +64,27 @@ const Preferences = ({ onClose }) => {
   const client = useApolloClient();
   const { data } = useQuery({ query });
 
+  const identity = useIdentity();
   const sysPref = useSystemColorSchemePreference();
-  const dark =
-    data.theme.dark !== "UNSET" ? data.theme.dark === "DARK" : sysPref;
+  const darkMode = data.theme.dark;
+  const isDark = darkMode !== "UNSET" ? darkMode === "DARK" : sysPref;
   const theme = data.theme.value;
 
   const onToggleDark = useCallback(
     () =>
       client.mutate({
         mutation: setDarkModeMutation,
-        variables: { value: !dark },
+        variables: { value: isDark ? "LIGHT" : "DARK" },
       }),
-    [client, dark],
+    [client, isDark],
+  );
+  const onToggleSysPref = useCallback(
+    () =>
+      client.mutate({
+        mutation: setDarkModeMutation,
+        variables: { value: darkMode === "UNSET" ? "LIGHT" : "UNSET" },
+      }),
+    [client, darkMode],
   );
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -80,29 +102,64 @@ const Preferences = ({ onClose }) => {
 
   return (
     <React.Fragment>
-      <AppBar style={{ position: "relative" }}>
+      <AppBar position="sticky">
         <Toolbar>
-          <IconButton color="inherit" onClick={onClose} aria-label="Close">
-            <CloseIcon />
-          </IconButton>
           <Typography variant="h6" color="inherit">
             Preferences
           </Typography>
+          <Box flexGrow="1" />
+          <IconButton
+            color="inherit"
+            edge="end"
+            onClick={onClose}
+            aria-label="Close"
+          >
+            <CloseIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
-      <List subheader={<ListSubheader>Appearance</ListSubheader>}>
+      <List>
+        <ListItem>
+          <ListItemAvatar>
+            <UserAvatar username={identity.sub} />
+          </ListItemAvatar>
+          <ListItemText
+            primary={identity.sub}
+            secondary={identity.groups.join(" · ")}
+          />
+          <ListItemSecondaryAction>
+            <Tooltip title="Sign-out">
+              <IconButton onClick={() => invalidateTokens(client)}>
+                <LogoutIcon />
+              </IconButton>
+            </Tooltip>
+          </ListItemSecondaryAction>
+        </ListItem>
+      </List>
+      <List subheader={<ListSubheader>Brightness</ListSubheader>}>
+        <ListItem>
+          <ListItemIcon>
+            <MoonIcon />
+          </ListItemIcon>
+          <ListItemText primary="Dark mode" />
+          <ListItemSecondaryAction>
+            <Switch onChange={onToggleDark} checked={isDark} />
+          </ListItemSecondaryAction>
+        </ListItem>
         <ListItem>
           <ListItemIcon>
             <BulbIcon />
           </ListItemIcon>
           <ListItemText
-            primary="Lights Out"
-            secondary="Switch to the dark theme..."
+            primary="Use system settings"
+            secondary="Set dark mode to use the light or dark selection located in your system settings."
           />
           <ListItemSecondaryAction>
-            <Switch onChange={onToggleDark} checked={dark} />
+            <Switch onChange={onToggleSysPref} checked={darkMode === "UNSET"} />
           </ListItemSecondaryAction>
         </ListItem>
+      </List>
+      <List subheader={<ListSubheader>Appearance</ListSubheader>}>
         <ListItem button onClick={onThemeClick}>
           <ListItemIcon>
             <EyeIcon />
@@ -122,15 +179,7 @@ const Preferences = ({ onClose }) => {
             onClick={onThemeSelect("sensu")}
           >
             <ListItem>
-              <ListItemText primary="Default" secondary="modern look" />
-            </ListItem>
-          </MenuItem>
-          <MenuItem
-            selected={theme === "classic"}
-            onClick={onThemeSelect("classic")}
-          >
-            <ListItem>
-              <ListItemText primary="Classic" secondary="vintage apple green" />
+              <ListItemText primary="Sensu Go" />
             </ListItem>
           </MenuItem>
           <MenuItem
@@ -138,7 +187,15 @@ const Preferences = ({ onClose }) => {
             onClick={onThemeSelect("uchiwa")}
           >
             <ListItem>
-              <ListItemText primary="Uchiwa" secondary="cool blue" />
+              <ListItemText primary="Uchiwa" />
+            </ListItem>
+          </MenuItem>
+          <MenuItem
+            selected={theme === "classic"}
+            onClick={onThemeSelect("classic")}
+          >
+            <ListItem>
+              <ListItemText primary="Classic" />
             </ListItem>
           </MenuItem>
         </MenuList>

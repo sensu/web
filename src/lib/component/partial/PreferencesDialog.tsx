@@ -40,7 +40,7 @@ const PreferencesDialog = () => {
           ? {
               minHeight: 400,
               maxHeight: 448,
-              width: 320,
+              width: 400,
             }
           : {},
       }}

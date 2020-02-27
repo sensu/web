@@ -170,12 +170,6 @@ const renderApp = () => {
                       hint: "Preferences",
                       onClick: () =>
                         client.mutate({ mutation: openPreferences }),
-                    },
-                    {
-                      id: "sign-out",
-                      icon: <LogoutIcon />,
-                      hint: "Sign-out",
-                      onClick: () => invalidateTokens(client),
                     }
                   ]}
                 >

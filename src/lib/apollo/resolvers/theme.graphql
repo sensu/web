@@ -17,5 +17,5 @@ extend type Mutation {
   #
   # Theme
   setTheme(theme: String!): Boolean
-  enableDarkMode(value: Boolean!): Boolean
+  setDarkMode(value: ThemeDarkModeValue!): Boolean
 }

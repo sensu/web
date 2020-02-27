@@ -20,11 +20,11 @@ export default {
         return null;
       },
 
-      enableDarkMode: (_, { value }, { cache }) => {
+      setDarkMode: (_, { value }, { cache }) => {
         const data = {
           theme: {
             __typename: "Theme",
-            dark: value ? "DARK" : "LIGHT",
+            dark: value,
           },
         };
         cache.writeData({ data });
