@@ -1,0 +1,18 @@
+extend type Query {
+  """
+  Whether the user prefers the full or minified app drawer.
+  """
+  preferMinDrawer: Boolean!
+}
+
+extend type Mutation {
+  """
+  Set preference for drawer state.
+  """
+  setDrawerPreference(minified: Boolean!): Boolean!
+
+  """
+  Toggle preference for drawer state.
+  """
+  toogleDrawerPreference: Boolean!
+}

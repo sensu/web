@@ -119,14 +119,14 @@ export const ChecksViewContent = ({
   const loading = networkStatus < 6;
   if (!data.namespace && !loading && !aborted) {
     return (
-      <AppLayout namespace={variables.namespace}>
+      <AppLayout>
         <NotFound />
       </AppLayout>
     );
   }
 
   return (
-    <AppLayout loading={aborted || loading} namespace={variables.namespace}>
+    <AppLayout loading={aborted || loading}>
       <div>
         <Content marginBottom>
           <ChecksListToolbar

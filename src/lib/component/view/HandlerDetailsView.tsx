@@ -59,7 +59,6 @@ export function useHandlerDetailsViewQueryVariables(): Variables {
 export const HandlerDetailsViewContent = ({
   query,
   toolbarItems,
-  variables,
 }: HandlerDetailsViewContentProps) => {
   const { aborted, data = {}, networkStatus } = query;
   const { handler } = data;
@@ -68,14 +67,14 @@ export const HandlerDetailsViewContent = ({
 
   if (!loading && !aborted && (!handler || handler.deleted)) {
     return (
-      <AppLayout namespace={variables.namespace}>
+      <AppLayout>
         <NotFound />
       </AppLayout>
     );
   }
 
   return (
-    <AppLayout namespace={variables.namespace}>
+    <AppLayout>
       <HandlerDetailsContainer
         toolbarItems={toolbarItems}
         handler={handler}

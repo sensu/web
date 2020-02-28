@@ -2,7 +2,7 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { withStyles } from "/vendor/@material-ui/core";
 import ResizeObserver from "/vendor/react-resize-observer";
-import { Spring } from "/vendor/react-spring";
+import { Spring } from "/vendor/react-spring/renderprops";
 import classnames from "/vendor/classnames";
 
 import AnimatedLogo from "/lib/component/base/AnimatedLogo";

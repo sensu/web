@@ -5,7 +5,7 @@ import {
   darken,
   emphasize,
 } from "/vendor/@material-ui/core/styles/colorManipulator";
-import { parseLink } from "/lib/component/util";
+import { AutoLink } from "/lib/component/util";
 
 const styles = theme => ({
   root: {
@@ -46,9 +46,11 @@ class Label extends React.PureComponent {
   render() {
     const { classes, name, value } = this.props;
     return (
-      <Typography component="span" className={classes.root}>
+      <Typography component="span" className={classes.root} variant="body2">
         <span className={classes.key}>{name}</span>
-        <span className={classes.value}>{parseLink(value)}</span>
+        <span className={classes.value}>
+          <AutoLink value={value} />
+        </span>
       </Typography>
     );
   }

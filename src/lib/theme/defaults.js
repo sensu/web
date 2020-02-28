@@ -1,11 +1,27 @@
 // Overrides defaults provided by Material-UI (material-ui/src/styles)
-const defaults = {
+const common = {
   direction: "ltr",
   palette: {
-    success: "rgb(151, 198, 115)",
-    warning: "rgb(213, 171, 59)",
-    critical: "rgb(204, 62, 100)",
-    unknown: "rgb(211, 97, 53)",
+    success: {
+      light: "#abd18f",
+      main: "#97c673",
+      dark: "#789e5c",
+    },
+    warning: {
+      light: "#ddbb62",
+      main: "#d5ab3b",
+      dark: "#aa882f",
+    },
+    critical: {
+      light: "#d66483",
+      main: "#cc3e64",
+      dark: "#a33150",
+    },
+    unknown: {
+      light: "#db805d",
+      main: "#D36135",
+      dark: "#a84d2a",
+    },
   },
   typography: () => {
     // Prefer 'Display' for larger fonts
@@ -44,4 +60,35 @@ const defaults = {
   },
 };
 
-export default defaults;
+const makeDefaults = type => {
+  if (type === "light") {
+    return {
+      ...common,
+      palette: {
+        ...common.palette,
+        text: {
+          ...common.palette.text,
+          // primary: "#2D3555",
+        },
+      },
+    };
+  }
+
+  return {
+    ...common,
+    palette: {
+      type,
+      background: {
+        // default: "#151928",
+        // paper: "rgba(45, 53, 85, 0.5)",
+      },
+      text: {
+        ...common.palette.text,
+        // primary: "#D5D6DD",
+      },
+      ...common.palette,
+    },
+  };
+};
+
+export default makeDefaults;

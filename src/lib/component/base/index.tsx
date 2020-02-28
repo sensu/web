@@ -3,6 +3,7 @@ export {
   AppLayoutContext,
   MobileFullWidthContent,
 } from "./AppLayout";
+export { default as AvatarIcon } from "./AvatarIcon";
 export { default as ButtonIcon } from "./ButtonIcon";
 export { default as ButtonSet } from "./ButtonSet";
 export { default as CardHighlight } from "./CardHighlight";
@@ -29,6 +30,7 @@ export {
   DictionaryEntry,
 } from "./Dictionary";
 export { default as Duration } from "./Duration";
+export { default as Drawer } from "./Drawer";
 export { default as ErrorDialog } from "./ErrorDialog";
 export { default as FilterList } from "./FilterList";
 export { default as InlineLink } from "./InlineLink";
@@ -42,7 +44,6 @@ export { default as AppThemeProvider } from "./AppThemeProvider";
 export { default as CircularProgress } from "./CircularProgress";
 export { default as Code } from "./Code";
 export { default as Loader } from "./Loader";
-export { default as Preferences } from "./Preferences";
 export { default as ResetStyles } from "./ResetStyles";
 export { default as SearchBox } from "./SearchBox";
 export { default as SensuLogo } from "./SensuLogo";

@@ -10,7 +10,7 @@ const useBreakpoint = (
       ? theme.breakpoints.up(breakpoint)
       : theme.breakpoints.down(breakpoint);
 
-  return useMediaQuery(query);
+  return useMediaQuery(query, { noSsr: true });
 };
 
 export default useBreakpoint;

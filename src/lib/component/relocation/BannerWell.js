@@ -1,6 +1,6 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { Transition, animated } from "/vendor/react-spring";
+import { Transition, animated } from "/vendor/react-spring/renderprops";
 import ResizeObserver from "/vendor/react-resize-observer";
 import { withStyles } from "/vendor/@material-ui/core";
 
@@ -95,13 +95,14 @@ class BannerWell extends React.PureComponent {
             <div className={classes.container}>
               <Transition
                 native
-                keys={visibleElements.map(element => element.id)}
+                keys={element => element.id}
+                items={visibleElements}
                 from={{ opacity: 0, height: 0 }}
-                update={id => ({ opacity: 1, height: heights[id] || 0 })}
+                enter={({ id }) => ({ opacity: 1, height: heights[id] || 0 })}
                 leave={{ opacity: 0, height: 0 }}
                 config={{ tension: 210, friction: 20 }}
               >
-                {visibleElements.map(({ id, props, remove }) => style => (
+                {({ id, props, remove }) => style => (
                   <animated.div style={style} className={classes.banner}>
                     <div className={classes.bannerInner}>
                       <ResizeObserver
@@ -113,7 +114,7 @@ class BannerWell extends React.PureComponent {
                       {props.render({ id, remove })}
                     </div>
                   </animated.div>
-                ))}
+                )}
               </Transition>
             </div>
           );

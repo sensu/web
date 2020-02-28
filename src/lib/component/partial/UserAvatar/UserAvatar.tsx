@@ -1,10 +1,12 @@
 import React, { useMemo } from "/vendor/react";
 import { Md5 } from "ts-md5";
-import AvatarIcon, { Animal, AvatarColor } from "/lib/component/base/AvatarIcon";
+import AvatarIcon, {
+  Animal,
+  AvatarColor,
+} from "/lib/component/base/AvatarIcon";
 
 interface Props {
   username: string;
-  size: string;
 }
 
 const IconValues = Object.values(Animal);
@@ -20,12 +22,15 @@ const hashStr = (str: string) => {
   return result as Int32Array;
 };
 
-const UserAvatar = (props: Props) => {
-  const { username } = props;
+const UserAvatar = ({ username }: Props) => {
   const hash = useMemo(() => hashStr(username), [username]);
 
-  return <AvatarIcon variant={IconValues[Math.abs(hash[0]) % IconValues.length]}
-      color={ColourValues[Math.abs(hash[1]) % ColourValues.length]} />;
-}
+  return (
+    <AvatarIcon
+      variant={IconValues[Math.abs(hash[0]) % IconValues.length]}
+      color={ColourValues[Math.abs(hash[1]) % ColourValues.length]}
+    />
+  );
+};
 
 export default UserAvatar;

@@ -1,5 +1,11 @@
 import { emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
 
+interface Swatch {
+  light: string;
+  main: string;
+  dark: string;
+}
+
 interface Palette {
   text: {
     primary: string;
@@ -7,8 +13,8 @@ interface Palette {
   background: {
     paper: string;
   };
-  warning: string;
-  critical: string;
+  warning: Swatch;
+  critical: Swatch;
 }
 
 export interface Theme {
@@ -34,13 +40,13 @@ export const getFontOpacity = (palette: Palette, status: number) => {
   return 0.178;
 };
 
-export const getColor = (palette: Palette, status: number) => {
+export const getColor = (palette: Palette, status: number): string => {
   switch (status) {
     case 0:
       return getGrey(palette);
     case 1:
-      return palette.warning;
+      return palette.warning.main;
     default:
   }
-  return palette.critical;
+  return palette.critical.main;
 };
