@@ -68,14 +68,15 @@ class SilencesListHeader extends React.PureComponent {
             title="Check"
             onChange={toggleParam("check", onChangeFilters)}
           >
-            <ToolbarSelectOption value={null} />
-            {checks.map(v => (
-              <ToolbarSelectOption
-                key={v}
-                value={v}
-                selected={filters.check === v}
-              />
-            ))}
+            {checks
+              .sort((a, b) => (a.toUpperCase() > b.toUpperCase() ? 1 : -1))
+              .map(v => (
+                <ToolbarSelectOption
+                  key={v}
+                  value={v}
+                  selected={filters.check === v}
+                />
+              ))}
           </SelectMenuItem>
         </ToolbarMenu.Item>
         <ToolbarMenu.Item key="filter-by-subscription" visible="if-room">
@@ -83,14 +84,15 @@ class SilencesListHeader extends React.PureComponent {
             title="Subscription"
             onChange={toggleParam("subscription", onChangeFilters)}
           >
-            <ToolbarSelectOption value={null} />
-            {subscriptions.map(v => (
-              <ToolbarSelectOption
-                key={v}
-                value={v}
-                selected={filters.subscription === v}
-              />
-            ))}
+            {subscriptions
+              .sort((a, b) => (a.toUpperCase() > b.toUpperCase() ? 1 : -1))
+              .map(v => (
+                <ToolbarSelectOption
+                  key={v}
+                  value={v}
+                  selected={filters.subscription === v}
+                />
+              ))}
           </SelectMenuItem>
         </ToolbarMenu.Item>
         <ToolbarMenu.Item key="sort" visible="always">

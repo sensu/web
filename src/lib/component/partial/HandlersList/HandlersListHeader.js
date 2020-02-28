@@ -5,7 +5,7 @@ import ListHeader from "/lib/component/partial/ListHeader";
 import ListSortSelector from "/lib/component/partial/ListSortSelector";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 import { SelectMenuItem } from "/lib/component/partial/ToolbarMenuItems";
-import { ToolbarSelectOption } from "/lib/component/partial/ToolbarSelect";
+import ToolbarSelectOption from "/lib/component/partial/ToolbarSelect/Option";
 
 import { toggleParam } from "/lib/util/filterParams";
 
@@ -37,7 +37,6 @@ const HandlersListHeader = ({
         <ToolbarMenu>
           <ToolbarMenu.Item key="type-filter" visible="always">
             <SelectMenuItem title="Type" onChange={onFilterHandlerType}>
-              <ToolbarSelectOption value={null} />
               {HANDLER_TYPES.map(({ label, value }) => (
                 <ToolbarSelectOption
                   key={value}
