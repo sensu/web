@@ -87,7 +87,6 @@ const Drawer = ({
     width,
     backgroundColor: bgColor,
     outline: 0,
-    height: height === 0 ? "auto" : height,
   });
 
   const drawer = (
@@ -95,7 +94,7 @@ const Drawer = ({
       component={animated.div}
       height="100vh"
       position="fixed"
-      style={{ ...styles }}
+      style={{ ...styles, height: height === 0 ? "auto" : height }}
       flexDirection="column"
       paddingLeft={1}
       paddingRight={1}
