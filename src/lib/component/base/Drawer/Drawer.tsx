@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "/vendor/react";
 import { useTheme, Box, IconButton, Modal } from "/vendor/@material-ui/core";
 import { animated, useSpring } from "/vendor/react-spring";
 import { MenuIcon } from "/lib/component/icon";
+import ResizeObserver from "/vendor/react-resize-observer";
 
 import { widths, heights } from "./constants";
 import { MenuItemConfig, LinkConfig, ToolbarItemConfig } from "./types";
@@ -59,6 +60,9 @@ const Drawer = ({
 }: Props) => {
   const isOpen = !!expanded || variant === "full";
 
+  const [height, setHeight] = useState(0);
+  const handlePos = React.useCallback((r) => setHeight(r.height), [setHeight]);
+
   const [openIdx, setOpenIdxState] = useState<string | null>(null);
   const setOpenIdx = useCallback(
     (val) => {
@@ -75,12 +79,15 @@ const Drawer = ({
   const theme = useTheme();
   const color = isOpen ? theme.palette.text.primary : silver;
   const width = isOpen ? widths.full : variant === "mini" ? widths.mini : 0;
-  const bgColor = isOpen ? theme.palette.background.default : "#2D3555"; // ???
+  const bgColor = isOpen
+    ? theme.palette.background.default
+    : theme.palette.primary.dark;
   const styles = useSpring({
     color,
     width,
     backgroundColor: bgColor,
     outline: 0,
+    height: height === 0 ? "auto" : height,
   });
 
   const drawer = (
@@ -88,7 +95,7 @@ const Drawer = ({
       component={animated.div}
       height="100vh"
       position="fixed"
-      style={styles}
+      style={{ ...styles }}
       flexDirection="column"
       paddingLeft={1}
       paddingRight={1}
@@ -147,7 +154,9 @@ const Drawer = ({
   if (variant === "mini" && expanded) {
     return (
       <React.Fragment>
-        <Box width={widths.mini} flex="0 0 auto" />
+        <Box width={widths.mini} flex="0 0 auto" position="relative">
+          <ResizeObserver onResize={handlePos} />
+        </Box>
         <Modal disableAutoFocus onClose={onClose} open>
           {drawer}
         </Modal>
@@ -165,7 +174,9 @@ const Drawer = ({
 
   return (
     <React.Fragment>
-      <Box component={animated.div} style={{ width }} flex="0 0 auto" />
+      <Box style={{ width }} position="relative" flex="0 0 auto">
+        <ResizeObserver onResize={handlePos} />
+      </Box>
       {drawer}
     </React.Fragment>
   );
