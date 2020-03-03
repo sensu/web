@@ -10,7 +10,7 @@ const theme = (type = "dark") =>
         primary: {
           light: colors.paynesGrey[300],
           main: colors.paynesGrey[500],
-          dark: colors.paynesGrey[600],
+          dark: colors.paynesGrey[700],
           contrastText: "#F3F5F7",
         },
         secondary: {
