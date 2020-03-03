@@ -12,7 +12,7 @@ import {
 import ConfirmDelete from "/lib/component/partial/ConfirmDelete";
 import ListHeader from "/lib/component/partial/ListHeader";
 import ListSortSelector from "/lib/component/partial/ListSortSelector";
-import { ToolbarSelectOption } from "/lib/component/partial/ToolbarSelect";
+import ToolbarSelectOption from "/lib/component/partial/ToolbarSelect/Option";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 
 import { toggleParam } from "/lib/util/filterParams";
@@ -66,7 +66,6 @@ class EntitiesListHeader extends React.PureComponent {
             title="Entity Class"
             onChange={toggleParam("class", onChangeFilters)}
           >
-            <ToolbarSelectOption value={null} />
             {["agent", "proxy"].map(v => (
               <ToolbarSelectOption
                 key={v}
@@ -81,7 +80,6 @@ class EntitiesListHeader extends React.PureComponent {
             title="Subscription"
             onChange={toggleParam("subscription", onChangeFilters)}
           >
-            <ToolbarSelectOption value={null} />
             {subscriptions.map(v => (
               <ToolbarSelectOption
                 key={v}

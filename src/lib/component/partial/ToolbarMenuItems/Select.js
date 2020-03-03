@@ -12,12 +12,14 @@ class Select extends React.Component {
   static propTypes = {
     autoClose: PropTypes.bool,
     children: PropTypes.node,
+    disableEmptySelection: PropTypes.bool,
     onChange: PropTypes.func,
   };
 
   static defaultProps = {
     autoClose: true,
     children: [],
+    disableEmptySelection: false,
     onChange: () => false,
   };
 
@@ -25,6 +27,7 @@ class Select extends React.Component {
     const {
       autoClose,
       children,
+      disableEmptySelection,
       onChange: onChangeProp,
       ...props
     } = this.props;
@@ -45,6 +48,7 @@ class Select extends React.Component {
           return (
             <ToolbarSelectController
               collapsed={collapsed}
+              disableEmptySelection={disableEmptySelection}
               onChange={onChange}
               onClose={close}
               options={children}

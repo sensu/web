@@ -14,6 +14,7 @@ class ToolbarSelect extends React.Component {
 
   static defaultProps = {
     button: null,
+    disableEmptySelection: false,
     title: null,
   };
 
