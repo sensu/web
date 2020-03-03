@@ -74,7 +74,7 @@ const HandlersList = ({
               limit={limit}
               offset={offset}
               pageInfo={namespace && namespace.handlers.pageInfo}
-              onChangeQuery={onChangeQuery}
+              onChangeQuery={ch => onChangeQuery(ex => ({ ...ex, ...ch }))}
             />
           </Loader>
         </Paper>

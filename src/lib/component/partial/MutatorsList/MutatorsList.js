@@ -77,7 +77,7 @@ const MutatorsList = ({
               limit={limit}
               offset={offset}
               pageInfo={namespace && namespace.mutators.pageInfo}
-              onChangeQuery={onChangeQuery}
+              onChangeQuery={ch => onChangeQuery(ex => ({ ...ex, ...ch }))}
             />
           </Loader>
         </Paper>

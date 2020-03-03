@@ -196,7 +196,7 @@ class SilencesList extends React.Component {
                   limit={limit}
                   offset={offset}
                   pageInfo={namespace && namespace.silences.pageInfo}
-                  onChangeQuery={onChangeQuery}
+                  onChangeQuery={ch => onChangeQuery(ex => ({ ...ex, ...ch }))}
                 />
               </Loader>
             </Paper>
