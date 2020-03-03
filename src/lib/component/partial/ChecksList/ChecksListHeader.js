@@ -68,7 +68,6 @@ class ChecksListHeader extends React.PureComponent {
             title="Published"
             onChange={toggleParam("published", onChangeFilters)}
           >
-            <ToolbarSelectOption value={null} />
             {[["true", "Published"], ["false", "Unpublished"]].map(
               ([v, label]) => (
                 <ToolbarSelectOption
@@ -87,7 +86,6 @@ class ChecksListHeader extends React.PureComponent {
             title="Subscription"
             onChange={toggleParam("subscription", onChangeFilters)}
           >
-            <ToolbarSelectOption value={null} />
             {subscriptions.map(val => (
               <ToolbarSelectOption
                 key={val}

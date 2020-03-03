@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import capitalize from "lodash/capitalize";
 
 import {
+  Box,
   ListItemText,
   ListItemIcon,
   MenuItem,
@@ -42,16 +43,12 @@ class ListSortSelectorMenu extends React.PureComponent {
   renderOption = ({ label, value }) => {
     const { setParams, onClose, queryKey, value: valueProp } = this.props;
 
-    let icon;
+    let icon = <Box />;
     if (valueProp === value || valueProp === `${value}_DESC`) {
-      icon = (
-        <ListItemIcon style={{ transform: "scale(0.77)" }}>
-          {strEndsWith(valueProp, "_DESC") ? (
-            <ArrowUpIcon />
-          ) : (
-            <ArrowDownIcon />
-          )}
-        </ListItemIcon>
+      icon = strEndsWith(valueProp, "_DESC") ? (
+        <ArrowUpIcon />
+      ) : (
+        <ArrowDownIcon />
       );
     }
 
@@ -67,8 +64,8 @@ class ListSortSelectorMenu extends React.PureComponent {
 
     return (
       <MenuItem key={value} value={value} onClick={onClick}>
-        {icon}
-        <ListItemText inset>{label || capitalize(value)}</ListItemText>
+        <ListItemIcon style={{ transform: "scale(0.77)" }}>{icon}</ListItemIcon>
+        <ListItemText>{label || capitalize(value)}</ListItemText>
       </MenuItem>
     );
   };

@@ -160,7 +160,6 @@ class EventsListHeader extends React.Component {
                 title="Silenced"
                 onChange={toggleParam("silenced", onChangeFilters)}
               >
-                <Option value={null} />
                 <Option value="false" selected={filters.silenced === "false"}>
                   Hide Silenced
                 </Option>
@@ -175,7 +174,6 @@ class EventsListHeader extends React.Component {
                 title="Entity"
                 onChange={toggleParam("entity", onChangeFilters)}
               >
-                <Option value={null} />
                 {entities.map(name => (
                   <Option
                     key={name}
@@ -191,7 +189,6 @@ class EventsListHeader extends React.Component {
                 title="Check"
                 onChange={toggleParam("check", onChangeFilters)}
               >
-                <Option value={null} />
                 {checks.map(name => (
                   <Option
                     key={name}
@@ -221,7 +218,7 @@ class EventsListHeader extends React.Component {
             </ToolbarMenu.Item>
 
             <ToolbarMenu.Item key="sort" visible="always">
-              <Select title="Sort" onChange={this.updateSort}>
+              <Select title="Sort" onChange={this.updateSort} disableEmptySelection>
                 <Option value="LASTOK">Last OK</Option>
                 <Option value="SEVERITY">Severity</Option>
                 <Option value="NEWEST">Newest</Option>

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import capitalizeStr from "lodash/capitalize";
 
 import {
+  Box,
   ListItemIcon,
   ListItemText,
   Menu,
@@ -67,7 +68,15 @@ class StatusMenu extends React.Component {
 
     return (
       <Menu anchorEl={anchorEl} className={className} onClose={onClose} open>
-        <MenuItem onClick={() => onChange(null)} />
+        <MenuItem onClick={() => onChange(null)}>
+          <ListItemText
+            primary={
+              <Box component="em" fontStyle="italic">
+                None
+              </Box>
+            }
+          />
+        </MenuItem>
         {options.map(({ value, Icon }) => (
           <MenuItem
             key={value}

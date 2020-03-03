@@ -9,7 +9,7 @@ const theme = (type = "light") =>
       primary: {
         light: colors.appleGreen[300],
         main: colors.appleGreen[500],
-        dark: colors.appleGreen[600],
+        dark: colors.appleGreen[900],
       },
       secondary: {
         light: colors.pistachio[300],
