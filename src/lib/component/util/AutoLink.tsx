@@ -1,26 +1,33 @@
 import React from "/vendor/react";
-import { Link } from "/vendor/@material-ui/core";
+import { Link, withStyles } from "/vendor/@material-ui/core";
 import { LinkIcon } from "/lib/component/icon";
 
-interface Props {
+const styles = () => ({
+  iconFix: {
+    verticalAlign: "text-bottom",
+  },
+});
+
+interface Props extends React.HTMLProps<HTMLSpanElement> {
   value: string;
+  classes: object;
 }
 
-const AutoLink = ({ value }: Props) => {
+const AutoLink = ({ value, classes, ...props}: Props) => {
   try {
     new URL(value);
   } catch (e) {
-    return value;
+    return <span {...props}>{value}</span>;
   }
   return (
     <Link href={value}>
-      {value}
-      <span style={{ verticalAlign: "text-top" }}>
-        {" "}
+      <span className={classes.iconFix}>
         <LinkIcon fontSize="inherit" />
+        {" "}
       </span>
+      <span className={classes.iconFix}>{value}</span>
     </Link>
   );
 };
 
-export default AutoLink;
+export default withStyles(styles)(AutoLink);

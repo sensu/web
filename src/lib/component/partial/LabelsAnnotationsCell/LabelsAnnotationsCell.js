@@ -94,13 +94,7 @@ class LabelsAnnotationsCell extends React.PureComponent {
               <Key>Annotations</Key>
               <Value explicitRightMargin>
                 {resource.metadata.annotations.length > 0 ? (
-                  <Annotation>
-                    <CodeHighlight
-                      language="json"
-                      code={JSON.stringify(annotations, null, "\t")}
-                      component="code"
-                    />
-                  </Annotation>
+                  <Annotation>{annotations}</Annotation>
                 ) : (
                   "None"
                 )}
