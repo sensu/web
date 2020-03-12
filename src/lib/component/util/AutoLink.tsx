@@ -1,19 +1,19 @@
 import React from "/vendor/react";
-import { Link, withStyles } from "/vendor/@material-ui/core";
+import { Link, makeStyles, createStyles, Theme } from "/vendor/@material-ui/core";
 import { LinkIcon } from "/lib/component/icon";
 
-const styles = () => ({
+const useStyles = makeStyles((theme: Theme) => createStyles({
   iconFix: {
     verticalAlign: "text-bottom",
   },
-});
+}))
 
 interface Props extends React.HTMLProps<HTMLSpanElement> {
   value: string;
-  classes: object;
 }
 
-const AutoLink = ({ value, classes, ...props}: Props) => {
+const AutoLink = ({ value, ...props}: Props) => {
+  const classes = useStyles();
   try {
     new URL(value);
   } catch (e) {
@@ -30,4 +30,4 @@ const AutoLink = ({ value, classes, ...props}: Props) => {
   );
 };
 
-export default withStyles(styles)(AutoLink);
+export default AutoLink;
