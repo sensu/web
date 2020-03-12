@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogActions,
   Slide,
+  Typography,
   withStyles,
 } from "/vendor/@material-ui/core";
 import { OpenInNewIcon } from "/lib/component/icon";
@@ -15,6 +16,9 @@ import { CodeBlock, CodeHighlight } from "/lib/component/base";
 import KeyValueChip from "/lib/component/partial/KeyValueChip";
 
 const styles = () => ({
+  iconFix: {
+    verticalAlign: "text-top",
+  },
   hover: {
     "&:hover": {
       cursor: "pointer",
@@ -65,9 +69,13 @@ class ExpandableKeyValueChip extends React.Component {
                   }
                   value={
                     typeof children[key] === "object" ? (
-                      <span className={classes.iconFix}>
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        className={classes.iconFix}
+                      >
                         <OpenInNewIcon fontSize="inherit" />
-                      </span>
+                      </Typography>
                     ) : (
                       children[key]
                     )

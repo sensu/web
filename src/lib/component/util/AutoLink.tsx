@@ -1,5 +1,5 @@
 import React from "/vendor/react";
-import { Link, makeStyles, createStyles } from "/vendor/@material-ui/core";
+import { Link, makeStyles, createStyles, Typography } from "/vendor/@material-ui/core";
 import { LinkIcon } from "/lib/component/icon";
 
 const useStyles = makeStyles(() => createStyles({
@@ -14,17 +14,18 @@ interface Props extends React.HTMLProps<HTMLSpanElement> {
 
 const AutoLink = ({ value, ...props}: Props) => {
   const classes = useStyles();
+
   try {
     new URL(value);
   } catch (e) {
     return <span {...props}>{value}</span>;
   }
   return (
-    <Link href={value}>
-      <span className={classes.iconFix}>
+    <Link href={value} target="blank" rel="noreferrer">
+      <Typography component="span" variant="body2" className={classes.iconFix}>
         <LinkIcon fontSize="inherit" />
         {" "}
-      </span>
+      </Typography>
       <span>{value}</span>
     </Link>
   );
