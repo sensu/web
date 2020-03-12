@@ -9,12 +9,10 @@ import {
   DictionaryKey,
   DictionaryValue,
   DictionaryEntry,
-  CodeHighlight,
 } from "/lib/component/base";
-import { createStyledComponent, Maybe } from "/lib/component/util";
+import { createStyledComponent } from "/lib/component/util";
 
-import Label from "/lib/component/partial/Label";
-import Annotation from "/lib/component/partial/Annotation";
+import ExpandableKeyValueChip from "/lib/component/partial/ExpandableKeyValueChip";
 
 const Key = createStyledComponent({
   name: "LabelsAnnotationsCell.Key",
@@ -69,6 +67,16 @@ class LabelsAnnotationsCell extends React.PureComponent {
       return { ...anno, [kvPair.key]: value };
     }, {});
 
+    const labels = resource.metadata.labels.reduce((lab, kvPair) => {
+      let value;
+      try {
+        value = JSON.parse(kvPair.val);
+      } catch (e) {
+        value = kvPair.val;
+      }
+      return { ...lab, [kvPair.key]: value };
+    }, {});
+
     return (
       <Grid container spacing={0}>
         <Grid item xs={12} sm={12}>
@@ -76,14 +84,7 @@ class LabelsAnnotationsCell extends React.PureComponent {
             <DictionaryEntry>
               <Key>Labels</Key>
               <Value explicitRightMargin>
-                <Maybe value={resource.metadata.labels} fallback="None">
-                  {val =>
-                    val.map(pair => [
-                      <Label key={pair.key} name={pair.key} value={pair.val} />,
-                      " ",
-                    ])
-                  }
-                </Maybe>
+                <ExpandableKeyValueChip>{labels}</ExpandableKeyValueChip>
               </Value>
             </DictionaryEntry>
           </Dictionary>
@@ -94,13 +95,7 @@ class LabelsAnnotationsCell extends React.PureComponent {
               <Key>Annotations</Key>
               <Value explicitRightMargin>
                 {resource.metadata.annotations.length > 0 ? (
-                  <Annotation>
-                    <CodeHighlight
-                      language="json"
-                      code={JSON.stringify(annotations, null, "\t")}
-                      component="code"
-                    />
-                  </Annotation>
+                  <ExpandableKeyValueChip>{annotations}</ExpandableKeyValueChip>
                 ) : (
                   "None"
                 )}
