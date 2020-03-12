@@ -4,7 +4,7 @@ import { LinkIcon } from "/lib/component/icon";
 
 const useStyles = makeStyles(() => createStyles({
   iconFix: {
-    verticalAlign: "text-bottom",
+    verticalAlign: "text-top",
   },
 }))
 
@@ -25,7 +25,7 @@ const AutoLink = ({ value, ...props}: Props) => {
         <LinkIcon fontSize="inherit" />
         {" "}
       </span>
-      <span className={classes.iconFix}>{value}</span>
+      <span>{value}</span>
     </Link>
   );
 };

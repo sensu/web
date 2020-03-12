@@ -15,9 +15,6 @@ import { CodeBlock, CodeHighlight } from "/lib/component/base";
 import KeyValueChip from "/lib/component/partial/KeyValueChip";
 
 const styles = () => ({
-  iconFix: {
-    verticalAlign: "text-top",
-  },
   hover: {
     "&:hover": {
       cursor: "pointer",
