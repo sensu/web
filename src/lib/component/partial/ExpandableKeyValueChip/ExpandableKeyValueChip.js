@@ -12,7 +12,7 @@ import {
 import { OpenInNewIcon } from "/lib/component/icon";
 import { ModalController } from "/lib/component/controller";
 import { CodeBlock, CodeHighlight } from "/lib/component/base";
-import { KeyValueChip } from "/lib/component/partial";
+import KeyValueChip from "/lib/component/partial/KeyValueChip";
 
 const styles = () => ({
   iconFix: {

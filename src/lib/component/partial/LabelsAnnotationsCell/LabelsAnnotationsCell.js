@@ -10,9 +10,9 @@ import {
   DictionaryValue,
   DictionaryEntry,
 } from "/lib/component/base";
-import { createStyledComponent, Maybe } from "/lib/component/util";
+import { createStyledComponent } from "/lib/component/util";
 
-import { ExpandableKeyValueChip } from "/lib/component/partial/";
+import ExpandableKeyValueChip from "/lib/component/partial/ExpandableKeyValueChip";
 
 const Key = createStyledComponent({
   name: "LabelsAnnotationsCell.Key",
