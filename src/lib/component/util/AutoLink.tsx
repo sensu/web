@@ -1,8 +1,8 @@
 import React from "/vendor/react";
-import { Link, makeStyles, createStyles, Theme } from "/vendor/@material-ui/core";
+import { Link, makeStyles, createStyles } from "/vendor/@material-ui/core";
 import { LinkIcon } from "/lib/component/icon";
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+const useStyles = makeStyles(() => createStyles({
   iconFix: {
     verticalAlign: "text-bottom",
   },
