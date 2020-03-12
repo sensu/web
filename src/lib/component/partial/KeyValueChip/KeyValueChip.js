@@ -16,18 +16,20 @@ const styles = theme => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
   },
-  key: {
-    color: theme.palette.getContrastText(theme.palette.primary.main),
-    background: theme.palette.primary.main,
+  base: {
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
-    borderRadius: `${theme.spacing(0.5)}px 0 0 ${theme.spacing(0.5)}px`,
-    border: `1px solid ${theme.palette.primary.main}`,
     display: "inline-block",
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
     height: "22px",
+  },
+  key: {
+    color: theme.palette.getContrastText(theme.palette.primary.main),
+    background: theme.palette.primary.main,
+    borderRadius: `${theme.spacing(0.5)}px 0 0 ${theme.spacing(0.5)}px`,
+    border: `1px solid ${theme.palette.primary.main}`,
     maxWidth: "160px",
   },
   singleKey: {
@@ -36,20 +38,13 @@ const styles = theme => ({
   value: {
     color: darken(theme.palette.primary.main, 0.7),
     background: emphasize(theme.palette.primary.main, 0.7),
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
     borderRadius: `0 ${theme.spacing(0.5)}px ${theme.spacing(0.5)}px 0`,
     border: `1px solid ${emphasize(theme.palette.primary.main, 0.7)}`,
-    display: "inline-block",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    height: "22px",
     maxWidth: "200px",
   },
 });
 
-class Label extends React.PureComponent {
+class KeyValueChip extends React.PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
@@ -65,13 +60,17 @@ class Label extends React.PureComponent {
     return (
       <Typography component="span" className={classes.root} variant="body2">
         <span
-          className={classNames(classes.key, value ? null : classes.singleKey)}
+          className={classNames(
+            classes.base,
+            classes.key,
+            value ? null : classes.singleKey,
+          )}
           {...props}
         >
           {name}
         </span>
         {value && (
-          <span className={classes.value}>
+          <span className={classNames(classes.base, classes.value)}>
             <AutoLink value={value} {...props} />
           </span>
         )}
@@ -80,4 +79,4 @@ class Label extends React.PureComponent {
   }
 }
 
-export default withStyles(styles)(Label);
+export default withStyles(styles)(KeyValueChip);

@@ -12,17 +12,20 @@ import {
 import { OpenInNewIcon } from "/lib/component/icon";
 import { ModalController } from "/lib/component/controller";
 import { CodeBlock, CodeHighlight } from "/lib/component/base";
-import { Label } from "/lib/component/partial";
+import { KeyValueChip } from "/lib/component/partial";
 
 const styles = () => ({
   iconFix: {
     verticalAlign: "text-top",
   },
+  hover: {
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
 });
 
-// TODO: make all labels clickable
-
-class Annotation extends React.Component {
+class ExpandableKeyValueChip extends React.Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
@@ -56,8 +59,8 @@ class Annotation extends React.Component {
             )}
           >
             {({ open }) => (
-              <React.Fragment>
-                <Label
+              <span className={classes.hover}>
+                <KeyValueChip
                   name={
                     <React.Fragment>
                       <span>{key}</span>
@@ -74,7 +77,7 @@ class Annotation extends React.Component {
                   }
                   onClick={open}
                 />{" "}
-              </React.Fragment>
+              </span>
             )}
           </ModalController>
         </React.Fragment>
@@ -84,4 +87,4 @@ class Annotation extends React.Component {
   }
 }
 
-export default withStyles(styles)(Annotation);
+export default withStyles(styles)(ExpandableKeyValueChip);

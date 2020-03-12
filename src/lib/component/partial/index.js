@@ -2,6 +2,7 @@ import * as ToolbarMenuItems from "./ToolbarMenuItems";
 
 export { ToolbarMenuItems };
 
+export { default as ExpandableKeyValueChip } from "./ExpandableKeyValueChip"
 export { default as AppBar } from "./AppBar";
 export { default as AppLayout } from "./AppLayout";
 export { default as AuthInvalidDialog } from "./AuthInvalidDialog";
@@ -35,7 +36,7 @@ export {
 } from "./EventFilterDetailsContainer";
 export { default as HandlersList, HandlersListToolbar } from "./HandlersList";
 export { default as HandlerDetailsContainer } from "./HandlerDetailsContainer";
-export { default as Label } from "./Label";
+export { default as KeyValueChip } from "./KeyValueChip";
 export { default as LabelsAnnotationsCell } from "./LabelsAnnotationsCell";
 export { default as ListHeader } from "./ListHeader";
 export { default as ListSortSelector } from "./ListSortSelector";
