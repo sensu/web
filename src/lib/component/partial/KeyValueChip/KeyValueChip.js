@@ -91,24 +91,23 @@ class KeyValueChip extends React.PureComponent {
   imageOrStringContainer = () => {
     const { value } = this.props;
     try {
-      new URL(value);
+      const url = new URL(value);
       // see if it's got an image extension
-      let results = imageExtensions.filter(ext =>
-        value.toUpperCase().includes(ext),
+      let results = imageExtensions.some(ext =>
+        url.pathname.toUpperCase().endsWith(ext),
       );
-      let imageMatch = results.length > 0;
       // if that fails, we should check the content type in case
-      if (!imageMatch) {
+      if (!results) {
         fetch(value, {
           method: "HEAD",
         })
           .then(response => response.headers.get("Content-type"))
           .then(type => {
-            imageMatch = type === "image/jpeg" ? true : false;
+            results = type === /^image\/.+/.test(type) ? true : false;
           });
       }
       // return an image
-      if (imageMatch) {
+      if (results) {
         return this.imageContainer();
       }
       // return a link
