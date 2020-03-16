@@ -8,11 +8,12 @@ interface ChildProps {
 }
 
 interface Props {
-  onSubmit: (_: any) => void;
   children: (_: ChildProps) => React.ReactElement;
+  identifier: React.ReactElement | string;
+  onSubmit: (_: any) => void;
 }
 
-const ConfirmDelete = ({ onSubmit, children, ...props }: Props) => (
+const ConfirmDelete = ({ children, onSubmit, ...props }: Props) => (
   <ConfirmAction>
     {({ isOpen, open, close }) => (
       <React.Fragment>
