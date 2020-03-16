@@ -16,7 +16,7 @@ const theme = (type = "light") =>
         main: colors.pistachio[500],
         dark: colors.pistachio[700],
       },
-      contrastThreshold: 1,
+      contrastThreshold: 2,
     },
   });
 
