@@ -9,7 +9,7 @@ interface ChildProps {
 
 interface Props {
   children: (_: ChildProps) => React.ReactElement;
-  identifier: React.ReactElement | string;
+  identifier?: React.ReactElement | string;
   onSubmit: (_: any) => void;
 }
 
