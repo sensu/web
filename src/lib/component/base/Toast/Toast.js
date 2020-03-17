@@ -53,12 +53,12 @@ export const styles = theme => {
         flexGrow: 1,
       },
 
-      paddingTop: 0,
+      paddingTop: 4,
       transition: theme.transitions.create("padding"),
     },
 
     progressInset: {
-      paddingTop: theme.spacing(1/2),
+      paddingTop: theme.spacing(1 / 2),
     },
 
     /* Styles applied to the progress wrapper element. */
@@ -104,7 +104,7 @@ export const styles = theme => {
 
     success: {
       backgroundColor: theme.palette.success.main,
-      color: theme.palette.getContrastText(theme.palette.success.light),
+      color: theme.palette.getContrastText(theme.palette.success.dark),
     },
     error: {
       backgroundColor: theme.palette.error.main,
@@ -115,14 +115,14 @@ export const styles = theme => {
       color: theme.palette.getContrastText(theme.palette.primary.main),
     },
     warning: {
-      color: theme.palette.getContrastText(theme.palette.common.black),
       backgroundColor: theme.palette.warning.main,
+      color: theme.palette.getContrastText(theme.palette.warning.dark),
     },
     icon: {
       fontSize: 20,
     },
     variantIcon: {
-      opacity: 0.9,
+      opacity: 0.5,
       fontSize: 20,
       marginRight: theme.spacing(1),
     },
@@ -210,7 +210,9 @@ class Toast extends React.PureComponent {
         role="alertdialog"
         square
         elevation={6}
-        className={classNames(classes.root, classes[variant], { [classes.progressInset]: !!progressBar })}
+        className={classNames(classes.root, classes[variant], {
+          [classes.progressInset]: !!progressBar,
+        })}
         aria-describedby={messageId}
         onMouseOver={this._handleMouseOver}
         onMouseLeave={this._handleMouseLeave}

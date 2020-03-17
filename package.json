@@ -217,21 +217,11 @@
     }
   },
   "resolutions": {
-<<<<<<< HEAD
     "graphql": "14.4.2",
     "graphql-config/**/graphql": "14.4.2",
     "graphql-import/**/graphql": "14.4.2",
-    "serialize-javascript": "2.1.2"
-=======
-    "graphql": "0.13.0",
-    "graphql-config/**/graphql": "0.13.0",
-    "graphql-import/**/graphql": "0.13.0",
-<<<<<<< HEAD
-    "js-yaml": "1.13.1"
->>>>>>> More vulnerability changes
-=======
+    "serialize-javascript": "2.1.2",
     "js-yaml": "3.13.1"
->>>>>>> mistype
   },
   "graphQLSchemaRef": "4a0d6ac"
 }

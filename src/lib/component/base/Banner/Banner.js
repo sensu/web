@@ -35,10 +35,10 @@ export const styles = theme => {
   const emphasis = theme.palette.type === "light" ? 0.8 : 0.98;
   const backgroundColor = emphasize(theme.palette.background.default, emphasis);
 
-  const successColor = theme.palette.success.dark;
-  const warnColor = theme.palette.warning.dark;
-  const infoColor = theme.palette.primary.dark;
-  const errColor = theme.palette.error.dark;
+  const successColor = theme.palette.success.main;
+  const warnColor = theme.palette.warning.main;
+  const infoColor = theme.palette.primary.main;
+  const errColor = theme.palette.error.main;
 
   return {
     root: {
@@ -109,7 +109,7 @@ export const styles = theme => {
     },
 
     success: {
-      color: theme.palette.getContrastText(successColor),
+      color: theme.palette.getContrastText(theme.palette.success.dark),
       backgroundColor: successColor,
       "&::before": {
         backgroundColor: successColor,
@@ -124,13 +124,13 @@ export const styles = theme => {
     },
     info: {
       color: theme.palette.getContrastText(infoColor),
-      backgroundColor: theme.palette.primary.dark,
+      backgroundColor: infoColor,
       "&::before": {
-        backgroundColor: theme.palette.primary.dark,
+        backgroundColor: infoColor,
       },
     },
     warning: {
-      color: theme.palette.getContrastText(theme.palette.common.black),
+      color: theme.palette.getContrastText(theme.palette.warning.dark),
       backgroundColor: warnColor,
       "&::before": {
         backgroundColor: warnColor,
@@ -140,7 +140,7 @@ export const styles = theme => {
       fontSize: 20,
     },
     variantIcon: {
-      opacity: 0.9,
+      opacity: 0.5,
       fontSize: 20,
       marginRight: theme.spacing(1),
     },
