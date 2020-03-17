@@ -82,7 +82,6 @@ export const styles = theme => {
     message: {
       paddingTop: 14,
       paddingBottom: 14,
-
       display: "flex",
       alignItems: "center",
 

@@ -17,7 +17,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.secondary.main,
   },
   success: {
-    backgroundColor: theme.palette.success.secondary,
+    backgroundColor: theme.palette.success.main,
   },
   warning: {
     backgroundColor: theme.palette.warning.main,
