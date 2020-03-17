@@ -9,7 +9,7 @@ const theme = (type = "light") =>
       critical: { main: colors.lime[500] },
       warning: { main: colors.lime[900], secondary: colors.lime[900] },
       unknown: { main: colors.indigo[300] },
-      success: { main: colors.grey[300], secondary: colors.grey[400] },
+      success: { main: colors.grey[400], secondary: colors.grey[400] },
 
       primary: {
         light: colors.indigo[400],
