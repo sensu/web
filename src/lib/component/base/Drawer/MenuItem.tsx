@@ -36,7 +36,7 @@ const ListItemButton = ({
     // @ts-ignore
     <ListItem
       button
-      component={RouterLink}
+      component={to ? RouterLink : "button"}
       disabled={disabled}
       disableGutters
       dense
