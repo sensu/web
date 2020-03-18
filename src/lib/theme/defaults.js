@@ -5,7 +5,7 @@ const common = {
   direction: "ltr",
   palette: {
     success: {
-      main: "rgb(151, 198, 115)",
+      main: "rgb(141, 188, 105)",
       dark: "#789e5c",
     },
     warning: {
