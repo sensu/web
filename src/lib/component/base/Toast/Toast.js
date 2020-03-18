@@ -111,8 +111,8 @@ export const styles = theme => {
       color: theme.palette.getContrastText(theme.palette.error.dark),
     },
     info: {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.getContrastText(theme.palette.primary.main),
+      backgroundColor: theme.palette.info.main,
+      color: theme.palette.getContrastText(theme.palette.info.main),
     },
     warning: {
       backgroundColor: theme.palette.warning.main,

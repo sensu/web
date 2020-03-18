@@ -1,26 +1,28 @@
+import colors from "/lib/colors";
+
 // Overrides defaults provided by Material-UI (material-ui/src/styles)
 const common = {
   direction: "ltr",
   palette: {
     success: {
-      light: "#abd18f",
       main: "rgb(151, 198, 115)",
       dark: "#789e5c",
     },
     warning: {
-      light: "#ddbb62",
       main: "rgb(213, 171, 59)",
       dark: "#aa882f",
     },
     critical: {
-      light: "#d66483",
       main: "rgb(204, 62, 100)",
       dark: "#a33150",
     },
     unknown: {
-      light: "#db805d",
       main: "rgb(211, 97, 53)",
       dark: "#a84d2a",
+    },
+    info: {
+      main: colors.paynesGrey[500],
+      dark: colors.paynesGrey[700],
     },
   },
   typography: () => {

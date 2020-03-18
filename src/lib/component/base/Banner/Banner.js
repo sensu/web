@@ -37,7 +37,7 @@ export const styles = theme => {
 
   const successColor = theme.palette.success.main;
   const warnColor = theme.palette.warning.main;
-  const infoColor = theme.palette.primary.main;
+  const infoColor = theme.palette.info.main;
   const errColor = theme.palette.error.main;
 
   return {
