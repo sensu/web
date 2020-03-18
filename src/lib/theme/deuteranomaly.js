@@ -6,10 +6,31 @@ const theme = (type = "light") =>
     palette: {
       type,
 
-      critical: { main: colors.lime[500] },
-      warning: { main: colors.lime[900] },
-      unknown: { main: colors.indigo[300] },
-      success: { main: colors.grey[400] },
+      critical: {
+        light: colors.lime[300],
+        main: colors.lime[500],
+        dark: colors.lime[700],
+      },
+      warning: {
+        light: colors.lime[700],
+        main: colors.lime[900],
+        dark: colors.lime[900],
+      },
+      unknown: {
+        light: colors.indigo[100],
+        main: colors.indigo[300],
+        dark: colors.indigo[500],
+      },
+      success: {
+        light: colors.grey[200],
+        main: colors.grey[400],
+        dark: colors.grey[600],
+      },
+      error: {
+        light: colors.lime[300],
+        main: colors.lime[500],
+        dark: colors.lime[700],
+      },
 
       primary: {
         light: colors.indigo[400],

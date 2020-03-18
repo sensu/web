@@ -10,7 +10,6 @@ import cyberGrape from "./cyberGrape";
 import persianPink from "./persianPink";
 import lime from "./lime";
 import indigo from "./indigo";
-import grey from "./grey";
 import blue from "./blue";
 import pink from "./pink";
 
@@ -27,7 +26,6 @@ export default {
   slateBlue,
   lime,
   indigo,
-  grey,
   blue,
   pink,
 };

@@ -108,7 +108,7 @@ export const styles = theme => {
     },
 
     success: {
-      color: theme.palette.getContrastText(theme.palette.success.dark),
+      color: theme.palette.getContrastText(successColor),
       backgroundColor: successColor,
       "&::before": {
         backgroundColor: successColor,
@@ -129,7 +129,7 @@ export const styles = theme => {
       },
     },
     warning: {
-      color: theme.palette.getContrastText(theme.palette.warning.dark),
+      color: theme.palette.getContrastText(warnColor),
       backgroundColor: warnColor,
       "&::before": {
         backgroundColor: warnColor,
