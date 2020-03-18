@@ -19,6 +19,7 @@ const theme = (type = "dark") =>
           dark: colors.pistachio[700],
           contrastText: "#1D2237",
         },
+        contrastThreshold: 2.15,
       },
     },
     type,
