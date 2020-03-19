@@ -198,6 +198,22 @@ const Preferences = ({ onClose }) => {
               <ListItemText primary="Classic" />
             </ListItem>
           </MenuItem>
+          <MenuItem
+            selected={theme === "deuteranopia"}
+            onClick={onThemeSelect("deuteranopia")}
+          >
+            <ListItem>
+              <ListItemText primary="Deuteranopia" />
+            </ListItem>
+          </MenuItem>
+          <MenuItem
+            selected={theme === "tritanopia"}
+            onClick={onThemeSelect("tritanopia")}
+          >
+            <ListItem>
+              <ListItemText primary="Tritanopia" />
+            </ListItem>
+          </MenuItem>
         </MenuList>
       </Menu>
     </React.Fragment>

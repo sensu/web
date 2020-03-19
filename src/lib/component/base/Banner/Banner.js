@@ -6,7 +6,6 @@ import { emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
 
 import {
   withStyles,
-  colors,
   Paper,
   Typography,
   IconButton,
@@ -36,10 +35,10 @@ export const styles = theme => {
   const emphasis = theme.palette.type === "light" ? 0.8 : 0.98;
   const backgroundColor = emphasize(theme.palette.background.default, emphasis);
 
-  const successColor = colors.green[600];
-  const warnColor = colors.amber[800];
-  const infoColor = theme.palette.primary.dark;
-  const errColor = theme.palette.error.dark;
+  const successColor = theme.palette.success.main;
+  const warnColor = theme.palette.warning.main;
+  const infoColor = theme.palette.info.main;
+  const errColor = theme.palette.error.main;
 
   return {
     root: {
@@ -81,10 +80,8 @@ export const styles = theme => {
     },
 
     message: {
-
       paddingTop: 14,
       paddingBottom: 14,
-
       display: "flex",
       alignItems: "center",
 
@@ -111,28 +108,28 @@ export const styles = theme => {
     },
 
     success: {
-      color: theme.palette.getContrastText(successColor),
+      color: theme.palette.success.contrastText,
       backgroundColor: successColor,
       "&::before": {
         backgroundColor: successColor,
       },
     },
     error: {
-      color: theme.palette.getContrastText(errColor),
+      color: theme.palette.error.contrastText,
       backgroundColor: errColor,
       "&::before": {
         backgroundColor: errColor,
       },
     },
     info: {
-      color: theme.palette.getContrastText(infoColor),
-      backgroundColor: theme.palette.primary.dark,
+      color: theme.palette.info.contrastText,
+      backgroundColor: infoColor,
       "&::before": {
-        backgroundColor: theme.palette.primary.dark,
+        backgroundColor: infoColor,
       },
     },
     warning: {
-      color: theme.palette.getContrastText(theme.palette.common.black),
+      color: theme.palette.warning.contrastText,
       backgroundColor: warnColor,
       "&::before": {
         backgroundColor: warnColor,
@@ -142,7 +139,7 @@ export const styles = theme => {
       fontSize: 20,
     },
     variantIcon: {
-      opacity: 0.9,
+      opacity: 0.5,
       fontSize: 20,
       marginRight: theme.spacing(1),
     },
