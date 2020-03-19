@@ -50,7 +50,7 @@ const useStyles = makeStyles(
   { name: "ListItemButton" },
 );
 
-const useIsActive = (href) => {
+const useIsActive = (href: string) => {
   const location = useLocation();
   const matches = matchPath(location.pathname, {
     path: href,
