@@ -1,8 +1,16 @@
 import React from "/vendor/react";
-import { Box, ListItem, Tooltip, Typography } from "/vendor/@material-ui/core";
 import { animated, useSpring } from "/vendor/react-spring";
 import { KeyboardArrowDownIcon } from "/lib/component/icon";
-import { Link as RouterLink } from "/vendor/react-router-dom";
+import { NavLink as RouterLink } from "/vendor/react-router-dom";
+import {
+  Box,
+  ListItem,
+  Theme,
+  Tooltip,
+  Typography,
+  createStyles,
+  makeStyles,
+} from "/vendor/@material-ui/core";
 
 import IconContainer from "./IconContainer";
 import { LinkConfig } from "./types";
@@ -26,17 +34,30 @@ interface ListItemButtonProps {
   onClick?: () => void;
 }
 
+const useStyles = makeStyles(
+  (theme: Theme) =>
+    createStyles({
+      active: {
+        backgroundColor: theme.palette.action.hover,
+      },
+    }),
+  { name: "ListItemButton" },
+);
+
 const ListItemButton = ({
   children,
   disabled,
   to,
   onClick,
 }: ListItemButtonProps) => {
+  const classes = useStyles();
+
   return (
     // @ts-ignore
     <ListItem
+      activeClassName={classes.active}
       button
-      component={RouterLink}
+      component={to ? RouterLink : "button"}
       disabled={disabled}
       disableGutters
       dense
