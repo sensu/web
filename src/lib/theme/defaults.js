@@ -5,24 +5,44 @@ const common = {
   direction: "ltr",
   palette: {
     success: {
-      main: "rgb(141, 188, 105)",
-      dark: "#789e5c",
+      light: colors.green[300],
+      main: colors.green[500],
+      dark: colors.green[700],
+      contrastText: "#F3F5F7"
     },
     warning: {
-      main: "rgb(213, 171, 59)",
-      dark: "#aa882f",
+      light: colors.yellow[300],
+      main: colors.yellow[500],
+      dark: colors.yellow[700],
+      contrastText: "#F3F5F7",
     },
+    // NOTE: this theme and subsequent themes use error and critical
+    // interchangably. Error colours are baked in, so we are defining
+    // them here as the same thing - since errors and criticals sort of 
+    // relate to the same concept
     critical: {
-      main: "rgb(204, 62, 100)",
-      dark: "#a33150",
+      light: colors.red[300],
+      main: colors.red[500],
+      dark: colors.red[700],
+      contrastText: "#F3F5F7",
+    },
+    error: {
+      light: colors.red[300],
+      main: colors.red[500],
+      dark: colors.red[700],
+      contrastText: "#F3F5F7",
     },
     unknown: {
-      main: "rgb(211, 97, 53)",
-      dark: "#a84d2a",
+      light: colors.grey[200],
+      main: colors.grey[600],
+      dark: colors.grey[800],
+      contrastText: "#F3F5F7",
     },
     info: {
+      light: colors.paynesGrey[300],
       main: colors.paynesGrey[500],
       dark: colors.paynesGrey[700],
+      contrastText: "#F3F5F7",
     },
   },
   typography: () => {

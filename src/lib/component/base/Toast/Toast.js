@@ -104,19 +104,19 @@ export const styles = theme => {
 
     success: {
       backgroundColor: theme.palette.success.main,
-      color: theme.palette.getContrastText(theme.palette.success.dark),
+      color: theme.palette.success.contrastText,
     },
     error: {
       backgroundColor: theme.palette.error.main,
-      color: theme.palette.getContrastText(theme.palette.error.dark),
+      color: theme.palette.error.contrastText,
     },
     info: {
       backgroundColor: theme.palette.info.main,
-      color: theme.palette.getContrastText(theme.palette.info.main),
+      color: theme.palette.info.contrastText,
     },
     warning: {
       backgroundColor: theme.palette.warning.main,
-      color: theme.palette.getContrastText(theme.palette.warning.dark),
+      color: theme.palette.warning.contrastText,
     },
     icon: {
       fontSize: 20,

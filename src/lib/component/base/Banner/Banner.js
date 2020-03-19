@@ -108,28 +108,28 @@ export const styles = theme => {
     },
 
     success: {
-      color: theme.palette.getContrastText(successColor),
+      color: theme.palette.success.contrastText,
       backgroundColor: successColor,
       "&::before": {
         backgroundColor: successColor,
       },
     },
     error: {
-      color: theme.palette.getContrastText(errColor),
+      color: theme.palette.error.contrastText,
       backgroundColor: errColor,
       "&::before": {
         backgroundColor: errColor,
       },
     },
     info: {
-      color: theme.palette.getContrastText(infoColor),
+      color: theme.palette.info.contrastText,
       backgroundColor: infoColor,
       "&::before": {
         backgroundColor: infoColor,
       },
     },
     warning: {
-      color: theme.palette.getContrastText(warnColor),
+      color: theme.palette.warning.contrastText,
       backgroundColor: warnColor,
       "&::before": {
         backgroundColor: warnColor,

@@ -7,35 +7,46 @@ const theme = (type = "light") =>
       type,
 
       critical: {
-        light: colors.lime[300],
-        main: colors.lime[500],
+        light: colors.lime[500],
+        main: colors.lime[700],
         dark: colors.lime[700],
+        contrastText: "#F3F5F7",
+      },
+      error: {
+        light: colors.lime[500],
+        main: colors.lime[700],
+        dark: colors.lime[700],
+        contrastText: "#F3F5F7",
       },
       warning: {
-        light: colors.lime[700],
-        main: colors.lime[900],
-        dark: colors.lime[900],
+        light: colors.indigo[300],
+        main: colors.indigo[500],
+        dark: colors.indigo[700],
+        contrastText: "#F3F5F7",
       },
       unknown: {
-        light: colors.indigo[100],
-        main: colors.indigo[300],
-        dark: colors.indigo[500],
+        light: colors.lime[800],
+        main: colors.lime[900],
+        dark: colors.lime[900],
+        contrastText: "#F3F5F7",
       },
       success: {
         light: colors.grey[200],
-        main: colors.grey[400],
-        dark: colors.grey[600],
+        main: colors.grey[600],
+        dark: colors.grey[800],
+        contrastText: "#F3F5F7",
       },
-      error: {
-        light: colors.lime[300],
-        main: colors.lime[500],
-        dark: colors.lime[700],
+      info: {
+        light: colors.paynesGrey[300],
+        main: colors.paynesGrey[500],
+        dark: colors.paynesGrey[700],
+        contrastText: "#F3F5F7",
       },
 
       primary: {
-        light: colors.indigo[400],
-        main: colors.indigo[700],
-        dark: colors.indigo[600],
+        light: colors.paynesGrey[300],
+        main: colors.paynesGrey[500],
+        dark: colors.paynesGrey[600],
         contrastText: "#F3F5F7",
       },
       secondary: {
