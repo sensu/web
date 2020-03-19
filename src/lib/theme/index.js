@@ -1,7 +1,7 @@
 import classic from "./classic";
 import sensu from "./sensu";
 import uchiwa from "./uchiwa";
-import deuteranomaly from "./deuteranomaly";
-import tritanomaly from "./tritanomaly";
+import deuteranopia from "./deuteranopia";
+import tritanopia from "./tritanopia";
 
-export { classic, sensu, uchiwa, deuteranomaly, tritanomaly };
+export { classic, sensu, uchiwa, deuteranopia, tritanopia };

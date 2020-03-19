@@ -199,19 +199,19 @@ const Preferences = ({ onClose }) => {
             </ListItem>
           </MenuItem>
           <MenuItem
-            selected={theme === "deuteranomaly"}
-            onClick={onThemeSelect("deuteranomaly")}
+            selected={theme === "deuteranopia"}
+            onClick={onThemeSelect("deuteranopia")}
           >
             <ListItem>
-              <ListItemText primary="Deuteranomaly" />
+              <ListItemText primary="Deuteranopia" />
             </ListItem>
           </MenuItem>
           <MenuItem
-            selected={theme === "tritanomaly"}
-            onClick={onThemeSelect("tritanomaly")}
+            selected={theme === "tritanopia"}
+            onClick={onThemeSelect("tritanopia")}
           >
             <ListItem>
-              <ListItemText primary="Tritanomaly" />
+              <ListItemText primary="Tritanopia" />
             </ListItem>
           </MenuItem>
         </MenuList>

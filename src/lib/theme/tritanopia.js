@@ -7,27 +7,27 @@ const theme = (type = "light") =>
       type,
 
       critical: {
-        light: colors.teal[200],
-        main: colors.teal[500],
-        dark: colors.teal[700],
+        light: colors.redderRed[300],
+        main: colors.redderRed[500],
+        dark: colors.redderRed[700],
         contrastText: "#F3F5F7",
       },
       error: {
+        light: colors.redderRed[300],
+        main: colors.redderRed[500],
+        dark: colors.redderRed[700],
+        contrastText: "#F3F5F7",
+      },
+      warning: {
         light: colors.teal[200],
         main: colors.teal[500],
         dark: colors.teal[700],
         contrastText: "#F3F5F7",
       },
-      warning: {
-        light: colors.blue[50],
-        main: colors.blue[300],
-        dark: colors.blue[500],
-        contrastText: "#F3F5F7",
-      },
       unknown: {
-        light: colors.red[200],
-        main: colors.red[700],
-        dark: colors.red[700],
+        light: colors.blue[300],
+        main: colors.blue[500],
+        dark: colors.blue[700],
         contrastText: "#F3F5F7",
       },
       success: {
@@ -50,9 +50,9 @@ const theme = (type = "light") =>
         contrastText: "#F3F5F7",
       },
       secondary: {
-        light: colors.blue[50],
-        main: colors.blue[300],
-        dark: colors.blue[500],
+        light: colors.blue[600],
+        main: colors.blue[700],
+        dark: colors.blue[800],
         contrastText: "#1D2237",
       },
     },

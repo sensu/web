@@ -1,6 +1,7 @@
 import { colors as muiColors } from "/vendor/@material-ui/core";
 import salmon from "./salmon";
 import red from "./red";
+import redderRed from "./redderRed";
 import appleGreen from "./appleGreen";
 import slateBlue from "./slateBlue";
 import magenta from "./magenta";
@@ -36,4 +37,5 @@ export default {
   pink,
   teal,
   red,
+  redderRed,
 };
