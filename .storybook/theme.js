@@ -73,6 +73,8 @@ const ThemeSelector = ({ api }) => {
     createLink("sensu", "Modern (default)"),
     createLink("classic", "Classic"),
     createLink("uchiwa", "Uchiwa"),
+    createLink("deuteranopia", "Deuteranopia"),
+    createLink("tritanopia", "Tritanopia"),
   ], [onChangeValue]);
 
   return (

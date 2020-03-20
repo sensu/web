@@ -18,6 +18,7 @@ const theme = (type = "light") =>
         dark: colors.appleGreen[700],
         contrastText: "#1D2237",
       },
+      contrastThreshold: 2.15,
     },
   });
 

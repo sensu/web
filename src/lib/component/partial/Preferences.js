@@ -129,7 +129,7 @@ const Preferences = ({ onClose }) => {
           />
           <ListItemSecondaryAction>
             <Tooltip title="Sign-out">
-              <IconButton onClick={() => invalidateTokens(client)}>
+              <IconButton onClick={() => invalidateTokens(client)} edge="end">
                 <LogoutIcon />
               </IconButton>
             </Tooltip>
@@ -143,7 +143,7 @@ const Preferences = ({ onClose }) => {
           </ListItemIcon>
           <ListItemText primary="Dark mode" />
           <ListItemSecondaryAction>
-            <Switch onChange={onToggleDark} checked={isDark} />
+            <Switch edge="end" onChange={onToggleDark} checked={isDark} />
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem>
@@ -155,7 +155,7 @@ const Preferences = ({ onClose }) => {
             secondary="Set dark mode to use the light or dark selection located in your system settings."
           />
           <ListItemSecondaryAction>
-            <Switch onChange={onToggleSysPref} checked={darkMode === "UNSET"} />
+            <Switch edge="end" onChange={onToggleSysPref} checked={darkMode === "UNSET"} />
           </ListItemSecondaryAction>
         </ListItem>
       </List>
@@ -196,6 +196,22 @@ const Preferences = ({ onClose }) => {
           >
             <ListItem>
               <ListItemText primary="Classic" />
+            </ListItem>
+          </MenuItem>
+          <MenuItem
+            selected={theme === "deuteranopia"}
+            onClick={onThemeSelect("deuteranopia")}
+          >
+            <ListItem>
+              <ListItemText primary="Deuteranopia" />
+            </ListItem>
+          </MenuItem>
+          <MenuItem
+            selected={theme === "tritanopia"}
+            onClick={onThemeSelect("tritanopia")}
+          >
+            <ListItem>
+              <ListItemText primary="Tritanopia" />
             </ListItem>
           </MenuItem>
         </MenuList>
