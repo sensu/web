@@ -96,7 +96,7 @@ const Link = ({
   icon,
   onClick,
 }: LinkProps) => {
-  const active = useIsActive(href);
+  const active = useIsActive(href || "");
   const link = (
     <Box display="flex" justifyContent="left" height={heights.menuitem}>
       <ListItemButton
