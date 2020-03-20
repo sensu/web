@@ -1,24 +1,23 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { withStyles, Typography, Grid } from "/vendor/@material-ui/core";
+import { withStyles, Box, Typography, Grid } from "/vendor/@material-ui/core";
+import Lizzy from "/lib/component/base/Lizzy";
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
     display: "flex",
-    textAlign: "center",
     alignItems: "center",
     justifyContent: "center",
+    textAlign: "center",
   },
   headline: {
-    fontSize: 100,
-    fontWeight: 600,
-    color: theme.palette.text.secondary,
+    ...theme.typography.monospace,
+    fontSize: 104,
+    fontWeight: 800,
   },
   body: {
-    fontSize: 36,
-    fontWeight: 300,
-    color: theme.palette.text.hint,
+    maxWidth: "65ch",
     "& a": {
       textDecoration: "underline",
     },
@@ -29,23 +28,9 @@ const styles = theme => ({
       color: "inherit",
     },
   },
-  graphic: {
-    margin: "-1em 0",
-    fontSize: 80,
-    color: theme.palette.text.hint,
-    "& span": {
-      color: theme.palette.text.primary,
-    },
-  },
   [theme.breakpoints.up("sm")]: {
     root: {
       textAlign: "left",
-    },
-    graphic: {
-      display: "block",
-      textAlign: "center",
-      fontSize: 96,
-      margin: 0,
     },
   },
 });
@@ -74,32 +59,38 @@ class NotFound extends React.PureComponent {
     return (
       <div className={classes.root}>
         <Grid container spacing={6} className={classes.container}>
-          <Typography
+          <Grid item xs={12} sm={6}>
+            <Box
+              component={Lizzy}
+              variant="idle"
+              maxHeight="36vh"
+              maxWidth="50vw"
+            />
+          </Grid>
+          <Box
             component={Grid}
             item
             xs={12}
             sm={6}
-            className={classes.graphic}
-            variant="h5"
+            display="flex"
+            justifyContent="center"
+            flexDirection="column"
           >
-            <p>
-              <span role="img" aria-label="ship">
-                🚀
-              </span>
-              {"  ·  "}
-              <span role="img" aria-label="moon">
-                🌖
-              </span>
-            </p>
-          </Typography>
-          <Grid item xs={12} sm={6}>
-            <Typography className={classes.headline} variant="h5">
+            <Typography
+              className={classes.headline}
+              variant="h1"
+              color="textPrimary"
+            >
               404
             </Typography>
-            <Typography className={classes.body} variant="subtitle1">
+            <Typography
+              className={classes.body}
+              variant="body2"
+              color="textSecondary"
+            >
               {children}
             </Typography>
-          </Grid>
+          </Box>
         </Grid>
       </div>
     );

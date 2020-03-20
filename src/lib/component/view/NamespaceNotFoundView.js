@@ -1,6 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 
+import { Box } from "/vendor/@material-ui/core";
 import { NotFound, AppLayout } from "/lib/component/partial";
 
 class NamespaceNotFoundView extends React.PureComponent {
@@ -12,10 +13,13 @@ class NamespaceNotFoundView extends React.PureComponent {
     const { namespace } = this.props.match.params;
 
     return (
-      <AppLayout>
+      <AppLayout disableBreadcrumbs>
+        <Box height="100vh" display="flex" alignItems="center">
         <NotFound>
           The namespace <strong>{namespace}</strong> could not be loaded.
         </NotFound>
+
+        </Box>
       </AppLayout>
     );
   }
