@@ -1,10 +1,13 @@
 import React from "/vendor/react";
 
-interface Props extends React.SVGProps<null> {
+interface Props {
   variant?: "idle";
 }
 
-const Lizzy = ({ variant = "idle", ...props }: Props) => {
+const Lizzy = ({
+  variant = "idle",
+  ...props
+}: Props & React.SVGProps<SVGSVGElement>) => {
   if (variant === "idle") {
     return (
       <svg
