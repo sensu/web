@@ -28,9 +28,15 @@ const styles = theme => ({
       color: "inherit",
     },
   },
+  graphic: {
+    margin: theme.spacing(-12, 0),
+  },
   [theme.breakpoints.up("sm")]: {
     root: {
       textAlign: "left",
+    },
+    graphic: {
+      margin: 0,
     },
   },
 });
@@ -59,7 +65,7 @@ class NotFound extends React.PureComponent {
     return (
       <div className={classes.root}>
         <Grid container spacing={6} className={classes.container}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} className={classes.graphic}>
             <Box
               component={Lizzy}
               variant="idle"
