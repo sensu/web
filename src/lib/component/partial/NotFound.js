@@ -37,6 +37,7 @@ const styles = theme => ({
     },
     graphic: {
       margin: 0,
+      textAlign: "right",
     },
   },
 });
@@ -69,8 +70,7 @@ class NotFound extends React.PureComponent {
             <Box
               component={Lizzy}
               variant="idle"
-              maxHeight="36vh"
-              maxWidth="50vw"
+              height="36vh"
             />
           </Grid>
           <Box
