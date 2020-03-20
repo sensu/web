@@ -35,7 +35,7 @@ export { default as ErrorDialog } from "./ErrorDialog";
 export { default as FilterList } from "./FilterList";
 export { default as InlineLink } from "./InlineLink";
 export { default as KeyboardInput } from "./KeyboardInput";
-export { default as Lizzy } from "./Lizzy";
+export { default as Lizy } from "./Lizy";
 export { default as RelativeDate, RelativeToCurrentDate } from "./RelativeDate";
 export {
   default as TableListEmptyState,

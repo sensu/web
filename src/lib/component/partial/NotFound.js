@@ -1,7 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import { withStyles, Box, Typography, Grid } from "/vendor/@material-ui/core";
-import Lizzy from "/lib/component/base/Lizzy";
+import Lizy from "/lib/component/base/Lizy";
 
 const styles = theme => ({
   root: {
@@ -68,7 +68,7 @@ class NotFound extends React.PureComponent {
         <Grid container spacing={6} className={classes.container}>
           <Grid item xs={12} sm={6} className={classes.graphic}>
             <Box
-              component={Lizzy}
+              component={Lizy}
               variant="idle"
               height="36vh"
             />
