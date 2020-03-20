@@ -1,7 +1,11 @@
 import React from "/vendor/react";
 import { animated, useSpring } from "/vendor/react-spring";
 import { KeyboardArrowDownIcon } from "/lib/component/icon";
-import { NavLink as RouterLink } from "/vendor/react-router-dom";
+import {
+  Link as RouterLink,
+  useLocation,
+  matchPath,
+} from "/vendor/react-router-dom";
 import {
   Box,
   ListItem,
@@ -28,6 +32,7 @@ interface LinkProps {
 }
 
 interface ListItemButtonProps {
+  active: boolean;
   children: (React.ReactElement | undefined)[];
   disabled: boolean;
   to?: string;
@@ -39,12 +44,24 @@ const useStyles = makeStyles(
     createStyles({
       active: {
         backgroundColor: theme.palette.action.hover,
+        fontWeight: 500,
       },
     }),
   { name: "ListItemButton" },
 );
 
+const useIsActive = (href: string) => {
+  const location = useLocation();
+  const matches = matchPath(location.pathname, {
+    path: href,
+    exact: false,
+    strict: false,
+  });
+  return !!matches;
+};
+
 const ListItemButton = ({
+  active,
   children,
   disabled,
   to,
@@ -55,7 +72,7 @@ const ListItemButton = ({
   return (
     // @ts-ignore
     <ListItem
-      activeClassName={classes.active}
+      className={active ? classes.active : ""}
       button
       component={to ? RouterLink : "button"}
       disabled={disabled}
@@ -79,9 +96,11 @@ const Link = ({
   icon,
   onClick,
 }: LinkProps) => {
+  const active = useIsActive(href || "");
   const link = (
     <Box display="flex" justifyContent="left" height={heights.menuitem}>
       <ListItemButton
+        active={active}
         disabled={disabled || (!href && !onClick)}
         to={href}
         onClick={onClick}
@@ -95,7 +114,9 @@ const Link = ({
           flexGrow="1"
         >
           <Typography variant="body1" color="inherit" noWrap>
-            {contents}
+            <Box component="span" fontWeight={active ? 500 : "inherit"}>
+              {contents}
+            </Box>
           </Typography>
         </Box>
         {adornment && (
@@ -125,6 +146,7 @@ const Link = ({
 };
 
 interface FolderProps {
+  collapsed?: boolean;
   contents: React.ReactElement;
   disabled: boolean;
   expanded: boolean;
@@ -136,21 +158,23 @@ interface FolderProps {
 
 const Folder = ({
   icon,
+  collapsed,
   contents,
   links,
-  expanded,
+  expanded: expandedProp,
   onExpand,
   ...props
 }: FolderProps) => {
+  const { pathname } = useLocation();
+  const activeLink = React.useMemo(
+    () => links.find((link) => matchPath(pathname, { path: link.href })),
+    [links, pathname],
+  );
+
+  const expanded = (!collapsed && activeLink !== undefined) || expandedProp;
   const childStyles = useSpring({
-    from: {
-      height: 0,
-      opacity: 0,
-    },
-    to: {
-      height: expanded ? links.length * heights.menuitem : 0,
-      opacity: expanded ? 1 : 0,
-    },
+    height: expanded ? links.length * heights.menuitem : 0,
+    opacity: expanded ? 1 : 0,
   });
 
   const adnormentStyles = useSpring({
@@ -174,7 +198,13 @@ const Folder = ({
       />
       <Box component={animated.ul} overflow="hidden" style={childStyles}>
         {links.map(({ id, ...rest }) => (
-          <Link key={id} disabled={!expanded} {...rest} icon={undefined} />
+          <Link
+            key={id}
+            disabled={!expanded}
+            {...rest}
+            collapsed={collapsed}
+            icon={undefined}
+          />
         ))}
       </Box>
     </React.Fragment>
