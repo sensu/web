@@ -52,6 +52,9 @@ const useStyles = makeStyles(
 
 const useIsActive = (href: string) => {
   const location = useLocation();
+  if (!href) {
+    return false;
+  }
   const matches = matchPath(location.pathname, {
     path: href,
     exact: false,
