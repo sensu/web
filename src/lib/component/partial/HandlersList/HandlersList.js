@@ -11,6 +11,7 @@ import {
 } from "/vendor/@material-ui/core";
 import { ListController } from "/lib/component/controller";
 import { Loader, TableListEmptyState } from "/lib/component/base";
+import { useFilterParams } from "/lib/component/util";
 import Pagination from "/lib/component/partial/Pagination";
 import HandlersListHeader from "./HandlersListHeader";
 import HandlersListItem from "./HandlersListItem";
@@ -18,7 +19,6 @@ import HandlersListItem from "./HandlersListItem";
 const HandlersList = ({
   editable,
   loading,
-  filters,
   limit,
   namespace,
   offset,
@@ -26,6 +26,7 @@ const HandlersList = ({
   onChangeQuery,
   onChangeFilters,
 }) => {
+  const [filters, _] = useFilterParams();
   const items = namespace
     ? namespace.handlers.nodes.filter(hd => !hd.deleted)
     : [];
@@ -91,7 +92,6 @@ HandlersList.propTypes = {
     }),
   }),
   loading: PropTypes.bool,
-  filters: PropTypes.array,
   onChangeFilters: PropTypes.func,
   onChangeQuery: PropTypes.func.isRequired,
   limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -105,7 +105,6 @@ HandlersList.defaultProps = {
   loading: false,
   limit: undefined,
   offset: undefined,
-  filters: {},
   onChangeFilters: () => null,
 };
 
