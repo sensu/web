@@ -142,7 +142,6 @@ export const HandlersViewContent = ({
           <HandlersList
             editable={!isSmViewport}
             limit={variables.limit}
-            filters={variables.filters}
             offset={variables.offset}
             onChangeQuery={setParams}
             onChangeFilters={setFilters}
