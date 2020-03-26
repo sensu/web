@@ -40,7 +40,7 @@ class ExpandableKeyValueChip extends React.Component {
         <React.Fragment key={key}>
           <ModalController
             renderModal={({ close }) => (
-              <Dialog open maxWidth TransitionComponent={Slide} onClose={close}>
+              <Dialog open maxWidth="sm" fullWidth TransitionComponent={Slide} onClose={close}>
                 <DialogTitle>{key}</DialogTitle>
                 <DialogContent>
                   <CodeBlock>
@@ -52,7 +52,7 @@ class ExpandableKeyValueChip extends React.Component {
                   </CodeBlock>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={close} color="contrast">
+                  <Button onClick={close}>
                     Close
                   </Button>
                 </DialogActions>
