@@ -83,17 +83,41 @@ const imageExtensions = [
   ".SVG",
 ];
 
-interface KeyProps extends React.ComponentProps<"span"> {
+interface KeyProps {
   name: string;
   value?: string;
+  onClick?: () => void;
 }
 
-const stringContainer = (
-  classes: any,
-  name: string,
-  value: string,
-  ...props: any
-) => {
+const KeyValueChip = ({ name, value = "", ...props }: KeyProps) => {
+  const classes = useStyles();
+
+  let urlpath = "";
+  try {
+    const url = new URL(value);
+    urlpath = url.pathname;
+  } catch (e) {
+    // no url
+  }
+
+  if (imageExtensions.some((ext) => urlpath.toUpperCase().endsWith(ext))) {
+    return (
+      <Typography component="div" className={classes.root} variant="body2">
+        <div className={classes.imageContainer}>
+          <div
+            className={classNames(classes.base, classes.imageKey)}
+            {...props}
+          >
+            {name}
+          </div>
+          <div {...props}>
+            <img className={classes.image} src={value} alt={value} />
+          </div>
+        </div>
+      </Typography>
+    );
+  }
+
   return (
     <Typography component="span" className={classes.root} variant="body2">
       <span
@@ -113,44 +137,6 @@ const stringContainer = (
       )}
     </Typography>
   );
-};
-
-const imageContainer = (
-  classes: any,
-  name: string,
-  value: string,
-  ...props: any
-) => {
-  return (
-    <Typography component="div" className={classes.root} variant="body2">
-      <div className={classes.imageContainer}>
-        <div className={classNames(classes.base, classes.imageKey)} {...props}>
-          {name}
-        </div>
-        <div {...props}>
-          <img className={classes.image} src={value} alt={value} />
-        </div>
-      </div>
-    </Typography>
-  );
-};
-
-const KeyValueChip = ({ name, value = "", ...props }: KeyProps) => {
-  const classes = useStyles();
-
-  let urlpath = "";
-  try {
-    const url = new URL(value);
-    urlpath = url.pathname;
-  } catch (e) {
-    // no url
-  }
-
-  if (imageExtensions.some((ext) => urlpath.toUpperCase().endsWith(ext))) {
-    return imageContainer(classes, name, value, props);
-  }
-
-  return stringContainer(classes, name, value, props);
 };
 
 export default KeyValueChip;
