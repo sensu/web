@@ -52,7 +52,7 @@ const ToastWell = () => {
     (id, rect) => {
       setHeights((heights) => {
         if (rect.height === heights[id]) {
-          return null;
+          return heights;
         }
 
         return { ...heights, [id]: rect.height };
@@ -65,7 +65,7 @@ const ToastWell = () => {
     (id) => {
       setHeights((heights) => {
         if (heights[id] === undefined) {
-          return null;
+          return heights;
         }
 
         delete heights[id];
