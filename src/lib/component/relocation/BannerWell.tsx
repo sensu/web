@@ -80,7 +80,7 @@ const BannerWell = ({ elements }: Props) => {
     (id, rect) => {
       setHeights((heights) => {
         if (rect.height === heights[id]) {
-          return null;
+          return heights;
         }
 
         return { ...heights, [id]: rect.height };
@@ -93,7 +93,7 @@ const BannerWell = ({ elements }: Props) => {
     (id) => {
       setHeights((heights) => {
         if (heights[id] === undefined) {
-          return null;
+          return heights;
         }
 
         delete heights[id];
