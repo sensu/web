@@ -1,4 +1,5 @@
 export { default as ConditionalRoute } from "./ConditionalRoute";
+export { default as ConfigurationProvider } from "./ConfigurationProvider";
 export { default as Maybe } from "./Maybe";
 export { default as QueryParams } from "./QueryParams";
 export * from "./QueryParams";
@@ -27,6 +28,7 @@ export { default as Timer } from "./Timer";
 export { default as UnauthenticatedRoute } from "./UnauthenticatedRoute";
 export { default as UnmountObserver } from "./UnmountObserver";
 export { default as useBuildInfo } from "./useBuildInfo";
+export { default as useConfigurationProvider } from "./ConfigurationProvider";
 export { default as useIdentity } from "./useIdentity";
 export { default as useQuery } from "./useQuery";
 export * from "./useCurrentDate";
