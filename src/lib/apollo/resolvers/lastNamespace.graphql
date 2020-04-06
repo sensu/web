@@ -1,9 +1,15 @@
 extend type Query {
+  "The last cluster that the client accessed."
+  lastCluster: String
+
   "The last namespace that the client accessed."
   lastNamespace: String
 }
 
 extend type Mutation {
   "Stores given pair as user's last visited namespace."
-  setLastNamespace(name: String!): Boolean
+  setLastNamespace(name: String!): Boolean @deprecated(reason: "use setLastContext instead")
+
+  "Stores given pair as user's last visited context."
+  setLastContext(namespace: String!, cluster: String!): Boolean
 }
