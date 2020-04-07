@@ -19,6 +19,7 @@ import {
   useQuery,
   UseQueryResult,
   useRouter,
+  useConfigurationProvider,
 } from "/lib/component/util";
 import { MobileFullWidthContent, Content } from "/lib/component/base";
 import {
@@ -72,7 +73,9 @@ export const ChecksViewQuery = gql`
 
 export function useChecksViewQueryVariables(): Variables {
   const [params] = useSearchParams();
-  const limit = parseIntParam(params.limit, 25);
+  const config = useConfigurationProvider();
+
+  const limit = parseIntParam(params.limit, config.preferences.pageSize);
   const offset = parseIntParam(params.offset, 0);
   const order = parseStringParam(params.order, "NAME");
   const filters = parseArrayParam(params.filters);

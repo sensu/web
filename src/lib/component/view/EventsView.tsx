@@ -13,6 +13,7 @@ import {
 import {
   useApolloClient,
   useBreakpoint,
+  useConfigurationProvider,
   useFilterParams,
   useSearchParams,
   useQuery,
@@ -56,7 +57,9 @@ interface Props {
 
 export const useEventsViewQueryVariables = (): Variables => {
   const [params] = useSearchParams();
-  const limit = parseIntParam(params.limit, 25);
+  const config = useConfigurationProvider();
+
+  const limit = parseIntParam(params.limit, config.preferences.pageSize || 25);
   const offset = parseIntParam(params.offset, 0);
   const order = parseStringParam(params.order, "LASTOK");
   const filters = parseArrayParam(params.filters);

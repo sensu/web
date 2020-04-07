@@ -14,6 +14,7 @@ import "typeface-roboto";
 
 import polyfill from "/lib/polyfill";
 import { unregisterAll } from "/lib/util/serviceWorker";
+import { configuration } from "/lib/constant";
 
 import {
   ConfigurationProvider,
@@ -93,7 +94,7 @@ const renderApp = () => {
   // Renderer
   ReactDOM.render(
     <ErrorBoundary handle={handle}>
-      <ConfigurationProvider>
+      <ConfigurationProvider state={configuration}>
         <BrowserRouter>
           <AppRoot apolloClient={client}>
             <Switch>

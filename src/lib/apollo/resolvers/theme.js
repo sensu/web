@@ -2,7 +2,7 @@ export default {
   defaults: {
     theme: {
       __typename: "Theme",
-      value: "sensu",
+      value: "",
       dark: "UNSET",
     },
   },
