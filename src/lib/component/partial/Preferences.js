@@ -25,8 +25,7 @@ import {
 import {
   useApolloClient,
   useIdentity,
-  useSystemColorSchemePreference,
-  useQuery,
+  usePreferredTheme,
 } from "/lib/component/util";
 import {
   BulbIcon,
@@ -38,15 +37,6 @@ import {
 
 import UserAvatar from "./UserAvatar";
 import invalidateTokens from "/lib/mutation/invalidateTokens";
-
-const query = gql`
-  query PreferencesQuery {
-    theme @client {
-      value
-      dark
-    }
-  }
-`;
 
 const setThemeMutation = gql`
   mutation SetThemeMudation($theme: String!) {
@@ -62,29 +52,30 @@ const setDarkModeMutation = gql`
 
 const Preferences = ({ onClose }) => {
   const client = useApolloClient();
-  const { data } = useQuery({ query });
+  const theme = usePreferredTheme();
 
   const identity = useIdentity();
-  const sysPref = useSystemColorSchemePreference();
-  const darkMode = data.theme.dark;
-  const isDark = darkMode !== "UNSET" ? darkMode === "DARK" : sysPref;
-  const theme = data.theme.value;
+  const darkMode = theme.usingSystemColourScheme
+    ? "UNSET"
+    : theme.dark
+    ? "DARK"
+    : "LIGHT";
 
   const onToggleDark = useCallback(
     () =>
       client.mutate({
         mutation: setDarkModeMutation,
-        variables: { value: isDark ? "LIGHT" : "DARK" },
+        variables: { value: theme.dark ? "LIGHT" : "DARK" },
       }),
-    [client, isDark],
+    [client, theme.dark],
   );
   const onToggleSysPref = useCallback(
     () =>
       client.mutate({
         mutation: setDarkModeMutation,
-        variables: { value: darkMode === "UNSET" ? "LIGHT" : "UNSET" },
+        variables: { value: theme.usingSystemColourScheme ? "LIGHT" : "UNSET" },
       }),
-    [client, darkMode],
+    [client, theme.usingSystemColourScheme],
   );
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -143,7 +134,7 @@ const Preferences = ({ onClose }) => {
           </ListItemIcon>
           <ListItemText primary="Dark mode" />
           <ListItemSecondaryAction>
-            <Switch edge="end" onChange={onToggleDark} checked={isDark} />
+            <Switch edge="end" onChange={onToggleDark} checked={theme.dark} />
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem>
@@ -155,7 +146,11 @@ const Preferences = ({ onClose }) => {
             secondary="Set dark mode to use the light or dark selection located in your system settings."
           />
           <ListItemSecondaryAction>
-            <Switch edge="end" onChange={onToggleSysPref} checked={darkMode === "UNSET"} />
+            <Switch
+              edge="end"
+              onChange={onToggleSysPref}
+              checked={theme.usingSystemColourScheme}
+            />
           </ListItemSecondaryAction>
         </ListItem>
       </List>
@@ -164,7 +159,7 @@ const Preferences = ({ onClose }) => {
           <ListItemIcon>
             <EyeIcon />
           </ListItemIcon>
-          <ListItemText primary="Theme" secondary={data.theme.value} />
+          <ListItemText primary="Theme" secondary={theme.value} />
         </ListItem>
       </List>
       <Menu
@@ -175,7 +170,7 @@ const Preferences = ({ onClose }) => {
       >
         <MenuList>
           <MenuItem
-            selected={theme === "sensu"}
+            selected={theme.value === "sensu"}
             onClick={onThemeSelect("sensu")}
           >
             <ListItem>
@@ -183,7 +178,7 @@ const Preferences = ({ onClose }) => {
             </ListItem>
           </MenuItem>
           <MenuItem
-            selected={theme === "uchiwa"}
+            selected={theme.value === "uchiwa"}
             onClick={onThemeSelect("uchiwa")}
           >
             <ListItem>
@@ -191,7 +186,7 @@ const Preferences = ({ onClose }) => {
             </ListItem>
           </MenuItem>
           <MenuItem
-            selected={theme === "classic"}
+            selected={theme.value === "classic"}
             onClick={onThemeSelect("classic")}
           >
             <ListItem>
@@ -199,7 +194,7 @@ const Preferences = ({ onClose }) => {
             </ListItem>
           </MenuItem>
           <MenuItem
-            selected={theme === "deuteranopia"}
+            selected={theme.value === "deuteranopia"}
             onClick={onThemeSelect("deuteranopia")}
           >
             <ListItem>
@@ -207,7 +202,7 @@ const Preferences = ({ onClose }) => {
             </ListItem>
           </MenuItem>
           <MenuItem
-            selected={theme === "tritanopia"}
+            selected={theme.value === "tritanopia"}
             onClick={onThemeSelect("tritanopia")}
           >
             <ListItem>

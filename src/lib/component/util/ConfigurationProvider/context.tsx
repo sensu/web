@@ -1,4 +1,5 @@
 import React from "/vendor/react";
+import { configuration } from "/lib/constant";
 
 // LinkPolicy describes valid URLs that the web application may expand into
 // image tags and links.
@@ -18,13 +19,4 @@ export interface State {
   preferences: UserPreferences;
 }
 
-export default React.createContext<State>({
-  linkPolicy: {
-    allowList: false,
-    URLs: [],
-  },
-  preferences: {
-    pageSize: 20,
-    theme: "default",
-  },
-});
+export default React.createContext<State>(configuration);

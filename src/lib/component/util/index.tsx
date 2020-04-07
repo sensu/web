@@ -30,6 +30,7 @@ export { default as UnmountObserver } from "./UnmountObserver";
 export { default as useBuildInfo } from "./useBuildInfo";
 export { useConfigurationProvider } from "./ConfigurationProvider";
 export { default as useIdentity } from "./useIdentity";
+export { default as usePreferredTheme } from "./usePreferredTheme";
 export { default as useQuery } from "./useQuery";
 export * from "./useCurrentDate";
 export * from "./useQuery";
