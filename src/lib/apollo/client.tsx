@@ -103,6 +103,7 @@ const createClient = ({
     client,
     gql`
       query SyncLastNamespaceQuery {
+        lastCluster @client
         lastNamespace @client
       }
     `,
