@@ -53,13 +53,7 @@ const setDarkModeMutation = gql`
 const Preferences = ({ onClose }) => {
   const client = useApolloClient();
   const theme = usePreferredTheme();
-
   const identity = useIdentity();
-  const darkMode = theme.usingSystemColourScheme
-    ? "UNSET"
-    : theme.dark
-    ? "DARK"
-    : "LIGHT";
 
   const onToggleDark = useCallback(
     () =>

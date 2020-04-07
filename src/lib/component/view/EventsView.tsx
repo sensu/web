@@ -58,7 +58,6 @@ interface Props {
 export const useEventsViewQueryVariables = (): Variables => {
   const [params] = useSearchParams();
   const config = useConfigurationProvider();
-  console.debug({ config, params });
 
   const limit = parseIntParam(params.limit, config.preferences.pageSize || 25);
   const offset = parseIntParam(params.offset, 0);
