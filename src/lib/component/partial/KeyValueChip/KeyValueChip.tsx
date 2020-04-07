@@ -10,7 +10,7 @@ import {
   emphasize,
 } from "/vendor/@material-ui/core/styles/colorManipulator";
 import classNames from "/vendor/classnames";
-import { AutoLink } from "/lib/component/util";
+import { AutoLink, useConfigurationProvider } from "/lib/component/util";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -89,6 +89,19 @@ interface KeyProps {
   onClick?: () => void;
 }
 
+//TODO: check context to see if we return from this path
+const useLinkPolicy = (link: any) => {
+  const { linkPolicy } = useConfigurationProvider();
+  return React.useMemo(() => {
+    // determine if the given link should be displayed based on the
+    // policy.
+    console.log("this runs");
+    console.log(link);
+    console.log(linkPolicy.allowList);
+    return linkPolicy.allowList == true;
+  }, [linkPolicy, link]);
+};
+
 const KeyValueChip = ({ name, value = "", ...props }: KeyProps) => {
   const classes = useStyles();
 
@@ -100,22 +113,24 @@ const KeyValueChip = ({ name, value = "", ...props }: KeyProps) => {
     // no url
   }
 
-  if (imageExtensions.some((ext) => urlpath.toUpperCase().endsWith(ext))) {
-    return (
-      <Typography component="div" className={classes.root} variant="body2">
-        <div className={classes.imageContainer}>
-          <div
-            className={classNames(classes.base, classes.imageKey)}
-            {...props}
-          >
-            {name}
+  if (useLinkPolicy(urlpath)) {
+    if (imageExtensions.some((ext) => urlpath.toUpperCase().endsWith(ext))) {
+      return (
+        <Typography component="div" className={classes.root} variant="body2">
+          <div className={classes.imageContainer}>
+            <div
+              className={classNames(classes.base, classes.imageKey)}
+              {...props}
+            >
+              {name}
+            </div>
+            <div {...props}>
+              <img className={classes.image} src={value} alt={value} />
+            </div>
           </div>
-          <div {...props}>
-            <img className={classes.image} src={value} alt={value} />
-          </div>
-        </div>
-      </Typography>
-    );
+        </Typography>
+      );
+    }
   }
 
   return (
