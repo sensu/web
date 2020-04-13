@@ -10,7 +10,9 @@ import {
   emphasize,
 } from "/vendor/@material-ui/core/styles/colorManipulator";
 import classNames from "/vendor/classnames";
-import { AutoLink } from "/lib/component/util";
+import { AutoLink, useConfigurationProvider } from "/lib/component/util";
+import newURL from "/lib/util/url";
+import shouldAllowLink from "/lib/util/linkPolicy";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -89,33 +91,59 @@ interface KeyProps {
   onClick?: () => void;
 }
 
+const useLinkPolicy = (link: URL | null) => {
+  const { linkPolicy } = useConfigurationProvider();
+
+  return React.useMemo(() => {
+    if (link === null) {
+      return false;
+    }
+    return shouldAllowLink(linkPolicy, link);
+  }, [link, linkPolicy]);
+};
+
+const parseURL = (url: string): URL | null => {
+  try {
+    return newURL(url);
+  } catch (e) {
+    return null;
+  }
+};
+
 const KeyValueChip = ({ name, value = "", ...props }: KeyProps) => {
   const classes = useStyles();
+  const url = parseURL(value);
+  const hasVerifiedLink = useLinkPolicy(url);
 
-  let urlpath = "";
-  try {
-    const url = new URL(value);
-    urlpath = url.pathname;
-  } catch (e) {
-    // no url
+  let valueEl;
+  if (url && hasVerifiedLink) {
+    // if URL is an image use special img container
+    if (
+      imageExtensions.some((ext) => url.pathname.toUpperCase().endsWith(ext))
+    ) {
+      return (
+        <Typography component="div" className={classes.root} variant="body2">
+          <div className={classes.imageContainer}>
+            <div
+              className={classNames(classes.base, classes.imageKey)}
+              {...props}
+            >
+              {name}
+            </div>
+            <div {...props}>
+              <img className={classes.image} src={value} alt={value} />
+            </div>
+          </div>
+        </Typography>
+      );
+    }
+
+    // otherwise display as a link
+    valueEl = <AutoLink value={value} {...props} />;
   }
 
-  if (imageExtensions.some((ext) => urlpath.toUpperCase().endsWith(ext))) {
-    return (
-      <Typography component="div" className={classes.root} variant="body2">
-        <div className={classes.imageContainer}>
-          <div
-            className={classNames(classes.base, classes.imageKey)}
-            {...props}
-          >
-            {name}
-          </div>
-          <div {...props}>
-            <img className={classes.image} src={value} alt={value} />
-          </div>
-        </div>
-      </Typography>
-    );
+  if (!valueEl) {
+    valueEl = <span {...props}>{value}</span>;
   }
 
   return (
@@ -132,11 +160,11 @@ const KeyValueChip = ({ name, value = "", ...props }: KeyProps) => {
       </span>
       {value && (
         <span className={classNames(classes.base, classes.value)}>
-          <AutoLink value={value} {...props} />{" "}
+          {valueEl}{" "}
         </span>
       )}
     </Typography>
   );
 };
 
-export default KeyValueChip;
+export default React.memo(KeyValueChip);
