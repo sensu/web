@@ -11,6 +11,8 @@ import {
 } from "/vendor/@material-ui/core/styles/colorManipulator";
 import classNames from "/vendor/classnames";
 import { AutoLink, useConfigurationProvider } from "/lib/component/util";
+import newURL from "/lib/util/url";
+import shouldAllowLink from "/lib/util/linkPolicy";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -89,32 +91,36 @@ interface KeyProps {
   onClick?: () => void;
 }
 
-const useLinkPolicy = (link: any) => {
+const useLinkPolicy = (link: URL | null) => {
   const { linkPolicy } = useConfigurationProvider();
 
   return React.useMemo(() => {
-    let url = "";
-    try {
-      const url = new URL(link);
-    } catch (e) {
+    if (link === null) {
       return false;
     }
+    return shouldAllowLink(linkPolicy, link);
+  }, [link, linkPolicy]);
+};
 
-    if (linkPolicy.allowList == true) {
-      // return true if we have allowed the url
-      return linkPolicy.URLs.includes(url.domain);
-    } else {
-      // return false if we haven't allowed the url
-      return !linkPolicy.URLs.includes(url.domain);
-    }
-  }, [linkPolicy, link]);
+const parseURL = (url: string): URL | null => {
+  try {
+    return newURL(url);
+  } catch (e) {
+    return null;
+  }
 };
 
 const KeyValueChip = ({ name, value = "", ...props }: KeyProps) => {
   const classes = useStyles();
+  const url = parseURL(value);
+  const hasVerifiedLink = useLinkPolicy(url);
 
-  if (useLinkPolicy(value)) {
-    if (imageExtensions.some((ext) => value.toUpperCase().endsWith(ext))) {
+  let valueEl;
+  if (url && hasVerifiedLink) {
+    // if URL is an image use special img container
+    if (
+      imageExtensions.some((ext) => url.pathname.toUpperCase().endsWith(ext))
+    ) {
       return (
         <Typography component="div" className={classes.root} variant="body2">
           <div className={classes.imageContainer}>
@@ -131,6 +137,13 @@ const KeyValueChip = ({ name, value = "", ...props }: KeyProps) => {
         </Typography>
       );
     }
+
+    // otherwise display as a link
+    valueEl = <AutoLink value={value} {...props} />;
+  }
+
+  if (!valueEl) {
+    valueEl = <span {...props}>{value}</span>;
   }
 
   return (
@@ -147,11 +160,11 @@ const KeyValueChip = ({ name, value = "", ...props }: KeyProps) => {
       </span>
       {value && (
         <span className={classNames(classes.base, classes.value)}>
-          <AutoLink value={value} {...props} />{" "}
+          {valueEl}{" "}
         </span>
       )}
     </Typography>
   );
 };
 
-export default KeyValueChip;
+export default React.memo(KeyValueChip);
