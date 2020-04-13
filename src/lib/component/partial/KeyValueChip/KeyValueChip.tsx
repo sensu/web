@@ -89,32 +89,32 @@ interface KeyProps {
   onClick?: () => void;
 }
 
-//TODO: check context to see if we return from this path
 const useLinkPolicy = (link: any) => {
   const { linkPolicy } = useConfigurationProvider();
+
   return React.useMemo(() => {
-    // determine if the given link should be displayed based on the
-    // policy.
-    console.log("this runs");
-    console.log(link);
-    console.log(linkPolicy.allowList);
-    return linkPolicy.allowList == true;
+    let url = "";
+    try {
+      const url = new URL(link);
+    } catch (e) {
+      return false;
+    }
+
+    if (linkPolicy.allowList == true) {
+      // return true if we have allowed the url
+      return linkPolicy.URLs.includes(url.domain);
+    } else {
+      // return false if we haven't allowed the url
+      return !linkPolicy.URLs.includes(url.domain);
+    }
   }, [linkPolicy, link]);
 };
 
 const KeyValueChip = ({ name, value = "", ...props }: KeyProps) => {
   const classes = useStyles();
 
-  let urlpath = "";
-  try {
-    const url = new URL(value);
-    urlpath = url.pathname;
-  } catch (e) {
-    // no url
-  }
-
-  if (useLinkPolicy(urlpath)) {
-    if (imageExtensions.some((ext) => urlpath.toUpperCase().endsWith(ext))) {
+  if (useLinkPolicy(value)) {
+    if (imageExtensions.some((ext) => value.toUpperCase().endsWith(ext))) {
       return (
         <Typography component="div" className={classes.root} variant="body2">
           <div className={classes.imageContainer}>
