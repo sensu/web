@@ -60,7 +60,7 @@ const common = {
       },
       overline: {
         fontFamily: title,
-        letterSpacing: "1.115em",
+        letterSpacing: "0.105em",
       },
       body1: {
         fontFamily: body,
