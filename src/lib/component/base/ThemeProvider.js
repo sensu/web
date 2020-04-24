@@ -16,8 +16,16 @@ class ThemeProvider extends React.Component {
   };
 
   componentWillMount() {
+    let theme = themes[this.props.theme];
+    if (!theme) {
+      // eslint-disable-next-line no-console
+      console.warn("unable to configured theme: ", this.props.theme);
+      // eslint-disable-next-line no-console
+      console.warn("falling back to default theme.");
+      theme = "sensu";
+    }
+
     const type = this.props.dark ? "dark" : "light";
-    const theme = themes[this.props.theme];
     this.theme = theme(type);
   }
 
