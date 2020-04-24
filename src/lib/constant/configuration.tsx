@@ -5,6 +5,6 @@ export const configuration = {
   },
   preferences: {
     pageSize: 25,
-    theme: "default",
+    theme: "sensu",
   },
 };
