@@ -8,7 +8,7 @@ const common = {
       light: colors.green[300],
       main: colors.green[500],
       dark: colors.green[700],
-      contrastText: "#F3F5F7"
+      contrastText: "#F3F5F7",
     },
     warning: {
       light: colors.yellow[300],
@@ -18,7 +18,7 @@ const common = {
     },
     // NOTE: this theme and subsequent themes use error and critical
     // interchangably. Error colours are baked in, so we are defining
-    // them here as the same thing - since errors and criticals sort of 
+    // them here as the same thing - since errors and criticals sort of
     // relate to the same concept
     critical: {
       light: colors.red[300],
@@ -54,6 +54,14 @@ const common = {
 
     return {
       fontFamily: title,
+      h1: {
+        fontFamily: title,
+        fontWeight: 700,
+      },
+      overline: {
+        fontFamily: title,
+        letterSpacing: "0.105em",
+      },
       body1: {
         fontFamily: body,
       },
