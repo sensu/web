@@ -19,7 +19,7 @@ class ThemeProvider extends React.Component {
     let theme = themes[this.props.theme];
     if (!theme) {
       // eslint-disable-next-line no-console
-      console.warn("unable to configured theme: ", this.props.theme);
+      console.warn("unable to load the configured theme: ", this.props.theme);
       // eslint-disable-next-line no-console
       console.warn("falling back to default theme.");
       theme = "sensu";
