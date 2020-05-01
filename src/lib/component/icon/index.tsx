@@ -71,6 +71,7 @@ export { default as HeartIcon } from "./Heart";
 export { default as IconGapIcon } from "./IconGap";
 export { default as LinkIcon } from "@material-ui/icons/Link";
 export { default as LiveIcon } from "./Live";
+export { default as MissingIcon } from "./Missing";
 export { default as OKIcon } from "./OK";
 export { default as PolyIcon } from "./Poly";
 export { default as SmallCheckIcon } from "./SmallCheck";
