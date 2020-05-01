@@ -31,6 +31,7 @@ import {
   PreferencesIcon,
   SelectIcon,
   SilenceIcon,
+  MissingIcon,
 } from "/lib/component/icon";
 
 import { AppRoot } from "/lib/component/root";
@@ -97,171 +98,195 @@ const renderApp = () => {
       <ConfigurationProvider state={configuration}>
         <BrowserRouter>
           <AppRoot apolloClient={client}>
-            <Switch>
-              <Route exact path="/" component={LastNamespaceRedirect} />
-              <NamespaceRoute
-                path="/n/:namespace"
-                render={props => (
-                  <NavigationProvider
-                    links={[
-                      {
-                        id: "switcher",
-                        icon: (
-                          <NamespaceIcon
-                            namespace={{ name: props.match.params.namespace }}
-                          />
-                        ),
-                        contents: props.match.params.namespace,
-                        adornment: <SelectIcon />,
-                        hint: "Switch Namespace",
-                        onClick: () => {
-                          client.mutate({ mutation: openSwitcher });
+            <NavigationProvider
+              links={[
+                {
+                  id: "switcher",
+                  icon: (
+                    <MissingIcon />
+                  ),
+                  contents: "Switch Namespace",
+                  adornment: <SelectIcon />,
+                  hint: "Select a Namespace",
+                  onClick: () => {
+                    client.mutate({ mutation: openSwitcher });
+                  },
+                },
+              ]}
+            >
+              <Switch>
+                <Route exact path="/" component={LastNamespaceRedirect} />
+                <NamespaceRoute
+                  path="/n/:namespace"
+                  render={props => (
+                    <NavigationProvider
+                      links={[
+                        {
+                          id: "switcher",
+                          icon: (
+                            <NamespaceIcon
+                              namespace={{ name: props.match.params.namespace }}
+                            />
+                          ),
+                          contents: props.match.params.namespace,
+                          adornment: <SelectIcon />,
+                          hint: "Switch Namespace",
+                          onClick: () => {
+                            client.mutate({ mutation: openSwitcher });
+                          },
                         },
-                      },
-                      {
-                        id: "events",
-                        href: `${props.match.url}/events`,
-                        icon: <EventIcon />,
-                        contents: "Events",
-                      },
-                      {
-                        id: "entities",
-                        href: `${props.match.url}/entities`,
-                        icon: <EntityIcon />,
-                        contents: "Entities",
-                      },
-                      {
-                        id: "silences",
-                        href: `${props.match.url}/silences`,
-                        icon: <SilenceIcon />,
-                        contents: "Silences",
-                      },
-                      {
-                        id: "config",
-                        contents: "Configuration",
-                        icon: <ConfigIcon />,
-                        links: [
-                          {
-                            id: "checks",
-                            href: `${props.match.url}/checks`,
-                            contents: "Checks",
-                          },
-                          {
-                            id: "filters",
-                            href: `${props.match.url}/filters`,
-                            contents: "Filters",
-                          },
-                          {
-                            id: "handlers",
-                            href: `${props.match.url}/handlers`,
-                            contents: "Handlers",
-                          },
-                          {
-                            id: "mutators",
-                            href: `${props.match.url}/mutators`,
-                            contents: "Mutators",
-                          },
-                        ],
-                      },
-                    ]}
-                    toolbarItems={[
-                      {
-                        id: "preferences",
-                        icon: <PreferencesIcon />,
-                        hint: "Preferences",
-                        onClick: () =>
-                          client.mutate({ mutation: openPreferences }),
-                      },
-                    ]}
-                  >
-                    <Switch>
-                      <Redirect
-                        exact
-                        from={props.match.path}
-                        to={`${props.match.path}/events`}
-                      />
-                      <Route
-                        path={`${props.match.path}/checks/:check`}
-                        component={CheckDetailsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/events/:entity/:check`}
-                        component={EventDetailsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/filters/:filter`}
-                        component={EventFilterDetailsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/entities/:entity`}
-                        component={EntityDetailsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/handlers/:handler`}
-                        component={HandlerDetailsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/mutators/:mutator`}
-                        component={MutatorDetailsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/checks`}
-                        component={ChecksView}
-                      />
-                      <Route
-                        path={`${props.match.path}/entities`}
-                        component={EntitiesView}
-                      />
-                      <Route
-                        path={`${props.match.path}/events`}
-                        component={EventsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/filters`}
-                        component={EventFiltersView}
-                      />
-                      <Route
-                        path={`${props.match.path}/handlers`}
-                        component={HandlersView}
-                      />
-                      <Route
-                        path={`${props.match.path}/mutators`}
-                        component={MutatorsView}
-                      />
-                      <Route
-                        path={`${props.match.path}/silences`}
-                        component={SilencesView}
-                      />
-                      <Route render={() => "not found in namespace"} />
-                    </Switch>
-                  </NavigationProvider>
-                )}
-                fallbackComponent={NamespaceNotFoundView}
-              />
-              {/* backward compat */}
-              <Redirect exact from="/:namespace/home" to="/n/:namespace/home" />
-              <Redirect from="/:namespace/checks" to="/n/:namespace/checks" />
-              <Redirect
-                from="/:namespace/entities"
-                to="/n/:namespace/entities"
-              />
-              <Redirect from="/:namespace/events" to="/n/:namespace/events" />
-              <Redirect from="/:namespace/filters" to="/n/:namespace/filters" />
-              <Redirect
-                from="/:namespace/handlers"
-                to="/n/:namespace/handlers"
-              />
-              <Redirect
-                from="/:namespace/mutators"
-                to="/n/:namespace/mutators"
-              />
-              <Redirect
-                from="/:namespace/silences"
-                to="/n/:namespace/silences"
-              />
-              <Redirect from="/:namespace" to="/n/:namespace/events" />
-              <Route component={NotFoundView} />
-            </Switch>
+                        {
+                          id: "events",
+                          href: `${props.match.url}/events`,
+                          icon: <EventIcon />,
+                          contents: "Events",
+                        },
+                        {
+                          id: "entities",
+                          href: `${props.match.url}/entities`,
+                          icon: <EntityIcon />,
+                          contents: "Entities",
+                        },
+                        {
+                          id: "silences",
+                          href: `${props.match.url}/silences`,
+                          icon: <SilenceIcon />,
+                          contents: "Silences",
+                        },
+                        {
+                          id: "config",
+                          contents: "Configuration",
+                          icon: <ConfigIcon />,
+                          links: [
+                            {
+                              id: "checks",
+                              href: `${props.match.url}/checks`,
+                              contents: "Checks",
+                            },
+                            {
+                              id: "filters",
+                              href: `${props.match.url}/filters`,
+                              contents: "Filters",
+                            },
+                            {
+                              id: "handlers",
+                              href: `${props.match.url}/handlers`,
+                              contents: "Handlers",
+                            },
+                            {
+                              id: "mutators",
+                              href: `${props.match.url}/mutators`,
+                              contents: "Mutators",
+                            },
+                          ],
+                        },
+                      ]}
+                      toolbarItems={[
+                        {
+                          id: "preferences",
+                          icon: <PreferencesIcon />,
+                          hint: "Preferences",
+                          onClick: () =>
+                            client.mutate({ mutation: openPreferences }),
+                        },
+                      ]}
+                    >
+                      <Switch>
+                        <Redirect
+                          exact
+                          from={props.match.path}
+                          to={`${props.match.path}/events`}
+                        />
+                        <Route
+                          path={`${props.match.path}/checks/:check`}
+                          component={CheckDetailsView}
+                        />
+                        <Route
+                          path={`${props.match.path}/events/:entity/:check`}
+                          component={EventDetailsView}
+                        />
+                        <Route
+                          path={`${props.match.path}/filters/:filter`}
+                          component={EventFilterDetailsView}
+                        />
+                        <Route
+                          path={`${props.match.path}/entities/:entity`}
+                          component={EntityDetailsView}
+                        />
+                        <Route
+                          path={`${props.match.path}/handlers/:handler`}
+                          component={HandlerDetailsView}
+                        />
+                        <Route
+                          path={`${props.match.path}/mutators/:mutator`}
+                          component={MutatorDetailsView}
+                        />
+                        <Route
+                          path={`${props.match.path}/checks`}
+                          component={ChecksView}
+                        />
+                        <Route
+                          path={`${props.match.path}/entities`}
+                          component={EntitiesView}
+                        />
+                        <Route
+                          path={`${props.match.path}/events`}
+                          component={EventsView}
+                        />
+                        <Route
+                          path={`${props.match.path}/filters`}
+                          component={EventFiltersView}
+                        />
+                        <Route
+                          path={`${props.match.path}/handlers`}
+                          component={HandlersView}
+                        />
+                        <Route
+                          path={`${props.match.path}/mutators`}
+                          component={MutatorsView}
+                        />
+                        <Route
+                          path={`${props.match.path}/silences`}
+                          component={SilencesView}
+                        />
+                        <Route render={() => "not found in namespace"} />
+                      </Switch>
+                    </NavigationProvider>
+                  )}
+                  fallbackComponent={NamespaceNotFoundView}
+                />
+                {/* backward compat */}
+                <Redirect
+                  exact
+                  from="/:namespace/home"
+                  to="/n/:namespace/home"
+                />
+                <Redirect from="/:namespace/checks" to="/n/:namespace/checks" />
+                <Redirect
+                  from="/:namespace/entities"
+                  to="/n/:namespace/entities"
+                />
+                <Redirect from="/:namespace/events" to="/n/:namespace/events" />
+                <Redirect
+                  from="/:namespace/filters"
+                  to="/n/:namespace/filters"
+                />
+                <Redirect
+                  from="/:namespace/handlers"
+                  to="/n/:namespace/handlers"
+                />
+                <Redirect
+                  from="/:namespace/mutators"
+                  to="/n/:namespace/mutators"
+                />
+                <Redirect
+                  from="/:namespace/silences"
+                  to="/n/:namespace/silences"
+                />
+                <Redirect from="/:namespace" to="/n/:namespace/events" />
+                <Route component={NotFoundView} />
+              </Switch>
+            </NavigationProvider>
             <ContextSwitcherKeybinding />
             <ContextSwitcherDialog />
             <PreferencesKeybinding />
