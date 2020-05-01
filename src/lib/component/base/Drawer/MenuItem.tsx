@@ -1,4 +1,5 @@
 import React from "/vendor/react";
+import cx from "classnames";
 import { animated, useSpring } from "/vendor/react-spring";
 import { KeyboardArrowDownIcon } from "/lib/component/icon";
 import {
@@ -42,6 +43,10 @@ interface ListItemButtonProps {
 const useStyles = makeStyles(
   (theme: Theme) =>
     createStyles({
+      root: {
+        paddingTop: 0,
+        paddingBottom: 0,
+      },
       active: {
         backgroundColor: theme.palette.action.hover,
         fontWeight: 500,
@@ -75,12 +80,11 @@ const ListItemButton = ({
   return (
     // @ts-ignore
     <ListItem
-      className={active ? classes.active : ""}
+      className={cx(classes.root, { [classes.active]: active })}
       button
       component={to ? RouterLink : "button"}
       disabled={disabled}
       disableGutters
-      dense
       to={to}
       onClick={onClick}
     >
@@ -101,7 +105,12 @@ const Link = ({
 }: LinkProps) => {
   const active = useIsActive(href || "");
   const link = (
-    <Box display="flex" justifyContent="left" height={heights.menuitem}>
+    <Box
+      component="li"
+      display="flex"
+      justifyContent="left"
+      height={heights.menuitem}
+    >
       <ListItemButton
         active={active}
         disabled={disabled || (!href && !onClick)}

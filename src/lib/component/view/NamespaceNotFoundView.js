@@ -14,11 +14,10 @@ class NamespaceNotFoundView extends React.PureComponent {
 
     return (
       <AppLayout disableBreadcrumbs>
-        <Box height="100vh" display="flex" alignItems="center">
-        <NotFound>
-          The namespace <strong>{namespace}</strong> could not be loaded.
-        </NotFound>
-
+        <Box height="calc(100vh - 24px)" display="flex" alignItems="center">
+          <NotFound>
+            The namespace <strong>{namespace}</strong> could not be loaded.
+          </NotFound>
         </Box>
       </AppLayout>
     );
