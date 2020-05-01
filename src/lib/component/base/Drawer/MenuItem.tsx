@@ -118,13 +118,7 @@ const Link = ({
         onClick={onClick}
       >
         <IconContainer icon={icon} />
-        <Box
-          clone
-          display="flex"
-          alignItems="center"
-          marginLeft={1}
-          flexGrow="1"
-        >
+        <Box clone alignItems="center" marginLeft={1} flexGrow="1" minWidth="0">
           <Typography variant="body1" color="inherit" noWrap>
             <Box component="span" fontWeight={active ? 500 : "inherit"}>
               {contents}

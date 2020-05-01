@@ -105,7 +105,7 @@ const renderApp = () => {
                   icon: (
                     <MissingIcon />
                   ),
-                  contents: "Switch ...",
+                  contents: "Switch Namespace",
                   adornment: <SelectIcon />,
                   hint: "Select a Namespace",
                   onClick: () => {
