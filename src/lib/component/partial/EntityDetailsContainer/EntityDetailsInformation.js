@@ -74,6 +74,12 @@ class EntityDetailsInformation extends React.PureComponent {
               mac
             }
           }
+          ARMVersion
+          libCType
+          VMSystem
+          VMRole
+          cloudProvider
+          floatType
         }
 
         metadata {
@@ -217,6 +223,24 @@ class EntityDetailsInformation extends React.PureComponent {
                     <Maybe value={system.hostname} fallback="n/a" />
                   </DictionaryValue>
                 </DictionaryEntry>
+                <DictionaryEntry>
+                  <DictionaryKey>Cloud Provider</DictionaryKey>
+                  <DictionaryValue>
+                    <Maybe value={system.cloudProvider} fallback="—" />
+                  </DictionaryValue>
+                </DictionaryEntry>
+                <DictionaryEntry>
+                  <DictionaryKey>VM System</DictionaryKey>
+                  <DictionaryValue>
+                    <Maybe value={system.VMSystem} fallback="—" />
+                  </DictionaryValue>
+                </DictionaryEntry>
+                <DictionaryEntry>
+                  <DictionaryKey>VM Role</DictionaryKey>
+                  <DictionaryValue>
+                    <Maybe value={system.VMRole} fallback="—" />
+                  </DictionaryValue>
+                </DictionaryEntry>
               </Dictionary>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -249,6 +273,24 @@ class EntityDetailsInformation extends React.PureComponent {
                   <DictionaryKey>Architecture</DictionaryKey>
                   <DictionaryValue>
                     <Maybe value={system.arch} fallback="n/a" />
+                  </DictionaryValue>
+                </DictionaryEntry>
+                <DictionaryEntry>
+                  <DictionaryKey>ARM Version</DictionaryKey>
+                  <DictionaryValue>
+                    <Maybe value={system.ARMVersion} fallback="n/a" />
+                  </DictionaryValue>
+                </DictionaryEntry>
+                <DictionaryEntry>
+                  <DictionaryKey>Float Type</DictionaryKey>
+                  <DictionaryValue>
+                    <Maybe value={system.ARMVersion} fallback="—" />
+                  </DictionaryValue>
+                </DictionaryEntry>
+                <DictionaryEntry>
+                  <DictionaryKey>libc Implementation</DictionaryKey>
+                  <DictionaryValue>
+                    <Maybe value={system.libcType} fallback="—" />
                   </DictionaryValue>
                 </DictionaryEntry>
               </Dictionary>
