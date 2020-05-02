@@ -5,8 +5,8 @@ import Lizy from "/lib/component/base/Lizy";
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
     display: "flex",
+    flexGrow: 1,
     alignItems: "center",
     justifyContent: "center",
     textAlign: "center",
@@ -65,7 +65,7 @@ class NotFound extends React.PureComponent {
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={6} className={classes.container}>
+        <Grid container spacing={2}>
           <Grid item xs={12} sm={6} className={classes.graphic}>
             <Box
               component={Lizy}
