@@ -16,6 +16,7 @@ import { statusCodeToId } from "/lib/util/checkStatus";
 
 import {
   CardHighlight,
+  DateTime,
   Dictionary,
   DictionaryKey,
   DictionaryValue,
@@ -34,7 +35,7 @@ const Strong = withStyles(() => ({
   root: {
     color: "inherit",
     fontSize: "inherit",
-    fontWeight: 500,
+    fontWeight: 600,
   },
 }))(Typography);
 
@@ -67,6 +68,13 @@ class EntityDetailsInformation extends React.PureComponent {
           platform
           platformFamily
           platformVersion
+          ARMVersion
+          libCType
+          VMSystem
+          VMRole
+          cloudProvider
+          floatType
+
           network {
             interfaces {
               name
@@ -74,12 +82,6 @@ class EntityDetailsInformation extends React.PureComponent {
               mac
             }
           }
-          ARMVersion
-          libCType
-          VMSystem
-          VMRole
-          cloudProvider
-          floatType
         }
 
         metadata {
@@ -103,6 +105,11 @@ class EntityDetailsInformation extends React.PureComponent {
     // interfaces.
     const networkInterfaces = system.network.interfaces.filter(
       intr => intr.mac && intr.addresses.length > 0,
+    );
+
+    const fmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 });
+    const processes = Object.assign([], system.processes).sort(
+      (a, b) => b.pid - a.pid,
     );
 
     return (

@@ -9,6 +9,7 @@ import LoadingCard from "/lib/component/partial/LoadingCard";
 import RelatedEntitiesCard from "/lib/component/partial/RelatedEntitiesCard";
 import EntityDetailsEvents from "./EntityDetailsEvents";
 import EntityDetailsInformation from "./EntityDetailsInformation";
+import EntityDetailsProcesses from "./EntityDetailsProcesses";
 import EntityDetailsToolbar from "./EntityDetailsToolbar";
 
 class EntityDetailsContainer extends React.PureComponent {
@@ -34,6 +35,12 @@ class EntityDetailsContainer extends React.PureComponent {
           ...EntityDetailsEvents_event
         }
 
+        system {
+          processes {
+            ...EntityDetailsProcesses_process
+          }
+        }
+
         ...RelatedEntitiesCard_entity
         ...EntityDetailsInformation_entity
         ...EntityDetailsToolbar_entity
@@ -42,6 +49,7 @@ class EntityDetailsContainer extends React.PureComponent {
       ${RelatedEntitiesCard.fragments.entity}
       ${EntityDetailsEvents.fragments.event}
       ${EntityDetailsInformation.fragments.entity}
+      ${EntityDetailsProcesses.fragments.process}
       ${EntityDetailsToolbar.fragments.entity}
     `,
   };
@@ -77,6 +85,11 @@ class EntityDetailsContainer extends React.PureComponent {
               <LoadingCard />
             ) : (
               <EntityDetailsInformation entity={entity} />
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            {!loading && entity.system.processes.length > 0 && (
+              <EntityDetailsProcesses processes={entity.system.processes} />
             )}
           </Grid>
           <Grid item xs={12} md={6}>

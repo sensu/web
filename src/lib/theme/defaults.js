@@ -58,6 +58,27 @@ const common = {
         fontFamily: title,
         fontWeight: 700,
       },
+      h2: {
+        fontFamily: title,
+        fontWeight: 700,
+      },
+      h3: {
+        fontFamily: title,
+        fontWeight: 700,
+      },
+      h4: {
+        fontFamily: title,
+        fontWeight: 700,
+      },
+      h5: {
+        fontFamily: title,
+        fontSize: "1.25rem",
+        fontWeight: 600,
+      },
+      h6: {
+        fontFamily: title,
+        fontWeight: 500,
+      },
       overline: {
         fontFamily: title,
         letterSpacing: "0.105em",
