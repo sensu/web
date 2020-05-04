@@ -132,7 +132,7 @@ class EntityDetailsInformation extends React.PureComponent {
                   <DictionaryEntry>
                     <DictionaryKey>Silenced By</DictionaryKey>
                     <DictionaryValue>
-                      {entity.silences.map(s => s.name).join(", ")}
+                      {entity.silences.map(s => s.name).join(" · ")}
                     </DictionaryValue>
                   </DictionaryEntry>
                 )}
@@ -189,7 +189,7 @@ class EntityDetailsInformation extends React.PureComponent {
                 <DictionaryEntry>
                   <DictionaryKey>Redacted Keys</DictionaryKey>
                   <DictionaryValue>
-                    {entity.redact.length > 0 ? entity.redact.join(", ") : "—"}
+                    {entity.redact.length > 0 ? entity.redact.join(" · ") : "—"}
                   </DictionaryValue>
                 </DictionaryEntry>
               </Dictionary>
