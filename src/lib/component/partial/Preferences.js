@@ -50,6 +50,14 @@ const setDarkModeMutation = gql`
   }
 `;
 
+const concatList = (list, { sep = " · ", max = 5} = {}) => {
+  const out = list.slice(0).sort().slice(0,max);
+  if (list.length > out.length) {
+    out.push(`and ${list.length - out.length} others`);
+  }
+  return out.join(sep);
+}
+
 const Preferences = ({ onClose }) => {
   const client = useApolloClient();
   const theme = usePreferredTheme();
@@ -110,7 +118,7 @@ const Preferences = ({ onClose }) => {
           </ListItemAvatar>
           <ListItemText
             primary={identity.sub}
-            secondary={identity.groups.join(" · ")}
+            secondary={concatList(identity.groups)}
           />
           <ListItemSecondaryAction>
             <Tooltip title="Sign-out">
