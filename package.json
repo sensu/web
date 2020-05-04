@@ -225,5 +225,5 @@
     "graphql-import/**/graphql": "14.4.2",
     "serialize-javascript": "2.1.2"
   },
-  "graphQLSchemaRef": "4a0d6ac"
+  "graphQLSchemaRef": "0655e33"
 }
