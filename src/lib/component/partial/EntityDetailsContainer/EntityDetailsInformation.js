@@ -34,7 +34,7 @@ const Strong = withStyles(() => ({
   root: {
     color: "inherit",
     fontSize: "inherit",
-    fontWeight: 500,
+    fontWeight: 600,
   },
 }))(Typography);
 
@@ -67,6 +67,13 @@ class EntityDetailsInformation extends React.PureComponent {
           platform
           platformFamily
           platformVersion
+          ARMVersion
+          libCType
+          VMSystem
+          VMRole
+          cloudProvider
+          floatType
+
           network {
             interfaces {
               name
@@ -103,16 +110,13 @@ class EntityDetailsInformation extends React.PureComponent {
       <Card>
         <CardHighlight color={status} />
         <CardContent>
-          <Typography variant="h5">
-            {entity.name}
+          <Typography variant="h5" paragraph>
+            Entity: {entity.name}
             {entity.silences.length > 0 && (
               <Tooltip title="Silenced">
                 <SilenceIcon style={{ float: "right" }} />
               </Tooltip>
             )}
-          </Typography>
-          <Typography variant="caption" paragraph>
-            Current state of the {entity.entityClass}.
           </Typography>
           <Grid container spacing={0}>
             <Grid item xs={12} sm={6}>
@@ -128,7 +132,7 @@ class EntityDetailsInformation extends React.PureComponent {
                   <DictionaryEntry>
                     <DictionaryKey>Silenced By</DictionaryKey>
                     <DictionaryValue>
-                      {entity.silences.map(s => s.name).join(", ")}
+                      {entity.silences.map(s => s.name).join(" · ")}
                     </DictionaryValue>
                   </DictionaryEntry>
                 )}
@@ -185,17 +189,7 @@ class EntityDetailsInformation extends React.PureComponent {
                 <DictionaryEntry>
                   <DictionaryKey>Redacted Keys</DictionaryKey>
                   <DictionaryValue>
-                    {entity.redact.length > 0 ? (
-                      <List disablePadding>
-                        {entity.redact.map(key => (
-                          <DetailedListItem key={key}>
-                            <DetailedListItemTitle>{key}</DetailedListItemTitle>
-                          </DetailedListItem>
-                        ))}
-                      </List>
-                    ) : (
-                      "—"
-                    )}
+                    {entity.redact.length > 0 ? entity.redact.join(" · ") : "—"}
                   </DictionaryValue>
                 </DictionaryEntry>
               </Dictionary>
@@ -215,6 +209,24 @@ class EntityDetailsInformation extends React.PureComponent {
                   <DictionaryKey>Hostname</DictionaryKey>
                   <DictionaryValue>
                     <Maybe value={system.hostname} fallback="n/a" />
+                  </DictionaryValue>
+                </DictionaryEntry>
+                <DictionaryEntry>
+                  <DictionaryKey>Cloud Provider</DictionaryKey>
+                  <DictionaryValue>
+                    <Maybe value={system.cloudProvider} fallback="—" />
+                  </DictionaryValue>
+                </DictionaryEntry>
+                <DictionaryEntry>
+                  <DictionaryKey>VM System</DictionaryKey>
+                  <DictionaryValue>
+                    <Maybe value={system.VMSystem} fallback="—" />
+                  </DictionaryValue>
+                </DictionaryEntry>
+                <DictionaryEntry>
+                  <DictionaryKey>VM Role</DictionaryKey>
+                  <DictionaryValue>
+                    <Maybe value={system.VMRole} fallback="—" />
                   </DictionaryValue>
                 </DictionaryEntry>
               </Dictionary>
@@ -249,6 +261,24 @@ class EntityDetailsInformation extends React.PureComponent {
                   <DictionaryKey>Architecture</DictionaryKey>
                   <DictionaryValue>
                     <Maybe value={system.arch} fallback="n/a" />
+                  </DictionaryValue>
+                </DictionaryEntry>
+                <DictionaryEntry>
+                  <DictionaryKey>ARM Version</DictionaryKey>
+                  <DictionaryValue>
+                    <Maybe value={system.ARMVersion} fallback="n/a" />
+                  </DictionaryValue>
+                </DictionaryEntry>
+                <DictionaryEntry>
+                  <DictionaryKey>Float Type</DictionaryKey>
+                  <DictionaryValue>
+                    <Maybe value={system.ARMVersion} fallback="—" />
+                  </DictionaryValue>
+                </DictionaryEntry>
+                <DictionaryEntry>
+                  <DictionaryKey>libc Implementation</DictionaryKey>
+                  <DictionaryValue>
+                    <Maybe value={system.libcType} fallback="—" />
                   </DictionaryValue>
                 </DictionaryEntry>
               </Dictionary>
