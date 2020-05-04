@@ -87,11 +87,11 @@ class EntityDetailsContainer extends React.PureComponent {
               <EntityDetailsInformation entity={entity} />
             )}
           </Grid>
-          <Grid item xs={12}>
-            {!loading && entity.system.processes.length > 0 && (
+          {!loading && entity.system.processes.length > 0 && (
+            <Grid item xs={12}>
               <EntityDetailsProcesses processes={entity.system.processes} />
-            )}
-          </Grid>
+            </Grid>
+          )}
           <Grid item xs={12} md={6}>
             {loading ? (
               <LoadingCard />

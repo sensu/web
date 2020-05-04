@@ -3,7 +3,6 @@
 import React from "/vendor/react";
 import gql from "/vendor/graphql-tag";
 import {
-  Box,
   Card,
   CardContent,
   Table,
@@ -13,6 +12,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  TableSortLabel,
   Typography,
 } from "/vendor/@material-ui/core";
 
@@ -34,8 +34,10 @@ interface Props {
   processes: Process[];
 }
 
+type Columns = "name" | "cpuPercent" | "memoryPercent" | "created" | "pid";
+
 interface Column {
-  id: "name" | "cpuPercent" | "memoryPercent" | "created" | "pid";
+  id: Columns;
   primary?: boolean;
   label: string;
   minWidth?: number;
@@ -74,9 +76,28 @@ const columns: Column[] = [
   },
 ];
 
+const sortString = (a: string, b: string) => {
+  if (a === b) {
+    return 0;
+  }
+  return a > b ? 1 : -1;
+};
+
 const EntityDetailsProcesses = ({ processes: processesProp }: Props) => {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const [orderBy, setOrderBy] = React.useState<Columns>("cpuPercent");
+  const [order, setOrder] = React.useState<"asc" | "desc">("asc");
+  const createOrderHandler = (col: Columns) => () => {
+    if (orderBy === col) {
+      setOrder(order === "desc" ? "asc" : "desc");
+    } else {
+      setOrderBy(col);
+      setOrder("desc");
+      setPage(0);
+    }
+  };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -88,9 +109,21 @@ const EntityDetailsProcesses = ({ processes: processesProp }: Props) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const processes = Object.assign([] as Process[], processesProp).sort(
-    (a, b) => a.pid - b.pid,
-  );
+  const processes = Object.assign([] as Process[], processesProp)
+    .sort((a, b) => sortString(a.name, b.name))
+    .sort((a, b) => {
+      // TODO(james): can we use a generic?
+      let val: number;
+      if (typeof a[orderBy] === "string") {
+        val = sortString(a[orderBy] as string, b[orderBy] as string);
+      } else {
+        val = (a[orderBy] as number) - (b[orderBy] as number);
+      }
+      if (order === "asc") {
+        val *= -1;
+      }
+      return val;
+    });
 
   return (
     <Card>
@@ -106,8 +139,15 @@ const EntityDetailsProcesses = ({ processes: processesProp }: Props) => {
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
+                  sortDirection={orderBy === column.id ? order : false}
                 >
-                  {column.label}
+                  <TableSortLabel
+                    active={orderBy === column.id}
+                    direction={orderBy === column.id ? order : "asc"}
+                    onClick={createOrderHandler(column.id)}
+                  >
+                    {column.label}
+                  </TableSortLabel>
                 </TableCell>
               ))}
             </TableRow>
@@ -138,7 +178,7 @@ const EntityDetailsProcesses = ({ processes: processesProp }: Props) => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 25, 100]}
         component="div"
         count={processes.length}
         rowsPerPage={rowsPerPage}

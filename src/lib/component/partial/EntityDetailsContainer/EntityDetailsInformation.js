@@ -107,25 +107,17 @@ class EntityDetailsInformation extends React.PureComponent {
       intr => intr.mac && intr.addresses.length > 0,
     );
 
-    const fmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 });
-    const processes = Object.assign([], system.processes).sort(
-      (a, b) => b.pid - a.pid,
-    );
-
     return (
       <Card>
         <CardHighlight color={status} />
         <CardContent>
-          <Typography variant="h5">
-            {entity.name}
+          <Typography variant="h5" paragraph>
+            Entity: {entity.name}
             {entity.silences.length > 0 && (
               <Tooltip title="Silenced">
                 <SilenceIcon style={{ float: "right" }} />
               </Tooltip>
             )}
-          </Typography>
-          <Typography variant="caption" paragraph>
-            Current state of the {entity.entityClass}.
           </Typography>
           <Grid container spacing={0}>
             <Grid item xs={12} sm={6}>
@@ -198,17 +190,7 @@ class EntityDetailsInformation extends React.PureComponent {
                 <DictionaryEntry>
                   <DictionaryKey>Redacted Keys</DictionaryKey>
                   <DictionaryValue>
-                    {entity.redact.length > 0 ? (
-                      <List disablePadding>
-                        {entity.redact.map(key => (
-                          <DetailedListItem key={key}>
-                            <DetailedListItemTitle>{key}</DetailedListItemTitle>
-                          </DetailedListItem>
-                        ))}
-                      </List>
-                    ) : (
-                      "—"
-                    )}
+                    {entity.redact.length > 0 ? entity.redact.join(", ") : "—"}
                   </DictionaryValue>
                 </DictionaryEntry>
               </Dictionary>
