@@ -22,7 +22,6 @@ import {
   DictionaryEntry,
   InlineLink,
   CheckStatusIcon,
-  RelativeToCurrentDate,
 } from "/lib/component/base";
 import LabelsAnnotationsCell from "/lib/component/partial/LabelsAnnotationsCell";
 import { Maybe, NamespaceLink } from "/lib/component/util";
