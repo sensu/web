@@ -57,7 +57,6 @@ class EventDetailsEntitySummary extends React.Component {
         name
         entityClass
         subscriptions
-        lastSeen
         status
         silences {
           name
@@ -148,16 +147,6 @@ class EventDetailsEntitySummary extends React.Component {
                     </DictionaryValue>
                   </DictionaryEntry>
                 )}
-                <DictionaryEntry>
-                  <DictionaryKey className={classes.smaller}>
-                    Last Seen
-                  </DictionaryKey>
-                  <DictionaryValue className={classes.fullWidth}>
-                    <Maybe value={entity.lastSeen} fallback="n/a">
-                      {val => <RelativeToCurrentDate dateTime={val} />}
-                    </Maybe>
-                  </DictionaryValue>
-                </DictionaryEntry>
                 <DictionaryEntry>
                   <DictionaryKey className={classes.smaller}>
                     Subscriptions
