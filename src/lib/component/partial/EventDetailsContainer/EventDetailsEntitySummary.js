@@ -148,6 +148,10 @@ class EventDetailsEntitySummary extends React.Component {
                   </DictionaryEntry>
                 )}
                 <DictionaryEntry>
+                  <DictionaryKey>Class</DictionaryKey>
+                  <DictionaryValue>{entity.entityClass}</DictionaryValue>
+                </DictionaryEntry>
+                <DictionaryEntry>
                   <DictionaryKey className={classes.smaller}>
                     Subscriptions
                   </DictionaryKey>
@@ -171,10 +175,6 @@ class EventDetailsEntitySummary extends React.Component {
             <Grid container spacing={0}>
               <Grid item xs={12} sm={6}>
                 <Dictionary>
-                  <DictionaryEntry>
-                    <DictionaryKey>Class</DictionaryKey>
-                    <DictionaryValue>{entity.entityClass}</DictionaryValue>
-                  </DictionaryEntry>
                   <DictionaryEntry>
                     <DictionaryKey>Hostname</DictionaryKey>
                     <DictionaryValue>
