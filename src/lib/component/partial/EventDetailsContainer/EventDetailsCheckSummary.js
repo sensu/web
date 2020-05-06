@@ -1,9 +1,12 @@
+/* eslint-disable react/prop-types */
+
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
 import {
   withStyles,
+  Box,
   Card,
   CardContent,
   Divider,
@@ -38,9 +41,11 @@ import {
 } from "/lib/component/base";
 import { Maybe, NamespaceLink } from "/lib/component/util";
 import { SilenceIcon, ExpandMoreIcon } from "/lib/component/icon";
-import LabelsAnnotationsCell from "/lib/component/partial/LabelsAnnotationsCell";
 
+import LabelsAnnotationsCell from "/lib/component/partial/LabelsAnnotationsCell";
 import CronDescriptor from "/lib/component/partial/CronDescriptor";
+
+import EventDetailsHookSummary from "./EventDetailsHookSummary";
 
 const styles = theme => ({
   alignmentFix: {
@@ -92,6 +97,9 @@ class EventDetailsCheckSummary extends React.PureComponent {
         checkHooks {
           hooks
         }
+        hooks {
+          ...EventDetailsHookSummary_hook
+        }
         assets: runtimeAssets {
           id
           name
@@ -104,7 +112,9 @@ class EventDetailsCheckSummary extends React.PureComponent {
           ...LabelsAnnotationsCell_objectmeta
         }
       }
+
       ${LabelsAnnotationsCell.fragments.objectmeta}
+      ${EventDetailsHookSummary.fragments.hook}
     `,
     entity: gql`
       fragment EventDetailsCheckSummary_entity on Entity {
@@ -286,6 +296,27 @@ class EventDetailsCheckSummary extends React.PureComponent {
               </Typography>
             </CardContent>
           </React.Fragment>
+        )}
+        {check.hooks.length > 0 && (
+          <ExpansionPanel>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="button" className={classes.expand}>
+                Check Hook Output
+              </Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <Grid container spacing={0}>
+                {/* TODO(james): unable to pull meta fields at this time; we can, we should use name or id instead of index. */}
+                {check.hooks.map((hook, i) => (
+                  <Grid item xs={12} sm={6} key={i.toString()}>
+                    <Box marginBottom={2}>
+                      <EventDetailsHookSummary hook={hook} />
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
         )}
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
