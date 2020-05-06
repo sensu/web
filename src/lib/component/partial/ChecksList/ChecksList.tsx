@@ -47,6 +47,7 @@ export const checksListFragments = {
           deleted @client
           name
           namespace
+          subscriptions
           silences {
             name
             ...ClearSilencedEntriesDialog_silence
@@ -75,6 +76,7 @@ interface Check {
   deleted: boolean;
   name: string;
   namespace: string;
+  subscriptions: string[];
   silences: unknown[];
   pageInfo: unknown;
 }
@@ -165,8 +167,8 @@ const ChecksList = ({
   };
 
   const executeChecks = (checks: Check[]) => {
-    checks.forEach(({ id, name, namespace: checkNamespace }) => {
-      const promise = onExecute({ id });
+    checks.forEach(({ id, name, subscriptions, namespace: checkNamespace }) => {
+      const promise = onExecute({ id, subscriptions });
 
       createExecuteCheckStatusToast(promise, {
         checkName: name,
