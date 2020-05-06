@@ -6,7 +6,6 @@ import gql from "/vendor/graphql-tag";
 
 import {
   withStyles,
-  Box,
   Card,
   CardContent,
   Divider,
