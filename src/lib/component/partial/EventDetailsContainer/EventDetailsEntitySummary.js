@@ -22,7 +22,6 @@ import {
   DictionaryEntry,
   InlineLink,
   CheckStatusIcon,
-  RelativeToCurrentDate,
 } from "/lib/component/base";
 import LabelsAnnotationsCell from "/lib/component/partial/LabelsAnnotationsCell";
 import { Maybe, NamespaceLink } from "/lib/component/util";
@@ -57,7 +56,6 @@ class EventDetailsEntitySummary extends React.Component {
         name
         entityClass
         subscriptions
-        lastSeen
         status
         silences {
           name
@@ -149,14 +147,8 @@ class EventDetailsEntitySummary extends React.Component {
                   </DictionaryEntry>
                 )}
                 <DictionaryEntry>
-                  <DictionaryKey className={classes.smaller}>
-                    Last Seen
-                  </DictionaryKey>
-                  <DictionaryValue className={classes.fullWidth}>
-                    <Maybe value={entity.lastSeen} fallback="n/a">
-                      {val => <RelativeToCurrentDate dateTime={val} />}
-                    </Maybe>
-                  </DictionaryValue>
+                  <DictionaryKey>Class</DictionaryKey>
+                  <DictionaryValue>{entity.entityClass}</DictionaryValue>
                 </DictionaryEntry>
                 <DictionaryEntry>
                   <DictionaryKey className={classes.smaller}>
@@ -182,10 +174,6 @@ class EventDetailsEntitySummary extends React.Component {
             <Grid container spacing={0}>
               <Grid item xs={12} sm={6}>
                 <Dictionary>
-                  <DictionaryEntry>
-                    <DictionaryKey>Class</DictionaryKey>
-                    <DictionaryValue>{entity.entityClass}</DictionaryValue>
-                  </DictionaryEntry>
                   <DictionaryEntry>
                     <DictionaryKey>Hostname</DictionaryKey>
                     <DictionaryValue>
