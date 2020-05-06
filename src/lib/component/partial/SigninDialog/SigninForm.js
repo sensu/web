@@ -20,7 +20,10 @@ const SignInForm = ({ disabled, error, onSubmit }) => {
 
   const handleSubmit = useCallback(
     ev => {
-      onSubmit({ username, password });
+      onSubmit({
+        username: username.trim(),
+        password,
+      });
       ev.preventDefault();
     },
     [username, password, onSubmit],
