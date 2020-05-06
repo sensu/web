@@ -50,7 +50,13 @@ const styles = theme => ({
   alignmentFix: {
     boxSizing: "border-box",
   },
-  expand: { color: theme.palette.text.secondary },
+  expand: {
+    color: theme.palette.text.secondary },
+  // NOTE: Ensure that codeblock does not escape container on smaller viewports.
+  code: {
+    width: 0,
+    minWidth: "100%",
+  }
 });
 
 class EventDetailsCheckSummary extends React.PureComponent {
@@ -282,7 +288,7 @@ class EventDetailsCheckSummary extends React.PureComponent {
         {check.output ? (
           <React.Fragment>
             <Divider />
-            <CodeBlock>
+            <CodeBlock className={classes.code}>
               <CardContent>{check.output}</CardContent>
             </CodeBlock>
           </React.Fragment>

@@ -41,9 +41,15 @@ const useStyles = makeStyles(() =>
   createStyles({
     heading: {
       flex: "1 1 auto",
+      alignSelf: "center",
     },
     subheading: {
       alignSelf: "center",
+    },
+    // NOTE: Ensure that codeblock does not escape container on smaller viewports.
+    code: {
+      width: 0,
+      minWidth: "100%",
     },
   }),
 );
@@ -75,7 +81,7 @@ const EventDetailsHookSummary = ({ hook }: Props) => {
           <Duration duration={hook.duration * 1000} />
         </Typography>
       </ExpansionPanelSummary>
-      <CodeBlock>
+      <CodeBlock className={classes.code}>
         <ExpansionPanelDetails>
           <CodeHighlight
             language="bash"
