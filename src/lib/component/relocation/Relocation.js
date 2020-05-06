@@ -27,7 +27,7 @@ export const Provider = ({ children }) => {
           );
 
           if (index === -1) {
-            return null;
+            return previousElements;
           }
 
           return removeAtIndex(previousElements, index);
