@@ -10,4 +10,8 @@ export {
   default as CreateSilenceStatusToast,
   useCreateSilenceStatusToast,
 } from "./CreateSilenceStatusToast";
+export {
+  default as ManageResourceStatusToast,
+  useManageResourceStatusToast,
+} from "./ManageResourceStatusToast";
 export { default as ResolveEventStatusToast } from "./ResolveEventStatusToast";
