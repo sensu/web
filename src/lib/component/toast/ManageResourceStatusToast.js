@@ -9,18 +9,54 @@ import { FetchError } from "/lib/error";
 import { Toast } from "/lib/component/base";
 import { usePromiseBoundToast } from "/lib/component/relocation";
 
-const PublishCheckStatusToast = ({
+const toPastTense = action => {
+  if (action === "edit") {
+    return "edited";
+  } else if (action === "delete") {
+    return "deleted";
+  }
+  return "created";
+};
+
+const toPresentParticiple = action => {
+  if (action === "edit") {
+    return "editing";
+  } else if (action === "delete") {
+    return "deleting";
+  }
+  return "creating";
+};
+
+const toUpper = str => {
+  if (typeof str !== "string" || str.length === 0) {
+    return str;
+  }
+  return str[0].toUpperCase() + str.slice(1);
+};
+
+const ManageResourceStatusToast = ({
+  action,
   onClose,
   resolved,
   rejected,
-  checkName,
-  publish,
+  resourceName,
+  resourceType,
+  batch,
+  error,
 }) => {
-  const subject = (
-    <React.Fragment>
-      <strong>{checkName}</strong>
-    </React.Fragment>
-  );
+  let subject;
+  if (batch) {
+    subject = `${resourceType}s`;
+  } else if (!resourceName) {
+    subject = resourceType;
+  } else {
+    subject = (
+      <React.Fragment>
+        <strong>{resourceName}</strong>
+      </React.Fragment>
+    );
+  }
+
 
   if (resolved) {
     return (
@@ -29,7 +65,7 @@ const PublishCheckStatusToast = ({
         variant="success"
         message={
           <span>
-            {publish ? "Published" : "Unpublished"} {subject}.{" "}
+            {toUpper(subject)} {batch ? "were" : "was"} {toPastTense(action)}.
           </span>
         }
         onClose={onClose}
@@ -43,7 +79,7 @@ const PublishCheckStatusToast = ({
         variant="error"
         message={
           <span>
-            Failed to {publish ? "publish" : "unpublish"} {subject}.
+            Failed to {action} {subject}{error ? `, ${error.message}` : ""}.
           </span>
         }
         onClose={onClose}
@@ -57,7 +93,7 @@ const PublishCheckStatusToast = ({
       progress={<LinearProgress />}
       message={
         <span>
-          {publish ? "Publishing" : "Unpublishing"} {subject}.
+          {toUpper(toPresentParticiple(action))} {subject}.
         </span>
       }
       onClose={onClose}
@@ -65,22 +101,24 @@ const PublishCheckStatusToast = ({
   );
 };
 
-export default PublishCheckStatusToast;
+export default ManageResourceStatusToast;
 
-export const usePublishCheckStatusToast = () => {
+export const useManageResourceStatusToast = () => {
   const createToast = usePromiseBoundToast();
 
-  return (promise, { checkName, publish }) =>
+  return (promise, { action, resourceType, resourceName, batch }) =>
     createToast(
       promise,
       ({ resolved, rejected, remove, error }) => (
-        <PublishCheckStatusToast
+        <ManageResourceStatusToast
           onClose={remove}
           resolved={resolved}
           rejected={rejected}
           error={error}
-          checkName={checkName}
-          publish={publish}
+          action={action}
+          resourceName={resourceName}
+          resourceType={resourceType}
+          batch={batch}
         />
       ),
       error => {

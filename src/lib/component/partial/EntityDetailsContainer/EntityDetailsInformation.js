@@ -24,8 +24,9 @@ import {
   DetailedListItemTitle,
   RelativeToCurrentDate,
   CheckStatusIcon,
+  InlineLink,
 } from "/lib/component/base";
-import { Maybe } from "/lib/component/util";
+import { Maybe, NamespaceLink } from "/lib/component/util";
 import { SilenceIcon } from "/lib/component/icon";
 
 import LabelsAnnotationsCell from "/lib/component/partial/LabelsAnnotationsCell";
@@ -47,6 +48,8 @@ class EntityDetailsInformation extends React.PureComponent {
     entity: gql`
       fragment EntityDetailsInformation_entity on Entity {
         name
+        namespace
+
         entityClass
         subscriptions
         lastSeen
@@ -181,8 +184,15 @@ class EntityDetailsInformation extends React.PureComponent {
                 <DictionaryEntry>
                   <DictionaryKey>Deregistration Handler</DictionaryKey>
                   <DictionaryValue>
-                    <Maybe value={system.deregistration} fallback="—">
-                      {config => config.handler}
+                    <Maybe value={entity.deregistration} fallback="—">
+                      {config => (
+                        <NamespaceLink
+                          component={InlineLink}
+                          to={`/handlers/${config.handler}`}
+                        >
+                          {config.handler}
+                        </NamespaceLink>
+                      )}
                     </Maybe>
                   </DictionaryValue>
                 </DictionaryEntry>

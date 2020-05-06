@@ -17,6 +17,7 @@ import { ListController } from "/lib/component/controller";
 import { useToast } from "/lib/component/relocation";
 import {
   useExecuteCheckStatusToast,
+  useManageResourceStatusToast,
   ResolveEventStatusToast,
 } from "/lib/component/toast";
 
@@ -47,26 +48,33 @@ const EventsList = ({
   const [unsilence, setUnsilence] = React.useState(null);
 
   const createToast = useToast();
+  const createManageResourceStatusToast = useManageResourceStatusToast();
   const createExecuteCheckStatusToast = useExecuteCheckStatusToast();
 
   const resolveEvents = events => {
-    Promise.all(
-      events.map(event => onResolve({ id: event.id })),
-    ).catch(error => {
-      // HACK: Capture root-level query errors that vaguely match unauthorized errors
-      // and open toast.
-      if (isApolloError(error) && /request unauthorized/.test(error.message)) {
-        createToast(`events.resolve`, ({ remove }) => (
-          <ResolveEventStatusToast rejected error={error} onClose={remove} />
-        ));
-        return;
-      }
-      throw error;
-    });
+    Promise.all(events.map(event => onResolve({ id: event.id }))).catch(
+      error => {
+        // HACK: Capture root-level query errors that vaguely match unauthorized errors
+        // and open toast.
+        if (
+          isApolloError(error) &&
+          /request unauthorized/.test(error.message)
+        ) {
+          createToast(`events.resolve`, ({ remove }) => (
+            <ResolveEventStatusToast rejected error={error} onClose={remove} />
+          ));
+          return;
+        }
+        throw error;
+      },
+    );
   };
 
   const deleteEvents = events => {
-    events.forEach(event => onDelete({ id: event.id }));
+    createManageResourceStatusToast(
+      Promise.all(events.map(event => onDelete({ id: event.id }))),
+      { resourceType: "event", action: "delete", batch: events.length > 1 },
+    );
   };
 
   const executeCheck = events => {
@@ -238,8 +246,8 @@ const EventsList = ({
               limit={limit}
               offset={offset}
               pageInfo={namespace && namespace.events.pageInfo}
-              onChangeQuery={(update) =>
-                onChangeQuery((params) => ({ ...params, ...update }))
+              onChangeQuery={update =>
+                onChangeQuery(params => ({ ...params, ...update }))
               }
             />
 
