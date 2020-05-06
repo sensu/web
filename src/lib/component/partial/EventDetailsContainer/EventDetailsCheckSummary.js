@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
@@ -38,15 +40,23 @@ import {
 } from "/lib/component/base";
 import { Maybe, NamespaceLink } from "/lib/component/util";
 import { SilenceIcon, ExpandMoreIcon } from "/lib/component/icon";
-import LabelsAnnotationsCell from "/lib/component/partial/LabelsAnnotationsCell";
 
+import LabelsAnnotationsCell from "/lib/component/partial/LabelsAnnotationsCell";
 import CronDescriptor from "/lib/component/partial/CronDescriptor";
+
+import EventDetailsHookSummary from "./EventDetailsHookSummary";
 
 const styles = theme => ({
   alignmentFix: {
     boxSizing: "border-box",
   },
-  expand: { color: theme.palette.text.secondary },
+  expand: {
+    color: theme.palette.text.secondary },
+  // NOTE: Ensure that codeblock does not escape container on smaller viewports.
+  code: {
+    width: 0,
+    minWidth: "100%",
+  }
 });
 
 class EventDetailsCheckSummary extends React.PureComponent {
@@ -92,6 +102,9 @@ class EventDetailsCheckSummary extends React.PureComponent {
         checkHooks {
           hooks
         }
+        hooks {
+          ...EventDetailsHookSummary_hook
+        }
         assets: runtimeAssets {
           id
           name
@@ -104,7 +117,9 @@ class EventDetailsCheckSummary extends React.PureComponent {
           ...LabelsAnnotationsCell_objectmeta
         }
       }
+
       ${LabelsAnnotationsCell.fragments.objectmeta}
+      ${EventDetailsHookSummary.fragments.hook}
     `,
     entity: gql`
       fragment EventDetailsCheckSummary_entity on Entity {
@@ -273,7 +288,7 @@ class EventDetailsCheckSummary extends React.PureComponent {
         {check.output ? (
           <React.Fragment>
             <Divider />
-            <CodeBlock>
+            <CodeBlock className={classes.code}>
               <CardContent>{check.output}</CardContent>
             </CodeBlock>
           </React.Fragment>
@@ -287,6 +302,9 @@ class EventDetailsCheckSummary extends React.PureComponent {
             </CardContent>
           </React.Fragment>
         )}
+        {check.hooks.map(hook => (
+          <EventDetailsHookSummary key={hook.config.name} hook={hook} />
+        ))}
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="button" className={classes.expand}>

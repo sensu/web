@@ -5,11 +5,12 @@ const CheckDetailsExecuteAction = ({ children, check, onExecute }) => {
   const createExecuteCheckStatusToast = useExecuteCheckStatusToast();
 
   return children(() => {
-    const promise = onExecute({ id: check.id });
+    const { id, subscriptions, namespace } = check;
+    const promise = onExecute({ id, subscriptions });
 
     createExecuteCheckStatusToast(promise, {
       checkName: check.name,
-      namespace: check.namespace,
+      namespace,
     });
   });
 };
@@ -20,6 +21,7 @@ CheckDetailsExecuteAction.fragments = {
       id
       name
       namespace
+      subscriptions
     }
   `,
 };
