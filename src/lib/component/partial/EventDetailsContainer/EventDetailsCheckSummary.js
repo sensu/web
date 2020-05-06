@@ -297,27 +297,9 @@ class EventDetailsCheckSummary extends React.PureComponent {
             </CardContent>
           </React.Fragment>
         )}
-        {check.hooks.length > 0 && (
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="button" className={classes.expand}>
-                Check Hook Output
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Grid container spacing={0}>
-                {/* TODO(james): unable to pull meta fields at this time; we can, we should use name or id instead of index. */}
-                {check.hooks.map((hook, i) => (
-                  <Grid item xs={12} sm={6} key={i.toString()}>
-                    <Box marginBottom={2}>
-                      <EventDetailsHookSummary hook={hook} />
-                    </Box>
-                  </Grid>
-                ))}
-              </Grid>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        )}
+        {check.hooks.map(hook => (
+          <EventDetailsHookSummary key={hook.config.name} hook={hook} />
+        ))}
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="button" className={classes.expand}>
