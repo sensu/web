@@ -92,6 +92,7 @@ const ContextSwitcher = (
           <Box flexGrow="1">
             <SearchBox
               ref={ref}
+              aria-label="Search Namespaces"
               variant="search"
               placeholder="Find namespaces..."
               value={filterValue}

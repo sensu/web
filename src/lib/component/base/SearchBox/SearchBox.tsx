@@ -58,7 +58,6 @@ const SearchBox = ({
 
         <input
           type="search"
-          aria-label="Search namespaces"
           className={classes.input}
           placeholder={placeholder}
           value={value}
