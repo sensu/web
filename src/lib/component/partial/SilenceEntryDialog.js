@@ -67,7 +67,7 @@ const SilenceEntryDialog = props => {
                 </div>
               </DialogContent>
               <DialogActions>
-                <Button onClick={close} color="primary">
+                <Button onClick={close}>
                   Cancel
                 </Button>
                 <Button

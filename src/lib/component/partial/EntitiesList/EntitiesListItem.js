@@ -1,6 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
+import uniqueId from "/lib/util/uniqueId";
 
 import { Checkbox, TableCell } from "/vendor/@material-ui/core";
 
@@ -63,6 +64,11 @@ class EntitiesListItem extends React.PureComponent {
     `,
   };
 
+  constructor(props) {
+    super(props);
+    this._id = ":" + uniqueId();
+  }
+
   render() {
     const {
       editable,
@@ -78,7 +84,10 @@ class EntitiesListItem extends React.PureComponent {
           {editable && (
             <TableCell padding="checkbox">
               <Checkbox
-                color="primary"
+                component="div"
+                inputProps={{
+                  "aria-labelledby": this._id,
+                }}
                 checked={selected}
                 onChange={e => onChangeSelected(e.target.checked)}
               />
@@ -95,6 +104,7 @@ class EntitiesListItem extends React.PureComponent {
               }
               title={
                 <NamespaceLink
+                  id={this._id}
                   namespace={entity.namespace}
                   to={`/entities/${entity.name}`}
                 >

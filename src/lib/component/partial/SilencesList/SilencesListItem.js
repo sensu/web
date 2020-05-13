@@ -1,6 +1,8 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
+import uniqueId from "/lib/util/uniqueId";
+
 import {
   Avatar,
   Button,
@@ -72,6 +74,11 @@ class SilencesListItem extends React.Component {
     `,
   };
 
+  constructor(props) {
+    super(props);
+    this._id = ":" + uniqueId();
+  }
+
   renderDetails = () => {
     const { silence } = this.props;
 
@@ -99,6 +106,10 @@ class SilencesListItem extends React.Component {
           {editable && (
             <TableCell padding="checkbox">
               <Checkbox
+                component="div"
+                inputProps={{
+                  "aria-labelledby": this._id,
+                }}
                 checked={selected}
                 onChange={() => onClickSelect(!selected)}
               />
@@ -107,7 +118,7 @@ class SilencesListItem extends React.Component {
 
           <TableOverflowCell>
             <ResourceDetails
-              title={<strong>{silence.name}</strong>}
+              title={<strong id={this._id}>{silence.name}</strong>}
               details={this.renderDetails()}
             />
           </TableOverflowCell>

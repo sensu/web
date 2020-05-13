@@ -20,6 +20,7 @@ class SilenceEntryFormReasonPanel extends React.PureComponent {
             </Typography>
 
             <TextField
+              id="silenced-reason"
               label="Reason"
               multiline
               fullWidth
