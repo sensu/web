@@ -9,6 +9,7 @@ import {
   Box,
   IconButton,
   Typography,
+  Tooltip,
 } from "/vendor/@material-ui/core";
 import { CloseIcon } from "/lib/component/icon";
 import { KeyboardInput, SearchBox } from "/lib/component/base";
@@ -100,9 +101,11 @@ const ContextSwitcher = (
             />
           </Box>
           <Box flexGrow="0">
-            <IconButton color="inherit" onClick={onClose}>
-              <CloseIcon />
-            </IconButton>
+            <Tooltip title="Close">
+              <IconButton color="inherit" onClick={onClose}>
+                <CloseIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
         </Box>
       </Box>

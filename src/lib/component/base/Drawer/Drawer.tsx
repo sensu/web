@@ -101,7 +101,12 @@ const Drawer = ({
       overflow="hidden"
     >
       <Box display="flex" alignItems="center" height={heights.toolbar}>
-        <IconButton color="inherit" onClick={onToggle}>
+        <IconButton
+          color="inherit"
+          onClick={onToggle}
+          aria-label="main-menu"
+          aria-expanded={isOpen}
+        >
           <MenuIcon />
         </IconButton>{" "}
         <Box component="span" marginLeft={1}>

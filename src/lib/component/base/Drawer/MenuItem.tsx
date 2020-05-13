@@ -202,17 +202,19 @@ const Folder = ({
         contents={contents}
         onClick={onExpand}
       />
-      <Box component={animated.ul} overflow="hidden" style={childStyles}>
-        {links.map(({ id, ...rest }) => (
-          <Link
-            key={id}
-            disabled={!expanded}
-            {...rest}
-            collapsed={collapsed}
-            icon={undefined}
-          />
-        ))}
-      </Box>
+      <li>
+        <Box component={animated.ul} overflow="hidden" style={childStyles}>
+          {links.map(({ id, ...rest }) => (
+            <Link
+              key={id}
+              disabled={!expanded}
+              {...rest}
+              collapsed={collapsed}
+              icon={undefined}
+            />
+          ))}
+        </Box>
+      </li>
     </React.Fragment>
   );
 };

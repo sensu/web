@@ -34,12 +34,14 @@ const SignInForm = ({ disabled, error, onSubmit }) => {
       <TextField
         name="username"
         label="Username"
-        aria-label="Username"
+        inputProps={{
+          "aria-label": "Username",
+          autoCorrect: "false",
+          autocapitalize: "none",
+          spellCheck: false,
+        }}
         autoComplete="username"
-        autoCorrect="false"
-        autoCapitalize="none"
         disabled={disabled}
-        spellCheck={false}
         fullWidth
         margin="normal"
         onChange={ev => setUsername(ev.target.value)}
@@ -50,7 +52,12 @@ const SignInForm = ({ disabled, error, onSubmit }) => {
         type="password"
         name="password"
         label="Password"
-        aria-label="Password"
+        inputProps={{
+          "aria-label": "Password",
+          autoCorrect: "false",
+          autocapitalize: "none",
+          spellCheck: false,
+        }}
         autoComplete="current-password"
         fullWidth
         onChange={ev => setPassword(ev.target.value)}

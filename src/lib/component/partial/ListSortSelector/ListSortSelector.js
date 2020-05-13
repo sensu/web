@@ -13,10 +13,10 @@ class ListSortSelector extends React.Component {
   };
 
   static defaultProps = {
-    renderButton: ({ idx, open, ref }) => (
+    renderButton: ({ idx, open, isOpen, ref }) => (
       <RootRef rootRef={ref}>
         <DisclosureMenuItem
-          aria-owns={idx}
+          aria-owns={isOpen ? idx : undefined}
           aria-haspopup="true"
           label="Sort"
           onClick={open}

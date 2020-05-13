@@ -1,7 +1,12 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import classnames from "/vendor/classnames";
-import { withStyles, Typography, Checkbox } from "/vendor/@material-ui/core";
+import {
+  withStyles,
+  Typography,
+  Tooltip,
+  Checkbox,
+} from "/vendor/@material-ui/core";
 
 import { AppLayoutContext } from "/lib/component/base";
 
@@ -53,26 +58,31 @@ class ListHeader extends React.Component {
     sticky: false,
     renderActions: () => {},
     renderBulkActions: () => {},
-    onClickSelect: () => {},
+    onClickSelect: null,
     selectedCount: 0,
   };
 
   renderCheckbox = () => {
     const { editable, onClickSelect, selectedCount, rowCount } = this.props;
 
-    if (!editable) {
+    if (!editable || !onClickSelect) {
       return null;
     }
 
     return (
       <React.Fragment>
-        <Checkbox
-          component="button"
-          onClick={onClickSelect}
-          checked={rowCount > 0 && selectedCount === rowCount}
-          indeterminate={selectedCount > 0 && selectedCount !== rowCount}
-          style={{ color: "inherit" }}
-        />
+        <Tooltip title="Select">
+          <Checkbox
+            component="div"
+            inputProps={{
+              "aria-label": "select all",
+            }}
+            onClick={onClickSelect}
+            checked={rowCount > 0 && selectedCount === rowCount}
+            indeterminate={selectedCount > 0 && selectedCount !== rowCount}
+            style={{ color: "inherit" }}
+          />
+        </Tooltip>
         {selectedCount > 0 && <div>{selectedCount} Selected</div>}
       </React.Fragment>
     );
