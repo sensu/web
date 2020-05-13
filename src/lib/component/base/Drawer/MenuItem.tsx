@@ -34,6 +34,7 @@ interface LinkProps {
 
 interface ListItemButtonProps {
   active: boolean;
+  collapsed?: boolean;
   children: (React.ReactElement | undefined)[];
   disabled: boolean;
   to?: string;
@@ -48,6 +49,8 @@ const useStyles = makeStyles(
         paddingBottom: 0,
       },
       active: {
+        color: (props: any) =>
+          props.collapsed ? "white" : theme.palette.text.primary,
         backgroundColor: theme.palette.action.hover,
         fontWeight: 500,
       },
@@ -70,12 +73,13 @@ const useIsActive = (href: string) => {
 
 const ListItemButton = ({
   active,
+  collapsed,
   children,
   disabled,
   to,
   onClick,
 }: ListItemButtonProps) => {
-  const classes = useStyles();
+  const classes = useStyles({ collapsed });
 
   return (
     // @ts-ignore
@@ -112,6 +116,7 @@ const Link = ({
       height={heights.menuitem}
     >
       <ListItemButton
+        collapsed={collapsed}
         active={active}
         disabled={disabled || (!href && !onClick)}
         to={href}

@@ -6,7 +6,6 @@ import {
   Theme,
 } from "/vendor/@material-ui/core";
 import {
-  darken,
   emphasize,
 } from "/vendor/@material-ui/core/styles/colorManipulator";
 import classNames from "/vendor/classnames";
@@ -43,10 +42,10 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: `${theme.spacing(0.5)}px`,
     },
     value: {
-      color: darken(theme.palette.primary.main, 0.7),
-      background: emphasize(theme.palette.primary.main, 0.7),
+      color: theme.palette.secondary.contrastText,
+      background: theme.palette.secondary.main,
       borderRadius: `0 ${theme.spacing(0.5)}px ${theme.spacing(0.5)}px 0`,
-      border: `1px solid ${emphasize(theme.palette.primary.main, 0.7)}`,
+      border: `1px solid ${theme.palette.secondary.main}`,
       maxWidth: "200px",
     },
     imageContainer: {

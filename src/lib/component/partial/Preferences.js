@@ -207,6 +207,15 @@ const Preferences = ({ onClose }) => {
             <ListItemText primary="Classic" />
           </MenuItem>
           <MenuItem
+            selected={theme.value === "highcontrast"}
+            onClick={onThemeSelect("highcontrast")}
+          >
+            <ListItem>
+              <ListItemText primary="High Contrast" />
+            </ListItem>
+          </MenuItem>
+
+          <MenuItem
             selected={theme.value === "deuteranopia"}
             onClick={onThemeSelect("deuteranopia")}
           >

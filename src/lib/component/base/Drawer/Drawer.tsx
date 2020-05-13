@@ -18,9 +18,6 @@ import HorizontalRule from "./HorizontalRule";
 import MenuItem from "./MenuItem";
 import SensuWordmark from "../SensuWordmark";
 
-// TODO: Move into the theme somewhere?
-const silver = "rgb(213, 214, 221)";
-
 interface Props {
   // Unique identifier for the account that is currently authenticated.
   accountId: string;
@@ -82,7 +79,9 @@ const Drawer = ({
   );
 
   const theme = useTheme();
-  const color = isOpen ? theme.palette.text.primary : silver;
+  const color = isOpen
+    ? theme.palette.text.primary
+    : theme.palette.primary.contrastText;
   const width = isOpen ? widths.full : variant === "mini" ? widths.mini : 0;
   const height = topBarHeight > 0 ? window.innerHeight - topBarHeight : "100vh";
   const bgColor = isOpen
