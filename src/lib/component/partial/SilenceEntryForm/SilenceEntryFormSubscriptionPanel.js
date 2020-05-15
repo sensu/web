@@ -37,6 +37,7 @@ class SilenceEntryFormSubscriptionPanel extends React.PureComponent {
             </Typography>
 
             <MonoTextField
+              id="silenced-subscription"
               label="Subscription"
               fullWidth
               margin="normal"

@@ -1,6 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
+import uniqueId from "/lib/util/uniqueId";
 
 import { Checkbox, TableCell } from "/vendor/@material-ui/core";
 
@@ -72,6 +73,11 @@ class EventListItem extends React.Component {
     `,
   };
 
+  constructor(props) {
+    super(props);
+    this._id = ":" + uniqueId();
+  }
+
   handleClickCheckbox = () => {
     this.props.onChangeSelected(!this.props.selected);
   };
@@ -92,7 +98,10 @@ class EventListItem extends React.Component {
           {editable && (
             <TableCell padding="checkbox">
               <Checkbox
-                color="primary"
+                component="div"
+                inputProps={{
+                  "aria-labelledby": this._id,
+                }}
                 checked={selected}
                 onChange={this.handleClickCheckbox}
               />
@@ -111,6 +120,7 @@ class EventListItem extends React.Component {
               }
               title={
                 <NamespaceLink
+                  id={this._id}
                   namespace={event.namespace}
                   to={`/events/${entity.name}/${check.name}`}
                 >

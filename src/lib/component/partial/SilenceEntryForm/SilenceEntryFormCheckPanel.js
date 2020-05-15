@@ -33,6 +33,7 @@ class SilenceEntryFormCheckPanel extends React.PureComponent {
             </Typography>
 
             <MonoTextField
+              id="silenced-check"
               label="Check"
               fullWidth
               margin="normal"

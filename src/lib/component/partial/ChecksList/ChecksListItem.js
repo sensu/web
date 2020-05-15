@@ -1,6 +1,7 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
+import uniqueId from "/lib/util/uniqueId";
 
 import { Checkbox, TableCell } from "/vendor/@material-ui/core";
 import { NamespaceLink } from "/lib/component/util";
@@ -54,6 +55,11 @@ class CheckListItem extends React.Component {
     `,
   };
 
+  constructor(props) {
+    super(props);
+    this._id = ":" + uniqueId();
+  }
+
   render() {
     const { editable, editing, check, selected, onChangeSelected } = this.props;
 
@@ -63,7 +69,10 @@ class CheckListItem extends React.Component {
           {editable && (
             <TableCell padding="checkbox">
               <Checkbox
-                color="primary"
+                component="div"
+                inputProps={{
+                  "aria-labelledby": this._id,
+                }}
                 checked={selected}
                 onChange={e => onChangeSelected(e.target.checked)}
               />
@@ -74,6 +83,7 @@ class CheckListItem extends React.Component {
             <ResourceDetails
               title={
                 <NamespaceLink
+                  id={this._id}
                   namespace={check.namespace}
                   to={`/checks/${check.name}`}
                 >

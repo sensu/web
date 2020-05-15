@@ -1,5 +1,11 @@
 import React, { useCallback, useContext, useState } from "/vendor/react";
-import { useTheme, Box, IconButton, Modal } from "/vendor/@material-ui/core";
+import {
+  useTheme,
+  Box,
+  IconButton,
+  Modal,
+  Tooltip,
+} from "/vendor/@material-ui/core";
 import { animated, useSpring } from "/vendor/react-spring";
 import { MenuIcon } from "/lib/component/icon";
 import LayoutContext from "../AppLayout/Context";
@@ -101,9 +107,11 @@ const Drawer = ({
       overflow="hidden"
     >
       <Box display="flex" alignItems="center" height={heights.toolbar}>
-        <IconButton color="inherit" onClick={onToggle}>
-          <MenuIcon />
-        </IconButton>{" "}
+        <Tooltip title="Main Menu">
+          <IconButton color="inherit" onClick={onToggle} aria-expanded={isOpen}>
+            <MenuIcon />
+          </IconButton>
+        </Tooltip>{" "}
         <Box component="span" marginLeft={1}>
           {title || <SensuWordmark fontSize="inherit" />}
         </Box>

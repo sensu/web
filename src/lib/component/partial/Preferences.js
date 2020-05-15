@@ -35,8 +35,10 @@ import {
   LogoutIcon,
 } from "/lib/component/icon";
 
-import UserAvatar from "./UserAvatar";
+import useUniqueId from "/lib/component/util/useUniqueId";
 import invalidateTokens from "/lib/mutation/invalidateTokens";
+
+import UserAvatar from "./UserAvatar";
 
 const setThemeMutation = gql`
   mutation SetThemeMudation($theme: String!) {
@@ -50,18 +52,24 @@ const setDarkModeMutation = gql`
   }
 `;
 
-const concatList = (list, { sep = " · ", max = 5} = {}) => {
-  const out = list.slice(0).sort().slice(0,max);
+const concatList = (list, { sep = " · ", max = 5 } = {}) => {
+  const out = list
+    .slice(0)
+    .sort()
+    .slice(0, max);
   if (list.length > out.length) {
     out.push(`and ${list.length - out.length} others`);
   }
   return out.join(sep);
-}
+};
 
 const Preferences = ({ onClose }) => {
   const client = useApolloClient();
   const theme = usePreferredTheme();
   const identity = useIdentity();
+
+  const darkModeLabelId = ":" + useUniqueId();
+  const sysPrefLabelId = ":" + useUniqueId();
 
   const onToggleDark = useCallback(
     () =>
@@ -134,9 +142,14 @@ const Preferences = ({ onClose }) => {
           <ListItemIcon>
             <MoonIcon />
           </ListItemIcon>
-          <ListItemText primary="Dark mode" />
+          <ListItemText id={darkModeLabelId} primary="Dark mode" />
           <ListItemSecondaryAction>
-            <Switch edge="end" onChange={onToggleDark} checked={theme.dark} />
+            <Switch
+              edge="end"
+              onChange={onToggleDark}
+              checked={theme.dark}
+              inputProps={{ "aria-labelledby": darkModeLabelId }}
+            />
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem>
@@ -144,6 +157,7 @@ const Preferences = ({ onClose }) => {
             <BulbIcon />
           </ListItemIcon>
           <ListItemText
+            id={sysPrefLabelId}
             primary="Use system settings"
             secondary="Set dark mode to use the light or dark selection located in your system settings."
           />
@@ -152,12 +166,15 @@ const Preferences = ({ onClose }) => {
               edge="end"
               onChange={onToggleSysPref}
               checked={theme.usingSystemColourScheme}
+              inputProps={{
+                "aria-labelledby": sysPrefLabelId,
+              }}
             />
           </ListItemSecondaryAction>
         </ListItem>
       </List>
       <List subheader={<ListSubheader>Appearance</ListSubheader>}>
-        <ListItem button onClick={onThemeClick}>
+        <ListItem component="li" button onClick={onThemeClick}>
           <ListItemIcon>
             <EyeIcon />
           </ListItemIcon>
@@ -175,41 +192,31 @@ const Preferences = ({ onClose }) => {
             selected={theme.value === "sensu"}
             onClick={onThemeSelect("sensu")}
           >
-            <ListItem>
-              <ListItemText primary="Sensu Go" />
-            </ListItem>
+            <ListItemText primary="Sensu Go" />
           </MenuItem>
           <MenuItem
             selected={theme.value === "uchiwa"}
             onClick={onThemeSelect("uchiwa")}
           >
-            <ListItem>
-              <ListItemText primary="Uchiwa" />
-            </ListItem>
+            <ListItemText primary="Uchiwa" />
           </MenuItem>
           <MenuItem
             selected={theme.value === "classic"}
             onClick={onThemeSelect("classic")}
           >
-            <ListItem>
-              <ListItemText primary="Classic" />
-            </ListItem>
+            <ListItemText primary="Classic" />
           </MenuItem>
           <MenuItem
             selected={theme.value === "deuteranopia"}
             onClick={onThemeSelect("deuteranopia")}
           >
-            <ListItem>
-              <ListItemText primary="Deuteranopia" />
-            </ListItem>
+            <ListItemText primary="Deuteranopia" />
           </MenuItem>
           <MenuItem
             selected={theme.value === "tritanopia"}
             onClick={onThemeSelect("tritanopia")}
           >
-            <ListItem>
-              <ListItemText primary="Tritanopia" />
-            </ListItem>
+            <ListItemText primary="Tritanopia" />
           </MenuItem>
         </MenuList>
       </Menu>
