@@ -281,7 +281,7 @@ class EntityDetailsInformation extends React.PureComponent {
                 <DictionaryEntry>
                   <DictionaryKey>libc Implementation</DictionaryKey>
                   <DictionaryValue>
-                    <Maybe value={system.libCType} fallback="—" />
+                    <Maybe value={system.libCType} fallback="not detected" />
                   </DictionaryValue>
                 </DictionaryEntry>
               </Dictionary>
