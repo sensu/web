@@ -75,7 +75,6 @@ class EntityDetailsInformation extends React.PureComponent {
           VMSystem
           VMRole
           cloudProvider
-          floatType
 
           network {
             interfaces {
@@ -277,12 +276,6 @@ class EntityDetailsInformation extends React.PureComponent {
                   <DictionaryKey>ARM Version</DictionaryKey>
                   <DictionaryValue>
                     <Maybe value={system.ARMVersion} fallback="n/a" />
-                  </DictionaryValue>
-                </DictionaryEntry>
-                <DictionaryEntry>
-                  <DictionaryKey>Float Type</DictionaryKey>
-                  <DictionaryValue>
-                    <Maybe value={system.ARMVersion} fallback="—" />
                   </DictionaryValue>
                 </DictionaryEntry>
                 <DictionaryEntry>
