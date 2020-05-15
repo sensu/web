@@ -52,7 +52,6 @@ const columns: Column[] = [
     primary: true,
     label: "Process Name",
     minWidth: 185,
-    format: (val: any) => val.slice(0, 1).toUpperCase() + val.slice(1),
   },
   {
     id: "pid",
