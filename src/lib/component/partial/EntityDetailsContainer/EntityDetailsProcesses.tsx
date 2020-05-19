@@ -45,14 +45,13 @@ interface Column {
   format?: (value: any) => React.ReactElement | string;
 }
 
-const fmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 });
+const fmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 });
 const columns: Column[] = [
   {
     id: "name",
     primary: true,
     label: "Process Name",
     minWidth: 185,
-    format: (val: any) => val.slice(0, 1).toUpperCase() + val.slice(1),
   },
   {
     id: "pid",
@@ -67,12 +66,12 @@ const columns: Column[] = [
   {
     id: "cpuPercent",
     label: "% CPU",
-    format: (val: any) => `${fmt.format(val / 100)}%`,
+    format: (val: any) => `${fmt.format(val)}%`,
   },
   {
     id: "memoryPercent",
     label: "% Mem",
-    format: (val: any) => `${fmt.format(val / 100)}%`,
+    format: (val: any) => `${fmt.format(val)}%`,
   },
 ];
 
