@@ -2,7 +2,6 @@ import React from "/vendor/react";
 import PropTypes from "prop-types";
 import classnames from "/vendor/classnames";
 import { withStyles, Typography } from "/vendor/@material-ui/core";
-import { emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
 
 const styles = theme => ({
   root: {
@@ -16,14 +15,18 @@ const styles = theme => ({
         : theme.palette.secondary.dark,
   },
   background: {
-    backgroundColor: emphasize(theme.palette.background.paper, 0.01875),
+    backgroundColor: theme.palette.terminal,
   },
   scaleFont: {
     // Browsers tend to render monospaced fonts a little larger than intended.
     // Attempt to scale accordingly.
     fontSize: "0.8125rem", // TODO: Scale given fontSize from theme?
   },
-  wrap: { whiteSpace: "pre-wrap" },
+  wrap: {
+    whiteSpace: "pre-wrap",
+    display: "block",
+    padding: "0 4px",
+  },
 });
 
 class CodeBlock extends React.Component {

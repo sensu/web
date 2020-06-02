@@ -44,6 +44,7 @@ const common = {
       dark: colors.paynesGrey[700],
       contrastText: "#F3F5F7",
     },
+    terminal: "#222222",
   },
   typography: () => {
     // Prefer 'Display' for larger fonts

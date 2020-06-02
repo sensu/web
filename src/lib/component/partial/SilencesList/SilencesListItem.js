@@ -18,6 +18,7 @@ import {
   Slide,
   TableCell,
   Tooltip,
+  withTheme,
 } from "/vendor/@material-ui/core";
 
 import { NotesIcon } from "/lib/component/icon";
@@ -58,6 +59,7 @@ class SilencesListItem extends React.Component {
     selected: PropTypes.bool.isRequired,
     onClickClearSilences: PropTypes.func.isRequired,
     onClickSelect: PropTypes.func.isRequired,
+    theme: PropTypes.node.isRequired,
   };
 
   static fragments = {
@@ -98,7 +100,14 @@ class SilencesListItem extends React.Component {
   };
 
   render() {
-    const { editable, editing, silence, selected, onClickSelect } = this.props;
+    const {
+      editable,
+      editing,
+      silence,
+      selected,
+      onClickSelect,
+      theme,
+    } = this.props;
 
     return (
       <HoverController onHover={this.props.onHover}>
@@ -143,6 +152,8 @@ class SilencesListItem extends React.Component {
                     style={{
                       // TODO: ideally have Chip scale to current fontSize(?)
                       transform: "scale(0.87)",
+                      background: theme.palette.action.hover,
+                      color: theme.palette.text.primary,
                     }}
                   />
                 )}
@@ -205,4 +216,4 @@ class SilencesListItem extends React.Component {
   }
 }
 
-export default SilencesListItem;
+export default withTheme(SilencesListItem);
