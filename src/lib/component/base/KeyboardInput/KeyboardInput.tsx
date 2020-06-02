@@ -3,10 +3,11 @@ import { emphasize } from "/vendor/@material-ui/core/styles/colorManipulator";
 
 const KeyboardInput = styled("kbd")(
   ({ theme }) => {
-    const bgColor = theme.palette.divider;
+    const bgColor = theme.palette.primary.main;
 
     return {
       display: "inline-block",
+      color: theme.palette.primary.contrastText,
       padding: `${theme.spacing(1 / 4)}px ${theme.spacing(1 / 2)}px`,
       backgroundColor: bgColor,
       borderRadius: theme.spacing(1 / 2),
