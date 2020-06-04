@@ -1,6 +1,6 @@
 import React from "/vendor/react";
 import PropTypes from "prop-types";
-import { Button } from "/vendor/@material-ui/core";
+import { Button, Link } from "/vendor/@material-ui/core";
 
 import { Banner } from "/lib/component/base";
 
@@ -15,9 +15,13 @@ class RepoMoveBanner extends React.PureComponent {
         message="There's important changes coming to the Sensu Go OSS web UI."
         variant="info"
         actions={
-          <Button color="inherit" onClick={() => ""}>
+          <Link
+            style={{ color: "inherit" }}
+            component={Button}
+            href=""
+          >
             Learn More
-          </Button>
+          </Link>
         }
       />
     );
