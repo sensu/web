@@ -49,7 +49,7 @@ export default ({
   mode: process.env.NODE_ENV,
   entry,
 
-  devtool: process.env.NODE_ENV === "development" ? "source-map" : false,
+  devtool: "source-map",
 
   output: {
     filename: path.join(jsPath, `${contentHashName}.js`),
@@ -60,18 +60,12 @@ export default ({
   },
 
   optimization: {
-    splitChunks: false,
+    splitChunks: {
+      chunks: "all",
+    },
     minimizer: [
       new TerserPlugin({
-        sourceMap: true,
-        terserOptions: {
-          // Disable function name minification in order to preserve class
-          // names. This makes tracking down bugs in production builds far
-          // more manageable at the expense of slightly larger (about 15%)
-          // compressed bundle sizes.
-          // eslint-disable-next-line
-          keep_fnames: true,
-        },
+        /* opts */
       }),
     ],
     ...optimization,

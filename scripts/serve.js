@@ -40,7 +40,6 @@ if (process.env.NODE_ENV !== "development") {
 app.use(historyFallback());
 
 const instance = devMiddlware(compiler);
-
 app.use(instance);
 
 const server = killable(http.createServer(app));
