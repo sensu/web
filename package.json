@@ -25,6 +25,8 @@
     "analyze": "npx webpack-bundle-analyzer stats.json -s gzip",
     "audit-deps": "node scripts audit-deps",
     "build": "npx webpack -r esm --config config/app.webpack.config.js",
+    "build:pack": "yarn pack --filename dashboard.tgz",
+    "build:package": "yarn build && yarn build:pack",
     "check-version": "node scripts check-yarn-version",
     "dev-server": "node scripts serve",
     "test:types": "npx tsc --noEmit",
