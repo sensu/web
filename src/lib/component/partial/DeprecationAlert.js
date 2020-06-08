@@ -4,9 +4,9 @@ import { RepoMoveBanner } from "/lib/component/banner";
 
 export function DeprecationAlert() {
   const key = "deprecation-banner.isDismissed";
-  const [isDismissed, setDismissed] = React.useState(!!localStorage.get(key));
+  const [isDismissed, setDismissed] = React.useState(!!localStorage.getItem(key));
   const dismiss = React.useCallback(() => {
-    localStorage.set(key, "t");
+    localStorage.setItem(key, "t");
     setDismissed("t");
   }, [setDismissed]);
 
