@@ -1,6 +1,6 @@
 {
-  "name": "dashboardd",
-  "version": "0.1.0",
+  "name": "@sensu.io/oss-web-ui",
+  "version": "1.0.0",
   "private": true,
   "files": [
     "build/app",

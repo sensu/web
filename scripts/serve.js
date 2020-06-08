@@ -17,6 +17,8 @@ const root = fs.realpathSync(process.cwd());
 const proxyPaths = ["/auth", "/graphql", "/api"];
 const port = parseInt(process.env.PORT, 10) || 3001;
 
+const apiUrl = process.env.API_URL || "http://localhost:8080";
+
 const compiler = webpack(config);
 const app = express();
 
@@ -24,7 +26,7 @@ app.use(compression());
 
 app.use(
   proxy(proxyPaths, {
-    target: "http://localhost:8080",
+    target: apiUrl,
     logLevel: "silent",
   }),
 );
