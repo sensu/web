@@ -18,6 +18,7 @@ export {
 } from "./ClearSilencedEntriesDialog";
 export { default as ConfirmDelete } from "./ConfirmDelete";
 export { default as CronDescriptor } from "./CronDescriptor";
+export { default as DeprecationAlert } from "./DeprecationAlert";
 export { default as EntitiesList, EntitiesListToolbar } from "./EntitiesList";
 export { default as EntityDetailsContainer } from "./EntityDetailsContainer";
 export { default as EntityStatusDescriptor } from "./EntityStatusDescriptor";

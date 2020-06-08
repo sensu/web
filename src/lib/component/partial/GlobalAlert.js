@@ -5,7 +5,7 @@ import gql from "/vendor/graphql-tag";
 
 import BannerSink from "/lib/component/relocation/BannerSink";
 
-import { RepoMoveBanner, RetryConnectionBanner } from "/lib/component/banner";
+import { RetryConnectionBanner } from "/lib/component/banner";
 
 class GlobalAlert extends React.PureComponent {
   static propTypes = {
@@ -17,12 +17,11 @@ class GlobalAlert extends React.PureComponent {
 
     return (
       <React.Fragment>
-        <BannerSink>
-          {data.localNetwork && data.localNetwork.offline && (
+        {data.localNetwork && data.localNetwork.offline && (
+          <BannerSink>
             <RetryConnectionBanner />
-          )}
-          <RepoMoveBanner />
-        </BannerSink>
+          </BannerSink>
+        )}
       </React.Fragment>
     );
   }

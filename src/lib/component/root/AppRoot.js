@@ -24,7 +24,11 @@ import { RelocationProvider } from "/lib/component/relocation";
 
 import { SignInView } from "/lib/component/view";
 
-import { AuthInvalidDialog, GlobalAlert } from "/lib/component/partial";
+import {
+  AuthInvalidDialog,
+  DeprecationAlert,
+  GlobalAlert,
+} from "/lib/component/partial";
 
 class AppRoot extends React.PureComponent {
   static propTypes = {
@@ -59,6 +63,7 @@ class AppRoot extends React.PureComponent {
               </Switch>
               <ResetStyles />
               <ThemeStyles />
+              <DeprecationAlert />
               <GlobalAlert />
             </AppThemeProvider>
           </KeybindProvider>

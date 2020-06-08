@@ -6,19 +6,20 @@ import { Banner } from "/lib/component/base";
 
 class RepoMoveBanner extends React.PureComponent {
   static propTypes = {
-    client: PropTypes.object.isRequired,
+    onClose: PropTypes.func.isRequired,
   };
 
   render() {
     return (
       <Banner
+        onClose={this.props.onClose}
         message="There's important changes coming to the Sensu Go OSS web UI."
         variant="info"
         actions={
           <Link
             style={{ color: "inherit" }}
             component={Button}
-            href=""
+            href="https://discourse.sensu.io/t/building-a-better-ui-for-sensu/1859"
           >
             Learn More
           </Link>
