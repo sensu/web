@@ -35,6 +35,7 @@
     "start": "NODE_ENV=development yarn dev-server",
     "test": "yarn check-version && yarn test:lint && yarn test:types && SPEC_COVERAGE=true yarn test:spec && yarn build",
     "fetch-schema": "node scripts fetch-schema",
+    "upload-artifacts": "node scripts upload-artifacts",
     "postinstall": "yarn fetch-schema",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"

@@ -87,7 +87,7 @@ jobs:
           command: yarn build:package
       - run:
           name: Upload Package
-          command: # yarn upload-artifacts
+          command: yarn upload-artifacts
 
 workflows:
   version: 2
