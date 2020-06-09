@@ -1,6 +1,6 @@
 const graphql = require("graphql");
 
-const schema = require("./apollo/schema/mergedSchema");
+const schema = require("../app/apollo/schema/mergedSchema");
 
 const disabledRules = [
   "NoUnusedFragments",
