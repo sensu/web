@@ -51,6 +51,11 @@ export default ({
 
   devtool: "source-map",
 
+  stats: process.env.NODE_ENV === "production" ? "errors-only" : "normal",
+  infrastructureLogging: {
+    level: process.env.LOG_LEVEL || "info",
+  },
+
   output: {
     filename: path.join(jsPath, `${contentHashName}.js`),
     chunkFilename: path.join(jsPath, `${chunkHashName}.js`),
@@ -153,31 +158,8 @@ export default ({
 
   plugins: [
     new StatsWriterPlugin({
-      filename: "../stats.json",
+      filename: "./stats.json",
       fields: null,
-      transform(stats) {
-        return JSON.stringify(
-          {
-            version: stats.version,
-            hash: stats.hash,
-            outputPath: path.relative(root, stats.outputPath),
-            assetsByChunkName: stats.assetsByChunkName,
-            assets: stats.assets,
-            chunks: stats.chunks.map(chunk => ({
-              id: chunk.id,
-              rendered: chunk.rendered,
-              initial: chunk.initial,
-              entry: chunk.entry,
-              size: chunk.size,
-              names: chunk.names,
-              files: chunk.files,
-              hash: chunk.hash,
-            })),
-          },
-          null,
-          2,
-        );
-      },
     }),
     new webpack.ProvidePlugin({
       // Alias any reference to global Promise object to bluebird.

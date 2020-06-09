@@ -17,9 +17,8 @@ export default makeConfig({
   },
 
   output: {
-    path: path.join(outputPath, "public"),
+    path: outputPath,
     publicPath: "/",
-    devtoolNamespace: "app",
   },
 
   plugins: [
