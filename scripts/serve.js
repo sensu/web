@@ -1,5 +1,3 @@
-import path from "path";
-import fs from "fs";
 import http from "http";
 
 import historyFallback from "connect-history-api-fallback";
@@ -13,32 +11,26 @@ import webpack from "webpack";
 import "./util/exceptionHandler";
 import config from "../config/app.webpack.config";
 
-const root = fs.realpathSync(process.cwd());
 const proxyPaths = ["/auth", "/graphql", "/api"];
 const port = parseInt(process.env.PORT, 10) || 3001;
 
-const compiler = webpack(config);
+const apiUrl = process.env.API_URL || "http://localhost:8080";
+
 const app = express();
 
 app.use(compression());
 
 app.use(
   proxy(proxyPaths, {
-    target: "http://localhost:8080",
-    logLevel: "silent",
+    target: apiUrl,
+    logLevel: process.env.NODE_ENV === "development" ? "silent" : "info",
   }),
 );
 
-app.use(express.static(path.join(root, "build/vendor/public")));
-
-if (process.env.NODE_ENV !== "development") {
-  app.use(express.static(path.join(root, "build/lib/public")));
-}
-
 app.use(historyFallback());
 
+const compiler = webpack(config);
 const instance = devMiddlware(compiler);
-
 app.use(instance);
 
 const server = killable(http.createServer(app));
@@ -46,7 +38,9 @@ const server = killable(http.createServer(app));
 ["SIGINT", "SIGTERM"].forEach(sig => {
   process.on(sig, () => {
     console.info(`Process Ended via ${sig}`);
-    instance.close();
+    if (instance) {
+      instance.close();
+    }
     server.kill();
   });
 });

@@ -49,7 +49,12 @@ export default ({
   mode: process.env.NODE_ENV,
   entry,
 
-  devtool: process.env.NODE_ENV === "development" ? "source-map" : false,
+  devtool: "source-map",
+
+  stats: process.env.NODE_ENV === "production" ? "errors-only" : "normal",
+  infrastructureLogging: {
+    level: process.env.LOG_LEVEL || "info",
+  },
 
   output: {
     filename: path.join(jsPath, `${contentHashName}.js`),
@@ -60,18 +65,12 @@ export default ({
   },
 
   optimization: {
-    splitChunks: false,
+    splitChunks: {
+      chunks: "all",
+    },
     minimizer: [
       new TerserPlugin({
-        sourceMap: true,
-        terserOptions: {
-          // Disable function name minification in order to preserve class
-          // names. This makes tracking down bugs in production builds far
-          // more manageable at the expense of slightly larger (about 15%)
-          // compressed bundle sizes.
-          // eslint-disable-next-line
-          keep_fnames: true,
-        },
+        /* opts */
       }),
     ],
     ...optimization,
@@ -106,7 +105,6 @@ export default ({
             test: /\.macro\.js$/,
             include: [
               path.join(root, "src"),
-              path.join(root, "node_modules/@sensuapp/web/src"),
             ],
             loaders: [
               {
@@ -124,13 +122,11 @@ export default ({
             test: /\.(jsx?|tsx?|mjs)$/,
             include: [
               path.join(root, "src"),
-              path.join(root, "node_modules/@sensuapp/web/src"),
             ],
             loader: require.resolve("babel-loader"),
             options: {
               babelrcRoots: [
                 root,
-                path.join(root, "node_modules/@sensuapp/web"),
               ],
               cacheDirectory: process.env.NODE_ENV === "development",
             },
@@ -162,31 +158,8 @@ export default ({
 
   plugins: [
     new StatsWriterPlugin({
-      filename: "../stats.json",
+      filename: "./stats.json",
       fields: null,
-      transform(stats) {
-        return JSON.stringify(
-          {
-            version: stats.version,
-            hash: stats.hash,
-            outputPath: path.relative(root, stats.outputPath),
-            assetsByChunkName: stats.assetsByChunkName,
-            assets: stats.assets,
-            chunks: stats.chunks.map(chunk => ({
-              id: chunk.id,
-              rendered: chunk.rendered,
-              initial: chunk.initial,
-              entry: chunk.entry,
-              size: chunk.size,
-              names: chunk.names,
-              files: chunk.files,
-              hash: chunk.hash,
-            })),
-          },
-          null,
-          2,
-        );
-      },
     }),
     new webpack.ProvidePlugin({
       // Alias any reference to global Promise object to bluebird.

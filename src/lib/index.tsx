@@ -1,4 +1,3 @@
-import "./apollo";
 import "./buildInfo";
 import "./colors";
 import "./component";

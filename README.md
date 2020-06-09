@@ -27,11 +27,14 @@
   </a>
 </p>
 
-## Installation
+## Getting Started
 
-For ease of deployment, the web interface comes bundled with [Sensu Go].
+To start the UI, simply run the following:
 
-See the [installation documentation] to get started.
+```bash
+yarn install
+NODE_ENV=production PORT=80 API_URL=https://my-sensu-backend-api:8080 yarn node scripts serve
+```
 
 ## Contributing
 
