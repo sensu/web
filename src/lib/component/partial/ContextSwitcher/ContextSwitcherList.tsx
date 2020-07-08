@@ -75,7 +75,7 @@ const ContextSwitcherList = ({
   useEffect(() => {
     const onKeyPress = (ev: KeyboardEvent) => {
       if (ev.code === "Tab" || ev.code === "ArrowDown") {
-        setIdx(Math.min(idx + 1, items.length));
+        setIdx(Math.min(idx + 1, Math.max(items.length - 1, 0)));
         ev.preventDefault();
       }
 
@@ -84,8 +84,8 @@ const ContextSwitcherList = ({
         ev.preventDefault();
       }
 
-      if (ev.code === "Enter") {
-        onSelect(items[idx]); // TODO
+      if (ev.code === "Enter" && items.length > 0) {
+        onSelect(items[Math.min(idx, items.length - 1)]);
         ev.preventDefault();
       }
     };

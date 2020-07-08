@@ -26,6 +26,18 @@ const styles = () => ({
   },
 });
 
+// eslint-disable-next-line react/prop-types
+const JSONValue = ({ object }) => {
+  const str = JSON.stringify(object);
+
+  return (
+    <React.Fragment>
+      {str.length > 7 ? str.slice(0, 7) + "..." : "JSON"}{" "}
+      <OpenInNewIcon fontSize="inherit" />
+    </React.Fragment>
+  );
+};
+
 class ExpandableKeyValueChip extends React.Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
@@ -40,7 +52,13 @@ class ExpandableKeyValueChip extends React.Component {
         <React.Fragment key={key}>
           <ModalController
             renderModal={({ close }) => (
-              <Dialog open maxWidth="sm" fullWidth TransitionComponent={Slide} onClose={close}>
+              <Dialog
+                open
+                maxWidth="sm"
+                fullWidth
+                TransitionComponent={Slide}
+                onClose={close}
+              >
                 <DialogTitle>{key}</DialogTitle>
                 <DialogContent>
                   <CodeBlock>
@@ -52,9 +70,7 @@ class ExpandableKeyValueChip extends React.Component {
                   </CodeBlock>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={close}>
-                    Close
-                  </Button>
+                  <Button onClick={close}>Close</Button>
                 </DialogActions>
               </Dialog>
             )}
@@ -74,10 +90,10 @@ class ExpandableKeyValueChip extends React.Component {
                         variant="body2"
                         className={classes.iconFix}
                       >
-                        <OpenInNewIcon fontSize="inherit" />
+                        <JSONValue object={children[key]} />
                       </Typography>
                     ) : (
-                      children[key]
+                      children[key].toString() || "[empty]"
                     )
                   }
                   onClick={open}
