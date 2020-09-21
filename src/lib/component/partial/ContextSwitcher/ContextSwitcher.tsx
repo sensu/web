@@ -64,8 +64,10 @@ const ContextSwitcher = (
       tokenize: true,
       tokenSeparator: /[ -]+/i,
       distance: 32,
+      includeScore: false,
+      includeMatches: false,
     });
-    return fuse.search(filterValue.slice(0, 12));
+    return fuse.search(filterValue.slice(0, 12)) as Namespace[];
   }, [namespaces, filterValue]);
 
   useEffect(() => {
