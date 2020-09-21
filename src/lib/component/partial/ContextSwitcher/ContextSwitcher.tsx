@@ -57,7 +57,7 @@ const ContextSwitcher = (
       return namespaces.sort((a, b) => (a.name > b.name ? 1 : -1));
     }
 
-    const fuse = new Fuse<Namespace>(namespaces, {
+    const fuse = new Fuse<Namespace, Fuse.FuseOptions<Namespace>>(namespaces, {
       keys: ["name"],
       shouldSort: true,
       threshold: 0.5,
