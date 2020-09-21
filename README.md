@@ -35,6 +35,7 @@ To start the UI, simply run the following:
 yarn install
 NODE_ENV=production PORT=80 API_URL=https://my-sensu-backend-api:8080 yarn node scripts serve
 ```
+For more detailed installation instructions, see [INSTALL.md](INSTALL.md)
 
 ## Contributing
 
