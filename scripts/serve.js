@@ -13,6 +13,7 @@ import config from "../config/app.webpack.config";
 
 const proxyPaths = ["/auth", "/graphql", "/api"];
 const port = parseInt(process.env.PORT, 10) || 3001;
+const host = process.env.HOST || null
 
 const apiUrl = process.env.API_URL || "http://localhost:8080";
 
@@ -53,4 +54,4 @@ server.on("listening", () => {
   console.log("listening on", server.address().port);
 });
 
-server.listen(port);
+server.listen(port, host);
