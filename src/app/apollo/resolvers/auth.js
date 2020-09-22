@@ -97,12 +97,22 @@ export default {
           );
         }
 
-        if (result.auth.invalid || !result.auth.refreshToken) {
+        if (result.auth.invalid) {
           return {
             __typename: "RefreshTokensMutation",
             auth: {
               ...result.auth,
               accessToken: null,
+            },
+          };
+        }
+
+        // When no refresh token is present, there is nothing to be done.
+        if (!result.auth.refreshToken) {
+          return {
+            __typename: "RefreshTokensMutation",
+            auth: {
+              ...result.auth,
             },
           };
         }
