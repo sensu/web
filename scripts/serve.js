@@ -4,7 +4,7 @@ import historyFallback from "connect-history-api-fallback";
 import killable from "killable";
 import express from "express";
 import compression from "compression";
-import proxy from "http-proxy-middleware";
+import { createProxyMiddleware } from "http-proxy-middleware";
 import devMiddlware from "webpack-dev-middleware";
 import webpack from "webpack";
 
@@ -22,7 +22,7 @@ const app = express();
 app.use(compression());
 
 app.use(
-  proxy(proxyPaths, {
+  createProxyMiddleware(proxyPaths, {
     target: apiUrl,
     logLevel: process.env.NODE_ENV === "development" ? "silent" : "info",
   }),

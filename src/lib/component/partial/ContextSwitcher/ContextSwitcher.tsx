@@ -57,15 +57,17 @@ const ContextSwitcher = (
       return namespaces.sort((a, b) => (a.name > b.name ? 1 : -1));
     }
 
-    const fuse = new Fuse<Namespace>(namespaces, {
+    const fuse = new Fuse<Namespace, Fuse.FuseOptions<Namespace>>(namespaces, {
       keys: ["name"],
       shouldSort: true,
       threshold: 0.5,
       tokenize: true,
       tokenSeparator: /[ -]+/i,
       distance: 32,
+      includeScore: false,
+      includeMatches: false,
     });
-    return fuse.search(filterValue.slice(0, 12));
+    return fuse.search(filterValue.slice(0, 12)) as Namespace[];
   }, [namespaces, filterValue]);
 
   useEffect(() => {

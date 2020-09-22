@@ -140,7 +140,7 @@
     "hoist-non-react-statics": "^2.5.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
-    "http-proxy-middleware": "^0.18.0",
+    "http-proxy-middleware": "^1.0.5",
     "intl": "^1.2.5",
     "intl-relativeformat": "^2.1.0",
     "jest-circus": "^24.8.0",
@@ -216,7 +216,7 @@
     "graphql": "14.4.2",
     "graphql-config/**/graphql": "14.4.2",
     "graphql-import/**/graphql": "14.4.2",
-    "serialize-javascript": "2.1.2"
+    "serialize-javascript": "3.1.0"
   },
   "graphQLSchemaRef": "0655e33"
 }
