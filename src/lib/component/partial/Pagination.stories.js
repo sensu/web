@@ -1,5 +1,5 @@
 import React from "react";
-import withTheme from "/app/storybook/withTheme";
+import withTheme from "/lib/storybook/withTheme";
 
 import Pagination from "./Pagination";
 
