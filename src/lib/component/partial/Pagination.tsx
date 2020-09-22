@@ -40,7 +40,7 @@ const Pagination = ({ onChangeQuery, ...props }: Props) => {
 
   // Fall back to a placeholder total count value (equal to page size) while
   // pageInfo is undefined during load.
-  const count = props.pageInfo?.totalCount || limit;
+  const count = props.pageInfo ? props.pageInfo.totalCount : limit;
 
   // Given that offset isn't strictly a multiple of limit, the current page
   // index must be rounded down. In the case that we have a small offset that
