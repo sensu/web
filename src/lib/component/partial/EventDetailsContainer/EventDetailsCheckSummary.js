@@ -193,7 +193,7 @@ class EventDetailsCheckSummary extends React.PureComponent {
                 <DictionaryEntry>
                   <DictionaryKey>Total State Change</DictionaryKey>
                   <DictionaryValue>
-                    {entity.totalStateChange || 0}
+                    {check.totalStateChange || 0}
                     {"%"}
                   </DictionaryValue>
                 </DictionaryEntry>
