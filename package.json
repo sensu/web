@@ -140,7 +140,7 @@
     "hoist-non-react-statics": "^2.5.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
-    "http-proxy-middleware": "^0.18.0",
+    "http-proxy-middleware": "^1.0.5",
     "intl": "^1.2.5",
     "intl-relativeformat": "^2.1.0",
     "jest-circus": "^24.8.0",
@@ -148,7 +148,7 @@
     "jest-junit": "^6.4.0",
     "killable": "^1.0.0",
     "loader-utils": "^1.2.3",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.19",
     "material-ui-chip-input": "^1.0.0",
     "mngen": "^1.1.0",
     "modernizr": "^3.6.0",
@@ -216,7 +216,7 @@
     "graphql": "14.4.2",
     "graphql-config/**/graphql": "14.4.2",
     "graphql-import/**/graphql": "14.4.2",
-    "serialize-javascript": "2.1.2"
+    "serialize-javascript": "3.1.0"
   },
   "graphQLSchemaRef": "0655e33"
 }
