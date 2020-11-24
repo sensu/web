@@ -136,7 +136,7 @@
     "glob-to-regexp": "^0.4.1",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.9.2",
-    "highlight.js": "^9.13.1",
+    "highlight.js": "^10.1.2",
     "hoist-non-react-statics": "^2.5.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
