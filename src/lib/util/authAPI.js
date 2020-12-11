@@ -1,6 +1,7 @@
 import { parseUNIX } from "/lib/util/date";
 import { memoize, when } from "/lib/util/promise";
 import { UnauthorizedError } from "/lib/error/FetchError";
+import { btoa } from "/app/util/base64";
 import fetch from "/lib/util/fetch";
 
 /*
@@ -38,7 +39,7 @@ export const createTokens = memoize(
       method: "GET",
       headers: {
         Accept: "application/json",
-        Authorization: `Basic ${window.btoa(`${username}:${password}`)}`,
+        Authorization: `Basic ${btoa(`${username}:${password}`)}`,
       },
     };
 
