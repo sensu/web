@@ -1,7 +1,7 @@
 import { parseUNIX } from "/lib/util/date";
 import { memoize, when } from "/lib/util/promise";
 import { UnauthorizedError } from "/lib/error/FetchError";
-import { btoa } from "/app/util/base64";
+import { btoa } from "/lib/util/base64";
 import fetch from "/lib/util/fetch";
 
 /*
