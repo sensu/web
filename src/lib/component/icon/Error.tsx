@@ -1,4 +1,5 @@
 import React from "/vendor/react";
+import PropTypes from "prop-types";
 import { SvgIcon } from "/vendor/@material-ui/core";
 import IconGap from "./IconGap";
 
@@ -6,8 +7,19 @@ interface Props {
   withGap?: boolean;
 }
 
-const Icon = React.memo(({ withGap = false, ...props }: Props) => {
-  return (
+class Icon extends React.PureComponent<Props> {
+  static propTypes = {
+    withGap: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    withGap: false,
+  };
+
+  render() {
+    const { withGap, ...props } = this.props;
+
+    return (
     <SvgIcon {...props}>
       <IconGap disabled={!withGap}>
         {({ maskId }) => (
@@ -22,8 +34,8 @@ const Icon = React.memo(({ withGap = false, ...props }: Props) => {
         )}
       </IconGap>
     </SvgIcon>
-  );
-});
-Icon.displayName = "ErrorIcon";
+    );
+  }
+}
 
 export default Icon;
