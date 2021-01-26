@@ -76,15 +76,16 @@ interface Props {
   className?: string;
 }
 
-const Icon = React.memo(
-  ({ className: classNameProp, active = true, ...props }: Props) => {
+const Icon =
+  ({ className: classNameProp, active = true, ...props }: Props, ref:
+   React.Ref<any>) => {
     const classes = useStyles();
     const className = classnames(classNameProp, {
       [classes.inactive]: !active,
     });
 
     return (
-      <SvgIcon className={className} {...props}>
+      <SvgIcon ref={ref} className={className} {...props}>
         <circle
           stroke="currentColor"
           strokeWidth="2"
@@ -104,8 +105,7 @@ const Icon = React.memo(
         </g>
       </SvgIcon>
     );
-  },
-);
+  };
 Icon.displayName = "LiveIcon";
 
-export default Icon;
+export default React.memo(React.forwardRef(Icon));

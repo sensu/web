@@ -6,11 +6,9 @@ interface Props {
   direction?: "left" | "right";
 }
 
-const Chevron = ({ direction = "right", ...props }: Props) => {
-  if (direction === "right") {
-    return <Right {...props} />;
-  }
-  return <Left {...props} />;
+const Chevron = ({ direction = "right", ...props }: Props, ref: React.Ref<any>) => {
+  const Component = direction === "right" ? Right : Left;
+  return <Component ref={ref} {...props} />;
 };
 
-export default Chevron;
+export default React.memo(React.forwardRef(Chevron));

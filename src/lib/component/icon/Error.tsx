@@ -1,5 +1,4 @@
 import React from "/vendor/react";
-import PropTypes from "prop-types";
 import { SvgIcon } from "/vendor/@material-ui/core";
 import IconGap from "./IconGap";
 
@@ -7,20 +6,11 @@ interface Props {
   withGap?: boolean;
 }
 
-class Icon extends React.PureComponent<Props> {
-  static propTypes = {
-    withGap: PropTypes.bool,
-  };
+const Icon = (props: Props, ref: React.Ref<any>) => {
+  const { withGap, ...other } = props;
 
-  static defaultProps = {
-    withGap: false,
-  };
-
-  render() {
-    const { withGap, ...props } = this.props;
-
-    return (
-    <SvgIcon {...props}>
+  return (
+    <SvgIcon ref={ref} {...other}>
       <IconGap disabled={!withGap}>
         {({ maskId }) => (
           <g fill="none" fillRule="evenodd" mask={maskId && `url(#${maskId})`}>
@@ -34,8 +24,7 @@ class Icon extends React.PureComponent<Props> {
         )}
       </IconGap>
     </SvgIcon>
-    );
-  }
+  );
 }
 
-export default Icon;
+export default React.memo(React.forwardRef(Icon));
