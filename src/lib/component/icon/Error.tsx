@@ -6,9 +6,11 @@ interface Props {
   withGap?: boolean;
 }
 
-const Icon = React.memo(({ withGap = false, ...props }: Props) => {
+const Icon = (props: Props, ref: React.Ref<any>) => {
+  const { withGap, ...other } = props;
+
   return (
-    <SvgIcon {...props}>
+    <SvgIcon ref={ref} {...other}>
       <IconGap disabled={!withGap}>
         {({ maskId }) => (
           <g fill="none" fillRule="evenodd" mask={maskId && `url(#${maskId})`}>
@@ -23,7 +25,6 @@ const Icon = React.memo(({ withGap = false, ...props }: Props) => {
       </IconGap>
     </SvgIcon>
   );
-});
-Icon.displayName = "ErrorIcon";
+}
 
-export default Icon;
+export default React.memo(React.forwardRef(Icon));

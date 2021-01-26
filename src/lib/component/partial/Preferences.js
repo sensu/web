@@ -210,9 +210,7 @@ const Preferences = ({ onClose }) => {
             selected={theme.value === "highcontrast"}
             onClick={onThemeSelect("highcontrast")}
           >
-            <ListItem>
-              <ListItemText primary="High Contrast" />
-            </ListItem>
+            <ListItemText primary="High Contrast" />
           </MenuItem>
 
           <MenuItem
