@@ -267,6 +267,7 @@ class EventDetailsCheckSummary extends React.PureComponent {
                       component={DateTime}
                       dateTime={check.issued}
                       short
+                      second="numeric"
                     />
                   </DictionaryValue>
                 </DictionaryEntry>
@@ -276,6 +277,7 @@ class EventDetailsCheckSummary extends React.PureComponent {
                     <DateStringFormatter
                       component={KitchenTime}
                       dateTime={check.executed}
+                      second="numeric"
                     />
                     {" for "}
                     <Duration duration={check.duration * 1000} />
