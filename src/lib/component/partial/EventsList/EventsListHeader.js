@@ -4,6 +4,7 @@ import gql from "/vendor/graphql-tag";
 
 import {
   DeleteMenuItem,
+  DisclosureMenuItem,
   QueueExecutionMenuItem,
   ResolveMenuItem,
   SelectMenuItem as Select,
@@ -16,6 +17,10 @@ import ConfirmDelete from "/lib/component/partial/ConfirmDelete";
 import ListHeader from "/lib/component/partial/ListHeader";
 import { ToolbarSelectOption as Option } from "/lib/component/partial/ToolbarSelect";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
+
+import AutosuggestSelectMenu from "/lib/component/partial/AutosuggestSelectMenu";
+import MenuController from "/lib/component/controller/MenuController";
+import RootRef from "@material-ui/core/RootRef";
 
 import { toggleParam } from "/lib/util/filterParams";
 
@@ -53,16 +58,7 @@ class EventsListHeader extends React.Component {
     `,
     namespace: gql`
       fragment EventsListHeader_namespace on Namespace {
-        checks(limit: 1000) {
-          nodes {
-            name
-          }
-        }
-        entities(limit: 1000) {
-          nodes {
-            name
-          }
-        }
+        name
       }
     `,
   };
@@ -147,9 +143,7 @@ class EventsListHeader extends React.Component {
   };
 
   renderActions = () => {
-    const { namespace: ns, filters, onChangeFilters } = this.props;
-    const entities = ns ? ns.entities.nodes.map(e => e.name) : [];
-    const checks = ns ? ns.checks.nodes.map(e => e.name) : [];
+    const { namespace, filters, onChangeFilters } = this.props;
 
     return (
       <ToolbarMenu.Autosizer>
@@ -170,33 +164,45 @@ class EventsListHeader extends React.Component {
             </ToolbarMenu.Item>
 
             <ToolbarMenu.Item key="filter-by-entity" visible="if-room">
-              <Select
-                title="Entity"
-                onChange={toggleParam("entity", onChangeFilters)}
-              >
-                {entities.map(name => (
-                  <Option
-                    key={name}
-                    value={name}
-                    selected={filters.entity === name}
+              <MenuController
+                renderMenu={({ anchorEl, close }) => (
+                  <AutosuggestSelectMenu
+                    anchorEl={anchorEl}
+                    onClose={close}
+                    resourceType="entities"
+                    objRef="core/v2/entity/metadata/name"
+                    onChange={toggleParam("entity", onChangeFilters)}
+                    namespace={namespace && namespace.name}
                   />
-                ))}
-              </Select>
+                )}
+              >
+                {({ open, ref }) => (
+                  <RootRef rootRef={ref}>
+                    <DisclosureMenuItem onClick={open} title="Entity" />
+                  </RootRef>
+                )}
+              </MenuController>
             </ToolbarMenu.Item>
 
             <ToolbarMenu.Item key="filter-by-check" visible="if-room">
-              <Select
-                title="Check"
-                onChange={toggleParam("check", onChangeFilters)}
-              >
-                {checks.map(name => (
-                  <Option
-                    key={name}
-                    value={name}
-                    selected={filters.check === name}
+              <MenuController
+                renderMenu={({ anchorEl, close }) => (
+                  <AutosuggestSelectMenu
+                    anchorEl={anchorEl}
+                    onClose={close}
+                    resourceType="checks"
+                    objRef="core/v2/check_config/metadata/name"
+                    onChange={toggleParam("check", onChangeFilters)}
+                    namespace={namespace && namespace.name}
                   />
-                ))}
-              </Select>
+                )}
+              >
+                {({ open, ref }) => (
+                  <RootRef rootRef={ref}>
+                    <DisclosureMenuItem onClick={open} title="Check" />
+                  </RootRef>
+                )}
+              </MenuController>
             </ToolbarMenu.Item>
 
             <ToolbarMenu.Item key="filter-by-status" visible="always">
@@ -218,7 +224,11 @@ class EventsListHeader extends React.Component {
             </ToolbarMenu.Item>
 
             <ToolbarMenu.Item key="sort" visible="always">
-              <Select title="Sort" onChange={this.updateSort} disableEmptySelection>
+              <Select
+                title="Sort"
+                onChange={this.updateSort}
+                disableEmptySelection
+              >
                 <Option value="LASTOK">Last OK</Option>
                 <Option value="SEVERITY">Severity</Option>
                 <Option value="NEWEST">Newest</Option>

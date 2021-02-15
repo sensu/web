@@ -7,6 +7,7 @@ import {
   SelectMenuItem,
   SilenceMenuItem,
   UnsilenceMenuItem,
+  DisclosureMenuItem,
 } from "/lib/component/partial/ToolbarMenuItems";
 
 import ConfirmDelete from "/lib/component/partial/ConfirmDelete";
@@ -14,6 +15,10 @@ import ListHeader from "/lib/component/partial/ListHeader";
 import ListSortSelector from "/lib/component/partial/ListSortSelector";
 import ToolbarSelectOption from "/lib/component/partial/ToolbarSelect/Option";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
+
+import AutosuggestSelectMenu from "/lib/component/partial/AutosuggestSelectMenu";
+import MenuController from "/lib/component/controller/MenuController";
+import RootRef from "@material-ui/core/RootRef";
 
 import { toggleParam } from "/lib/util/filterParams";
 
@@ -42,9 +47,7 @@ class EntitiesListHeader extends React.PureComponent {
   static fragments = {
     namespace: gql`
       fragment EntitiesListHeader_namespace on Namespace {
-        subscriptions(orderBy: OCCURRENCES, omitEntity: true) {
-          values(limit: 25)
-        }
+        name
       }
     `,
   };
@@ -58,7 +61,6 @@ class EntitiesListHeader extends React.PureComponent {
       order,
     } = this.props;
 
-    const subscriptions = namespace ? namespace.subscriptions.values : [];
     return (
       <ToolbarMenu>
         <ToolbarMenu.Item key="filter-by-class" visible="if-room">
@@ -76,18 +78,25 @@ class EntitiesListHeader extends React.PureComponent {
           </SelectMenuItem>
         </ToolbarMenu.Item>
         <ToolbarMenu.Item key="filter-by-subscriptions" visible="if-room">
-          <SelectMenuItem
-            title="Subscription"
-            onChange={toggleParam("subscription", onChangeFilters)}
-          >
-            {subscriptions.map(v => (
-              <ToolbarSelectOption
-                key={v}
-                value={v}
-                selected={filters.subscription === v}
+          <MenuController
+            renderMenu={({ anchorEl, close }) => (
+              <AutosuggestSelectMenu
+                anchorEl={anchorEl}
+                onClose={close}
+                resourceType="subscriptions"
+                objRef="core/v2/entity/subscriptions"
+                order="FREQUENCY"
+                onChange={toggleParam("subscription", onChangeFilters)}
+                namespace={namespace && namespace.name}
               />
-            ))}
-          </SelectMenuItem>
+            )}
+          >
+            {({ open, ref }) => (
+              <RootRef rootRef={ref}>
+                <DisclosureMenuItem onClick={open} title="Subscription" />
+              </RootRef>
+            )}
+          </MenuController>
         </ToolbarMenu.Item>
         <ToolbarMenu.Item key="sort" visible="if-room">
           <ListSortSelector

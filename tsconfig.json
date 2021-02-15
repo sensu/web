@@ -18,7 +18,8 @@
     "strict": true,
     "strictBindCallApply": true,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "esnext"
+    "target": "esnext",
+    "module": "esnext"
   },
   "exclude": ["node_modules"],
   "include": ["src", "type"]

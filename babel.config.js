@@ -6,9 +6,7 @@ module.exports = {
     [
       "@babel/preset-env",
       {
-        targets: {
-          ie: "11",
-        },
+        targets: "> 0.5%, not IE 11",
         // Disable polyfill transforms.
         useBuiltIns: false,
         // Do not transform es6 modules, required for webpack "tree shaking".

@@ -4,12 +4,15 @@ import gql from "/vendor/graphql-tag";
 
 import ListHeader from "/lib/component/partial/ListHeader";
 import ListSortSelector from "/lib/component/partial/ListSortSelector";
-import { ToolbarSelectOption } from "/lib/component/partial/ToolbarSelect";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
 import {
-  SelectMenuItem,
   UnsilenceMenuItem,
+  DisclosureMenuItem,
 } from "/lib/component/partial/ToolbarMenuItems";
+
+import AutosuggestSelectMenu from "/lib/component/partial/AutosuggestSelectMenu";
+import MenuController from "/lib/component/controller/MenuController";
+import RootRef from "@material-ui/core/RootRef";
 
 import { toggleParam } from "/lib/util/filterParams";
 
@@ -36,64 +39,55 @@ class SilencesListHeader extends React.PureComponent {
   static fragments = {
     namespace: gql`
       fragment SilencesListHeader_namespace on Namespace {
-        subscriptions(orderBy: OCCURRENCES, omitEntity: true) {
-          values(limit: 25)
-        }
-
-        checks(limit: 100, orderBy: NAME_DESC) {
-          nodes {
-            name
-          }
-        }
+        name
       }
     `,
   };
 
   renderActions = () => {
-    const {
-      filters,
-      onChangeFilters,
-      onChangeQuery,
-      namespace,
-      order,
-    } = this.props;
-
-    const checks = namespace ? namespace.checks.nodes.map(o => o.name) : [];
-    const subscriptions = namespace ? namespace.subscriptions.values : [];
+    const { onChangeFilters, onChangeQuery, namespace, order } = this.props;
 
     return (
       <ToolbarMenu>
         <ToolbarMenu.Item key="filter-by-check" visible="if-room">
-          <SelectMenuItem
-            title="Check"
-            onChange={toggleParam("check", onChangeFilters)}
+          <MenuController
+            renderMenu={({ anchorEl, close }) => (
+              <AutosuggestSelectMenu
+                anchorEl={anchorEl}
+                onClose={close}
+                resourceType="checks"
+                objRef="core/v2/silenced/check"
+                onChange={toggleParam("check", onChangeFilters)}
+                namespace={namespace && namespace.name}
+              />
+            )}
           >
-            {checks
-              .sort((a, b) => (a.toUpperCase() > b.toUpperCase() ? 1 : -1))
-              .map(v => (
-                <ToolbarSelectOption
-                  key={v}
-                  value={v}
-                  selected={filters.check === v}
-                />
-              ))}
-          </SelectMenuItem>
+            {({ open, ref }) => (
+              <RootRef rootRef={ref}>
+                <DisclosureMenuItem onClick={open} title="Check" />
+              </RootRef>
+            )}
+          </MenuController>
         </ToolbarMenu.Item>
         <ToolbarMenu.Item key="filter-by-subscription" visible="if-room">
-          <SelectMenuItem
-            title="Subscription"
-            onChange={toggleParam("subscription", onChangeFilters)}
+          <MenuController
+            renderMenu={({ anchorEl, close }) => (
+              <AutosuggestSelectMenu
+                anchorEl={anchorEl}
+                onClose={close}
+                resourceType="subscriptions"
+                objRef="core/v2/silenced/subscription"
+                onChange={toggleParam("subscription", onChangeFilters)}
+                namespace={namespace && namespace.name}
+              />
+            )}
           >
-            {subscriptions
-              .sort((a, b) => (a.toUpperCase() > b.toUpperCase() ? 1 : -1))
-              .map(v => (
-                <ToolbarSelectOption
-                  key={v}
-                  value={v}
-                  selected={filters.subscription === v}
-                />
-              ))}
-          </SelectMenuItem>
+            {({ open, ref }) => (
+              <RootRef rootRef={ref}>
+                <DisclosureMenuItem onClick={open} title="Subscription" />
+              </RootRef>
+            )}
+          </MenuController>
         </ToolbarMenu.Item>
         <ToolbarMenu.Item key="sort" visible="always">
           <ListSortSelector
