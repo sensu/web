@@ -3,18 +3,23 @@ import PropTypes from "prop-types";
 import gql from "/vendor/graphql-tag";
 
 import {
-  SelectMenuItem,
+  DisclosureMenuItem,
   PublishMenuItem,
+  QueueExecutionMenuItem,
+  SelectMenuItem,
   SilenceMenuItem,
   UnpublishMenuItem,
   UnsilenceMenuItem,
-  QueueExecutionMenuItem,
 } from "/lib/component/partial/ToolbarMenuItems";
 
 import ListHeader from "/lib/component/partial/ListHeader";
 import ListSortSelector from "/lib/component/partial/ListSortSelector";
 import { ToolbarSelectOption } from "/lib/component/partial/ToolbarSelect";
 import ToolbarMenu from "/lib/component/partial/ToolbarMenu";
+
+import AutosuggestSelectMenu from "/lib/component/partial/AutosuggestSelectMenu";
+import MenuController from "/lib/component/controller/MenuController";
+import RootRef from "@material-ui/core/RootRef";
 
 import { toggleParam } from "/lib/util/filterParams";
 
@@ -41,9 +46,7 @@ class ChecksListHeader extends React.PureComponent {
   static fragments = {
     namespace: gql`
       fragment ChecksListHeader_namespace on Namespace {
-        subscriptions(orderBy: OCCURRENCES, omitEntity: true) {
-          values(limit: 25)
-        }
+        name
       }
     `,
     check: gql`
@@ -60,7 +63,6 @@ class ChecksListHeader extends React.PureComponent {
   renderActions = () => {
     const { filters, namespace, onChangeFilters, order } = this.props;
 
-    const subscriptions = namespace ? namespace.subscriptions.values : [];
     return (
       <ToolbarMenu>
         <ToolbarMenu.Item key="filter-by-published" visible="if-room">
@@ -82,18 +84,24 @@ class ChecksListHeader extends React.PureComponent {
           </SelectMenuItem>
         </ToolbarMenu.Item>
         <ToolbarMenu.Item key="filter-by-subscription" visible="if-room">
-          <SelectMenuItem
-            title="Subscription"
-            onChange={toggleParam("subscription", onChangeFilters)}
-          >
-            {subscriptions.map(val => (
-              <ToolbarSelectOption
-                key={val}
-                value={val}
-                selected={val === filters.subscription}
+          <MenuController
+            renderMenu={({ anchorEl, close }) => (
+              <AutosuggestSelectMenu
+                anchorEl={anchorEl}
+                onClose={close}
+                resourceType="subscriptions"
+                objRef="core/v2/check_config/subscriptions"
+                onChange={toggleParam("subscription", onChangeFilters)}
+                namespace={namespace && namespace.name}
               />
-            ))}
-          </SelectMenuItem>
+            )}
+          >
+            {({ open, ref }) => (
+              <RootRef rootRef={ref}>
+                <DisclosureMenuItem onClick={open} title="Subscription" />
+              </RootRef>
+            )}
+          </MenuController>
         </ToolbarMenu.Item>
         <ToolbarMenu.Item key="sort" visible="if-room">
           <ListSortSelector

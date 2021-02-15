@@ -13,7 +13,7 @@ export const shallowEqual = (as: any[], bs: any[]): boolean => {
   return true;
 };
 
-export const mergeAtIndex = <T extends any>(
+export const mergeAtIndex = <T extends Record<string, any>>(
   arr: T[],
   index: number,
   update: Partial<T>,
