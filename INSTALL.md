@@ -37,6 +37,13 @@ increase the system-wide limit:
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 ```
 
+## Unsigned SSL Certificates for sensu-backend
+In development, you might not have a signed CA certificate for the API URL for the sensu backend. Set this environment variable (`NODE_PROXY_SECURE`) to false to turn off SSL cert verification.
+
+```bash
+NODE_PROXY_SECURE=false NODE_ENV=development PORT=5000 API_URL=https://my-sensu-backend-api:8080 yarn node scripts serve --modules-folder /opt/sensu/yarn/node_modules
+```
+
 ## Running in Production
 
 In production, you probably don't want the source code files owned by the
