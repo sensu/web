@@ -24,6 +24,7 @@ app.use(compression());
 app.use(
   createProxyMiddleware(proxyPaths, {
     target: apiUrl,
+    secure: process.env.NODE_PROXY_SECURE === "false" ? false : true,
     logLevel: process.env.NODE_ENV === "development" ? "silent" : "info",
   }),
 );
