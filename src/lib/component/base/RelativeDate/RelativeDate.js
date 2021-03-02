@@ -85,7 +85,7 @@ class RelativeDate extends React.Component {
       relativeDate = capitalizeStr(relativeDate);
     }
     return (
-      <Tooltip title={dateValue.toString()}>
+      <Tooltip title={dateValue.toLocaleString()}>
         <time dateTime={dateTime} {...props}>
           {relativeDate}
         </time>
