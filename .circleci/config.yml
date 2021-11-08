@@ -8,7 +8,7 @@ executors:
   build_env:
     resource_class: medium
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:14.18
 
 commands:
   install_deps:
