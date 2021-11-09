@@ -1,8 +1,29 @@
-import { normalize, format } from "./cron";
+import { normalize, format, extractTz } from "./cron";
 
 describe("cron utils", () => {
+  describe("extractTz", () => {
+    it("should return both TZ and truncated expression", () => {
+      expect(extractTz("TZ=Asia/Tokyo * * * * *")).toEqual([
+        "* * * * *",
+        "Asia/Tokyo",
+      ]);
+      expect(extractTz("CRON_TZ=Asia/Tokyo * * * * *")).toEqual([
+        "* * * * *",
+        "Asia/Tokyo",
+      ]);
+      expect(extractTz("           CRON_TZ=Asia/Tokyo  * * * * *")).toEqual([
+        "* * * * *",
+        "Asia/Tokyo",
+      ]);
+      expect(extractTz("* * * * *")).toEqual(["* * * * *", undefined]);
+    });
+  });
+
   describe("normalize", () => {
     it("should convert non-standard expressions to standard format", () => {
+      expect(normalize("TZ=Asia/Tokyo * * * * *")).toEqual("* * * * *");
+      expect(normalize("CRON_TZ=Asia/Tokyo * * * * *")).toEqual("* * * * *");
+
       expect(normalize("@yearly")).toEqual("0 0 0 1 1 *");
       expect(normalize("@annually")).toEqual("0 0 0 1 1 *");
       expect(normalize("@monthly")).toEqual("0 0 0 1 * *");
@@ -32,6 +53,9 @@ describe("cron utils", () => {
 
   describe("format", () => {
     it("should correctly format non-standard expressions", () => {
+      expect(format("TZ=Asia/Tokyo * * * * *")).toEqual("Every minute");
+      expect(format("CRON_TZ=Asia/Tokyo * * * * *")).toEqual("Every minute");
+
       expect(format("@yearly")).toEqual(
         "At 12:00 AM, on day 1 of the month, only in January",
       );
@@ -50,7 +74,9 @@ describe("cron utils", () => {
       expect(format("@every 5s")).toEqual("Every 5 seconds");
       expect(format("@every 5m")).toEqual("Every 5 minutes");
       expect(format("@every 1h5m")).toEqual("Every 65 minutes");
-      expect(format("@every 4h")).toEqual("Every 4 hours");
+      expect(format("@every 4h")).toEqual(
+        "At 0 minutes past the hour, every 4 hours",
+      );
       expect(format("@every 24h")).toEqual("At 12:00 AM");
       expect(format("@every 48h")).toEqual("At 12:00 AM, every 2 days");
 
