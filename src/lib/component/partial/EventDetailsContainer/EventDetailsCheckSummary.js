@@ -20,6 +20,7 @@ import {
 
 import { statusCodeToId } from "/lib/util/checkStatus";
 import {
+  ANSIColor,
   Dictionary,
   DictionaryKey,
   DictionaryValue,
@@ -291,7 +292,7 @@ class EventDetailsCheckSummary extends React.PureComponent {
           <React.Fragment>
             <Divider />
             <CodeBlock className={classes.code}>
-              <CardContent>{check.output}</CardContent>
+              <CardContent><ANSIColor>{check.output}</ANSIColor></CardContent>
             </CodeBlock>
           </React.Fragment>
         ) : (
