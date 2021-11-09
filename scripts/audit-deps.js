@@ -7,7 +7,7 @@ const acceptable = ["info", "low"];
 // Run report
 let report;
 try {
-  report = execSync("yarn audit --json", { encoding: "utf-8" });
+  report = execSync("yarn audit --groups dependencies --json", { encoding: "utf-8" });
 } catch (e) {
   report = e.stdout;
 }

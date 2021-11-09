@@ -1,6 +1,7 @@
 import React from "/vendor/react";
 import IntlRelativeFormat from "intl-relativeformat";
 import { render } from "@testing-library/react";
+import '@testing-library/jest-dom'
 
 import RelativeDate from "./RelativeDate";
 
