@@ -29,7 +29,9 @@
 
 ## Roadmap
 
-As of version 6.0, the Sensu Go web interface is no longer included in the sensu-go codebase. Users who download and compile Sensu Go from source will need to download and run the web interface as a separate component. Also, although they currently share certain features, the web interface included in the commercial distribution (see: https://sensu.io/downloads) and this project will no longer share a common codebase.
+As of version 6.0, the Sensu Go web interface is no longer included in the sensu-go codebase. Users who download and compile Sensu Go from source will need to download and run the web interface as a separate component (see: [INSTALL.md](INSTALL.md)). Also, although they currently share certain features, the web interface included in the [commercial distribution](https://sensu.io/downloads) and this project will no longer share a common codebase.
+
+For more details see: [Building a better UI for Sensu].
 
 ### Goals
 
@@ -67,3 +69,4 @@ contributors, please see [CONTRIBUTING.md].
 [sensu go]: https://sensu.io/products/core
 [installation documentation]: https://docs.sensu.io/sensu-go/latest/installation/install-sensu/
 [contributing.md]: CONTRIBUTING.md
+[Building a better UI for Sensu]: https://discourse.sensu.io/t/building-a-better-ui-for-sensu/1859
