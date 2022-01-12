@@ -27,6 +27,26 @@
   </a>
 </p>
 
+## Roadmap
+
+As of version 6.0, the Sensu Go web interface is no longer included in the sensu-go codebase. Users who download and compile Sensu Go from source will need to download and run the web interface as a separate component. Also, although they currently share certain features, the web interface included in the commercial distribution (see: https://sensu.io/downloads) and this project will no longer share a common codebase.
+
+### Goals
+
+The primary goal of this project is to offer a simple web interface that provides visibility into Sensu Go's "stateful" data (e.g., real-time invetory and real-time event dashboards). At this time, this includes the following:
+
+* Basic auth (login using Sensu Go user credentials)
+* Namespace switching
+* Views reflecting event, entity, and silence state. (Scoped by namespace.)
+
+### Non-Goals
+
+This project does not aim to provide a web-based interface for every feature of the open-source Sensu Go platform, specifically include the configuration of Sensu Go pipelines. As a result, certain features of the Sensu Go open-source web interface project may be marked as "deprecated" and/or removed in a future release (e.g., if changes to sensu-go breaks compatibility.)
+
+_NOTE: although "PRs are **always** welcome" (!), any PR which implements features that are non-goals of this project may be closed as "won't fix". Furthermore, any issues and/or PRs proposing enhancements that are already implemented -OR- that are on our roadmap for the commercial distribution **may** also be closed as "won't fix"; conversely, we may from time to time choose to port features from the commercial distribution into this project._
+
+This project will maintain its permissive MIT license, and may be used as a baseline for new Sensu Go web interface projects and/or forks of this project.
+
 ## Getting Started
 
 To start the UI, simply run the following:
