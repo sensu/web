@@ -40,7 +40,7 @@ For more detailed installation instructions, see [INSTALL.md](INSTALL.md)
 ## Contributing
 
 Sensu is and always will be open source, and we continue to highly value
-community contribution. For guidelines on how to contribute to this project, how
+community contributions. For guidelines on how to contribute to this project, how
 to hack on Sensu, and information about what we require from project
 contributors, please see [CONTRIBUTING.md].
 
