@@ -29,13 +29,13 @@
 
 ## Roadmap
 
-As of version 6.0, the Sensu Go web interface is no longer included in the sensu-go codebase. Users who download and compile Sensu Go from source will need to download and run the web interface as a separate component (see: [INSTALL.md](INSTALL.md)). Also, although they currently share certain features, the web interface included in the [commercial distribution](https://sensu.io/downloads) and this project will no longer share a common codebase.
+As of version 6.0, the official Sensu web app has moved to the commercial product codebase. Users who want an officially supported web app for use with Sensu Go should try the commercial distribution available at https://sensu.io/downloads 
 
-For more details see: [Building a better UI for Sensu].
+Users who download and compile Sensu Go from source and want a web UI will need to download and run this web app as a separate component (see [INSTALL.md](INSTALL.md)). Please note that the web interface included in the commercial distribution no longer shares a common codebase with this project. For more details regarding these changes, please see [Building a better UI for Sensu].
 
 ### Goals
 
-The primary goal of this project is to offer a simple web interface that provides visibility into Sensu Go's "stateful" data (e.g., real-time invetory and real-time event dashboards). At this time, this includes the following:
+The primary goal of this project was to offer a simple web interface that provides visibility into Sensu Go's "stateful" data (e.g., real-time invetory and real-time event dashboards). At this time, this includes the following:
 
 * Basic auth (login using Sensu Go user credentials)
 * Namespace switching
@@ -43,7 +43,7 @@ The primary goal of this project is to offer a simple web interface that provide
 
 ### Non-Goals
 
-This project does not aim to provide a web-based interface for every feature of the open-source Sensu Go platform, specifically include the configuration of Sensu Go pipelines. As a result, certain features of the Sensu Go open-source web interface project may be marked as "deprecated" and/or removed in a future release (e.g., if changes to sensu-go breaks compatibility.)
+This project does not aim to provide a web-based interface for every feature of the open-source Sensu Go platform, specifically including the configuration of Sensu Go pipelines. As a result, certain features of this project may break with new releases of Sensu Go. The Sensu Engineering team will review and merge PRs submitted by the community, and/or periodically publish new releases to mark certain features as "deprecated" (or just remove them).
 
 _NOTE: although "PRs are **always** welcome" (!), any PR which implements features that are non-goals of this project may be closed as "won't fix". Furthermore, any issues and/or PRs proposing enhancements that are already implemented -OR- that are on our roadmap for the commercial distribution **may** also be closed as "won't fix"; conversely, we may from time to time choose to port features from the commercial distribution into this project._
 
