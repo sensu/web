@@ -72,7 +72,7 @@
     "error-stack-parser": "^2.0.2",
     "es6-error": "^4.1.1",
     "express": "^4.16.4",
-    "fbjs": "^1.0.0",
+    "fbjs": "^3.0.0",
     "fuse.js": "^3.4.5",
     "git-rev-sync": "^1.12.0",
     "graphql": "^14.4.2",
@@ -226,7 +226,11 @@
     "graphql-config/**/graphql": "14.4.2",
     "graphql-import/**/graphql": "14.4.2",
     "serialize-javascript": "3.1.0",
-    "prismjs": "1.23.0"
+    "prismjs": "1.23.0",
+    "shell-quote": "1.7.3",
+    "shelljs": "0.8.5",
+    "ejs": "^3.1.7",
+    "json-schema": "^0.4.0"
   },
   "graphQLSchemaRef": "4fbba86"
 }
