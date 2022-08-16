@@ -43,8 +43,8 @@ const ExecuteCheckStatusToast = ({
             <InlineLink
               component={NamespaceLink}
               namespace={namespace}
-              to={`/events?filter=${encodeURIComponent(
-                `check.name === "${checkName}"${
+              to={`/events?filters=${encodeURIComponent(
+                `check:${checkName}${
                   entityName ? ` && entity.name === "${entityName}"` : ""
                 }`,
               )}`}
