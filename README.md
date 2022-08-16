@@ -12,7 +12,7 @@
 </h3>
 
 <p align="center">
-  A web interface for insight and management of your <a href="https://sensu.io/products/core">Sensu Go</a> clusters.
+  A web interface for insight and management of your <a href="https://sensu.io/features">Sensu Go</a> clusters.
 </p>
 
 <p align="center">
