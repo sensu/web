@@ -16,16 +16,24 @@ import { withField } from "/vendor/@10xjs/form";
 
 import Panel from "./SilenceEntryFormPanel";
 
-const DEFAULT_EXPIRE_DURATION = 3600;
+const DEFAULT_EXPIRE_DURATION = 24;
 
 class SilenceEntryFormExpirationPanel extends React.PureComponent {
   static propTypes = {
     expireOnResolve: PropTypes.object.isRequired,
     expire: PropTypes.object.isRequired,
+    expireAt: PropTypes.object.isRequired,
   };
 
   render() {
-    const { expireOnResolve, expire } = this.props;
+    const { expireOnResolve, expire, expireAt } = this.props;
+
+    this._addHours = function addHours(numOfHours, date = new Date()) {
+      const dateCopy = new Date(date.getTime());
+      dateCopy.setTime(dateCopy.getTime() + numOfHours * 60 * 60 * 1000);
+      dateCopy.toISOString();
+      return dateCopy;
+    }
 
     const expireAfterDuration = expire.rawValue > 0;
 
@@ -41,7 +49,7 @@ class SilenceEntryFormExpirationPanel extends React.PureComponent {
         expireOnResolve.input.checked ? "on resolved check" : null,
         expireAfterDuration
           ? `after ${expire.rawValue} ${
-              expire.rawValue === 1 ? "second" : "seconds"
+              expire.rawValue === 1 ? "hour" : "hours"
             }`
           : null,
       ]
@@ -76,6 +84,11 @@ class SilenceEntryFormExpirationPanel extends React.PureComponent {
                       ? this._lastExprireValue || DEFAULT_EXPIRE_DURATION
                       : -1,
                   );
+                  expireAt.setValue(
+                    checked
+                      ? this._addHours(this._lastExprireValue || DEFAULT_EXPIRE_DURATION)
+                      : undefined,
+                  );
                 }}
               />
             }
@@ -89,7 +102,7 @@ class SilenceEntryFormExpirationPanel extends React.PureComponent {
               label="Expire after"
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">seconds</InputAdornment>
+                  <InputAdornment position="end">hour(s)</InputAdornment>
                 ),
               }}
               {...expire.composeInput({
@@ -97,6 +110,10 @@ class SilenceEntryFormExpirationPanel extends React.PureComponent {
                   if (!event.target.value) {
                     this._lastExprireValue = undefined;
                     expire.setValue(-1);
+                    expireAt.setValue(undefined);
+                  }
+                  else {
+                    expireAt.setValue(this._addHours(event.target.value));
                   }
                 },
               })}
@@ -119,6 +136,15 @@ export default compose(
       const number = parseInt(value, 10);
       return Number.isNaN(number) ? -1 : number;
     },
+    format(value) {
+      if (value === undefined || value === null || value === -1) {
+        return "";
+      }
+      return `${value}`;
+    },
+  }),
+  withField("expireAt", {
+    path: "props.expireAt",
     format(value) {
       if (value === undefined || value === null || value === -1) {
         return "";
