@@ -71,7 +71,7 @@
     "entities": "^2.2.0",
     "error-stack-parser": "^2.0.2",
     "es6-error": "^4.1.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "fbjs": "^3.0.0",
     "fuse.js": "^3.4.5",
     "git-rev-sync": "^1.12.0",
