@@ -9,6 +9,10 @@ import makeConfig from "./base.webpack.config";
 const root = fs.realpathSync(process.cwd());
 const outputPath = path.join(root, "build/app");
 
+import crypto from "crypto";
+const crypto_orig_createHash = crypto.createHash;
+crypto.createHash = algorithm => crypto_orig_createHash(algorithm == "md4" ? "sha256" : algorithm);
+
 export default makeConfig({
   name: "app",
 
